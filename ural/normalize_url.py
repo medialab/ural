@@ -19,7 +19,7 @@ def normalize_url(url, drop_trailing_slash=True):
     non-discriminant parts such as irrelevant query items or sub-domains etc.
 
     This is a very useful utility when attempting to match similar urls
-    written lightly differently when shared on social media etc.
+    written slightly differently when shared on social media etc.
 
     Args:
         url (str): Target URL as a string.
