@@ -64,9 +64,7 @@ def normalize_url(url, drop_trailing_slash=True):
         del query[query_item_to_delete]
 
     # Dropping fragment if it's not routing
-    fragment = f.fragment
-
-    if len(fragment.path.segments) <= 1:
+    if len(f.fragment.path.segments) <= 1:
         f.remove(fragment=True)
 
     # Dropping irrelevant subdomains
