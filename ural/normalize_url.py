@@ -13,6 +13,8 @@ IRRELEVANT_QUERY_RE = re.compile('^utm_(?:term|medium|source|campaign|content)|x
 IRRELEVANT_SUBDOMAIN_RE = re.compile('^(?:www\\d?|mobile|m)\\.')
 
 
+# TODO: handle https://en.m.wikipedia.org/wiki/Ulam_spiral
+
 def normalize_url(url, drop_trailing_slash=True):
     """
     Function normalizing the given url by stripping it of usually

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Yomguithereal/ural.svg)](https://travis-ci.org/Yomguithereal/ural)
+[![Build Status](https://travis-ci.org/medialab/ural.svg)](https://travis-ci.org/medialab/ural)
 
 # Ural
 
