@@ -51,7 +51,7 @@ def normalize_url(url, drop_trailing_slash=True):
         path = normpath(path)
 
     # Dropping index:
-    segments = path.split('/')
+    segments = path.rsplit('/', 1)
 
     if len(segments) != 0:
         last_segment = segments[-1]
