@@ -7,7 +7,7 @@
 #
 import re
 from os.path import normpath, splitext
-from urllib.parse import parse_qsl, urlparse, urlunparse
+from urllib.parse import parse_qsl, urlsplit, urlunsplit
 
 SCHEME_RE = re.compile('^[^:]*:?//')
 IRRELEVANT_QUERY_RE = re.compile('^utm_(?:campaign|content|medium|source|term)|xtor$')
@@ -44,7 +44,7 @@ def normalize_url(url, drop_trailing_slash=True):
         url = 'http://' + url
 
     # Parsing
-    scheme, netloc, path, params, query, fragment = urlparse(url)
+    scheme, netloc, path, query, fragment = urlsplit(url)
 
     # Normalizing the path
     if path:
@@ -86,12 +86,11 @@ def normalize_url(url, drop_trailing_slash=True):
         scheme,
         netloc,
         path,
-        params,
         query,
         fragment
     )
 
-    result = urlunparse(result)[2:]
+    result = urlunsplit(result)[2:]
 
     # Dropping trailing slash
     if drop_trailing_slash and result.endswith('/'):
