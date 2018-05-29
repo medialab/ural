@@ -4,7 +4,7 @@ SOURCE = ural
 # Commands
 all: lint test
 test: unit
-publish: upload clean
+publish: lint test upload clean
 
 clean:
 	rm -rf *.egg-info .pytest_cache build dist
