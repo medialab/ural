@@ -18,7 +18,8 @@ TESTS = [
     ('//www.lemonde.fr', 'lemonde.fr'),
     ('http://www2.lemonde.fr/index.html', 'lemonde.fr'),
     ('http://m.lemonde.fr/index.html', 'lemonde.fr'),
-    ('http://mobile.lemonde.fr/index.html', 'lemonde.fr')
+    ('http://mobile.lemonde.fr/index.html', 'lemonde.fr'),
+    ('https://en.m.wikipedia.org/wiki/Ulam_spiral', 'en.wikipedia.org/wiki/Ulam_spiral')
 ]
 
 

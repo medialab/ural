@@ -16,5 +16,4 @@ setup(name='ural',
       python_requires='>=3',
       packages=find_packages(exclude=['test']),
       package_data={'docs': ['README.md']},
-      install_requires=['furl>=1'],
       zip_safe=True)

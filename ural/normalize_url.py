@@ -6,14 +6,20 @@
 # non-discriminant parts of a URL.
 #
 import re
-from os.path import splitext
-from furl import furl
+from os.path import normpath, splitext
+from urllib.parse import parse_qsl, urlparse, urlunparse
 
-IRRELEVANT_QUERY_RE = re.compile('^utm_(?:term|medium|source|campaign|content)|xtor$')
-IRRELEVANT_SUBDOMAIN_RE = re.compile('^(?:www\\d?|mobile|m)\\.')
+SCHEME_RE = re.compile('^[^:]*:?//')
+IRRELEVANT_QUERY_RE = re.compile('^utm_(?:campaign|content|medium|source|term)|xtor$')
+IRRELEVANT_SUBDOMAIN_RE = re.compile('\\b(?:www\\d?|mobile|m)\\.')
 
 
-# TODO: handle https://en.m.wikipedia.org/wiki/Ulam_spiral
+def stringify_qs(item):
+    if item[1] == '':
+        return item[0]
+
+    return '%s=%s' % item
+
 
 def normalize_url(url, drop_trailing_slash=True):
     """
@@ -33,50 +39,62 @@ def normalize_url(url, drop_trailing_slash=True):
 
     """
 
-    f = furl(url)
-    path = f.path
+    # Ensuring scheme so parsing works correctly
+    if not SCHEME_RE.match(url):
+        url = 'http://' + url
+
+    # Parsing
+    scheme, netloc, path, params, query, fragment = urlparse(url)
 
     # Normalizing the path
-    path.normalize()
+    if path:
+        path = normpath(path)
 
-    # Dropping trailing slash
-    if drop_trailing_slash and \
-       len(path.segments) != 0 and \
-       path.segments[-1] == '':
-        path.segments = path.segments[:-1]
+    # Dropping index:
+    segments = path.split('/')
 
-    # Dropping 'index'
-    if len(path.segments) != 0:
-        last_segment = path.segments[-1]
+    if len(segments) != 0:
+        last_segment = segments[-1]
         filename, ext = splitext(last_segment)
 
         if filename == 'index':
-            path.segments = path.segments[:-1]
+            segments.pop()
+            path = '/'.join(segments)
 
     # Dropping irrelevant query items
-    # NOTE: if no query is present, ? will be dropped
-    query = f.query.params
-    query_items_to_delete = []
-
-    for key in query.keys():
-        if IRRELEVANT_QUERY_RE.match(key):
-            query_items_to_delete.append(key)
-
-    for query_item_to_delete in query_items_to_delete:
-        del query[query_item_to_delete]
+    if query:
+        qsl = parse_qsl(query, keep_blank_values=True)
+        qsl = [stringify_qs(item) for item in qsl if not IRRELEVANT_QUERY_RE.match(item[0])]
+        query = '&'.join(qsl)
 
     # Dropping fragment if it's not routing
-    if len(f.fragment.path.segments) <= 1:
-        f.remove(fragment=True)
+    if fragment and len(fragment.split('/')) <= 1:
+        fragment = ''
 
     # Dropping irrelevant subdomains
-    if f.host:
-        f.host = re.sub(IRRELEVANT_SUBDOMAIN_RE, '', f.host)
+    netloc = re.sub(
+        IRRELEVANT_SUBDOMAIN_RE,
+        '',
+        netloc
+    )
 
     # Dropping scheme
-    f.scheme = None
+    scheme = ''
 
-    if drop_trailing_slash:
-        return f.url.rstrip('/')
-    else:
-        return f.url
+    # Result
+    result = (
+        scheme,
+        netloc,
+        path,
+        params,
+        query,
+        fragment
+    )
+
+    result = urlunparse(result)[2:]
+
+    # Dropping trailing slash
+    if drop_trailing_slash and result.endswith('/'):
+        result = result.rstrip('/')
+
+    return result
