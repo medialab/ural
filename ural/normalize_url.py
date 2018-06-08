@@ -10,8 +10,13 @@ from os.path import normpath, splitext
 from urllib.parse import parse_qsl, urlsplit, urlunsplit
 
 SCHEME_RE = re.compile('^[^:]*:?//')
-IRRELEVANT_QUERY_RE = re.compile('^utm_(?:campaign|content|medium|source|term)|xtor$')
+IRRELEVANT_QUERY_RE = re.compile('^(?:__twitter_impression|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$')
 IRRELEVANT_SUBDOMAIN_RE = re.compile('\\b(?:www\\d?|mobile|m)\\.')
+
+IRRELEVANT_QUERY_COMBOS = {
+    'ref': ('fb', 'tw', 'tw_i'),
+    'platform': ('hootsuite')
+}
 
 
 def stringify_qs(item):
@@ -19,6 +24,20 @@ def stringify_qs(item):
         return item[0]
 
     return '%s=%s' % item
+
+
+def should_strip_query_item(item):
+    key = item[0].lower()
+
+    if IRRELEVANT_QUERY_RE.match(key):
+        return True
+
+    value = item[1]
+
+    if key in IRRELEVANT_QUERY_COMBOS:
+        return value in IRRELEVANT_QUERY_COMBOS[key]
+
+    return False
 
 
 def normalize_url(url, drop_trailing_slash=True):
@@ -64,7 +83,12 @@ def normalize_url(url, drop_trailing_slash=True):
     # Dropping irrelevant query items
     if query:
         qsl = parse_qsl(query, keep_blank_values=True)
-        qsl = [stringify_qs(item) for item in qsl if not IRRELEVANT_QUERY_RE.match(item[0])]
+        qsl = [
+            stringify_qs(item)
+            for item in qsl
+            if not should_strip_query_item(item)
+        ]
+
         query = '&'.join(qsl)
 
     # Dropping fragment if it's not routing
