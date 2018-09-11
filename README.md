@@ -25,7 +25,7 @@ This is a very useful utility when attempting to match similar urls written slig
 ```python
 from ural import normalize_url
 
-url('https://www2.lemonde.fr/index.php#anchor')
+normalize_url('https://www2.lemonde.fr/index.php#anchor')
 >>> 'lemonde.fr'
 ```
 
