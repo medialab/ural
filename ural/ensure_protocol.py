@@ -6,7 +6,7 @@
 #
 import re
 
-PROTOCOL_RE = re.compile(r'^[^:]*:?//')
+from .normalize_url import PROTOCOL_RE
 
 
 def ensure_protocol(url, protocol='http'):

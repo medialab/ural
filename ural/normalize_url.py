@@ -9,7 +9,7 @@ import re
 from os.path import normpath, splitext
 from urllib.parse import parse_qsl, urlsplit, urlunsplit
 
-SCHEME_RE = re.compile(r'^[^:]*:?//')
+PROTOCOL_RE = re.compile(r'^[^:]*:?//')
 IRRELEVANT_QUERY_RE = re.compile('^(?:__twitter_impression|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$')
 IRRELEVANT_SUBDOMAIN_RE = re.compile('\\b(?:www\\d?|mobile|m)\\.')
 
@@ -59,7 +59,7 @@ def normalize_url(url, drop_trailing_slash=True):
     """
 
     # Ensuring scheme so parsing works correctly
-    if not SCHEME_RE.match(url):
+    if not PROTOCOL_RE.match(url):
         url = 'http://' + url
 
     # Parsing
