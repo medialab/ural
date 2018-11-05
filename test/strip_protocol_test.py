@@ -13,6 +13,7 @@ TESTS = [
     ('lemonde.fr/index.php?utm_content=whatever',
      'lemonde.fr/index.php?utm_content=whatever'),
     ('https://lemonde.fr?', 'lemonde.fr?'),
+    ('HTTPS://lemonde.fr?', 'lemonde.fr?'),
     ('https://lemonde.fr#anchor', 'lemonde.fr#anchor'),
     ('https://lemonde.fr/#anchor', 'lemonde.fr/#anchor'),
     ('https://lemonde.fr/#/path/is/here', 'lemonde.fr/#/path/is/here'),
