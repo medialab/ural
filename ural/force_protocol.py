@@ -6,7 +6,7 @@
 #
 import re
 
-PROTOCOL_RE = re.compile('^[^:]*:?//')
+PROTOCOL_RE = re.compile(r'^[^:]*:?//')
 
 
 def force_protocol(url, protocol='http'):
