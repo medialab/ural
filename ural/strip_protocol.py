@@ -1,17 +1,17 @@
 # =============================================================================
-# Ural URL Ensure Protocol Function
+# Ural URL Strip Protocol Function
 # =============================================================================
 #
-# A function checking if the url features a protocol, and adding one if there is none.
+# A function removing the protocol from the given url.
 #
 import re
 
-PROTOCOL_RE = re.compile('^[^:]*:?//')
+PROTOCOL_RE = re.compile(r'^[^:]*:?//')
 
 
 def strip_protocol(url):
     """
-    Function removing the protocol of the given url.
+    Function removing the protocol from the given url.
 
     Args:
         url (str): Target URL as a string.
@@ -20,9 +20,4 @@ def strip_protocol(url):
         string: The url without protocol.
 
     """
-    if PROTOCOL_RE.match(url):
-        if url[:2] == '//':
-            url = url[2:]
-        else:
-            url = url.split('://', 2)[1]
-    return url
+    return PROTOCOL_RE.sub("", url)

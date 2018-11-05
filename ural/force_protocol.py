@@ -1,8 +1,8 @@
 # =============================================================================
-# Ural URL Ensure Protocol Function
+# Ural URL Force Protocol Function
 # =============================================================================
 #
-# A function checking if the url features a protocol, and adding one if there is none.
+# A function force-replacing the url protocol by the given one (and adding it if there is none).
 #
 import re
 

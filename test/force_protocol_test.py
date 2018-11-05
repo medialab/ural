@@ -1,5 +1,5 @@
 # =============================================================================
-# Ural URL Ensure Protocol Unit Tests
+# Ural URL Force Protocol Unit Tests
 # =============================================================================
 from ural import force_protocol
 
