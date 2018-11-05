@@ -7,8 +7,6 @@
 import re
 from .normalize_url import PROTOCOL_RE
 
-# PROTOCOL_RE = re.compile(r'^[^:]*:?//')
-
 
 def strip_protocol(url):
     """
