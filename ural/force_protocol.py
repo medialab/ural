@@ -7,6 +7,8 @@
 import re
 
 from .normalize_url import PROTOCOL_RE
+from .strip_protocol import strip_protocol
+from .ensure_protocol import ensure_protocol
 
 
 def force_protocol(url, protocol='http'):
@@ -21,10 +23,7 @@ def force_protocol(url, protocol='http'):
         string: The protocol-equipped url.
 
     """
-    if not PROTOCOL_RE.match(url):
-        url = protocol + '://' + url
-    elif url[:2] == '//':
-        url = protocol + ':' + url
-    else:
-        url = re.sub(PROTOCOL_RE, protocol + '://', url)
-    return url
+    naked_url = strip_protocol(url)
+    final_url = ensure_protocol(naked_url, protocol)
+    print('--> ', url, ' --> ', naked_url, ' --> ', final_url)
+    return final_url
