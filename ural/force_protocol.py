@@ -24,6 +24,4 @@ def force_protocol(url, protocol='http'):
 
     """
     naked_url = strip_protocol(url)
-    final_url = ensure_protocol(naked_url, protocol)
-    print('--> ', url, ' --> ', naked_url, ' --> ', final_url)
-    return final_url
+    return ensure_protocol(naked_url, protocol)
