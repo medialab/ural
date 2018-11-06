@@ -50,3 +50,5 @@ class TestEnsureProtocol(object):
                                'ftp') == 'ftp://lemonde.fr?utm_hp_ref=test'
         assert ensure_protocol('https://lemonde.fr?utm_hp_ref=test',
                                'ftp') == 'https://lemonde.fr?utm_hp_ref=test'
+        assert ensure_protocol('lemonde.fr?utm_hp_ref=test',
+                               'http://') == 'http://lemonde.fr?utm_hp_ref=test'

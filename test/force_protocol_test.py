@@ -49,3 +49,5 @@ class TestEnsureProtocol(object):
             assert force_protocol(url) == output
         assert force_protocol('http://lemonde.fr?utm_hp_ref=test',
                               'ftp') == 'ftp://lemonde.fr?utm_hp_ref=test'
+        assert force_protocol('ftp://lemonde.fr?utm_hp_ref=test',
+                              'http://') == 'http://lemonde.fr?utm_hp_ref=test'
