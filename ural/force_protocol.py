@@ -7,8 +7,6 @@
 import re
 
 from ural.patterns import PROTOCOL_RE
-from .strip_protocol import strip_protocol
-from .ensure_protocol import ensure_protocol
 
 
 def force_protocol(url, protocol='http'):
@@ -23,5 +21,11 @@ def force_protocol(url, protocol='http'):
         string: The protocol-equipped url.
 
     """
-    naked_url = strip_protocol(url)
-    return ensure_protocol(naked_url, protocol)
+    protocol = protocol.rstrip(':/')
+    if not PROTOCOL_RE.match(url):
+        url = protocol + '://' + url
+    elif url[:2] == '//':
+        url = protocol + ':' + url
+    else:
+        url = re.sub(PROTOCOL_RE, protocol + '://', url)
+    return url
