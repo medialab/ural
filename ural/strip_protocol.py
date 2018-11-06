@@ -5,7 +5,7 @@
 # A function removing the protocol from the given url.
 #
 import re
-from .normalize_url import PROTOCOL_RE
+from ural.patterns import PROTOCOL_RE
 
 
 def strip_protocol(url):

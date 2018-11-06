@@ -14,8 +14,9 @@ pip install ural
 
 ## Usage
 
-- [normalize_url](#normalize_url)
 - [ensure_protocol](#ensure_protocol)
+- [force_protocol](#force_protocol)
+- [normalize_url](#normalize_url)
 - [strip_protocol](#strip_protocol)
 
 ### normalize_url
@@ -37,12 +38,12 @@ _Arguments_
 
 ### ensure_protocol
 
-A function checking if the url features a protocol, and adding the given one if there is none.
+A function checking if the url has a protocol, and adding the given one if there is none.
 
 ```python
 from ural import ensure_protocol
 
-ensure_protocol('www2.lemonde.fr','https')
+ensure_protocol('www2.lemonde.fr', protocol='https')
 >>> 'https://www2.lemonde.fr'
 ```
 
@@ -58,7 +59,7 @@ A function force-replacing the protocol of the given url.
 ```python
 from ural import force_protocol
 
-force_protocol('https://www2.lemonde.fr','ftp')
+force_protocol('https://www2.lemonde.fr', protocol='ftp')
 >>> 'ftp://www2.lemonde.fr'
 ```
 

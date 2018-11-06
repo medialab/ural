@@ -6,7 +6,7 @@
 #
 import re
 
-from .normalize_url import PROTOCOL_RE
+from ural.patterns import PROTOCOL_RE
 from .strip_protocol import strip_protocol
 from .ensure_protocol import ensure_protocol
 

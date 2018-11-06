@@ -9,7 +9,8 @@ import re
 from os.path import normpath, splitext
 from urllib.parse import parse_qsl, urlsplit, urlunsplit
 
-PROTOCOL_RE = re.compile(r'^[a-zA-Z0-9]*:?//')
+from ural.patterns import PROTOCOL_RE
+
 IRRELEVANT_QUERY_RE = re.compile(
     '^(?:__twitter_impression|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$')
 IRRELEVANT_SUBDOMAIN_RE = re.compile('\\b(?:www\\d?|mobile|m)\\.')

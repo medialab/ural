@@ -2,16 +2,16 @@
 # Ural URL Ensure Protocol Function
 # =============================================================================
 #
-# A function checking if the url features a protocol, and adding one if there is none.
+# A function checking if the url has a protocol, and adding one if there is none.
 #
 import re
 
-from .normalize_url import PROTOCOL_RE
+from ural.patterns import PROTOCOL_RE
 
 
 def ensure_protocol(url, protocol='http'):
     """
-    Function checking if the url features a protocol, and adding the given one if there is none.
+    Function checking if the url has a protocol, and adding the given one if there is none.
 
     Args:
         url (str): Target URL as a string.
@@ -23,6 +23,6 @@ def ensure_protocol(url, protocol='http'):
     """
     if not PROTOCOL_RE.match(url):
         url = protocol + '://' + url
-    elif url[:2] == '//':
+    elif url.startswith('//'):
         url = protocol + ':' + url
     return url
