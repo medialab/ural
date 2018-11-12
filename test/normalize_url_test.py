@@ -7,12 +7,11 @@ TESTS = [
     ('http://lemonde.fr///a/./b/..', 'lemonde.fr/a'),
     ('lemonde.fr/index.html', 'lemonde.fr'),
     ('lemonde.fr/index.php', 'lemonde.fr'),
-    ('lemonde.fr/index/', 'lemonde.fr'),
     ('lemonde.fr/index.php?utm_content=whatever&test=toto', 'lemonde.fr?test=toto'),
     ('lemonde.fr/index.php?utm_content=whatever', 'lemonde.fr'),
     ('https://lemonde.fr?', 'lemonde.fr'),
     ('https://lemonde.fr#anchor', 'lemonde.fr'),
-    ('https://lemonde.fr/#anchor', 'lemonde.fr'),
+    ('https://lemonde.fr/#anchor', 'lemonde.fr/'),
     ('https://lemonde.fr/#/path/is/here', 'lemonde.fr/#/path/is/here'),
     ('https://lemonde.fr#!/path/is/here', 'lemonde.fr#!/path/is/here'),
     ('//www.lemonde.fr', 'lemonde.fr'),
@@ -38,4 +37,6 @@ TESTS = [
 class TestNormalizeUrl(object):
     def test_basics(self):
         for url, normalized in TESTS:
-            assert normalize_url(url) == normalized
+            assert normalize_url(url) == normalized, url
+
+        assert normalize_url('lemonde.fr/index/', strip_trailing_slash=True) == 'lemonde.fr'

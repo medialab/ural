@@ -14,10 +14,10 @@ pip install ural
 
 ## Usage
 
-- [ensure_protocol](#ensure_protocol)
-- [force_protocol](#force_protocol)
-- [normalize_url](#normalize_url)
-- [strip_protocol](#strip_protocol)
+* [ensure_protocol](#ensure_protocol)
+* [force_protocol](#force_protocol)
+* [normalize_url](#normalize_url)
+* [strip_protocol](#strip_protocol)
 
 ### normalize_url
 
@@ -32,9 +32,10 @@ normalize_url('https://www2.lemonde.fr/index.php#anchor')
 >>> 'lemonde.fr'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to normalize.
+* **url** *string*: URL to normalize.
+* **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 
 ### ensure_protocol
 
@@ -47,10 +48,10 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 >>> 'https://www2.lemonde.fr'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to format.
-- **protocol** _string_: protocol to use if there is none in **url**. Is 'http' by default.
+* **url** *string*: URL to format.
+* **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
 
 ### force_protocol
 
@@ -63,10 +64,10 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 >>> 'ftp://www2.lemonde.fr'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to format.
-- **protocol** _string_: protocol wanted in the output url. Is 'http' by default.
+* **url** *string*: URL to format.
+* **protocol** *string*: protocol wanted in the output url. Is 'http' by default.
 
 ### strip_protocol
 
@@ -79,6 +80,6 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 >>> 'www2.lemonde.fr/index.php'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to format.
+* **url** *string*: URL to format.

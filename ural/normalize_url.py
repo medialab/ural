@@ -44,7 +44,7 @@ def should_strip_query_item(item):
     return False
 
 
-def normalize_url(url, drop_trailing_slash=True):
+def normalize_url(url, strip_trailing_slash=False):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -54,8 +54,8 @@ def normalize_url(url, drop_trailing_slash=True):
 
     Args:
         url (str): Target URL as a string.
-        drop_trailing_slash (bool, optional): Whether to drop trailing slash.
-            Defaults to `True`.
+        strip_trailing_slash (bool, optional): Whether to drop trailing slash.
+            Defaults to `False`.
 
     Returns:
         string: The normalized url.
@@ -121,7 +121,7 @@ def normalize_url(url, drop_trailing_slash=True):
     result = urlunsplit(result)[2:]
 
     # Dropping trailing slash
-    if drop_trailing_slash and result.endswith('/'):
+    if strip_trailing_slash and result.endswith('/'):
         result = result.rstrip('/')
 
     return result
