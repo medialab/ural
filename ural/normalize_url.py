@@ -14,9 +14,8 @@ except ImportError:
 
 from ural.patterns import PROTOCOL_RE
 
-IRRELEVANT_QUERY_RE = re.compile(
-    '^(?:__twitter_impression|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$')
-IRRELEVANT_SUBDOMAIN_RE = re.compile('\\b(?:www\\d?|mobile|m)\\.')
+IRRELEVANT_QUERY_RE = re.compile(r'^(?:__twitter_impression|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$')
+IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.')
 
 IRRELEVANT_QUERY_COMBOS = {
     'ref': ('fb', 'tw', 'tw_i'),

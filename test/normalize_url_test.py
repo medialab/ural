@@ -30,7 +30,8 @@ TESTS = [
     ('lemonde.fr?__twitter_impression=true', 'lemonde.fr'),
     ('https://www4.lemonde.fr?een=34&seen=3458474', 'lemonde.fr'),
     ('https://www4.lemonde.fr?amp', 'lemonde.fr'),
-    ('https://www4.lemonde.fr?amp_analytics=324', 'lemonde.fr')
+    ('https://www4.lemonde.fr?amp_analytics=324', 'lemonde.fr'),
+    ('http://lemonde.fr?fbclid=whatever', 'lemonde.fr')
 ]
 
 
