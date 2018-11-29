@@ -15,6 +15,8 @@ TESTS = [
     ('https://lemonde.fr/#/path/is/here', 'lemonde.fr/#/path/is/here'),
     ('https://lemonde.fr#!/path/is/here', 'lemonde.fr#!/path/is/here'),
     ('//www.lemonde.fr', 'lemonde.fr'),
+    ('//www.lemonde.fr?XTOR=whatev', 'lemonde.fr'),
+    ('http://lemonde.fr?Echobox=35272', 'lemonde.fr'),
     ('http://www2.lemonde.fr/index.html', 'lemonde.fr'),
     ('http://m.lemonde.fr/index.html', 'lemonde.fr'),
     ('http://mobile.lemonde.fr/index.html', 'lemonde.fr'),
