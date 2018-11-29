@@ -23,6 +23,13 @@ IRRELEVANT_QUERY_COMBOS = {
 }
 
 
+def attempt_to_decode_idna(string):
+    try:
+        return string.encode('utf8').decode('idna')
+    except:
+        return string
+
+
 def stringify_qs(item):
     if item[1] == '':
         return item[0]
@@ -68,6 +75,12 @@ def normalize_url(url, strip_trailing_slash=False):
 
     # Parsing
     scheme, netloc, path, query, fragment = urlsplit(url)
+
+    # Handling punycode
+    if 'xn--' in netloc:
+        netloc = '.'.join(
+            attempt_to_decode_idna(x) for x in netloc.split('.')
+        )
 
     # Normalizing the path
     if path:
