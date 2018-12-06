@@ -12,8 +12,8 @@ DEFAULT_TESTS = [
     ('http://../', False),
     ('http://-error-.invalid/', False),
     ('http://lemonde.fr///a/./b/..', True),
-    ('http://例子.测试', True),
-    ('http://مثال.إختبار', True),
+    (u'http://例子.测试', True),
+    (u'http://مثال.إختبار', True),
     ('http://a.b-.co', False),
     ('http://.www.foo.bar/', False),
     ('http://www.foo.bar./', False)
@@ -28,8 +28,8 @@ NO_PROTOCOL_TESTS = [
     ('../', False),
     ('-error-.invalid/', False),
     ('lemonde.fr///a/./b/..', True),
-    ('例子.测试', True),
-    ('مثال.إختبار', True),
+    (u'例子.测试', True),
+    (u'مثال.إختبار', True),
     ('a.b-.co', False),
     ('.www.foo.bar/', False),
     ('www.foo.bar./', False)
