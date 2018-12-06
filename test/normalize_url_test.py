@@ -4,6 +4,8 @@
 # =============================================================================
 from ural import normalize_url
 
+INDEX_URL = 'lemonde.fr/index.html/'
+
 TESTS = [
     ('http://lemonde.fr///a/./b/..', 'lemonde.fr/a'),
     ('lemonde.fr/index.html', 'lemonde.fr'),
@@ -34,7 +36,8 @@ TESTS = [
     ('https://www4.lemonde.fr?amp', 'lemonde.fr'),
     ('https://www4.lemonde.fr?amp_analytics=324', 'lemonde.fr'),
     ('http://lemonde.fr?fbclid=whatever', 'lemonde.fr'),
-    ('http://xn--tlrama-bvab.fr', u'télérama.fr')
+    ('http://xn--tlrama-bvab.fr', u'télérama.fr'),
+    ('http://www.linternaute.com/actualite/depeches/1454566-hulot-relance-les-speculations-sur-son-avenir-au-gouvernement/', 'linternaute.com/actualite/depeches/1454566-hulot-relance-les-speculations-sur-son-avenir-au-gouvernement/')
 ]
 
 
@@ -42,5 +45,7 @@ class TestNormalizeUrl(object):
     def test_basics(self):
         for url, normalized in TESTS:
             assert normalize_url(url) == normalized, url
-
-        assert normalize_url('lemonde.fr/index/', strip_trailing_slash=True) == 'lemonde.fr'
+        assert normalize_url(INDEX_URL, strip_trailing_slash=True, strip_index=True) == 'lemonde.fr'
+        assert normalize_url(INDEX_URL, strip_trailing_slash=True, strip_index=False) == 'lemonde.fr/index.html'
+        assert normalize_url(INDEX_URL, strip_trailing_slash=False, strip_index=True) == 'lemonde.fr/index.html/'
+        assert normalize_url(INDEX_URL, strip_trailing_slash=False, strip_index=False) == 'lemonde.fr/index.html/'

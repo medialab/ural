@@ -22,6 +22,13 @@ IRRELEVANT_QUERY_COMBOS = {
     'platform': ('hootsuite')
 }
 
+# URL = lemonde.fr/index.html/
+
+# - (1) drop_slash=True & drop_index=True : lemonde.fr
+# - (2) drop_slash=True & drop_index=False : lemonde.fr/index.html
+# - (3) drop_slash=False & drop_index=True : lemonde.fr/index.html/
+# - (4) drop_slash=False & drop_index=False : lemonde.fr/index.html/
+
 
 def attempt_to_decode_idna(string):
     try:
@@ -51,7 +58,7 @@ def should_strip_query_item(item):
     return False
 
 
-def normalize_url(url, strip_trailing_slash=False):
+def normalize_url(url, strip_trailing_slash=False, strip_index=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -63,7 +70,8 @@ def normalize_url(url, strip_trailing_slash=False):
         url (str): Target URL as a string.
         strip_trailing_slash (bool, optional): Whether to drop trailing slash.
             Defaults to `False`.
-
+        strip_index (bool, optional): Whether to drop index.xxxx at the end of the url.
+            Defaults to `True`.
     Returns:
         string: The normalized url.
 
@@ -84,18 +92,26 @@ def normalize_url(url, strip_trailing_slash=False):
 
     # Normalizing the path
     if path:
+        print('Initial path:', path)
+        trailing_slash = False
+        if path[-1] == '/' and len(path) > 1:
+            trailing_slash = True
         path = normpath(path)
+        if trailing_slash and not strip_trailing_slash:
+            path = path + '/'
+        print('Normalized path:', path)
 
     # Dropping index:
-    segments = path.rsplit('/', 1)
+    if strip_index:
+        segments = path.rsplit('/', 1)
 
-    if len(segments) != 0:
-        last_segment = segments[-1]
-        filename, ext = splitext(last_segment)
+        if len(segments) != 0:
+            last_segment = segments[-1]
+            filename, ext = splitext(last_segment)
 
-        if filename == 'index':
-            segments.pop()
-            path = '/'.join(segments)
+            if filename == 'index':
+                segments.pop()
+                path = '/'.join(segments)
 
     # Dropping irrelevant query items
     if query:

@@ -88,6 +88,7 @@ _Arguments_
 
 - **url** _string_: URL to normalize.
 - **strip_trailing_slash** _boolean_ [`False`]: whether to strip trailing slash.
+- **strip_index** _boolean_ [`True`]: Whether to drop index.xxxx at the end of the url.
 
 ### strip_protocol
 
