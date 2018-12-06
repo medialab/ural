@@ -34,7 +34,7 @@ TESTS = [
     ('https://www4.lemonde.fr?amp', 'lemonde.fr'),
     ('https://www4.lemonde.fr?amp_analytics=324', 'lemonde.fr'),
     ('http://lemonde.fr?fbclid=whatever', 'lemonde.fr'),
-    ('http://xn--tlrama-bvab.fr', 'télérama.fr')
+    ('http://xn--tlrama-bvab.fr', u'télérama.fr')
 ]
 
 
