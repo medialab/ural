@@ -32,8 +32,8 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 
 *Arguments*
 
-- **url** *string*: URL to format.
-- **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
+* **url** *string*: URL to format.
+* **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
 
 ### force_protocol
 
@@ -48,8 +48,8 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 *Arguments*
 
-- **url** *string*: URL to format.
-- **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
+* **url** *string*: URL to format.
+* **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
 
 ### is_url
 
@@ -64,8 +64,8 @@ is_url('https://www2.lemonde.fr')
 
 *Arguments*
 
-- **string** *string*: string to test.
-- **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
+* **string** *string*: string to test.
+* **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
 
 ### normalize_url
 
@@ -82,8 +82,9 @@ normalize_url('https://www2.lemonde.fr/index.php#anchor')
 
 *Arguments*
 
-- **url** *string*: URL to normalize.
-- **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
+* **url** *string*: URL to normalize.
+* **strip_index** *boolean* [`True`]: whether to drop trailing index.
+* **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 
 ### strip_protocol
 
@@ -98,4 +99,4 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 
 *Arguments*
 
-- **url** *string*: URL to format.
+* **url** *string*: URL to format.

@@ -63,8 +63,8 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
         url (str): Target URL as a string.
         strip_trailing_slash (bool, optional): Whether to drop trailing slash.
             Defaults to `False`.
-        strip_index (bool, optional): Whether to drop index.xxxx at the end of the url.
-            Defaults to `True`.
+        strip_index (bool, optional): Whether to drop trailing index at the end
+            of the url. Defaults to `True`.
     Returns:
         string: The normalized url.
 
