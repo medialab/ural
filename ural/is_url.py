@@ -4,7 +4,6 @@
 #
 # A function returning True if its argument is a url.
 #
-from __future__ import unicode_literals
 import re
 from ural.patterns import PROTOCOL_RE, URL_RE
 
