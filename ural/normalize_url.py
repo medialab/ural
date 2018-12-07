@@ -86,7 +86,7 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
     # Normalizing the path
     if path:
         trailing_slash = False
-        if path[-1] == '/' and len(path) > 1:
+        if path.endswith('/') and len(path) > 1:
             trailing_slash = True
         path = normpath(path)
         if trailing_slash and not strip_trailing_slash:
