@@ -36,7 +36,7 @@ normalize_url('https://www2.lemonde.fr/index.php#anchor')
 
 * **url** *string*: URL to normalize.
 * **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
-* **strip_index** _boolean_ [`True`]: Whether to drop index.xxxx at the end of the url.
+* **strip_index** *boolean* [`True`]: Whether to drop index.xxxx at the end of the url.
 
 ### ensure_protocol
 
