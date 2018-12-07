@@ -18,7 +18,9 @@ def is_url(string, require_protocol=True):
 
     Returns:
         bool: True if the argument is a url, False if not.
+
     """
+
     if require_protocol:
         return bool(PROTOCOL_RE.match(string) and URL_RE.match(string))
     else:
