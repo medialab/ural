@@ -36,7 +36,8 @@ TESTS = [
     ('http://lemonde.fr?fbclid=whatever', 'lemonde.fr'),
     ('http://xn--tlrama-bvab.fr', u'télérama.fr'),
     ('http://www.lemonde.fr?page=2&id=3', 'lemonde.fr?id=3&page=2'),
-    ('WWW.LEMONDE.FR', 'lemonde.fr')
+    ('WWW.LEMONDE.FR', 'lemonde.fr'),
+    ('https://lemonde.fr#', 'lemonde.fr')
 ]
 
 
