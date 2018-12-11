@@ -39,7 +39,9 @@ TESTS = [
     ('WWW.LEMONDE.FR', 'lemonde.fr'),
     ('https://lemonde.fr#', 'lemonde.fr'),
     ('https://yomgui:mdp@lemonde.fr', 'lemonde.fr'),
-    ('https://yomgui@lemonde.fr', 'lemonde.fr')
+    ('https://yomgui@lemonde.fr', 'lemonde.fr'),
+    ('http://lemonde.fr:80', 'lemonde.fr'),
+    ('https://lemonde.fr:443', 'lemonde.fr')
 ]
 
 

@@ -89,6 +89,12 @@ def normalize_url(url, sort_query=True, strip_authentication=True,
             attempt_to_decode_idna(x) for x in netloc.split('.')
         )
 
+    # Dropping :80 & :443
+    if netloc.endswith(':80'):
+        netloc = netloc[:-3]
+    elif netloc.endswith(':443'):
+        netloc = netloc[:-4]
+
     # Normalizing the path
     if path:
         trailing_slash = False
