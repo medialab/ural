@@ -83,7 +83,8 @@ normalize_url('https://www2.lemonde.fr/index.php#anchor')
 *Arguments*
 
 * **url** *string*: URL to normalize.
-* **strip_index** *boolean* [`True`]: whether to drop trailing index.
+* **sort_query** *boolean* [`True`]: whether to sort query items.
+* **strip_index** *boolean* [`True`]: whether to strip trailing index.
 * **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 
 ### strip_protocol

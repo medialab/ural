@@ -51,7 +51,7 @@ def should_strip_query_item(item):
     return False
 
 
-def normalize_url(url, strip_trailing_slash=False, strip_index=True):
+def normalize_url(url, sort_query=True, strip_trailing_slash=False, strip_index=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -61,6 +61,8 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
 
     Args:
         url (str): Target URL as a string.
+        sort_query (bool, optional): Whether to sort query items or not.
+            Defaults to `True`.
         strip_trailing_slash (bool, optional): Whether to drop trailing slash.
             Defaults to `False`.
         strip_index (bool, optional): Whether to drop trailing index at the end
@@ -112,6 +114,9 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
             for item in qsl
             if not should_strip_query_item(item)
         ]
+
+        if sort_query:
+            qsl = sorted(qsl)
 
         query = '&'.join(qsl)
 
