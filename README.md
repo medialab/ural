@@ -76,7 +76,7 @@ This is a very useful utility when attempting to match similar urls written slig
 ```python
 from ural import normalize_url
 
-normalize_url('https://www2.lemonde.fr/index.php#anchor')
+normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 >>> 'lemonde.fr'
 ```
 
@@ -84,6 +84,7 @@ normalize_url('https://www2.lemonde.fr/index.php#anchor')
 
 * **url** *string*: URL to normalize.
 * **sort_query** *boolean* [`True`]: whether to sort query items.
+* **strip_authentication** *boolean* [`True`]: whether to strip authentication.
 * **strip_index** *boolean* [`True`]: whether to strip trailing index.
 * **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 
