@@ -21,7 +21,8 @@ TESTS = [
     ('http://www2.lemonde.fr/index.html', 'lemonde.fr'),
     ('http://m.lemonde.fr/index.html', 'lemonde.fr'),
     ('http://mobile.lemonde.fr/index.html', 'lemonde.fr'),
-    ('https://en.m.wikipedia.org/wiki/Ulam_spiral', 'en.wikipedia.org/wiki/Ulam_spiral'),
+    ('https://en.m.wikipedia.org/wiki/Ulam_spiral',
+     'en.wikipedia.org/wiki/Ulam_spiral'),
     ('http://lemonde.fr?XTOR=whatever', 'lemonde.fr'),
     ('http://lemonde.fr?xtref=1&xtcr=2&xts=3&xtnp=3&xtloc=4', 'lemonde.fr'),
     ('lemonde.fr?utm_hp_ref=test', 'lemonde.fr'),
@@ -50,5 +51,7 @@ class TestNormalizeUrl(object):
         for url, normalized in TESTS:
             assert normalize_url(url) == normalized, url
 
-        assert normalize_url('lemonde.fr/index/', strip_trailing_slash=True) == 'lemonde.fr'
-        assert normalize_url('https://yomgui@lemonde.fr', strip_authentication=False) == 'yomgui@lemonde.fr'
+        assert normalize_url('lemonde.fr/index/',
+                             strip_trailing_slash=True) == 'lemonde.fr'
+        assert normalize_url('https://yomgui@lemonde.fr',
+                             strip_authentication=False) == 'yomgui@lemonde.fr'

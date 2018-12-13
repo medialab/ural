@@ -15,7 +15,9 @@ pip install ural
 ## Usage
 
 * [ensure_protocol](#ensure_protocol)
+* [extract_urls](#extract_urls)
 * [force_protocol](#force_protocol)
+* [is_url](#is_url)
 * [normalize_url](#normalize_url)
 * [strip_protocol](#strip_protocol)
 
@@ -35,6 +37,25 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
 
+### extract_urls
+
+A function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
+
+```python
+from ural import extract_urls
+
+text = "Hey! Check this site: https://medialab.sciencespo.fr/, it looks really cool. They're developing many tools on https://github.com/"
+
+for url in extract_urls(text):
+    print(url)
+>>> 'https://medialab.sciencespo.fr/'
+>>> 'https://github.com/'
+```
+
+*Arguments*
+
+* **string** *string*: source string.
+
 ### force_protocol
 
 A function force-replacing the protocol of the given url.
@@ -50,6 +71,22 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
+
+### is_url
+
+A function returning True if its argument is a url.
+
+```python
+from ural import is_url
+
+is_url('https://www2.lemonde.fr')
+>>> True
+```
+
+*Arguments*
+
+* **string** *string*: string to test.
+* **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
 
 ### is_url
 
