@@ -14,12 +14,12 @@ pip install ural
 
 ## Usage
 
-- [ensure_protocol](#ensure_protocol)
-- [extract_urls](#extract_urls)
-- [force_protocol](#force_protocol)
-- [is_url](#is_url)
-- [normalize_url](#normalize_url)
-- [strip_protocol](#strip_protocol)
+* [ensure_protocol](#ensure_protocol)
+* [extract_urls](#extract_urls)
+* [force_protocol](#force_protocol)
+* [is_url](#is_url)
+* [normalize_url](#normalize_url)
+* [strip_protocol](#strip_protocol)
 
 ### ensure_protocol
 
@@ -32,10 +32,10 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 >>> 'https://www2.lemonde.fr'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to format.
-- **protocol** _string_: protocol to use if there is none in **url**. Is 'http' by default.
+* **url** *string*: URL to format.
+* **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
 
 ### extract_urls
 
@@ -52,9 +52,9 @@ for url in extract_urls(text):
 >>> 'https://github.com/'
 ```
 
-_Arguments_
+*Arguments*
 
-- **string** _string_: source string.
+* **string** *string*: source string.
 
 ### force_protocol
 
@@ -67,10 +67,10 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 >>> 'ftp://www2.lemonde.fr'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to format.
-- **protocol** _string_: protocol wanted in the output url. Is `'http'` by default.
+* **url** *string*: URL to format.
+* **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
 
 ### is_url
 
@@ -83,10 +83,26 @@ is_url('https://www2.lemonde.fr')
 >>> True
 ```
 
-_Arguments_
+*Arguments*
 
-- **string** _string_: string to test.
-- **require_protocol** _boolean_: whether the argument has to have a protocol to be considered a url. Is `True` by default.
+* **string** *string*: string to test.
+* **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
+
+### is_url
+
+A function returning True if its argument is a url.
+
+```python
+from ural import is_url
+
+is_url('https://www2.lemonde.fr')
+>>> True
+```
+
+*Arguments*
+
+* **string** *string*: string to test.
+* **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
 
 ### normalize_url
 
@@ -97,14 +113,17 @@ This is a very useful utility when attempting to match similar urls written slig
 ```python
 from ural import normalize_url
 
-normalize_url('https://www2.lemonde.fr/index.php#anchor')
+normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 >>> 'lemonde.fr'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to normalize.
-- **strip_trailing_slash** _boolean_ [`False`]: whether to strip trailing slash.
+* **url** *string*: URL to normalize.
+* **sort_query** *boolean* [`True`]: whether to sort query items.
+* **strip_authentication** *boolean* [`True`]: whether to strip authentication.
+* **strip_index** *boolean* [`True`]: whether to strip trailing index.
+* **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 
 ### strip_protocol
 
@@ -117,6 +136,6 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 >>> 'www2.lemonde.fr/index.php'
 ```
 
-_Arguments_
+*Arguments*
 
-- **url** _string_: URL to format.
+* **url** *string*: URL to format.

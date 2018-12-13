@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import re
 
 PROTOCOL_RE = re.compile(r'^[a-zA-Z0-9]*:?//')

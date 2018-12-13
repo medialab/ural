@@ -35,7 +35,14 @@ TESTS = [
     ('https://www4.lemonde.fr?amp', 'lemonde.fr'),
     ('https://www4.lemonde.fr?amp_analytics=324', 'lemonde.fr'),
     ('http://lemonde.fr?fbclid=whatever', 'lemonde.fr'),
-    ('http://xn--tlrama-bvab.fr', u'télérama.fr')
+    ('http://xn--tlrama-bvab.fr', u'télérama.fr'),
+    ('http://www.lemonde.fr?page=2&id=3', 'lemonde.fr?id=3&page=2'),
+    ('WWW.LEMONDE.FR', 'lemonde.fr'),
+    ('https://lemonde.fr#', 'lemonde.fr'),
+    ('https://yomgui:mdp@lemonde.fr', 'lemonde.fr'),
+    ('https://yomgui@lemonde.fr', 'lemonde.fr'),
+    ('http://lemonde.fr:80', 'lemonde.fr'),
+    ('https://lemonde.fr:443', 'lemonde.fr')
 ]
 
 
@@ -46,3 +53,5 @@ class TestNormalizeUrl(object):
 
         assert normalize_url('lemonde.fr/index/',
                              strip_trailing_slash=True) == 'lemonde.fr'
+        assert normalize_url('https://yomgui@lemonde.fr',
+                             strip_authentication=False) == 'yomgui@lemonde.fr'

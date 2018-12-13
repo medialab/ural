@@ -22,8 +22,10 @@ def ensure_protocol(url, protocol='http'):
 
     """
     protocol = protocol.rstrip(':/')
+
     if not PROTOCOL_RE.match(url):
         url = protocol + '://' + url
     elif url.startswith('//'):
         url = protocol + ':' + url
+
     return url
