@@ -15,7 +15,7 @@ def clean_link(link):
     return link.strip("\t\r\n '\"\x0c")
 
 
-def extract_urls_from_html(string):
+def urls_from_html(string):
     """
     Function returning an iterator over the urls present in the HTML string argument.
 
