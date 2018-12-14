@@ -38,7 +38,7 @@ NO_PROTOCOL_TESTS = [
 ]
 
 
-class TestStripProtocol(object):
+class TestIsUrl(object):
     def test_basics(self):
         for url, result in DEFAULT_TESTS:
             assert is_url(url) == result

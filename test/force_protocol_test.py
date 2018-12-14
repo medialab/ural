@@ -43,7 +43,7 @@ TESTS = [
 ]
 
 
-class TestEnsureProtocol(object):
+class TestForceProtocol(object):
     def test_basics(self):
         for url, output in TESTS:
             assert force_protocol(url) == output

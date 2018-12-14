@@ -15,11 +15,12 @@ pip install ural
 ## Usage
 
 * [ensure_protocol](#ensure_protocol)
-* [extract_urls](#extract_urls)
 * [force_protocol](#force_protocol)
 * [is_url](#is_url)
 * [normalize_url](#normalize_url)
 * [strip_protocol](#strip_protocol)
+* [urls_from_html](#urls_from_html)
+* [urls_from_text](#urls_from_text)
 
 ### ensure_protocol
 
@@ -36,25 +37,6 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
-
-### extract_urls
-
-A function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
-
-```python
-from ural import extract_urls
-
-text = "Hey! Check this site: https://medialab.sciencespo.fr/, it looks really cool. They're developing many tools on https://github.com/"
-
-for url in extract_urls(text):
-    print(url)
->>> 'https://medialab.sciencespo.fr/'
->>> 'https://github.com/'
-```
-
-*Arguments*
-
-* **string** *string*: source string.
 
 ### force_protocol
 
@@ -139,3 +121,40 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 *Arguments*
 
 * **url** *string*: URL to format.
+
+### urls_from_html
+
+A function returning an iterator over the urls present in the links of given HTML text.
+
+```python
+from ural import urls_from_html
+
+text = "<p>Hey! Check this site: <a href="https://medialab.sciencespo.fr/">médialab</a></p>"
+
+for url in urls_from_html(text):
+    print(url)
+>>> 'https://medialab.sciencespo.fr/'
+```
+
+*Arguments*
+
+* **string** *string*: html string.
+
+### urls_from_text
+
+A function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
+
+```python
+from ural import urls_from_text
+
+text = "Hey! Check this site: https://medialab.sciencespo.fr/, it looks really cool. They're developing many tools on https://github.com/"
+
+for url in urls_from_text(text):
+    print(url)
+>>> 'https://medialab.sciencespo.fr/'
+>>> 'https://github.com/'
+```
+
+*Arguments*
+
+* **string** *string*: source string.

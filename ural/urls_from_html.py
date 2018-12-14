@@ -2,7 +2,8 @@
 # Ural URL Extraction From HTML Function
 # =============================================================================
 #
-# A function returning an iterator over the urls present in the HTML string argument.
+# A function returning an iterator over the urls present in the HTML string
+# argument.
 #
 from __future__ import unicode_literals
 import re
@@ -21,8 +22,9 @@ def extract_urls_from_html(string):
     Args:
         string (str): source html string.
 
-    Returns:
-        iterator: an iterator on the urls present in the HTML string argument.
+    Yields:
+        str: an url.
+
     """
     for a_tag in re.finditer(HTML_URL_RE, string):
         url = a_tag.group(3)
