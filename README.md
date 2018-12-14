@@ -129,7 +129,7 @@ A function returning an iterator over the urls present in the links of given HTM
 ```python
 from ural import urls_from_html
 
-text = "<p>Hey! Check this site: <a href="https://medialab.sciencespo.fr/">médialab</a></p>"
+text = """<p>Hey! Check this site: <a href="https://medialab.sciencespo.fr/">médialab</a></p>"""
 
 for url in urls_from_html(text):
     print(url)
