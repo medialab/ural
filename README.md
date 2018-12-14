@@ -22,6 +22,8 @@ pip install ural
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
 
+---
+
 ### ensure_protocol
 
 A function checking if the url has a protocol, and adding the given one if there is none.
@@ -37,6 +39,8 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
+
+---
 
 ### force_protocol
 
@@ -54,21 +58,7 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
 
-### is_url
-
-A function returning True if its argument is a url.
-
-```python
-from ural import is_url
-
-is_url('https://www2.lemonde.fr')
->>> True
-```
-
-*Arguments*
-
-* **string** *string*: string to test.
-* **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
+---
 
 ### is_url
 
@@ -85,6 +75,8 @@ is_url('https://www2.lemonde.fr')
 
 * **string** *string*: string to test.
 * **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
+
+---
 
 ### normalize_url
 
@@ -107,6 +99,8 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_index** *boolean* [`True`]: whether to strip trailing index.
 * **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 
+---
+
 ### strip_protocol
 
 Function removing the protocol from the url.
@@ -122,6 +116,8 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 
 * **url** *string*: URL to format.
 
+---
+
 ### urls_from_html
 
 A function returning an iterator over the urls present in the links of given HTML text.
@@ -129,9 +125,9 @@ A function returning an iterator over the urls present in the links of given HTM
 ```python
 from ural import urls_from_html
 
-text = """<p>Hey! Check this site: <a href="https://medialab.sciencespo.fr/">médialab</a></p>"""
+html = """<p>Hey! Check this site: <a href="https://medialab.sciencespo.fr/">médialab</a></p>"""
 
-for url in urls_from_html(text):
+for url in urls_from_html(html):
     print(url)
 >>> 'https://medialab.sciencespo.fr/'
 ```
@@ -139,6 +135,8 @@ for url in urls_from_html(text):
 *Arguments*
 
 * **string** *string*: html string.
+
+---
 
 ### urls_from_text
 
