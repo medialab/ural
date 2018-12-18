@@ -16,4 +16,7 @@ setup(name='ural',
       python_requires='>=2.7',
       packages=find_packages(exclude=['test']),
       package_data={'docs': ['README.md']},
+      entry_points={
+          'console_scripts': ['ural=ural.cli.__main__:main']
+      },
       zip_safe=True)
