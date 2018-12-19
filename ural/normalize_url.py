@@ -14,7 +14,8 @@ except ImportError:
 
 from ural.patterns import PROTOCOL_RE
 
-IRRELEVANT_QUERY_RE = re.compile(r'^(?:__twitter_impression|echobox|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
+IRRELEVANT_QUERY_RE = re.compile(
+    r'^(?:__twitter_impression|echobox|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
 IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.', re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
@@ -64,7 +65,7 @@ def normalize_url(url, sort_query=True, strip_authentication=True,
         url (str): Target URL as a string.
         sort_query (bool, optional): Whether to sort query items or not.
             Defaults to `True`.
-        strip_authentication (bool, optional): Whether to drop autentication.
+        strip_authentication (bool, optional): Whether to drop authentication.
             Defaults to `True`.
         strip_trailing_slash (bool, optional): Whether to drop trailing slash.
             Defaults to `False`.
