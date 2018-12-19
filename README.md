@@ -101,6 +101,25 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
+### simple_lru
+
+Function returning the url parts in the hierarchical order.
+
+```python
+from ural import strip_protocol
+
+simple_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'field=value']
+```
+
+*Arguments*
+
+* **url** *string*: URL to parse.
+* **strip_protocol** *boolean* [`False`]: whether to drop protocol.
+* **filter_subdomains** *boolean* [`False`]: whether to drop irrelevant subdomains. 
+
+---
+
 ### strip_protocol
 
 Function removing the protocol from the url.
