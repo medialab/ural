@@ -25,6 +25,14 @@ def main():
         'file', help='csv file containing the urls to normalize', type=FileType('r'), default=sys.stdin, nargs='?')
     normalize_subparser.add_argument(
         '-o', '--output', help='output file', type=FileType('w'), default=sys.stdout)
+    normalize_subparser.add_argument(
+        '--no-query-sort', action='store_true', help='do not sort query items', default=False)
+    normalize_subparser.add_argument(
+        '--keep-authentication', action='store_true', help='do not drop authentication', default=False)
+    normalize_subparser.add_argument(
+        '--strip-trailing-slash', action='store_true', help='drop trailing slash', default=False)
+    normalize_subparser.add_argument(
+        '--keep-index', action='store_true', help='do not drop trailing index at the end of the url', default=False)
     SUBPARSERS['normalize'] = normalize_subparser
 
     help_suparser = subparsers.add_parser('help')
