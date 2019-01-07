@@ -27,12 +27,10 @@ def parsed_url_to_lru(parsed_url):
         lru.append('h:' + element)
 
     # Parsing the path
-    for element in path.split('/'):
-        if element:
-            lru.append('p:' + element)
+    for element in path.split('/')[1:]:
+        lru.append('p:' + element)
     if query and query[0]:
-        for element in query.split('&'):
-            lru.append('q:' + element)
+        lru.append('q:' + query)
     if fragment and fragment[0]:
         lru.append('f:' + fragment)
 

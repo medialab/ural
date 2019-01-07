@@ -9,9 +9,10 @@ DEFAULT_TESTS = [
     ('http://www.lemonde.fr:8000/article/1234/index.html?query=mobile#2',
      ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:query=mobile', 'f:2']),
     ('http://www.example.com/wpstyle/?p=364&q=365&a=284#anchor',
-     ['s:http', 'h:com', 'h:example', 'h:www', 'p:wpstyle', 'q:p=364', 'q:q=365', 'q:a=284', 'f:anchor']),
+     ['s:http', 'h:com', 'h:example', 'h:www', 'p:wpstyle', 'p:', 'q:p=364&q=365&a=284', 'f:anchor']),
     ('www.foo.bar/index.html', ['s:http',
-                                'h:bar', 'h:foo', 'h:www', 'p:index.html'])
+                                'h:bar', 'h:foo', 'h:www', 'p:index.html']),
+    ('site.com/page/', ['s:http', 'h:com', 'h:site', 'p:page', 'p:'])
 ]
 
 
