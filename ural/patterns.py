@@ -17,6 +17,7 @@ HTML_URL_RE = re.compile(
 
 IRRELEVANT_QUERY_RE = re.compile(
     r'^(?:__twitter_impression|echobox|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
+
 IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.', re.I)
 
 IRRELEVANT_QUERY_COMBOS = {

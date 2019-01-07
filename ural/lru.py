@@ -1,5 +1,5 @@
 # =============================================================================
-# Ural Simple LRU Function
+# Ural LRU Function
 # =============================================================================
 #
 # A function returning the url parts in the hierarchical order.
@@ -10,21 +10,24 @@ except ImportError:
     from urlparse import urlsplit
 
 from ural.ensure_protocol import ensure_protocol
-from ural.normalize_url import normalize_url
 from ural.patterns import IRRELEVANT_QUERY_COMBOS, IRRELEVANT_QUERY_RE, IRRELEVANT_SUBDOMAIN_RE
 
 
-def attempt_to_decode_idna(string):
-    try:
-        return string.encode('utf8').decode('idna')
-    except:
-        return string
+def lru(url, default_protocol='http'):
+    """
+    Function returning the parts of the given url in the hierarchical order (lru).
 
+    Args:
+        url (str): Target URL as a string.
+        default_protocol (str, optional): Protocol to add if there is none.
+            Defaults to `'http'`.
 
-def simple_lru(url, strip_protocol=False, filter_subdomains=False, default_protocol='http'):
+    Returns:
+        list: The lru, with a prefix identifying the type of each part.
+    """
+
     full_url = ensure_protocol(url, protocol=default_protocol)
-    scheme, netloc, path, query, fragment = normalize_url(full_url, strip_protocol=strip_protocol,
-                                                          strip_irrelevant_subdomain=filter_subdomains, parsed=True)
+    scheme, netloc, path, query, fragment = urlsplit(full_url)
     lru = []
     if urlsplit(url)[0]:
         lru.append('s:' + scheme)

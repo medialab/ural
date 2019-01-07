@@ -78,6 +78,23 @@ is_url('https://www2.lemonde.fr')
 
 ---
 
+### lru
+
+Function returning the url parts in the hierarchical order.
+
+```python
+from ural import lru
+
+lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:field=value', 'f:2']
+```
+
+*Arguments*
+
+* **url** *string*: URL to parse.
+
+---
+
 ### normalize_url
 
 Function normalizing the given url by stripping it of usually non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -101,15 +118,15 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
-### simple_lru
+### normalized_lru
 
-Function returning the url parts in the hierarchical order.
+Function normalizing the url and returning its parts in the hierarchical order.
 
 ```python
-from ural import strip_protocol
+from ural import normalized_lru
 
-simple_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
->>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'field=value']
+normalized_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
 ```
 
 *Arguments*
