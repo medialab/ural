@@ -10,6 +10,7 @@ except ImportError:
     from urlparse import urlsplit
 
 from ural.ensure_protocol import ensure_protocol
+from ural.lru import parsed_url_to_lru
 from ural.normalize_url import normalize_url
 from ural.patterns import IRRELEVANT_QUERY_COMBOS, IRRELEVANT_QUERY_RE, IRRELEVANT_SUBDOMAIN_RE
 
@@ -36,27 +37,5 @@ def normalized_lru(url, default_protocol='http', **kwargs):
     """
 
     full_url = ensure_protocol(url, protocol=default_protocol)
-    scheme, netloc, path, query, fragment = normalize_url(
-        full_url, strip_protocol=False, parsed=True, **kwargs)
-    lru = []
-    lru.append('s:' + scheme)
-
-    # Parsing domain & port
-    netloc = netloc.split(':')
-    if len(netloc) == 2:
-        port = netloc[1]
-        lru.append('t:' + port)
-    for element in reversed(netloc[0].split('.')):
-        lru.append('h:' + element)
-
-    # Parsing the path
-    for element in path.split('/'):
-        if element:
-            lru.append('p:' + element)
-    if query and query[0]:
-        for element in query.split('&'):
-            lru.append('q:' + element)
-    if fragment and fragment[0]:
-        lru.append('f:' + fragment)
-
-    return lru
+    return parsed_url_to_lru(normalize_url(
+        full_url, strip_protocol=False, parsed=True, **kwargs))

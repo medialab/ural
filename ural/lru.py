@@ -13,24 +13,10 @@ from ural.ensure_protocol import ensure_protocol
 from ural.patterns import IRRELEVANT_QUERY_COMBOS, IRRELEVANT_QUERY_RE, IRRELEVANT_SUBDOMAIN_RE
 
 
-def lru(url, default_protocol='http'):
-    """
-    Function returning the parts of the given url in the hierarchical order (lru).
-
-    Args:
-        url (str): Target URL as a string.
-        default_protocol (str, optional): Protocol to add if there is none.
-            Defaults to `'http'`.
-
-    Returns:
-        list: The lru, with a prefix identifying the type of each part.
-    """
-
-    full_url = ensure_protocol(url, protocol=default_protocol)
-    scheme, netloc, path, query, fragment = urlsplit(full_url)
+def parsed_url_to_lru(parsed_url):
+    scheme, netloc, path, query, fragment = parsed_url
     lru = []
-    if urlsplit(url)[0]:
-        lru.append('s:' + scheme)
+    lru.append('s:' + scheme)
 
     # Parsing domain & port
     netloc = netloc.split(':')
@@ -51,3 +37,20 @@ def lru(url, default_protocol='http'):
         lru.append('f:' + fragment)
 
     return lru
+
+
+def lru(url, default_protocol='http'):
+    """
+    Function returning the parts of the given url in the hierarchical order (lru).
+
+    Args:
+        url (str): Target URL as a string.
+        default_protocol (str, optional): Protocol to add if there is none.
+            Defaults to `'http'`.
+
+    Returns:
+        list: The lru, with a prefix identifying the type of each part.
+    """
+
+    full_url = ensure_protocol(url, protocol=default_protocol)
+    return parsed_url_to_lru(urlsplit(full_url))

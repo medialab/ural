@@ -10,7 +10,8 @@ DEFAULT_TESTS = [
      ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:query=mobile', 'f:2']),
     ('http://www.example.com/wpstyle/?p=364&q=365&a=284#anchor',
      ['s:http', 'h:com', 'h:example', 'h:www', 'p:wpstyle', 'q:p=364', 'q:q=365', 'q:a=284', 'f:anchor']),
-    ('www.foo.bar/index.html', ['h:bar', 'h:foo', 'h:www', 'p:index.html'])
+    ('www.foo.bar/index.html', ['s:http',
+                                'h:bar', 'h:foo', 'h:www', 'p:index.html'])
 ]
 
 
