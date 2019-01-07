@@ -37,7 +37,7 @@ def normalized_lru(url, default_protocol='http', **kwargs):
 
     full_url = ensure_protocol(url, protocol=default_protocol)
     scheme, netloc, path, query, fragment = normalize_url(
-        full_url, **kwargs, strip_protocol=False, parsed=True)
+        full_url, strip_protocol=False, parsed=True, **kwargs)
     lru = []
     lru.append('s:' + scheme)
 
