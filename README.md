@@ -80,7 +80,7 @@ is_url('https://www2.lemonde.fr')
 
 ### lru
 
-Function returning the url parts in the hierarchical order.
+Function returning url parts in the hierarchical order.
 
 ```python
 from ural import lru
@@ -120,13 +120,13 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ### normalized_lru
 
-Function normalizing the url and returning its parts in the hierarchical order.
+Function normalizing url and returning its parts in the hierarchical order.
 
 ```python
 from ural import normalized_lru
 
 normalized_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
->>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
+>>> ['t:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
 ```
 
 *Arguments*

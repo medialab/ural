@@ -12,7 +12,17 @@ try:
 except ImportError:
     from urlparse import parse_qsl, urlsplit, urlunsplit
 
-from ural.patterns import PROTOCOL_RE, IRRELEVANT_QUERY_COMBOS, IRRELEVANT_QUERY_RE, IRRELEVANT_SUBDOMAIN_RE
+from ural.patterns import PROTOCOL_RE
+
+IRRELEVANT_QUERY_RE = re.compile(
+    r'^(?:__twitter_impression|echobox|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
+
+IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.', re.I)
+
+IRRELEVANT_QUERY_COMBOS = {
+    'ref': ('fb', 'tw', 'tw_i'),
+    'platform': ('hootsuite')
+}
 
 
 def attempt_to_decode_idna(string):

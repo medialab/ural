@@ -10,13 +10,13 @@ except ImportError:
     from urlparse import urlsplit
 
 from ural.ensure_protocol import ensure_protocol
-from ural.patterns import IRRELEVANT_QUERY_COMBOS, IRRELEVANT_QUERY_RE, IRRELEVANT_SUBDOMAIN_RE
 
 
 def parsed_url_to_lru(parsed_url):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
-    lru.append('s:' + scheme)
+    if scheme:
+        lru.append('s:' + scheme)
 
     # Parsing domain & port
     netloc = netloc.split(':')

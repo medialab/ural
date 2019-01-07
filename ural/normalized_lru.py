@@ -12,7 +12,6 @@ except ImportError:
 from ural.ensure_protocol import ensure_protocol
 from ural.lru import parsed_url_to_lru
 from ural.normalize_url import normalize_url
-from ural.patterns import IRRELEVANT_QUERY_COMBOS, IRRELEVANT_QUERY_RE, IRRELEVANT_SUBDOMAIN_RE
 
 
 def normalized_lru(url, default_protocol='http', **kwargs):
@@ -38,4 +37,4 @@ def normalized_lru(url, default_protocol='http', **kwargs):
 
     full_url = ensure_protocol(url, protocol=default_protocol)
     return parsed_url_to_lru(normalize_url(
-        full_url, strip_protocol=False, parsed=True, **kwargs))
+        full_url, parsed=True, **kwargs))
