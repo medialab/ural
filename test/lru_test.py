@@ -12,7 +12,8 @@ DEFAULT_TESTS = [
      ['s:http', 'h:com', 'h:example', 'h:www', 'p:wpstyle', 'p:', 'q:p=364&q=365&a=284', 'f:anchor']),
     ('www.foo.bar/index.html', ['s:http',
                                 'h:bar', 'h:foo', 'h:www', 'p:index.html']),
-    ('site.com/page/', ['s:http', 'h:com', 'h:site', 'p:page', 'p:'])
+    ('site.com/page/', ['s:http', 'h:com', 'h:site', 'p:page', 'p:']),
+    ('site.com?', ['s:http', 'h:com', 'h:site'])
 ]
 
 
