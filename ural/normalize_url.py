@@ -14,8 +14,9 @@ except ImportError:
 
 from ural.patterns import PROTOCOL_RE
 
-IRRELEVANT_QUERY_RE = re.compile(r'^(?:__twitter_impression|echobox|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
-IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.')
+IRRELEVANT_QUERY_RE = re.compile(
+    r'^(?:__twitter_impression|echobox|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
+IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.', re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
     'ref': ('fb', 'tw', 'tw_i'),
@@ -51,7 +52,8 @@ def should_strip_query_item(item):
     return False
 
 
-def normalize_url(url, strip_trailing_slash=False, strip_index=True):
+def normalize_url(url, sort_query=True, strip_authentication=True,
+                  strip_trailing_slash=False, strip_index=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -61,10 +63,15 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
 
     Args:
         url (str): Target URL as a string.
+        sort_query (bool, optional): Whether to sort query items or not.
+            Defaults to `True`.
+        strip_authentication (bool, optional): Whether to drop authentication.
+            Defaults to `True`.
         strip_trailing_slash (bool, optional): Whether to drop trailing slash.
             Defaults to `False`.
-        strip_index (bool, optional): Whether to drop index.xxxx at the end of the url.
-            Defaults to `True`.
+        strip_index (bool, optional): Whether to drop trailing index at the end
+            of the url. Defaults to `True`.
+
     Returns:
         string: The normalized url.
 
@@ -82,6 +89,12 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
         netloc = '.'.join(
             attempt_to_decode_idna(x) for x in netloc.split('.')
         )
+
+    # Dropping :80 & :443
+    if netloc.endswith(':80'):
+        netloc = netloc[:-3]
+    elif netloc.endswith(':443'):
+        netloc = netloc[:-4]
 
     # Normalizing the path
     if path:
@@ -113,6 +126,9 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
             if not should_strip_query_item(item)
         ]
 
+        if sort_query:
+            qsl = sorted(qsl)
+
         query = '&'.join(qsl)
 
     # Dropping fragment if it's not routing
@@ -129,10 +145,14 @@ def normalize_url(url, strip_trailing_slash=False, strip_index=True):
     # Dropping scheme
     scheme = ''
 
+    # Dropping authentication
+    if strip_authentication:
+        netloc = netloc.split('@', 1)[-1]
+
     # Result
     result = (
         scheme,
-        netloc,
+        netloc.lower(),
         path,
         query,
         fragment

@@ -22,10 +22,12 @@ def force_protocol(url, protocol='http'):
 
     """
     protocol = protocol.rstrip(':/')
+
     if not PROTOCOL_RE.match(url):
         url = protocol + '://' + url
     elif url[:2] == '//':
         url = protocol + ':' + url
     else:
         url = re.sub(PROTOCOL_RE, protocol + '://', url)
+
     return url
