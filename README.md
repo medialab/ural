@@ -80,6 +80,8 @@ is_url('https://www2.lemonde.fr')
 
 ---
 
+<!---
+
 ### lru
 
 Function returning url parts in hierarchical order.
@@ -96,6 +98,8 @@ lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 * **url** *string*: URL to parse.
 
 ---
+
+-->
 
 ### normalize_url
 
@@ -120,6 +124,8 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
+<!---
+
 ### normalized_lru
 
 Function normalizing url and returning its parts in hierarchical order.
@@ -136,6 +142,8 @@ normalized_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2
 This function accepts the same arguments as [normalize_url](#normalize_url). 
 
 ---
+
+-->
 
 ### strip_protocol
 
