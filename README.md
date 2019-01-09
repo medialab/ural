@@ -17,7 +17,9 @@ pip install ural
 * [ensure_protocol](#ensure_protocol)
 * [force_protocol](#force_protocol)
 * [is_url](#is_url)
+* [lru](#lru)
 * [normalize_url](#normalize_url)
+* [normalized_lru](#normalized_lru)
 * [strip_protocol](#strip_protocol)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
@@ -80,7 +82,7 @@ is_url('https://www2.lemonde.fr')
 
 ### lru
 
-Function returning url parts in the hierarchical order.
+Function returning url parts in hierarchical order.
 
 ```python
 from ural import lru
@@ -120,7 +122,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ### normalized_lru
 
-Function normalizing url and returning its parts in the hierarchical order.
+Function normalizing url and returning its parts in hierarchical order.
 
 ```python
 from ural import normalized_lru
@@ -131,9 +133,7 @@ normalized_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2
 
 *Arguments*
 
-* **url** *string*: URL to parse.
-* **strip_protocol** *boolean* [`False`]: whether to drop protocol.
-* **filter_subdomains** *boolean* [`False`]: whether to drop irrelevant subdomains. 
+This function accepts the same arguments as [normalize_url](#normalize_url). 
 
 ---
 
