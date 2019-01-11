@@ -16,5 +16,8 @@ class LRUTrie(object):
         lru = self.normalize(url)
         return self.trie.longest(lru)
 
+    def values(self):
+        return self.trie.values()
+
     def __iter__(self):
-        return self.trie.items()
+        return self.trie.values()
