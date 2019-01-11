@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # =============================================================================
-# Ural LRU Unit Tests
+# Ural LRU from URL Unit Tests
 # =============================================================================
-from ural import lru
+from ural import lru_from_url
 
 DEFAULT_TESTS = [
     ('http://www.lemonde.fr:8000/article/1234/index.html?query=mobile#2',
@@ -20,4 +20,4 @@ DEFAULT_TESTS = [
 class TestIsUrl(object):
     def test_basics(self):
         for url, result in DEFAULT_TESTS:
-            assert lru(url) == result
+            assert lru_from_url(url) == result

@@ -1,8 +1,8 @@
 # =============================================================================
-# Ural LRU Function
+# Ural LRU from URL Function
 # =============================================================================
 #
-# A function returning the url parts in the hierarchical order.
+# A function returning the url parts in hierarchical order.
 #
 try:
     from urllib.parse import urlsplit
@@ -37,7 +37,7 @@ def parsed_url_to_lru(parsed_url):
     return lru
 
 
-def lru(url, default_protocol='http'):
+def lru_from_url(url, default_protocol='http'):
     """
     Function returning the parts of the given url in the hierarchical order (lru).
 

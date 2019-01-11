@@ -1,5 +1,5 @@
 # =============================================================================
-# Ural Normalized LRU Function
+# Ural Normalized LRU from URL Function
 # =============================================================================
 #
 # A function normalizing the url and returning its parts in the hierarchical order.
@@ -10,11 +10,11 @@ except ImportError:
     from urlparse import urlsplit
 
 from ural.ensure_protocol import ensure_protocol
-from ural.lru import parsed_url_to_lru
+from ural.lru_from_url import parsed_url_to_lru
 from ural.normalize_url import normalize_url
 
 
-def normalized_lru(url, default_protocol='http', **kwargs):
+def normalized_lru_from_url(url, default_protocol='http', **kwargs):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains, and

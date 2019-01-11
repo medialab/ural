@@ -80,16 +80,14 @@ is_url('https://www2.lemonde.fr')
 
 ---
 
-<!---
-
-### lru
+### lru_from_url
 
 Function returning url parts in hierarchical order.
 
 ```python
-from ural import lru
+from ural import lru_from_url
 
-lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 >>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:field=value', 'f:2']
 ```
 
@@ -98,8 +96,6 @@ lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 * **url** *string*: URL to parse.
 
 ---
-
--->
 
 ### normalize_url
 
@@ -124,16 +120,14 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
-<!---
-
-### normalized_lru
+### normalized_lru_from_url
 
 Function normalizing url and returning its parts in hierarchical order.
 
 ```python
-from ural import normalized_lru
+from ural import normalized_lru_from_url
 
-normalized_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+normalized_lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 >>> ['t:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
 ```
 
@@ -142,8 +136,6 @@ normalized_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2
 This function accepts the same arguments as [normalize_url](#normalize_url). 
 
 ---
-
--->
 
 ### strip_protocol
 
