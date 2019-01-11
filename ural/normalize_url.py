@@ -78,8 +78,9 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
 
     """
 
+    has_protocol = PROTOCOL_RE.match(url)
     # Ensuring scheme so parsing works correctly
-    if not PROTOCOL_RE.match(url):
+    if not has_protocol:
         url = 'http://' + url
 
     # Parsing
@@ -145,7 +146,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         )
 
     # Dropping scheme
-    if strip_protocol:
+    if strip_protocol or not has_protocol:
         scheme = ''
 
     # Dropping authentication
@@ -163,7 +164,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     if parsed:
         return result
 
-    if strip_protocol:
+    if strip_protocol or not has_protocol:
         result = urlunsplit(result)[2:]
     else:
         result = urlunsplit(result)
