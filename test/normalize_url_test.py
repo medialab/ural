@@ -55,3 +55,7 @@ class TestNormalizeUrl(object):
                              strip_trailing_slash=True) == 'lemonde.fr'
         assert normalize_url('https://yomgui@lemonde.fr',
                              strip_authentication=False) == 'yomgui@lemonde.fr'
+        assert normalize_url('https://www.lemonde.fr',
+                             strip_protocol=False, strip_irrelevant_subdomain=False) == 'https://www.lemonde.fr'
+        assert normalize_url('www.lemonde.fr',
+                             strip_protocol=False, strip_irrelevant_subdomain=False) == 'www.lemonde.fr'

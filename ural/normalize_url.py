@@ -16,6 +16,7 @@ from ural.patterns import PROTOCOL_RE
 
 IRRELEVANT_QUERY_RE = re.compile(
     r'^(?:__twitter_impression|echobox|fbclid|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
+
 IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.', re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
@@ -52,8 +53,8 @@ def should_strip_query_item(item):
     return False
 
 
-def normalize_url(url, sort_query=True, strip_authentication=True,
-                  strip_trailing_slash=False, strip_index=True):
+def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
+                  strip_trailing_slash=False, strip_index=True, strip_protocol=True, strip_irrelevant_subdomain=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -77,8 +78,9 @@ def normalize_url(url, sort_query=True, strip_authentication=True,
 
     """
 
+    has_protocol = PROTOCOL_RE.match(url)
     # Ensuring scheme so parsing works correctly
-    if not PROTOCOL_RE.match(url):
+    if not has_protocol:
         url = 'http://' + url
 
     # Parsing
@@ -136,14 +138,16 @@ def normalize_url(url, sort_query=True, strip_authentication=True,
         fragment = ''
 
     # Dropping irrelevant subdomains
-    netloc = re.sub(
-        IRRELEVANT_SUBDOMAIN_RE,
-        '',
-        netloc
-    )
+    if strip_irrelevant_subdomain:
+        netloc = re.sub(
+            IRRELEVANT_SUBDOMAIN_RE,
+            '',
+            netloc
+        )
 
     # Dropping scheme
-    scheme = ''
+    if strip_protocol or not has_protocol:
+        scheme = ''
 
     # Dropping authentication
     if strip_authentication:
@@ -157,8 +161,13 @@ def normalize_url(url, sort_query=True, strip_authentication=True,
         query,
         fragment
     )
+    if parsed:
+        return result
 
-    result = urlunsplit(result)[2:]
+    if strip_protocol or not has_protocol:
+        result = urlunsplit(result)[2:]
+    else:
+        result = urlunsplit(result)
 
     # Dropping trailing slash
     if strip_trailing_slash and result.endswith('/'):

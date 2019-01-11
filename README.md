@@ -17,7 +17,9 @@ pip install ural
 * [ensure_protocol](#ensure_protocol)
 * [force_protocol](#force_protocol)
 * [is_url](#is_url)
+* [lru](#lru)
 * [normalize_url](#normalize_url)
+* [normalized_lru](#normalized_lru)
 * [strip_protocol](#strip_protocol)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
@@ -78,6 +80,23 @@ is_url('https://www2.lemonde.fr')
 
 ---
 
+### lru_from_url
+
+Function returning url parts in hierarchical order.
+
+```python
+from ural import lru_from_url
+
+lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:field=value', 'f:2']
+```
+
+*Arguments*
+
+* **url** *string*: URL to parse.
+
+---
+
 ### normalize_url
 
 Function normalizing the given url by stripping it of usually non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -98,6 +117,23 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_authentication** *boolean* [`True`]: whether to strip authentication.
 * **strip_index** *boolean* [`True`]: whether to strip trailing index.
 * **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
+
+---
+
+### normalized_lru_from_url
+
+Function normalizing url and returning its parts in hierarchical order.
+
+```python
+from ural import normalized_lru_from_url
+
+normalized_lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> ['t:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
+```
+
+*Arguments*
+
+This function accepts the same arguments as [normalize_url](#normalize_url). 
 
 ---
 
