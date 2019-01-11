@@ -17,7 +17,7 @@ setup(name='ural',
       packages=find_packages(exclude=['test']),
       package_data={'docs': ['README.md']},
       install_requires=[
-          'phylactery==0.2.0'
+          'phylactery==0.2.1'
       ],
       entry_points={
           'console_scripts': ['ural=ural.cli.__main__:main']
