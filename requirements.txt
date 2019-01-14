@@ -2,3 +2,6 @@
 pycodestyle==2.4.0
 pytest==3.5.1
 twine==1.11.0
+
+# Dependencies
+phylactery==0.2.2
