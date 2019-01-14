@@ -1,3 +1,10 @@
+# =============================================================================
+# Ural LRUTrie class
+# =============================================================================
+#
+# A class implementing a prefix tree (Trie) storing LRUs,
+# allowing to find the longest common prefix between two urls.
+#
 from phylactery import TrieDict
 from ural.normalized_lru_from_url import normalized_lru_from_url
 from functools import partial
