@@ -14,6 +14,7 @@ pip install ural
 
 ## Usage
 
+### Functions
 * [ensure_protocol](#ensure_protocol)
 * [force_protocol](#force_protocol)
 * [is_url](#is_url)
@@ -24,9 +25,17 @@ pip install ural
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
 
+### Classes
+* [LRUTrie](#LRUTrie)
+  * [set](#set)
+  * [match](#match)
+  * [values](#values)
+
 ---
 
-### ensure_protocol
+### Functions
+
+#### ensure_protocol
 
 A function checking if the url has a protocol, and adding the given one if there is none.
 
@@ -44,7 +53,7 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 
 ---
 
-### force_protocol
+#### force_protocol
 
 A function force-replacing the protocol of the given url.
 
@@ -62,7 +71,7 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 ---
 
-### is_url
+#### is_url
 
 A function returning True if its argument is a url.
 
@@ -80,7 +89,7 @@ is_url('https://www2.lemonde.fr')
 
 ---
 
-### lru_from_url
+#### lru_from_url
 
 Function returning url parts in hierarchical order.
 
@@ -97,7 +106,7 @@ lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 
 ---
 
-### normalize_url
+#### normalize_url
 
 Function normalizing the given url by stripping it of usually non-discriminant parts such as irrelevant query items or sub-domains etc.
 
@@ -120,7 +129,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
-### normalized_lru_from_url
+#### normalized_lru_from_url
 
 Function normalizing url and returning its parts in hierarchical order.
 
@@ -137,7 +146,7 @@ This function accepts the same arguments as [normalize_url](#normalize_url).
 
 ---
 
-### strip_protocol
+#### strip_protocol
 
 Function removing the protocol from the url.
 
@@ -154,7 +163,7 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 
 ---
 
-### urls_from_html
+#### urls_from_html
 
 A function returning an iterator over the urls present in the links of given HTML text.
 
@@ -174,7 +183,7 @@ for url in urls_from_html(html):
 
 ---
 
-### urls_from_text
+#### urls_from_text
 
 A function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
 
@@ -192,3 +201,74 @@ for url in urls_from_text(text):
 *Arguments*
 
 * **string** *string*: source string.
+
+---
+
+### Classes
+
+#### LRUTrie
+
+A class implementing a prefix tree (Trie) storing LRUs and their metadata, allowing to find the longest common prefix between two urls.
+
+##### set
+
+A function storing an url in a LRUTrie along with its metadata.
+
+```python
+from ural import LRUTrie
+
+trie = LRUTrie()
+trie.set('http://www.lemonde.fr', {'type': 'general press'})
+
+trie.match('http://www.lemonde.fr')
+>>> {'type': 'general press'}
+```
+
+*Arguments*
+
+* **url** *string*: url to store in the LRUTrie.
+* **metadata** *dict*: metadata of the url.
+
+---
+
+##### match
+
+A function returning the metadata of the given url as it is stored in the LRUTrie.
+If the exact given url doesn't exist in the LRUTrie, it returns the metadata of the longest common prefix.
+
+```python
+from ural import LRUTrie
+
+trie = LRUTrie()
+trie.set('http://www.lemonde.fr', {'media': 'lemonde'})
+
+trie.match('http://www.lemonde.fr')
+>>> {'media': 'lemonde'}
+trie.match('http://www.lemonde.fr/politique')
+>>> {'media': 'lemonde'}
+```
+
+*Arguments*
+
+* **url** *string*: url to match in the LRUTrie.
+
+---
+
+##### values
+
+A function yielding the metadata of each url stored in the LRUTrie.
+
+```python
+from ural import LRUTrie
+
+trie = LRUTrie()
+trie.set('http://www.lemonde.fr', {'media' : 'lemonde'})
+trie.set('http://www.lefigaro.fr',{'media' : 'lefigaro'})
+trie.set('https://www.liberation.fr',{'media' : 'liberation'})
+
+for value in trie.values():
+  print(value)
+>>> {'media': 'lemonde'}
+>>> {'media': 'liberation'}
+>>> {'media': 'lefigaro'}
+```

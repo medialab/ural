@@ -2,7 +2,7 @@
 # Ural LRUTrie class
 # =============================================================================
 #
-# A class implementing a prefix tree (Trie) storing LRUs,
+# A class implementing a prefix tree(Trie) storing LRUs and their metadata,
 # allowing to find the longest common prefix between two urls.
 #
 from phylactery import TrieDict
