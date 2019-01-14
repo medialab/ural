@@ -19,4 +19,4 @@ class TestLRUTrie(object):
             'http://www.lemonde.fr/politique/article') == {'media': 'lemonde', 'type': 'article'}
         assert trie.match(
             'http://www.lemonde.fr/politique/article/randompath') == {'media': 'lemonde', 'type': 'article'}
-        assert trie.match('http://www.legorafi.fr') == None
+        assert trie.match('http://www.legorafi.fr') is None
