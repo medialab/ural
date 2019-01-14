@@ -234,7 +234,7 @@ trie.match('http://www.lemonde.fr')
 ##### match
 
 A function returning the metadata of the given url as it is stored in the LRUTrie.
-If the exact given url doesn't exist in the LRUTrie, it returns the metadata of the longest common prefix.
+If the exact given url doesn't exist in the LRUTrie, it returns the metadata of the longest common prefix, or `None` if there is no common prefix.
 
 ```python
 from ural import LRUTrie
@@ -263,8 +263,8 @@ from ural import LRUTrie
 
 trie = LRUTrie()
 trie.set('http://www.lemonde.fr', {'media' : 'lemonde'})
-trie.set('http://www.lefigaro.fr',{'media' : 'lefigaro'})
-trie.set('https://www.liberation.fr',{'media' : 'liberation'})
+trie.set('http://www.lefigaro.fr', {'media' : 'lefigaro'})
+trie.set('https://www.liberation.fr', {'media' : 'liberation'})
 
 for value in trie.values():
   print(value)
