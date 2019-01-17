@@ -40,15 +40,17 @@ def main():
     join_subparser = subparsers.add_parser(
         'join', description='Join 2 csv files according to their urls columns.')
     join_subparser.add_argument(
-        'col1', help='name of the url column of the first file')
+        'column1', help='name of the url column of the first file')
     join_subparser.add_argument(
         'file1', help='first csv file', type=FileType('r'), default=sys.stdin, nargs='?')
     join_subparser.add_argument(
-        'col2', help='name of the url column of the second file')
+        'column2', help='name of the url column of the second file')
     join_subparser.add_argument(
         'file2', help='second csv file', type=FileType('r'), default=sys.stdin, nargs='?')
     join_subparser.add_argument(
         '-o', '--output', help='output file', type=FileType('w'), default=sys.stdout)
+    join_subparser.add_argument(
+        '-s', '--select', nargs='+', help='do not sort query items')
     SUBPARSERS['join'] = join_subparser
 
     help_suparser = subparsers.add_parser('help')
