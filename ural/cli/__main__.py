@@ -50,7 +50,9 @@ def main():
     join_subparser.add_argument(
         '-o', '--output', help='output file', type=FileType('w'), default=sys.stdout)
     join_subparser.add_argument(
-        '-s', '--select', nargs='+', help='do not sort query items')
+        '-s', '--select', nargs='+', help='columns of the first file wanted in the output')
+    join_subparser.add_argument(
+        '--large-cells', action='store_true', help='activate if the csv contains huge cells (>131072)', default=False)
     SUBPARSERS['join'] = join_subparser
 
     help_suparser = subparsers.add_parser('help')

@@ -14,6 +14,8 @@ from ural.lru_trie import LRUTrie
 
 def join_action(namespace):
 
+    if namespace.large_cells:
+        csv.field_size_limit(sys.maxsize)
     file1_headers, file1_position, file1_reader = custom_reader(
         namespace.file1, namespace.column1)
     file2_headers, file2_position, file2_reader = custom_reader(
