@@ -22,3 +22,4 @@ class TestIsUrl(object):
                                        strip_index=False) == ['h:bar', 'h:foo', 'p:index.html']
         assert normalized_lru_from_url('http://www.foo.bar/index.html',
                                        strip_protocol=False) == ['s:http', 'h:bar', 'h:foo']
+        assert normalized_lru_from_url('www.lepopulaire.fr/', strip_trailing_slash=True) == ['h:fr', 'h:lepopulaire']

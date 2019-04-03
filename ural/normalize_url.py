@@ -153,6 +153,10 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     if strip_authentication:
         netloc = netloc.split('@', 1)[-1]
 
+    # Dropping trailing slash
+    if strip_trailing_slash and path.endswith('/'):
+        path = path.rstrip('/')
+
     # Result
     result = (
         scheme,
@@ -161,16 +165,14 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         query,
         fragment
     )
+
     if parsed:
         return result
 
+    # TODO: check if works with `parsed=True`
     if strip_protocol or not has_protocol:
         result = urlunsplit(result)[2:]
     else:
         result = urlunsplit(result)
-
-    # Dropping trailing slash
-    if strip_trailing_slash and result.endswith('/'):
-        result = result.rstrip('/')
 
     return result
