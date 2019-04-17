@@ -15,7 +15,9 @@ pip install ural
 ## Usage
 
 ### Functions
+
 * [ensure_protocol](#ensure_protocol)
+* [get_domain_name](#get_domain_name)
 * [force_protocol](#force_protocol)
 * [is_url](#is_url)
 * [lru_from_url](#lru_from_url)
@@ -26,6 +28,7 @@ pip install ural
 * [urls_from_text](#urls_from_text)
 
 ### Classes
+
 * [LRUTrie](#LRUTrie)
   * [set](#set)
   * [match](#match)
@@ -37,7 +40,7 @@ pip install ural
 
 #### ensure_protocol
 
-A function checking if the url has a protocol, and adding the given one if there is none.
+Function checking if the url has a protocol, and adding the given one if there is none.
 
 ```python
 from ural import ensure_protocol
@@ -53,9 +56,26 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 
 ---
 
+#### get_domain_name
+
+Function returning an url's domain name. This function is of course tld-aware and will return `None` if no valid domain name can be found.
+
+```python
+from ural import get_domain_name
+
+get_domain_name('https://facebook.com/path')
+>>> 'facebook.com'
+```
+
+*Arguments*
+
+* **url** *string*: Target url.
+
+---
+
 #### force_protocol
 
-A function force-replacing the protocol of the given url.
+Function force-replacing the protocol of the given url.
 
 ```python
 from ural import force_protocol
@@ -73,7 +93,7 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 #### is_url
 
-A function returning True if its argument is a url.
+Function returning True if its argument is a url.
 
 ```python
 from ural import is_url
@@ -142,7 +162,7 @@ normalized_lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?fiel
 
 *Arguments*
 
-This function accepts the same arguments as [normalize_url](#normalize_url). 
+This function accepts the same arguments as [normalize_url](#normalize_url).
 
 ---
 
@@ -165,7 +185,7 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 
 #### urls_from_html
 
-A function returning an iterator over the urls present in the links of given HTML text.
+Function returning an iterator over the urls present in the links of given HTML text.
 
 ```python
 from ural import urls_from_html
@@ -185,7 +205,7 @@ for url in urls_from_html(html):
 
 #### urls_from_text
 
-A function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
+Function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
 
 ```python
 from ural import urls_from_text
@@ -208,7 +228,7 @@ for url in urls_from_text(text):
 
 #### LRUTrie
 
-A class implementing a prefix tree (Trie) storing LRUs and their metadata, allowing to find the longest common prefix between two urls.
+Class implementing a prefix tree (Trie) storing LRUs and their metadata, allowing to find the longest common prefix between two urls.
 
 ##### set
 
@@ -233,7 +253,7 @@ trie.match('http://www.lemonde.fr')
 
 ##### match
 
-A function returning the metadata of the given url as it is stored in the LRUTrie.
+Method returning the metadata of the given url as it is stored in the LRUTrie.
 If the exact given url doesn't exist in the LRUTrie, it returns the metadata of the longest common prefix, or `None` if there is no common prefix.
 
 ```python
@@ -256,7 +276,7 @@ trie.match('http://www.lemonde.fr/politique')
 
 ##### values
 
-A function yielding the metadata of each url stored in the LRUTrie.
+Method yielding the metadata of each url stored in the LRUTrie.
 
 ```python
 from ural import LRUTrie
