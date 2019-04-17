@@ -8,6 +8,7 @@
 import sys
 from argparse import ArgumentParser, FileType
 
+from ural.cli.domain import domain_action
 from ural.cli.normalize import normalize_action
 from ural.cli.join import join_action
 
@@ -20,6 +21,7 @@ def main():
     subparsers = parser.add_subparsers(
         help='action to execute', title='actions', dest='action')
 
+    # Normalize action subparser
     normalize_subparser = subparsers.add_parser(
         'normalize', description='Normalize the urls of a given CSV column.')
     normalize_subparser.add_argument('column', help='column')
@@ -37,6 +39,17 @@ def main():
         '--keep-index', action='store_true', help='do not drop trailing index at the end of the url', default=False)
     SUBPARSERS['normalize'] = normalize_subparser
 
+    # Domain action subparser
+    domain_subparser = subparsers.add_parser(
+        'domain', description='Extract the urls\' domains of a given CSV column.')
+    domain_subparser.add_argument('column', help='column')
+    domain_subparser.add_argument(
+        'file', help='csv file containing the urls', type=FileType('r'), default=sys.stdin, nargs='?')
+    domain_subparser.add_argument(
+        '-o', '--output', help='output file', type=FileType('w'), default=sys.stdout)
+    SUBPARSERS['normalize'] = domain_subparser
+
+    # Join action subparser
     join_subparser = subparsers.add_parser(
         'join', description='Join 2 csv files according to their urls columns.')
     join_subparser.add_argument(
@@ -55,6 +68,7 @@ def main():
         '--large-cells', action='store_true', help='activate if the csv contains huge cells (>131072)', default=False)
     SUBPARSERS['join'] = join_subparser
 
+    # Help action subparser
     help_suparser = subparsers.add_parser('help')
     help_suparser.add_argument('subcommand', help='name of the subcommand')
     SUBPARSERS['help'] = help_suparser
@@ -69,13 +83,16 @@ def main():
         else:
             target_subparser.print_help()
 
-    if args.action == 'normalize':
+    elif args.action == 'normalize':
         normalize_action(args)
 
-    if args.action == 'join':
+    elif args.action == 'domain':
+        domain_action(args)
+
+    elif args.action == 'join':
         join_action(args)
 
-    if args.action is None:
+    elif args.action is None:
         parser.print_help()
 
 
