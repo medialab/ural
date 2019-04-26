@@ -55,8 +55,8 @@ TESTS_ADVANCED = [
     ('https://www.fr-FR.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.french.lemonde.fr', 'french.lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.fu.lemonde.fr', 'fu.lemonde.fr', {"strip_lang_subdomains": True}),
-    ('https://www.fr-fu.lemonde.fr', 'fr-fu.lemonde.fr', {"strip_lang_subdomains": True})
-
+    ('https://www.fr-fu.lemonde.fr', 'fr-fu.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.french-fu.lemonde.fr', 'french-fu.lemonde.fr', {"strip_lang_subdomains": True})
 ]
 
 
