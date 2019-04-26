@@ -145,6 +145,23 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
             netloc
         )
 
+      # Dropping language as subdomains
+    if strip_lang_subdomains:
+        if netloc.count('.') >= 2:
+            subdomain = netloc.split('.', 1)[0]
+            print(subdomain)
+            print(pycountry.countries.get(alpha_2=subdomain.upper()))
+            if len(subdomain) <= 5:
+                if '-' in subdomain:
+                    subdomain=subdomain.split('-')
+                    if len(subdomain) == 2:
+                        if pycountry.countries.get(alpha_2 = subdomain[0].upper()) and pycountry.countries.get(alpha_2 = subdomain[1].upper()):
+                            netloc = netloc.split('.', 1)[1]
+                else:
+                    if pycountry.countries.get(alpha_2=subdomain.upper()):
+                        netloc = netloc.split('.', 1)[1]
+
+
     # Dropping scheme
     if strip_protocol or not has_protocol:
         scheme = ''
