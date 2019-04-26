@@ -146,6 +146,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_authentication** *boolean* [`True`]: whether to strip authentication.
 * **strip_index** *boolean* [`True`]: whether to strip trailing index.
 * **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
+* **strip_lang_subdomains** *boolean* [`False`]: whether to strip language as subdomains.
 
 ---
 
