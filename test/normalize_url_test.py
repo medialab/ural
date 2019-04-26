@@ -46,18 +46,18 @@ TESTS = [
 ]
 
 
-TESTS_ADVANCED=[
-    ('lemonde.fr/index/', 'lemonde.fr', {'strip_trailing_slash' : True}),
-    ('https://yomgui@lemonde.fr', 'yomgui@lemonde.fr', {'strip_authentication' : False}),
-    ('https://www.lemonde.fr', 'https://www.lemonde.fr', {"strip_protocol" : False, "strip_irrelevant_subdomain" : False}),
-    ('www.lemonde.fr', 'www.lemonde.fr', {"strip_protocol" : False, "strip_irrelevant_subdomain" : False}),
+TESTS_ADVANCED = [
+    ('lemonde.fr/index/', 'lemonde.fr', {'strip_trailing_slash': True}),
+    ('https://yomgui@lemonde.fr', 'yomgui@lemonde.fr', {'strip_authentication': False}),
+    ('https://www.lemonde.fr', 'https://www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
+    ('www.lemonde.fr', 'www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
     ('https://www.fr.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.fr-FR.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.french.lemonde.fr', 'french.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.fu.lemonde.fr', 'fu.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.fr-fu.lemonde.fr', 'fr-fu.lemonde.fr', {"strip_lang_subdomains": True})
 
 ]
-
-
 
 
 class TestNormalizeUrl(object):
@@ -67,4 +67,3 @@ class TestNormalizeUrl(object):
 
         for url, normalized, kwargs in TESTS_ADVANCED:
             assert normalize_url(url, **kwargs) == normalized, url
-
