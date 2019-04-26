@@ -6,6 +6,7 @@
 # non-discriminant parts of a URL.
 #
 import re
+import pycountry
 from os.path import normpath, splitext
 try:
     from urllib.parse import parse_qsl, urlsplit, urlunsplit
@@ -54,7 +55,7 @@ def should_strip_query_item(item):
 
 
 def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
-                  strip_trailing_slash=False, strip_index=True, strip_protocol=True, strip_irrelevant_subdomain=True):
+                  strip_trailing_slash=False, strip_index=True, strip_protocol=True, strip_irrelevant_subdomain=True, strip_lang_subdomains=False):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -145,22 +146,18 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
             netloc
         )
 
-      # Dropping language as subdomains
+    # Dropping language as subdomains
     if strip_lang_subdomains:
-        if netloc.count('.') >= 2:
-            subdomain = netloc.split('.', 1)[0]
-            print(subdomain)
-            print(pycountry.countries.get(alpha_2=subdomain.upper()))
-            if len(subdomain) <= 5:
-                if '-' in subdomain:
-                    subdomain=subdomain.split('-')
-                    if len(subdomain) == 2:
-                        if pycountry.countries.get(alpha_2 = subdomain[0].upper()) and pycountry.countries.get(alpha_2 = subdomain[1].upper()):
-                            netloc = netloc.split('.', 1)[1]
-                else:
-                    if pycountry.countries.get(alpha_2=subdomain.upper()):
-                        netloc = netloc.split('.', 1)[1]
-
+        if netloc.count('.') > 1:
+            subdomain_remaining_netloc = netloc.split('.', 1)
+            if len(subdomain_remaining_netloc[0]) == 5 and '-' in subdomain_remaining_netloc[0]:
+                lang_country = subdomain_remaining_netloc[0].split('-')
+                if len(lang_country) == 2:
+                    if pycountry.countries.get(alpha_2=lang_country[0].upper()) and pycountry.countries.get(alpha_2=lang_country[1].upper()):
+                        netloc = subdomain_remaining_netloc[1]
+            elif len(subdomain_remaining_netloc) == 2:
+                if pycountry.countries.get(alpha_2=subdomain_remaining_netloc[0].upper()):
+                    netloc = subdomain_remaining_netloc[1]
 
     # Dropping scheme
     if strip_protocol or not has_protocol:
