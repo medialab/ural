@@ -52,11 +52,11 @@ TESTS_ADVANCED = [
     ('https://www.lemonde.fr', 'https://www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
     ('www.lemonde.fr', 'www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
     ('https://www.fr.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True}),
-    ('https://www.fr-FR.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True}),
-    ('https://www.french.lemonde.fr', 'french.lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.fu.lemonde.fr', 'fu.lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.fr-fu.lemonde.fr', 'fr-fu.lemonde.fr', {"strip_lang_subdomains": True}),
-    ('https://www.french-fu.lemonde.fr', 'french-fu.lemonde.fr', {"strip_lang_subdomains": True})
+    ('https://www.french.lemonde.fr', 'french.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.french-fu.lemonde.fr', 'french-fu.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.fr-FR.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True})
 ]
 
 

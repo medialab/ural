@@ -73,6 +73,8 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
             Defaults to `False`.
         strip_index (bool, optional): Whether to drop trailing index at the end
             of the url. Defaults to `True`.
+        strip_lang_subdomains (bool, optional): Whether to drop language as subdomains.
+            Defaults to `False`.
 
     Returns:
         string: The normalized url.
@@ -149,15 +151,15 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     # Dropping language as subdomains
     if strip_lang_subdomains:
         if netloc.count('.') > 1:
-            subdomain_remaining_netloc = netloc.split('.', 1)
-            if len(subdomain_remaining_netloc[0]) == 5 and '-' in subdomain_remaining_netloc[0]:
-                lang_country = subdomain_remaining_netloc[0].split('-')
-                if len(lang_country) == 2:
-                    if pycountry.countries.get(alpha_2=lang_country[0].upper()) and pycountry.countries.get(alpha_2=lang_country[1].upper()):
-                        netloc = subdomain_remaining_netloc[1]
-            elif len(subdomain_remaining_netloc) == 2:
-                if pycountry.countries.get(alpha_2=subdomain_remaining_netloc[0].upper()):
-                    netloc = subdomain_remaining_netloc[1]
+            (subdomain, remaining_netloc) = netloc.split('.', 1)
+            if len(subdomain) == 5 and '-' in subdomain:
+                (lang, country) = subdomain.split('-', 1)
+                if country:
+                    if pycountry.countries.get(alpha_2=lang.upper()) and pycountry.countries.get(alpha_2=country.upper()):
+                        netloc = remaining_netloc
+            elif len(subdomain) == 2:
+                if pycountry.countries.get(alpha_2=subdomain.upper()):
+                    netloc = remaining_netloc
 
     # Dropping scheme
     if strip_protocol or not has_protocol:
