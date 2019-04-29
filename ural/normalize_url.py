@@ -73,7 +73,8 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
             Defaults to `False`.
         strip_index (bool, optional): Whether to drop trailing index at the end
             of the url. Defaults to `True`.
-        strip_lang_subdomains (bool, optional): Whether to drop language as subdomains.
+        strip_lang_subdomains (bool, optional): Whether to drop language subdomains
+            (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
             Defaults to `False`.
 
     Returns:
@@ -154,7 +155,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
             subdomain, remaining_netloc = netloc.split('.', 1)
             if len(subdomain) == 5 and '-' in subdomain:
                 lang, country = subdomain.split('-', 1)
-                if country:
+                if len(lang) == 2 and len(country) == 2:
                     if pycountry.countries.get(alpha_2=lang.upper()) and pycountry.countries.get(alpha_2=country.upper()):
                         netloc = remaining_netloc
             elif len(subdomain) == 2:
