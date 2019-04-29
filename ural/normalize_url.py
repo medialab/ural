@@ -151,9 +151,9 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     # Dropping language as subdomains
     if strip_lang_subdomains:
         if netloc.count('.') > 1:
-            (subdomain, remaining_netloc) = netloc.split('.', 1)
+            subdomain, remaining_netloc = netloc.split('.', 1)
             if len(subdomain) == 5 and '-' in subdomain:
-                (lang, country) = subdomain.split('-', 1)
+                lang, country = subdomain.split('-', 1)
                 if country:
                     if pycountry.countries.get(alpha_2=lang.upper()) and pycountry.countries.get(alpha_2=country.upper()):
                         netloc = remaining_netloc
