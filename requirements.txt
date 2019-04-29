@@ -6,3 +6,4 @@ twine==1.11.0
 # Dependencies
 phylactery==0.2.2
 tld==0.9.3
+pycountry>=18.12.8
