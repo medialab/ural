@@ -18,6 +18,7 @@ setup(name='ural',
       package_data={'docs': ['README.md']},
       install_requires=[
           'phylactery>=0.2.2',
+          'pycountry>=18.12.8',
           'tld>=0.9.3'
       ],
       entry_points={

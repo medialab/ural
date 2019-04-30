@@ -46,16 +46,24 @@ TESTS = [
 ]
 
 
+TESTS_ADVANCED = [
+    ('lemonde.fr/index/', 'lemonde.fr', {'strip_trailing_slash': True}),
+    ('https://yomgui@lemonde.fr', 'yomgui@lemonde.fr', {'strip_authentication': False}),
+    ('https://www.lemonde.fr', 'https://www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
+    ('www.lemonde.fr', 'www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
+    ('https://www.fr.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.fu.lemonde.fr', 'fu.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.fr-fu.lemonde.fr', 'fr-fu.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.french.lemonde.fr', 'french.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.french-fu.lemonde.fr', 'french-fu.lemonde.fr', {"strip_lang_subdomains": True}),
+    ('https://www.fr-FR.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True})
+]
+
+
 class TestNormalizeUrl(object):
     def test_basics(self):
         for url, normalized in TESTS:
             assert normalize_url(url) == normalized, url
 
-        assert normalize_url('lemonde.fr/index/',
-                             strip_trailing_slash=True) == 'lemonde.fr'
-        assert normalize_url('https://yomgui@lemonde.fr',
-                             strip_authentication=False) == 'yomgui@lemonde.fr'
-        assert normalize_url('https://www.lemonde.fr',
-                             strip_protocol=False, strip_irrelevant_subdomain=False) == 'https://www.lemonde.fr'
-        assert normalize_url('www.lemonde.fr',
-                             strip_protocol=False, strip_irrelevant_subdomain=False) == 'www.lemonde.fr'
+        for url, normalized, kwargs in TESTS_ADVANCED:
+            assert normalize_url(url, **kwargs) == normalized, url
