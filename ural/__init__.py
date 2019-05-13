@@ -1,3 +1,7 @@
+# =============================================================================
+# Ural Library Endpoint
+# =============================================================================
+#
 from ural.ensure_protocol import ensure_protocol
 from ural.force_protocol import force_protocol
 from ural.get_domain_name import get_domain_name
