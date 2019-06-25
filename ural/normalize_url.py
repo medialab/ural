@@ -55,7 +55,8 @@ def should_strip_query_item(item):
 
 
 def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
-                  strip_trailing_slash=False, strip_index=True, strip_protocol=True, strip_irrelevant_subdomain=True, strip_lang_subdomains=False):
+                  strip_trailing_slash=False, strip_index=True, strip_protocol=True,
+                  strip_irrelevant_subdomain=True, strip_lang_subdomains=False):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
