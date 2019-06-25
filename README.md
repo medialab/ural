@@ -144,9 +144,10 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **url** *string*: URL to normalize.
 * **sort_query** *boolean* [`True`]: whether to sort query items.
 * **strip_authentication** *boolean* [`True`]: whether to strip authentication.
+* **strip_fragment** *boolean|str* [`'except-routing'`]: whether to strip the url's fragment. If set to `except-routing`, will only strip the fragment if the fragment is not deemed to be js routing (i.e. if it contains a `/`).
 * **strip_index** *boolean* [`True`]: whether to strip trailing index.
-* **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 * **strip_lang_subdomains** *boolean* [`False`]: whether to strip language subdomains (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
+* **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
 
 ---
 

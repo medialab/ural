@@ -56,7 +56,8 @@ def should_strip_query_item(item):
 
 def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
-                  strip_irrelevant_subdomain=True, strip_lang_subdomains=False):
+                  strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
+                  strip_fragment='except-routing'):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -77,6 +78,10 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         strip_lang_subdomains (bool, optional): Whether to drop language subdomains
             (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
             Defaults to `False`.
+        strip_fragment (bool|str, optional): Whether to drop non-routing fragment from the url?
+            If set to `except-routing` will only drop non-routing fragment (i.e. fragments that
+            do not contain a "/").
+            Defaults to `except-routing`.
 
     Returns:
         string: The normalized url.
@@ -139,8 +144,9 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         query = '&'.join(qsl)
 
     # Dropping fragment if it's not routing
-    if fragment and len(fragment.split('/')) <= 1:
-        fragment = ''
+    if fragment and strip_fragment:
+        if strip_fragment is True or '/' not in fragment:
+            fragment = ''
 
     # Dropping irrelevant subdomains
     if strip_irrelevant_subdomain:
