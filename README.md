@@ -16,6 +16,8 @@ pip install ural
 
 ### Functions
 
+*Generic functions*
+
 * [ensure_protocol](#ensure_protocol)
 * [get_domain_name](#get_domain_name)
 * [force_protocol](#force_protocol)
@@ -26,6 +28,11 @@ pip install ural
 * [strip_protocol](#strip_protocol)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
+
+*Platform-specific functions*
+
+* [facebook](#facebook)
+  * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
 
 ### Classes
 
@@ -223,6 +230,21 @@ for url in urls_from_text(text):
 *Arguments*
 
 * **string** *string*: source string.
+
+---
+
+### Facebook
+
+#### convert_facebook_url_to_mobile
+
+Function returning the mobile version of the given Facebook url. Will raise an exception if a non-Facebook url is given.
+
+```python
+from url.facebook import convert_facebook_url_to_mobile
+
+convert_facebook_url_to_mobile('http://www.facebook.com/post/974583586343')
+>>> 'http://m.facebook.com/post/974583586343'
+```
 
 ---
 
