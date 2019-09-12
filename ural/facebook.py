@@ -5,8 +5,11 @@
 # Collection of functions crafted to work with Facebook's urls.
 #
 import re
-from urllib.parse import urlsplit, urlunsplit, urljoin, parse_qs
 from collections import namedtuple
+try:
+    from urllib.parse import parse_qs, urljoin, urlsplit, urlunsplit
+except ImportError:
+    from urlparse import parse_qs, urljoin, urlsplit, urlunsplit
 
 from ural.ensure_protocol import ensure_protocol
 
