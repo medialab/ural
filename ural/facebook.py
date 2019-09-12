@@ -5,8 +5,12 @@
 # Collection of functions crafted to work with Facebook's urls.
 #
 import re
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import urlsplit, urlunsplit, urljoin, parse_qs
+from collections import namedtuple
+
 from ural.ensure_protocol import ensure_protocol
+
+BASE_FACEBOOK_URL = 'https://www.facebook.com'
 
 MOBILE_REPLACE_RE = re.compile(r'^([^.]+\.)?facebook\.', re.I)
 
@@ -41,3 +45,38 @@ def convert_facebook_url_to_mobile(url):
         result = result.split('://', 1)[-1]
 
     return result
+
+
+FacebookUser = namedtuple('FacebookUser', ['id', 'handle', 'url'])
+
+
+def extract_user_from_facebook_url(url):
+    if 'facebook.' not in url:
+        url = urljoin(BASE_FACEBOOK_URL, url)
+
+    url = ensure_protocol(url)
+
+    parsed = urlsplit(url)
+
+    if parsed.path == '/profile.php':
+        query = parse_qs(parsed.query)
+
+        user_id = query['id'][0]
+        user_handle = None
+        user_url = urljoin(BASE_FACEBOOK_URL, '/profile.php?id=%s' % user_id)
+    elif parsed.path.startswith('/people'):
+        parts = parsed.path.split('/')
+
+        user_id = parts[3]
+        user_handle = None
+        user_url = urljoin(BASE_FACEBOOK_URL, '/profile.php?id=%s' % user_id)
+    else:
+        user_id = None
+        user_handle = parsed.path.split('/')[1]
+        user_url = urljoin(BASE_FACEBOOK_URL, '/%s' % user_handle)
+
+    return FacebookUser(
+        user_id,
+        user_handle,
+        user_url
+    )
