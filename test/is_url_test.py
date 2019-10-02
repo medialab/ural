@@ -18,7 +18,9 @@ DEFAULT_TESTS = [
     (u'http://مثال.إختبار', True),
     ('http://a.b-.co', False),
     ('http://.www.foo.bar/', False),
-    ('http://www.foo.bar./', False)
+    ('http://www.foo.bar./', False),
+    ('', False),
+    ('    ', False)
 ]
 
 NO_PROTOCOL_TESTS = [
@@ -35,7 +37,9 @@ NO_PROTOCOL_TESTS = [
     ('a.b-.co', False),
     ('.www.foo.bar/', False),
     ('www.foo.bar./', False),
-    ('lemonde.fr/economie/article.php', True)
+    ('lemonde.fr/economie/article.php', True),
+    ('', False),
+    ('    ', False)
 ]
 
 TLD_AWARE_TESTS = [
@@ -43,7 +47,9 @@ TLD_AWARE_TESTS = [
     ('https://lemonde.co.uk', True),
     ('http://lemonde.mesfesses', False),
     ('lemonde.watashiwa', False),
-    ('lefigaro.fr', True)
+    ('lefigaro.fr', True),
+    ('', False),
+    ('    ', False)
 ]
 
 
