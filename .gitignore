@@ -5,7 +5,7 @@ __pycache__
 .vscode
 *.pyx
 *.pyc
-*.ural.egg-info
+*.egg-info
 
 build
 dist
