@@ -24,6 +24,10 @@ def is_url(string, require_protocol=True, tld_aware=False):
         bool: True if the argument is a url, False if not.
 
     """
+    string = string.strip()
+
+    if not string:
+        return False
 
     if not URL_RE.match(string):
         return False
