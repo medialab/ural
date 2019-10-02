@@ -1,6 +1,7 @@
 __pycache__
 .DS_Store
 .pytest_cache
+.python-version
 .vscode
 *.pyx
 *.pyc
