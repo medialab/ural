@@ -108,12 +108,19 @@ from ural import is_url
 
 is_url('https://www2.lemonde.fr')
 >>> True
+
+is_url('lemonde.fr/economie/article.php', require_protocol=False)
+>>> True
+
+is_url('lemonde.falsetld/whatever.html', tld_aware=True)
+>>> False
 ```
 
 *Arguments*
 
 * **string** *string*: string to test.
-* **require_protocol** *boolean*: whether the argument has to have a protocol to be considered a url. Is `True` by default.
+* **require_protocol** *boolean* [`True`]: whether the argument has to have a protocol to be considered a url.
+* **tld_aware** *boolean* [`False`]: whether to check if the url's tld actually exists or not.
 
 ---
 

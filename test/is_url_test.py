@@ -34,13 +34,27 @@ NO_PROTOCOL_TESTS = [
     (u'مثال.إختبار', True),
     ('a.b-.co', False),
     ('.www.foo.bar/', False),
-    ('www.foo.bar./', False)
+    ('www.foo.bar./', False),
+    ('lemonde.fr/economie/article.php', True)
+]
+
+TLD_AWARE_TESTS = [
+    ('http://lemonde.fr', True),
+    ('https://lemonde.co.uk', True),
+    ('http://lemonde.mesfesses', False),
+    ('lemonde.watashiwa', False),
+    ('lefigaro.fr', True)
 ]
 
 
 class TestIsUrl(object):
     def test_basics(self):
+
         for url, result in DEFAULT_TESTS:
             assert is_url(url) == result
+
         for url, result in NO_PROTOCOL_TESTS:
             assert is_url(url, require_protocol=False) == result
+
+        for url, result in TLD_AWARE_TESTS:
+            assert is_url(url, require_protocol=False, tld_aware=True) == result
