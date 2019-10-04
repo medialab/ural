@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
 import re
 
-PROTOCOL_RE = re.compile(r'^[a-zA-Z0-9]*:?//')
+PROTOCOL = r'[a-zA-Z]{0,64}:?//'
+
+PROTOCOL_RE = re.compile(r'^%s' % PROTOCOL)
 
 # Taken from:
 #  https://gist.github.com/dperini/729294
@@ -52,10 +54,10 @@ RESOURCE_PATH = r"(?:[/?#]\S*)?"
 RELAXED_RESOURCE_PATH = r"(?:[/?#][\S ]*)?"
 
 URL_RE = re.compile(
-    r'^([a-zA-Z0-9]*:?//)?%s$' % (URL + RESOURCE_PATH), re.I | re.UNICODE)
+    r'^(?:%s)?%s$' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
 
 URL_IN_TEXT_RE = re.compile(
-    r'([a-zA-Z0-9]*:?//)%s' % (URL + RESOURCE_PATH), re.I | re.UNICODE)
+    r'(%s)%s' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
 
 URL_IN_HTML_RE = re.compile(
     r"<a\s.*?href=(?:\"([.#]+?)\"|\'([.#]+?)\'|([^\s]+?))(?:>|\s.*?>)(?:.*?)<[/ ]?a>",
