@@ -4,11 +4,6 @@
 #
 # A function normalizing the url and returning its parts in the hierarchical order.
 #
-try:
-    from urllib.parse import urlsplit
-except ImportError:
-    from urlparse import urlsplit
-
 from ural.ensure_protocol import ensure_protocol
 from ural.lru_from_url import parsed_url_to_lru
 from ural.normalize_url import normalize_url

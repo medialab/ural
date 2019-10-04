@@ -4,7 +4,6 @@
 #
 # A function removing the protocol from the given url.
 #
-import re
 from ural.patterns import PROTOCOL_RE
 
 

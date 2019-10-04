@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import re
 
 PROTOCOL = r'[a-zA-Z]{0,64}:?//'
-WEB_PROTOCOL = r'(?:(?:(?:https?|ftp|ws):)?//)'
+WEB_PROTOCOL = r'(?:(?:(?:https?|ftp|wss?):)?//)'
 
 PROTOCOL_RE = re.compile(r'^%s' % PROTOCOL)
 WEB_PROTOCOL_RE = re.compile(r'^%s' % WEB_PROTOCOL)

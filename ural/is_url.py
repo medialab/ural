@@ -4,9 +4,8 @@
 #
 # A function returning True if its argument is a url.
 #
-import re
 from tld import get_tld
-from ural.patterns import PROTOCOL_RE, URL_RE
+from ural.patterns import URL_RE, URL_WITH_PROTOCOL_RE
 
 
 def is_url(string, require_protocol=True, tld_aware=False):
@@ -26,13 +25,12 @@ def is_url(string, require_protocol=True, tld_aware=False):
     """
     string = string.strip()
 
+    pattern = URL_WITH_PROTOCOL_RE if require_protocol else URL_RE
+
     if not string:
         return False
 
-    if not URL_RE.match(string):
-        return False
-
-    if require_protocol and not PROTOCOL_RE.match(string):
+    if not pattern.match(string):
         return False
 
     if tld_aware and get_tld(string, fail_silently=True, fix_protocol=True) is None:

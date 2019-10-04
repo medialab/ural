@@ -4,8 +4,6 @@
 #
 # A function checking if the url has a protocol, and adding one if there is none.
 #
-import re
-
 from ural.patterns import PROTOCOL_RE
 
 
