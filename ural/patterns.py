@@ -6,7 +6,7 @@ PROTOCOL_RE = re.compile(r'^[a-zA-Z0-9]*:?//')
 # Taken from:
 #  https://gist.github.com/dperini/729294
 #  https://gist.github.com/pchc2005/b5f13e136a9c9bb2984e5b92802fc7c9
-URL_RE_BASE = URL_REGEX = (
+URL = URL_REGEX = (
     # protocol identifier
     # "(?:(?:(?:https?|ftp):)?//)"
     # user:pass authentication
@@ -45,14 +45,17 @@ URL_RE_BASE = URL_REGEX = (
     # port number (optional)
     r"(?::\d{2,5})?"
     # resource path (optional)
-    r"(?:[/?#]\S*)?"
+    # r"(?:[/?#]\S*)?"
 )
 
+RESOURCE_PATH = r"(?:[/?#]\S*)?"
+RELAXED_RESOURCE_PATH = r"(?:[/?#][\S ]*)?"
+
 URL_RE = re.compile(
-    r'^([a-zA-Z0-9]*:?//)?%s$' % URL_RE_BASE, re.I | re.UNICODE)
+    r'^([a-zA-Z0-9]*:?//)?%s$' % (URL + RESOURCE_PATH), re.I | re.UNICODE)
 
 URL_IN_TEXT_RE = re.compile(
-    r'([a-zA-Z0-9]*:?//)%s' % URL_RE_BASE, re.I | re.UNICODE)
+    r'([a-zA-Z0-9]*:?//)%s' % (URL + RESOURCE_PATH), re.I | re.UNICODE)
 
 HTML_URL_RE = re.compile(
     r"<a\s.*?href=(?:\"([.#]+?)\"|\'([.#]+?)\'|([^\s]+?))(?:>|\s.*?>)(?:.*?)<[/ ]?a>",
