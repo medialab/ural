@@ -58,6 +58,15 @@ RELAXED_RESOURCE_PATH = r"(?:[/?#][\S ]*)?"
 URL_RE = re.compile(
     r'^(?:%s)?%s$' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
 
+URL_WITH_PROTOCOL_RE = re.compile(
+    r'^%s%s$' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
+
+RELAXED_URL = re.compile(
+    r'^(?:%s)?%s$' % (PROTOCOL, URL + RELAXED_RESOURCE_PATH), re.I | re.UNICODE)
+
+RELAXED_URL_WITH_PROTOCOL_RE = re.compile(
+    r'^%s%s$' % (PROTOCOL, URL + RELAXED_RESOURCE_PATH), re.I | re.UNICODE)
+
 URL_IN_TEXT_RE = re.compile(
     r'(%s)%s' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
 
