@@ -57,6 +57,6 @@ URL_RE = re.compile(
 URL_IN_TEXT_RE = re.compile(
     r'([a-zA-Z0-9]*:?//)%s' % (URL + RESOURCE_PATH), re.I | re.UNICODE)
 
-HTML_URL_RE = re.compile(
+URL_IN_HTML_RE = re.compile(
     r"<a\s.*?href=(?:\"([.#]+?)\"|\'([.#]+?)\'|([^\s]+?))(?:>|\s.*?>)(?:.*?)<[/ ]?a>",
     re.DOTALL | re.IGNORECASE)

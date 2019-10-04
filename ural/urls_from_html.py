@@ -7,7 +7,7 @@
 #
 from __future__ import unicode_literals
 import re
-from ural.patterns import HTML_URL_RE
+from ural.patterns import URL_IN_HTML_RE
 
 
 def clean_link(link):
@@ -26,6 +26,6 @@ def urls_from_html(string):
         str: an url.
 
     """
-    for a_tag in re.finditer(HTML_URL_RE, string):
+    for a_tag in re.finditer(URL_IN_HTML_RE, string):
         url = a_tag.group(3)
         yield clean_link(url)
