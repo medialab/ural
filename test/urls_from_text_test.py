@@ -16,7 +16,18 @@ REF_SET = set(["http://mitsha.re/Qg1g30mVD78",
                "http://on.su.org/2rsPeXh",
                "http://foo.com/blah_(wikipedia)#cite-1"])
 
+TEXT_WITH_INVALID_URLS = """
+This is a baaaad url: https://www.bfmtvregain-de-popularite-pour-emmanuel-macron-et-edouard-phi...
+"""
+
 
 class TestUrlsFromText(object):
     def test_basics(self):
         assert set(urls_from_text(TEXT)) == REF_SET
+
+    def test_invalid_urls(self):
+        urls = set(urls_from_text(TEXT_WITH_INVALID_URLS))
+
+        assert urls == {
+            'https://www.bfmtvregain'
+        }
