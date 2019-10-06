@@ -119,8 +119,9 @@ is_url('lemonde.falsetld/whatever.html', tld_aware=True)
 *Arguments*
 
 * **string** *string*: string to test.
-* **require_protocol** *boolean* [`True`]: whether the argument has to have a protocol to be considered a url.
-* **tld_aware** *boolean* [`False`]: whether to check if the url's tld actually exists or not.
+* **require_protocol** *bool* [`True`]: whether the argument has to have a protocol to be considered a url.
+* **tld_aware** *bool* [`False`]: whether to check if the url's tld actually exists or not.
+* **allow_spaces_in_path** *bool* [`False`]: whether the allow spaces in URL paths.
 
 ---
 
@@ -157,12 +158,12 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 *Arguments*
 
 * **url** *string*: URL to normalize.
-* **sort_query** *boolean* [`True`]: whether to sort query items.
-* **strip_authentication** *boolean* [`True`]: whether to strip authentication.
-* **strip_fragment** *boolean|str* [`'except-routing'`]: whether to strip the url's fragment. If set to `except-routing`, will only strip the fragment if the fragment is not deemed to be js routing (i.e. if it contains a `/`).
-* **strip_index** *boolean* [`True`]: whether to strip trailing index.
-* **strip_lang_subdomains** *boolean* [`False`]: whether to strip language subdomains (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
-* **strip_trailing_slash** *boolean* [`False`]: whether to strip trailing slash.
+* **sort_query** *bool* [`True`]: whether to sort query items.
+* **strip_authentication** *bool* [`True`]: whether to strip authentication.
+* **strip_fragment** *bool|str* [`'except-routing'`]: whether to strip the url's fragment. If set to `except-routing`, will only strip the fragment if the fragment is not deemed to be js routing (i.e. if it contains a `/`).
+* **strip_index** *bool* [`True`]: whether to strip trailing index.
+* **strip_lang_subdomains** *bool* [`False`]: whether to strip language subdomains (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
+* **strip_trailing_slash** *bool* [`False`]: whether to strip trailing slash.
 
 ---
 

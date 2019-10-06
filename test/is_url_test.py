@@ -20,6 +20,7 @@ DEFAULT_TESTS = [
     ('http://a.b-.co', False),
     ('http://.www.foo.bar/', False),
     ('http://www.foo.bar./', True),
+    ('http://lemonde.fr/path with spaces', False),
     ('', False),
     ('    ', False)
 ]
@@ -55,6 +56,14 @@ TLD_AWARE_TESTS = [
     ('    ', False)
 ]
 
+RELAXED_TESTS = [
+    ('http://lemonde.fr', True),
+    ('http://lemonde.fr/path/is/ok', True),
+    ('http://lemonde.fr/path with spaces', True),
+    ('lemonde.fr/path with spaces', True),
+    ('http://www.jura.gouv.fr/content/download/17618/129500/file/agenda public pr%C3%A9visionnel du pr%C3%A9fet du Jura- semaine 31.pdf', True)
+]
+
 
 class TestIsUrl(object):
     def test_basics(self):
@@ -67,3 +76,6 @@ class TestIsUrl(object):
 
         for url, result in TLD_AWARE_TESTS:
             assert is_url(url, require_protocol=False, tld_aware=True) == result
+
+        for url, result in RELAXED_TESTS:
+            assert is_url(url, require_protocol=False, allow_spaces_in_path=True) == result
