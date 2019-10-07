@@ -21,7 +21,4 @@ setup(name='ural',
         'pycountry>=18.12.8',
         'tld>=0.9.3'
       ],
-      entry_points={
-        'console_scripts': ['ural=ural.cli.__main__:main']
-      },
       zip_safe=True)
