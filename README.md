@@ -122,6 +122,7 @@ is_url('lemonde.falsetld/whatever.html', tld_aware=True)
 * **require_protocol** *bool* [`True`]: whether the argument has to have a protocol to be considered a url.
 * **tld_aware** *bool* [`False`]: whether to check if the url's tld actually exists or not.
 * **allow_spaces_in_path** *bool* [`False`]: whether the allow spaces in URL paths.
+* **only_http_https** *bool* [`True`]: whether to only allow the `http` and `https` protocols.
 
 ---
 

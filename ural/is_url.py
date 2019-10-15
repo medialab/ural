@@ -9,12 +9,13 @@ from ural.patterns import (
     URL_RE,
     URL_WITH_PROTOCOL_RE,
     RELAXED_URL,
-    RELAXED_URL_WITH_PROTOCOL_RE
+    RELAXED_URL_WITH_PROTOCOL_RE,
+    HTTP_PROTOCOL_RE
 )
 
 
 def is_url(string, require_protocol=True, tld_aware=False,
-           allow_spaces_in_path=False):
+           allow_spaces_in_path=False, only_http_https=True):
     """
     Function returning True if its string argument is a url.
 
@@ -26,6 +27,8 @@ def is_url(string, require_protocol=True, tld_aware=False,
             exists. Defaults to False.
         allow_spaces_in_path (bool, optional): whether to accept spaces in
             the url's path. Defaults to False.
+        only_http_https (bool, optional): Whether to only allow http and https
+            protocols.
 
     Returns:
         bool: True if the argument is a url, False if not.
@@ -37,6 +40,10 @@ def is_url(string, require_protocol=True, tld_aware=False,
         return False
 
     if require_protocol:
+
+        if only_http_https and not HTTP_PROTOCOL_RE.match(string):
+            return False
+
         if allow_spaces_in_path:
             pattern = RELAXED_URL_WITH_PROTOCOL_RE
         else:

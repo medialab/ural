@@ -64,6 +64,11 @@ RELAXED_TESTS = [
     ('http://www.jura.gouv.fr/content/download/17618/129500/file/agenda public pr%C3%A9visionnel du pr%C3%A9fet du Jura- semaine 31.pdf', True)
 ]
 
+ONLY_HTTP_HTTPS_TESTS = [
+    ('http://lemonde.fr', True),
+    ('wss://lemonde.fr/websockets', False)
+]
+
 
 class TestIsUrl(object):
     def test_basics(self):
@@ -79,3 +84,6 @@ class TestIsUrl(object):
 
         for url, result in RELAXED_TESTS:
             assert is_url(url, require_protocol=False, allow_spaces_in_path=True) == result
+
+        for url, result in ONLY_HTTP_HTTPS_TESTS:
+            assert is_url(url, only_http_https=True) == result
