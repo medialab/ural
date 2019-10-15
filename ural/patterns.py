@@ -3,9 +3,11 @@ import re
 
 PROTOCOL = r'[a-zA-Z]{0,64}:?//'
 WEB_PROTOCOL = r'(?:(?:(?:https?|ftp|wss?):)?//)'
+HTTP_PROTOCOL = r'https?://'
 
 PROTOCOL_RE = re.compile(r'^%s' % PROTOCOL)
 WEB_PROTOCOL_RE = re.compile(r'^%s' % WEB_PROTOCOL)
+HTTP_PROTOCOL_RE = re.compile(r'^%s' % HTTP_PROTOCOL)
 
 # Taken from:
 #  https://gist.github.com/dperini/729294
