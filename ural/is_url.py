@@ -22,7 +22,7 @@ def is_url(string, require_protocol=True, tld_aware=False,
         string (str): string to test.
         require_protocol (bool, optional): whether the argument has to have a
             protocol to be considered a url. Defaults to True.
-        tld_aware (bool, optional): whether to check whether the url's tld
+        tld_aware (bool, optional): whether to check if the url's tld
             exists. Defaults to False.
         allow_spaces_in_path (bool, optional): whether to accept spaces in
             the url's path. Defaults to False.
