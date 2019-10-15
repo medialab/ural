@@ -33,6 +33,9 @@ def is_url(string, require_protocol=True, tld_aware=False,
     """
     string = string.strip()
 
+    if not string:
+        return False
+
     if require_protocol:
         if allow_spaces_in_path:
             pattern = RELAXED_URL_WITH_PROTOCOL_RE
@@ -43,9 +46,6 @@ def is_url(string, require_protocol=True, tld_aware=False,
             pattern = RELAXED_URL
         else:
             pattern = URL_RE
-
-    if not string:
-        return False
 
     if not pattern.match(string):
         return False
