@@ -23,6 +23,8 @@ DEFAULT_TESTS = [
     ('http://lemonde.fr/path with spaces', False),
     ('http://localhost', True),
     ('https://localhost:80/test.html', True),
+    ('http://xn--bcher-kva.ch/index.html', True),
+    ('http://bücher.ch/index.html', True),
     ('', False),
     ('    ', False)
 ]
