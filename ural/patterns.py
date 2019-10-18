@@ -30,6 +30,8 @@ URL = URL_REGEX = (
     r"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}"
     r"(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))"
     r"|"
+    r"localhost"
+    r"|"
     # host & domain names, may end with dot
     # can be replaced by a shortest alternative
     # r"(?![-_])(?:[-\w\u00a1-\uffff]{0,63}[^-_]\.)+"
@@ -54,6 +56,8 @@ URL = URL_REGEX = (
 
 RESOURCE_PATH = r"(?:[/?#]\S*)?"
 RELAXED_RESOURCE_PATH = r"(?:[/?#][\S ]*)?"
+
+SPECIAL_HOSTS_RE = re.compile(r'^localhost|(\d{1,3}\.){3}\d{1,3}|\[[\da-f]*:[\da-f:]*\]$', re.I)
 
 URL_RE = re.compile(
     r'^(?:%s)?%s$' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)

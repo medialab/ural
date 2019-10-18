@@ -21,6 +21,8 @@ DEFAULT_TESTS = [
     ('http://.www.foo.bar/', False),
     ('http://www.foo.bar./', True),
     ('http://lemonde.fr/path with spaces', False),
+    ('http://localhost', True),
+    ('https://localhost:80/test.html', True),
     ('', False),
     ('    ', False)
 ]
@@ -41,6 +43,7 @@ NO_PROTOCOL_TESTS = [
     ('.www.foo.bar/', False),
     ('www.foo.bar./', True),
     ('lemonde.fr/economie/article.php', True),
+    ('localhost', True),
     ('', False),
     ('    ', False)
 ]
@@ -51,7 +54,14 @@ TLD_AWARE_TESTS = [
     ('https://lemonde.co.uk', True),
     ('http://lemonde.mesfesses', False),
     ('lemonde.watashiwa', False),
+    ('http://user@lemonde.fr', True),
+    ('http://user:mdp@lemonde.fr:7474', True),
+    ('http://user:mdp@lemonde.mesfesses', False),
     ('lefigaro.fr', True),
+    ('http://localhost', True),
+    ('localhost', True),
+    ('http://194.245.235.98/test', True),
+    ('http://user:mdp@194.245.235.98/test', True),
     ('', False),
     ('    ', False)
 ]

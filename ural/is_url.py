@@ -4,12 +4,13 @@
 #
 # A function returning True if its argument is a url.
 #
-from tld import get_tld
+from tld.utils import process_url
 from ural.patterns import (
     URL_RE,
     URL_WITH_PROTOCOL_RE,
     RELAXED_URL,
-    RELAXED_URL_WITH_PROTOCOL_RE
+    RELAXED_URL_WITH_PROTOCOL_RE,
+    SPECIAL_HOSTS_RE
 )
 
 
@@ -50,7 +51,19 @@ def is_url(string, require_protocol=True, tld_aware=False,
     if not pattern.match(string):
         return False
 
-    if tld_aware and get_tld(string, fail_silently=True, fix_protocol=True) is None:
-        return False
+    if tld_aware:
+        domain_parts, non_zero_i, parsed_url = process_url(
+            url=string,
+            fail_silently=True,
+            fix_protocol=not require_protocol,
+            search_public=True,
+            search_private=True
+        )
+
+        if domain_parts is None:
+            if not parsed_url:
+                return False
+
+            return bool(SPECIAL_HOSTS_RE.match(parsed_url.hostname))
 
     return True
