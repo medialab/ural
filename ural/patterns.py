@@ -3,14 +3,16 @@ import re
 
 PROTOCOL = r'[a-zA-Z]{0,64}:?//'
 WEB_PROTOCOL = r'(?:(?:(?:https?|ftp|wss?):)?//)'
+HTTP_PROTOCOL = r'https?://'
 
 PROTOCOL_RE = re.compile(r'^%s' % PROTOCOL)
 WEB_PROTOCOL_RE = re.compile(r'^%s' % WEB_PROTOCOL)
+HTTP_PROTOCOL_RE = re.compile(r'^%s' % HTTP_PROTOCOL)
 
 # Taken from:
 #  https://gist.github.com/dperini/729294
 #  https://gist.github.com/pchc2005/b5f13e136a9c9bb2984e5b92802fc7c9
-URL = URL_REGEX = (
+URL = (
     # protocol identifier
     # "(?:(?:(?:https?|ftp):)?//)"
     # user:pass authentication
