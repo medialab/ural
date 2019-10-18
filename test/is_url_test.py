@@ -64,6 +64,7 @@ TLD_AWARE_TESTS = [
     ('localhost', True),
     ('http://194.245.235.98/test', True),
     ('http://user:mdp@194.245.235.98/test', True),
+    ('http://91.212.7.144/hronika/tanjug-makron-zbog-politicke-krize-u-francuskoj-da-pomeri-posetu-srbiji.html', True),
     ('', False),
     ('    ', False)
 ]
