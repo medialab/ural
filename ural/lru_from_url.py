@@ -12,7 +12,7 @@ except ImportError:
 from ural.ensure_protocol import ensure_protocol
 
 
-def parsed_url_to_lru(parsed_url):
+def parsed_url_to_lru(parsed_url, tld_aware=False):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
@@ -64,7 +64,7 @@ def parsed_url_to_lru(parsed_url):
     return lru
 
 
-def lru_from_url(url, default_protocol='http'):
+def lru_from_url(url, default_protocol='http', tld_aware=False):
     """
     Function returning the parts of the given url in the hierarchical order (lru).
 
@@ -78,4 +78,4 @@ def lru_from_url(url, default_protocol='http'):
     """
 
     full_url = ensure_protocol(url, protocol=default_protocol)
-    return parsed_url_to_lru(urlsplit(full_url))
+    return parsed_url_to_lru(urlsplit(full_url), tld_aware=tld_aware)

@@ -15,7 +15,12 @@ DEFAULT_TESTS = [
     ('site.com/page/', ['s:http', 'h:com', 'h:site', 'p:page', 'p:']),
     ('site.com?', ['s:http', 'h:com', 'h:site']),
     ('http://user@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user']),
-    ('http://user:mdp@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user', 'w:mdp'])
+    ('http://user:mdp@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user', 'w:mdp']),
+    ('http://theguardian.co.uk', ['s:http', 'h:uk', 'h:co', 'h:theguardian'])
+]
+
+TLD_AWARE_TESTS = [
+    ('http://theguardian.co.uk', ['s:http', 'h:co.uk', 'h:theguardian'])
 ]
 
 
