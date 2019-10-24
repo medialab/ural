@@ -14,8 +14,8 @@ DEFAULT_TESTS = [
                                 'h:bar', 'h:foo', 'h:www', 'p:index.html']),
     ('site.com/page/', ['s:http', 'h:com', 'h:site', 'p:page', 'p:']),
     ('site.com?', ['s:http', 'h:com', 'h:site']),
-    ('http://user@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'a:user']),
-    ('http://user:mdp@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'a:user', 'w:mdp'])
+    ('http://user@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user']),
+    ('http://user:mdp@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user', 'w:mdp'])
 ]
 
 

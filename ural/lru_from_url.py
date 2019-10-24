@@ -15,24 +15,51 @@ from ural.ensure_protocol import ensure_protocol
 def parsed_url_to_lru(parsed_url):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
+
     if scheme:
         lru.append('s:' + scheme)
 
+    user = None
+    password = None
+
+    # Handling auth
+    if '@' in netloc:
+        auth, netloc = netloc.split('@', 1)
+
+        if ':' in auth:
+            user, password = auth.split(':', 1)
+        else:
+            user = auth
+
     # Parsing domain & port
-    netloc = netloc.split(':')
+    netloc = netloc.split(':', 1)
+
     if len(netloc) == 2:
         port = netloc[1]
         lru.append('t:' + port)
+
     for element in reversed(netloc[0].split('.')):
         lru.append('h:' + element)
 
-    # Parsing the path
+    # Path
     for element in path.split('/')[1:]:
         lru.append('p:' + element)
+
+    # Query
     if query and query[0]:
         lru.append('q:' + query)
+
+    # Fragment
     if fragment and fragment[0]:
         lru.append('f:' + fragment)
+
+    # User
+    if user:
+        lru.append('u:' + user)
+
+    # Password
+    if password:
+        lru.append('w:' + password)
 
     return lru
 
