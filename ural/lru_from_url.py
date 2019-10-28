@@ -5,14 +5,18 @@
 # A function returning the url parts in hierarchical order.
 #
 try:
-    from urllib.parse import urlsplit
+    from urllib.parse import urlsplit, urlunsplit
 except ImportError:
-    from urlparse import urlsplit
+    from urlparse import urlsplit, urlunsplit
+
+
 
 from ural.ensure_protocol import ensure_protocol
+from tld.utils import process_url
 
 
-def parsed_url_to_lru(parsed_url, tld_aware=False):
+
+def parsed_url_to_lru(parsed_url, tld_aware=True, require_protocol=False):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
@@ -38,8 +42,24 @@ def parsed_url_to_lru(parsed_url, tld_aware=False):
         port = netloc[1]
         lru.append('t:' + port)
 
-    for element in reversed(netloc[0].split('.')):
-        lru.append('h:' + element)
+    #Parsing domain if TLD_Aware=True 
+    if tld_aware:
+        url = urlunsplit(parsed_url)
+        domain_parts, non_zero_i, _ = process_url(
+            url=url,
+            fail_silently=True,
+            fix_protocol=not require_protocol,
+            search_public=True,
+            search_private=True
+        )
+        tld = '.'.join(domain_parts[non_zero_i:])
+        lru.append('h:' + tld)
+        for element in reversed(domain_parts[0:non_zero_i]):
+            lru.append('h:' + element)
+
+    else:
+        for element in reversed(netloc[0].split('.')):
+            lru.append('h:' + element)
 
     # Path
     for element in path.split('/')[1:]:
@@ -60,7 +80,6 @@ def parsed_url_to_lru(parsed_url, tld_aware=False):
     # Password
     if password:
         lru.append('w:' + password)
-
     return lru
 
 
