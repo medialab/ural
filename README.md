@@ -27,8 +27,10 @@ pip install ural
 
 *LRU-related functions*
 
-* [lru.lru_stems](#lru-lru_stems)
-* [lru.normalized_lru_stems](#lru-normalized_lru_stems)
+<small><a href="#lru-explanation">What on earth is a LRU?</a></small>
+
+* [lru.lru_stems](#lrulru_stems)
+* [lru.normalized_lru_stems](#lrunormalized_lru_stems)
 
 *LRU-related classes*
 
@@ -339,3 +341,36 @@ for value in trie.values():
 >>> {'media': 'liberation'}
 >>> {'media': 'lefigaro'}
 ```
+
+---
+
+## Miscellaneous
+
+<h2 id="lru-explanation">About LRUs</h2>
+
+If you look closely to a URL, you will quickly notice that they are not written in a sound hierarchical order. In this url, for instance:
+
+```
+http://business.lemonde.fr/articles/money.html?id=34#content
+```
+
+Some parts, such as the subdomain, are written in an "incorrect order". And this is fine, really, this is how urls always worked.
+
+But if you want to really match urls, you will need to reorder it so that this order closely reflects hierarchy of content. And this is exactly what a LRU is (and also a bad pun on URL, since LRU is basically a "reversed" URL).
+
+Here is how the beforementioned URL would be transformed into LRU stems:
+
+```python
+[
+  's:http',
+  'h:fr',
+  'h:lemonde',
+  'h:business',
+  'p:articles',
+  'money.html',
+  'q:id=34',
+  'f:content'
+]
+```
+
+And this will tremendously help, when combined with prefix queries, if you need to match urls.
