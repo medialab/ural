@@ -6,14 +6,14 @@
 # allowing to find the longest common prefix between two urls.
 #
 from phylactery import TrieDict
-from ural.normalized_lru_from_url import normalized_lru_from_url
+from ural.lru import normalized_lru_stems
 from functools import partial
 
 
 class LRUTrie(object):
     def __init__(self, **kwargs):
         self.trie = TrieDict()
-        self.normalize = partial(normalized_lru_from_url, **kwargs)
+        self.normalize = partial(normalized_lru_stems, **kwargs)
 
     def set(self, url, metadata):
         lru = self.normalize(url)

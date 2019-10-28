@@ -1,19 +1,20 @@
 # =============================================================================
-# Ural LRU from URL Function
+# Ural LRU Stems Function
 # =============================================================================
 #
 # A function returning the url parts in hierarchical order.
 #
+from tld.utils import process_url
 try:
     from urllib.parse import urlsplit, urlunsplit
 except ImportError:
     from urlparse import urlsplit, urlunsplit
 
 from ural.ensure_protocol import ensure_protocol
-from tld.utils import process_url
+from ural.normalize_url import normalize_url
 
 
-def parsed_url_to_lru(parsed_url, tld_aware=True):
+def lru_stems_from_parse_url(parsed_url, tld_aware=True):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
@@ -80,18 +81,23 @@ def parsed_url_to_lru(parsed_url, tld_aware=True):
     return lru
 
 
-def lru_from_url(url, default_protocol='http', tld_aware=False):
+# TODO: ensure_protocol
+def lru_stems(url, tld_aware=False):
     """
     Function returning the parts of the given url in the hierarchical order (lru).
 
     Args:
         url (str): Target URL as a string.
-        default_protocol (str, optional): Protocol to add if there is none.
-            Defaults to `'http'`.
 
     Returns:
         list: The lru, with a prefix identifying the type of each part.
     """
 
-    full_url = ensure_protocol(url, protocol=default_protocol)
-    return parsed_url_to_lru(urlsplit(full_url), tld_aware=tld_aware)
+    full_url = ensure_protocol(url)
+    return lru_stems_from_parse_url(urlsplit(full_url), tld_aware=tld_aware)
+
+
+def normalized_lru_stems(url, **kwargs):
+    full_url = ensure_protocol(url)
+    parsed_url = normalize_url(full_url, parsed=True, **kwargs)
+    return lru_stems_from_parse_url(parsed_url)
