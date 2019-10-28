@@ -9,14 +9,11 @@ try:
 except ImportError:
     from urlparse import urlsplit, urlunsplit
 
-
-
 from ural.ensure_protocol import ensure_protocol
 from tld.utils import process_url
 
 
-
-def parsed_url_to_lru(parsed_url, tld_aware=True, require_protocol=False):
+def parsed_url_to_lru(parsed_url, tld_aware=True):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
@@ -42,13 +39,13 @@ def parsed_url_to_lru(parsed_url, tld_aware=True, require_protocol=False):
         port = netloc[1]
         lru.append('t:' + port)
 
-    #Parsing domain if TLD_Aware=True 
+    # Parsing domain if TLD_Aware=True
     if tld_aware:
         url = urlunsplit(parsed_url)
         domain_parts, non_zero_i, _ = process_url(
             url=url,
             fail_silently=True,
-            fix_protocol=not require_protocol,
+            fix_protocol=False,
             search_public=True,
             search_private=True
         )

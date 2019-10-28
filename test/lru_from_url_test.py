@@ -27,5 +27,7 @@ TLD_AWARE_TESTS = [
 
 class TestIsUrl(object):
     def test_basics(self):
+        for url, result in DEFAULT_TESTS:
+            assert lru_from_url(url, tld_aware=False) == result
         for url, result in TLD_AWARE_TESTS:
             assert lru_from_url(url, tld_aware=True) == result
