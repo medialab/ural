@@ -11,7 +11,7 @@ DEFAULT_TESTS = [
 ]
 
 
-class TestIsUrl(object):
+class TestNormalizedLru(object):
     def test_basics(self):
         for url, lru in DEFAULT_TESTS:
             assert normalized_lru_stems(url) == lru

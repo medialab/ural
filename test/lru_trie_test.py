@@ -3,12 +3,12 @@
 # =============================================================================
 # Ural LRUTrie Unit Tests
 # =============================================================================
-from ural import LRUTrie
+from ural.lru import NormalizedLRUTrie
 
 
-class TestLRUTrie(object):
+class TestNormalizedLRUTrie(object):
     def test_basics(self):
-        trie = LRUTrie()
+        trie = NormalizedLRUTrie()
         trie.set('http://www.lemonde.fr', {'media': 'lemonde'})
         trie.set('http://www.lemonde.fr/politique/article',
                  {'media': 'lemonde', 'type': 'article'})

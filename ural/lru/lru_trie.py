@@ -10,7 +10,7 @@ from ural.lru import normalized_lru_stems
 from functools import partial
 
 
-class LRUTrie(object):
+class NormalizedLRUTrie(object):
     def __init__(self, **kwargs):
         self.trie = TrieDict()
         self.normalize = partial(normalized_lru_stems, **kwargs)
