@@ -365,7 +365,7 @@ Now look how the beforementioned URL could be splitted into LRU stems:
   'h:lemonde',
   'h:business',
   'p:articles',
-  'money.html',
+  'p:money.html',
   'q:id=34',
   'f:content'
 ]
