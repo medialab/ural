@@ -14,20 +14,28 @@ pip install ural
 
 ## Usage
 
-### Functions
-
 *Generic functions*
 
 * [ensure_protocol](#ensure_protocol)
 * [get_domain_name](#get_domain_name)
 * [force_protocol](#force_protocol)
 * [is_url](#is_url)
-* [lru_from_url](#lru_from_url)
 * [normalize_url](#normalize_url)
-* [normalized_lru_from_url](#normalized_lru_from_url)
 * [strip_protocol](#strip_protocol)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
+
+*LRU-related functions*
+
+* [lru.lru_stems](#lru-lru_stems)
+* [lru.normalized_lru_stems](#lru-normalized_lru_stems)
+
+*LRU-related classes*
+
+* [NormalizedLRUTrie](#NormalizedLRUTrie)
+  * [set](#set)
+  * [match](#match)
+  * [values](#values)
 
 *Platform-specific functions*
 
@@ -35,18 +43,9 @@ pip install ural
   * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
   * [extract_user_from_url](#extract_user_from_url)
 
-### Classes
-
-* [LRUTrie](#LRUTrie)
-  * [set](#set)
-  * [match](#match)
-  * [values](#values)
-
 ---
 
-### Functions
-
-#### ensure_protocol
+### ensure_protocol
 
 Function checking if the url has a protocol, and adding the given one if there is none.
 
@@ -64,7 +63,7 @@ ensure_protocol('www2.lemonde.fr', protocol='https')
 
 ---
 
-#### get_domain_name
+### get_domain_name
 
 Function returning an url's domain name. This function is of course tld-aware and will return `None` if no valid domain name can be found.
 
@@ -81,7 +80,7 @@ get_domain_name('https://facebook.com/path')
 
 ---
 
-#### force_protocol
+### force_protocol
 
 Function force-replacing the protocol of the given url.
 
@@ -99,7 +98,7 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 ---
 
-#### is_url
+### is_url
 
 Function returning True if its argument is a url.
 
@@ -126,24 +125,7 @@ is_url('lemonde.falsetld/whatever.html', tld_aware=True)
 
 ---
 
-#### lru_from_url
-
-Function returning url parts in hierarchical order.
-
-```python
-from ural import lru_from_url
-
-lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
->>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:field=value', 'f:2']
-```
-
-*Arguments*
-
-* **url** *string*: URL to parse.
-
----
-
-#### normalize_url
+### normalize_url
 
 Function normalizing the given url by stripping it of usually non-discriminant parts such as irrelevant query items or sub-domains etc.
 
@@ -168,24 +150,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
-#### normalized_lru_from_url
-
-Function normalizing url and returning its parts in hierarchical order.
-
-```python
-from ural import normalized_lru_from_url
-
-normalized_lru_from_url('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
->>> ['t:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
-```
-
-*Arguments*
-
-This function accepts the same arguments as [normalize_url](#normalize_url).
-
----
-
-#### strip_protocol
+### strip_protocol
 
 Function removing the protocol from the url.
 
@@ -202,7 +167,7 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 
 ---
 
-#### urls_from_html
+### urls_from_html
 
 Function returning an iterator over the urls present in the links of given HTML text.
 
@@ -222,7 +187,7 @@ for url in urls_from_html(html):
 
 ---
 
-#### urls_from_text
+### urls_from_text
 
 Function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
 
@@ -274,20 +239,52 @@ extract_user_from_url('/annelaure.rivolu?rc=p&__tn__=R')
 
 ---
 
-### Classes
+### lru.lru_stems
 
-#### LRUTrie
+Function returning url parts in hierarchical order.
+
+```python
+from ural.lru import lru_stems
+
+lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:field=value', 'f:2']
+```
+
+*Arguments*
+
+* **url** *string*: URL to parse.
+
+---
+
+### lru.normalized_lru_stems
+
+Function normalizing url and returning its parts in hierarchical order.
+
+```python
+from ural.lru import normalized_lru_stems
+
+normalized_lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> ['t:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
+```
+
+*Arguments*
+
+This function accepts the same arguments as [normalize_url](#normalize_url).
+
+---
+
+### NormalizedLRUTrie
 
 Class implementing a prefix tree (Trie) storing LRUs and their metadata, allowing to find the longest common prefix between two urls.
 
-##### set
+#### set
 
-A function storing an url in a LRUTrie along with its metadata.
+A method storing an url in a LRUTrie along with its metadata.
 
 ```python
-from ural import LRUTrie
+from ural.lru import NormalizedLRUTrie
 
-trie = LRUTrie()
+trie = NormalizedLRUTrie()
 trie.set('http://www.lemonde.fr', {'type': 'general press'})
 
 trie.match('http://www.lemonde.fr')
@@ -296,20 +293,20 @@ trie.match('http://www.lemonde.fr')
 
 *Arguments*
 
-* **url** *string*: url to store in the LRUTrie.
+* **url** *string*: url to store in the NormalizedLRUTrie.
 * **metadata** *dict*: metadata of the url.
 
 ---
 
-##### match
+#### match
 
-Method returning the metadata of the given url as it is stored in the LRUTrie.
-If the exact given url doesn't exist in the LRUTrie, it returns the metadata of the longest common prefix, or `None` if there is no common prefix.
+Method returning the metadata of the given url as it is stored in the NormalizedLRUTrie.
+If the exact given url doesn't exist in the NormalizedLRUTrie, it returns the metadata of the longest common prefix, or `None` if there is no common prefix.
 
 ```python
-from ural import LRUTrie
+from ural.lru import NormalizedLRUTrie
 
-trie = LRUTrie()
+trie = NormalizedLRUTrie()
 trie.set('http://www.lemonde.fr', {'media': 'lemonde'})
 
 trie.match('http://www.lemonde.fr')
@@ -320,18 +317,18 @@ trie.match('http://www.lemonde.fr/politique')
 
 *Arguments*
 
-* **url** *string*: url to match in the LRUTrie.
+* **url** *string*: url to match in the NormalizedLRUTrie.
 
 ---
 
-##### values
+#### values
 
-Method yielding the metadata of each url stored in the LRUTrie.
+Method yielding the metadata of each url stored in the NormalizedLRUTrie.
 
 ```python
-from ural import LRUTrie
+from ural.lru import NormalizedLRUTrie
 
-trie = LRUTrie()
+trie = NormalizedLRUTrie()
 trie.set('http://www.lemonde.fr', {'media' : 'lemonde'})
 trie.set('http://www.lefigaro.fr', {'media' : 'lefigaro'})
 trie.set('https://www.liberation.fr', {'media' : 'liberation'})
