@@ -11,5 +11,5 @@ def serialize_lru(stems):
 
 
 def unserialize_lru(serial):
-    serial = serial[:-1]
-    return serial.split("|")
+    serial = serial.rstrip('|')
+    return serial.split('|')
