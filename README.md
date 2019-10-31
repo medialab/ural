@@ -208,37 +208,6 @@ for url in urls_from_text(text):
 
 ---
 
-### Facebook
-
-#### convert_facebook_url_to_mobile
-
-Function returning the mobile version of the given Facebook url. Will raise an exception if a non-Facebook url is given.
-
-```python
-from ural.facebook import convert_facebook_url_to_mobile
-
-convert_facebook_url_to_mobile('http://www.facebook.com/post/974583586343')
->>> 'http://m.facebook.com/post/974583586343'
-```
-
----
-
-#### extract_user_from_url
-
-Function extracting user information from a facebook user url.
-
-```python
-from ural.facebook import extract_user_from_url
-
-extract_user_from_url('https://www.facebook.com/people/Sophia-Aman/102016783928989')
->>> FacebookUser(id='102016783928989', handle=None, url='https://www.facebook.com/profile.php?id=102016783928989)
-
-extract_user_from_url('/annelaure.rivolu?rc=p&__tn__=R')
->>> FacebookUser(id=None, handle='annelaure.rivolu', url='https://www.facebook.com/annelaure.rivolu)
-```
-
----
-
 ### lru.lru_stems
 
 Function returning url parts in hierarchical order.
@@ -338,6 +307,37 @@ for value in trie.values():
 >>> {'media': 'lemonde'}
 >>> {'media': 'liberation'}
 >>> {'media': 'lefigaro'}
+```
+
+---
+
+### Facebook
+
+#### convert_facebook_url_to_mobile
+
+Function returning the mobile version of the given Facebook url. Will raise an exception if a non-Facebook url is given.
+
+```python
+from ural.facebook import convert_facebook_url_to_mobile
+
+convert_facebook_url_to_mobile('http://www.facebook.com/post/974583586343')
+>>> 'http://m.facebook.com/post/974583586343'
+```
+
+---
+
+#### extract_user_from_url
+
+Function extracting user information from a facebook user url.
+
+```python
+from ural.facebook import extract_user_from_url
+
+extract_user_from_url('https://www.facebook.com/people/Sophia-Aman/102016783928989')
+>>> FacebookUser(id='102016783928989', handle=None, url='https://www.facebook.com/profile.php?id=102016783928989)
+
+extract_user_from_url('/annelaure.rivolu?rc=p&__tn__=R')
+>>> FacebookUser(id=None, handle='annelaure.rivolu', url='https://www.facebook.com/annelaure.rivolu)
 ```
 
 ---
