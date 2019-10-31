@@ -6,9 +6,9 @@
 #
 from tld.utils import process_url
 try:
-    from urllib.parse import urlsplit, urlunsplit
+    from urllib.parse import urlsplit
 except ImportError:
-    from urlparse import urlsplit, urlunsplit
+    from urlparse import urlsplit
 
 from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
@@ -40,11 +40,10 @@ def lru_stems_from_parse_url(parsed_url, tld_aware=True):
         port = netloc[1]
         lru.append('t:' + port)
 
-    # Parsing domain if TLD_Aware=True
+    # Need to process TLD?
     if tld_aware:
-        url = urlunsplit(parsed_url)
         domain_parts, non_zero_i, _ = process_url(
-            url=url,
+            url=parsed_url,
             fail_silently=True,
             fix_protocol=False,
             search_public=True,
@@ -97,7 +96,7 @@ def lru_stems(url, tld_aware=False):
     return lru_stems_from_parse_url(urlsplit(full_url), tld_aware=tld_aware)
 
 
-def normalized_lru_stems(url, **kwargs):
+def normalized_lru_stems(url, tld_aware=False, **kwargs):
     full_url = ensure_protocol(url)
     parsed_url = normalize_url(full_url, parsed=True, **kwargs)
-    return lru_stems_from_parse_url(parsed_url)
+    return lru_stems_from_parse_url(parsed_url, tld_aware=tld_aware)
