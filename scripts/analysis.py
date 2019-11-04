@@ -3,6 +3,8 @@ from urllib.parse import urlsplit, parse_qsl
 from collections import Counter
 from tqdm import tqdm
 
+from ural import normalize_url
+
 TOP = 50
 
 FRAGMENTS = Counter()
@@ -12,6 +14,7 @@ QUERIES_COMBO = Counter()
 with open('./scripts/data/urls.csv') as f:
     for line in tqdm(f, desc='Reading urls'):
         url = line.strip()[1:-1]
+        url = normalize_url(url, strip_protocol=False)
         parsed = urlsplit(url)
 
         FRAGMENTS[parsed.fragment] += 1
