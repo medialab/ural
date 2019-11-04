@@ -21,7 +21,8 @@ IRRELEVANT_QUERY_RE = re.compile(
 IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.', re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
-    'ref': ('fb', 'ts', 'tw', 'tw_i'),
+    'ref': ('fb', 'ts', 'tw', 'tw_i', 'twitter'),
+    'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter'),
     'platform': ('hootsuite', )
 }
 
