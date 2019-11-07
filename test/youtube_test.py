@@ -8,7 +8,7 @@ from ural.youtube import (
 
 IS_YOUTUBE_URL_TESTS = [
     ('https://youtube.com', True),
-    ('youtu.be/ugèètef', True),
+    ('youtu.be/ugroiehfetef', True),
     ('http://www.lemonde.fr', False)
 ]
 
