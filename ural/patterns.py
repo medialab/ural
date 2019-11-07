@@ -79,3 +79,6 @@ URL_IN_TEXT_RE = re.compile(
 URL_IN_HTML_RE = re.compile(
     r"<a\s.*?href=(?:\"([.#]+?)\"|\'([.#]+?)\'|([^\s]+?))(?:>|\s.*?>)(?:.*?)<[/ ]?a>",
     re.DOTALL | re.IGNORECASE)
+
+QUERY_VALUE_IN_URL = r'[?&]%s=([^&]+)'
+QUERY_VALUE = r'%s=([^&]+)'
