@@ -70,12 +70,12 @@ PARSE_TESTS = [
         YoutubeVideo(id='yEtmZKE5jhw', user=None)
     ),
     (
-        'http://www.youtube.com/profile_redirector/110077902589047450572',
-        None
-    ),
-    (
         'https://www.youtube.com/PressecitronHD/',
         YoutubeChannel(id=None, name='PressecitronHD')
+    ),
+    (
+        'http://www.youtube.com/profile_redirector/102339060754169863014',
+        YoutubeUser(id='102339060754169863014', name=None)
     )
 ]
 

@@ -10,13 +10,16 @@ BLACKLIST = {
     'https://gaming.youtube.com',
     'https://music.youtube.com',
     'https://studio.youtube.com',
-    'http://www.youtube.com/channels/paid_channels'
+    'http://www.youtube.com/channels/paid_channels',
+    'https://www.youtube.com/watch?v%3D',
+    'https://www.youtube.com/watch'
 }
 
 BLACKLISTED_PATTERNS = [
     '/creators/',
     '/vi/',
     '/yt/',
+    '/t/',
     '/feed/',
     'img.youtube'
 ]

@@ -7,9 +7,9 @@
 import re
 from collections import namedtuple
 try:
-    from urllib.parse import urlsplit, parse_qs, SplitResult
+    from urllib.parse import urlsplit, SplitResult
 except ImportError:
-    from urlparse import urlsplit, parse_qs, SplitResult
+    from urlparse import urlsplit, SplitResult
 
 from ural.ensure_protocol import ensure_protocol
 from ural.patterns import QUERY_VALUE
@@ -87,6 +87,11 @@ def parse_youtube_url(url):
         user = path.split('/')[2]
 
         return YoutubeUser(id=None, name=user)
+
+    elif path.startswith('/profile_redirector/'):
+        uid = path.split('/')[2]
+
+        return YoutubeUser(id=uid, name=None)
 
     # Channel path?
     elif path.startswith('/c/'):
