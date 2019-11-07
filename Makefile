@@ -20,7 +20,7 @@ lint:
 
 unit:
 	@echo Running unit tests...
-	pytest -s
+	pytest -svvv
 	@echo
 
 upload:
