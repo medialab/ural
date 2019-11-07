@@ -65,6 +65,16 @@ def parse_youtube_url(url):
 
     _, _, path, query, _ = parsed
 
+    # youtu.be
+    if parsed.hostname.endswith('youtu.be'):
+
+        if path.count('/') > 0:
+            v = path.split('/')[1]
+
+            return YoutubeVideo(id=v, user=None)
+
+        return
+
     # Typical video url
     if path == '/watch':
         mv = QUERY_V_RE.search(query)

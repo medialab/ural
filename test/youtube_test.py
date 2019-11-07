@@ -76,6 +76,18 @@ PARSE_TESTS = [
     (
         'http://www.youtube.com/profile_redirector/102339060754169863014',
         YoutubeUser(id='102339060754169863014', name=None)
+    ),
+    (
+        'http://youtu.be/afa-5HQHiAs',
+        YoutubeVideo(id='afa-5HQHiAs', user=None)
+    ),
+    (
+        'http://youtu.be/afa-5HQHiAs/',
+        YoutubeVideo(id='afa-5HQHiAs', user=None)
+    ),
+    (
+        'http://youtu.be/4SpnqbXd8A8/video',
+        YoutubeVideo(id='4SpnqbXd8A8', user=None)
     )
 ]
 

@@ -12,7 +12,8 @@ BLACKLIST = {
     'https://studio.youtube.com',
     'http://www.youtube.com/channels/paid_channels',
     'https://www.youtube.com/watch?v%3D',
-    'https://www.youtube.com/watch'
+    'https://www.youtube.com/watch',
+    'https://youtu.be'
 }
 
 BLACKLISTED_PATTERNS = [
