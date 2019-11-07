@@ -94,7 +94,11 @@ PARSE_TESTS = [
     (
         'http://youtu.be/4SpnqbXd8A8/video',
         YoutubeVideo(id='4SpnqbXd8A8', user=None)
-    )
+    ),
+    (
+        'http://youtu.be/aHQHiAs',
+        None
+    ),
 ]
 
 

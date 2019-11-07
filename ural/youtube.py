@@ -76,6 +76,9 @@ def parse_youtube_url(url):
         if path.count('/') > 0:
             v = path.split('/')[1]
 
+            if not is_youtube_video_id(v):
+                return
+
             return YoutubeVideo(id=v, user=None)
 
         return
@@ -85,6 +88,11 @@ def parse_youtube_url(url):
         mv = QUERY_V_RE.search(query)
 
         if mv:
+            v = mv.group(1)
+
+            if not is_youtube_video_id(v):
+                return
+
             return YoutubeVideo(id=mv.group(1), user=None)
 
     # Video file
@@ -94,6 +102,9 @@ def parse_youtube_url(url):
         path.startswith('/embed/')
     ):
         v = path.rsplit('/', 1)[-1]
+
+        if not is_youtube_video_id(v):
+            return
 
         return YoutubeVideo(id=v, user=None)
 

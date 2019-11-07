@@ -32,6 +32,9 @@ with open('./scripts/data/youtube-urls.csv') as f:
     for line in reader:
         youtube_url = line[1]
 
+        # if 'youtu.be' not in youtube_url:
+        #     continue
+
         if youtube_url in BLACKLIST:
             continue
 
