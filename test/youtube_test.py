@@ -99,6 +99,18 @@ PARSE_TESTS = [
         'http://youtu.be/aHQHiAs',
         None
     ),
+    (
+        'https://youtu.be/rbXhnI_E0hQ%5D',
+        YoutubeVideo(id='rbXhnI_E0hQ', user=None)
+    ),
+    (
+        'http://youtu.be/4SpnqbXd8A8%5B/video',
+        YoutubeVideo(id='4SpnqbXd8A8', user=None)
+    ),
+    (
+        'http://www.youtube.com/watch?v=3JqLhV80Vyg%20%20%28%20http%3A%2F%2Fyoutu.be%2F3JqLhV80Vyg%20%29',
+        YoutubeVideo(id='3JqLhV80Vyg', user=None)
+    )
 ]
 
 

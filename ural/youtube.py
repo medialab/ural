@@ -50,7 +50,7 @@ def is_youtube_video_id(value):
     return bool(YOUTUBE_VIDEO_ID_RE.match(value))
 
 
-def parse_youtube_url(url):
+def parse_youtube_url(url, fix_common_mistakes=True):
 
     # Continuation urls
     m = NEXT_V_RE.search(url) or NESTED_NEXT_V_RE.search(url)
@@ -76,6 +76,9 @@ def parse_youtube_url(url):
         if path.count('/') > 0:
             v = path.split('/')[1]
 
+            if fix_common_mistakes:
+                v = v[:11]
+
             if not is_youtube_video_id(v):
                 return
 
@@ -90,10 +93,13 @@ def parse_youtube_url(url):
         if mv:
             v = mv.group(1)
 
+            if fix_common_mistakes:
+                v = v[:11]
+
             if not is_youtube_video_id(v):
                 return
 
-            return YoutubeVideo(id=mv.group(1), user=None)
+            return YoutubeVideo(id=v, user=None)
 
     # Video file
     elif (
