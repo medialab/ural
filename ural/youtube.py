@@ -16,6 +16,8 @@ from ural.patterns import QUERY_VALUE
 
 YOUTUBE_DOMAIN_RE = re.compile(r'(?:youtube(?:\.googleapis)?\.[^.]+$|youtu\.be$)', re.I)
 QUERY_V_RE = re.compile(QUERY_VALUE % r'v', re.I)
+NEXT_V_RE = re.compile(r'next=%2Fwatch%3Fv%3D([^%&]+)', re.I)
+NESTED_NEXT_V_RE = re.compile(r'next%3D%252Fwatch%253Fv%253D([^%&]+)', re.I)
 
 YoutubeVideo = namedtuple('YoutubeVideo', ['id', 'user'])
 YoutubeUser = namedtuple('YoutubeUser', ['id', 'name'])
@@ -44,11 +46,22 @@ def is_youtube_url(url):
 
 
 def parse_youtube_url(url):
+
+    # Continuation urls
+    m = NEXT_V_RE.search(url) or NESTED_NEXT_V_RE.search(url)
+
+    if m:
+        return YoutubeVideo(id=m.group(1), user=None)
+
+    # Parsing
     if isinstance(url, SplitResult):
         parsed = url
     else:
         url = ensure_protocol(url)
         parsed = urlsplit(url)
+
+    if not is_youtube_url(parsed):
+        return
 
     _, _, path, query, _ = parsed
 
@@ -87,6 +100,7 @@ def parse_youtube_url(url):
         return YoutubeChannel(id=cid, name=None)
 
     else:
+        path = path.rstrip('/')
         if path.count('/') == 1:
             return YoutubeChannel(id=None, name=path.lstrip('/'))
 

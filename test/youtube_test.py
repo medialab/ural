@@ -60,6 +60,22 @@ PARSE_TESTS = [
     (
         'http://www.youtube.com/channel/UCWvUxN9LAjJ-sTc5JJ3gEyA/videos',
         YoutubeChannel(id='UCWvUxN9LAjJ-sTc5JJ3gEyA', name=None)
+    ),
+    (
+        'https://www.youtube.com/signin?app=desktop&action_handle_signin=true&hl=fr&next=%2Fwatch%3Fv%3DyEtmZKE5jhw&pli=1&auth=awfzXEmX9BuMCCEWwI2MBuBdDBNxbe9_9ApWQnC_LyUJrV06XI3J4TSMOYXwSrdMjoOw',
+        YoutubeVideo(id='yEtmZKE5jhw', user=None)
+    ),
+    (
+        'https://accounts.youtube.com/accounts/SetSID?ssdc=1&sidt=ALWU2ctpK5UgBHaSlYgNAS6kKr5K2ViktmHTEQ46AaVcyfB9Ae5jfhUmnJ5XuJTojZDXSFe3pvpYgPf2bpZ58EWKSst0QSJN20EyKnRRoHx9TF4k3xJ14%2F1VNso2ULDtZP1UwAtvqQ2gIYFo%2Bb6SGlmlnZBeBx1rJEDlJKmXbE5j1NiZfQp%2BLYGunuhjot9yZXOrzB2jq6O2CXEkEOw%2Bv23hWOXuUsUaXam2bZ4iRtEFt0EPkMK5rNysv%2FsVs%2F0LJtXTXIOaFGkaTJMbn28zC4VOO2dODGdm8UdGDrDHaI%2FHsiOrasfhK9O182PSjpLmYcLQObLVm9Ai&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Fapp%3Ddesktop%26action_handle_signin%3Dtrue%26hl%3Dfr%26next%3D%252Fwatch%253Fv%253DyEtmZKE5jhw%26pli%3D1%26auth%3DawfzdXEmX9BuMCCEWwI2MBuBdDBNxbe9_9ApWQnC_LyUJrVN06XI3J4TSMOYXwSrdMjoOw',
+        YoutubeVideo(id='yEtmZKE5jhw', user=None)
+    ),
+    (
+        'http://www.youtube.com/profile_redirector/110077902589047450572',
+        None
+    ),
+    (
+        'https://www.youtube.com/PressecitronHD/',
+        YoutubeChannel(id=None, name='PressecitronHD')
     )
 ]
 

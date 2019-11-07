@@ -13,6 +13,14 @@ BLACKLIST = {
     'http://www.youtube.com/channels/paid_channels'
 }
 
+BLACKLISTED_PATTERNS = [
+    '/creators/',
+    '/vi/',
+    '/yt/',
+    '/feed/',
+    'img.youtube'
+]
+
 with open('./scripts/data/youtube-urls.csv') as f:
     reader = csv.reader(f)
     next(reader)
@@ -21,6 +29,9 @@ with open('./scripts/data/youtube-urls.csv') as f:
         youtube_url = line[1]
 
         if youtube_url in BLACKLIST:
+            continue
+
+        if any(p in youtube_url for p in BLACKLISTED_PATTERNS):
             continue
 
         # if not is_youtube_url(youtube_url):
