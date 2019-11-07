@@ -15,6 +15,7 @@ from ural.ensure_protocol import ensure_protocol
 from ural.patterns import QUERY_VALUE
 
 YOUTUBE_DOMAIN_RE = re.compile(r'(?:youtube(?:\.googleapis)?\.[^.]+$|youtu\.be$)', re.I)
+YOUTUBE_VIDEO_ID_RE = re.compile(r'^[a-zA-Z0-9_-]{11}$')
 QUERY_V_RE = re.compile(QUERY_VALUE % r'v', re.I)
 NEXT_V_RE = re.compile(r'next=%2Fwatch%3Fv%3D([^%&]+)', re.I)
 NESTED_NEXT_V_RE = re.compile(r'next%3D%252Fwatch%253Fv%253D([^%&]+)', re.I)
@@ -43,6 +44,10 @@ def is_youtube_url(url):
         parsed = urlsplit(url)
 
     return bool(re.search(YOUTUBE_DOMAIN_RE, parsed.hostname))
+
+
+def is_youtube_video_id(value):
+    return bool(YOUTUBE_VIDEO_ID_RE.match(value))
 
 
 def parse_youtube_url(url):

@@ -4,6 +4,7 @@
 import pytest
 from ural.youtube import (
     is_youtube_url,
+    is_youtube_video_id,
     parse_youtube_url,
     YoutubeVideo,
     YoutubeUser,
@@ -14,6 +15,11 @@ IS_TESTS = [
     ('https://youtube.com', True),
     ('youtu.be/ugroiehfetef', True),
     ('http://www.lemonde.fr', False)
+]
+
+IS_VIDEO_TESTS = [
+    ('92HWiOdpY2s', True),
+    ('92HWiOdpY', False)
 ]
 
 PARSE_TESTS = [
@@ -96,6 +102,10 @@ class TestYoutube(object):
     def test_is_youtube_url(self):
         for url, result in IS_TESTS:
             assert is_youtube_url(url) == result
+
+    def test_is_youtube_video_id(self):
+        for v, result in IS_VIDEO_TESTS:
+            assert is_youtube_video_id(v) == result
 
     def test_parse_youtube_url(self):
         for url, result in PARSE_TESTS:
