@@ -6,6 +6,7 @@ from ural.youtube import (
     is_youtube_url,
     is_youtube_video_id,
     parse_youtube_url,
+    extract_video_id_from_youtube_url,
     YoutubeVideo,
     YoutubeUser,
     YoutubeChannel
@@ -138,3 +139,9 @@ class TestYoutube(object):
     def test_parse_youtube_url(self):
         for url, result in PARSE_TESTS:
             assert parse_youtube_url(url) == result
+
+    def test_extract_video_id_from_youtube_url(self):
+        for url, result in PARSE_TESTS:
+            extract_result = result.id if isinstance(result, YoutubeVideo) else None
+
+            assert extract_video_id_from_youtube_url(url) == extract_result

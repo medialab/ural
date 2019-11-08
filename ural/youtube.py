@@ -169,4 +169,12 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             return YoutubeChannel(id=None, name=path.lstrip('/'))
 
 
+def extract_video_id_from_youtube_url(url):
+    parsed = parse_youtube_url(url)
+
+    if parsed is None or not isinstance(parsed, YoutubeVideo):
+        return
+
+    return parsed.id
+
 # TODO: normalizers, basic extractors
