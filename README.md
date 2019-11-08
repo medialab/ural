@@ -42,6 +42,12 @@ pip install ural
 * [facebook](#facebook)
   * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
   * [extract_user_from_url](#extract_user_from_url)
+* [youtube](#youtube)
+  * [is_youtube_url](#is_youtube_url)
+  * [is_youtube_video_id](#is_youtube_video_id)
+  * [parse_youtube_url](#parse_youtube_url)
+  * [extract_video_id_from_youtube_url](#extract_video_id_from_youtube_url)
+  * [normalize_youtube_url](#normalize_youtube_url)
 
 ---
 
@@ -338,6 +344,107 @@ extract_user_from_url('https://www.facebook.com/people/Sophia-Aman/1020167839289
 
 extract_user_from_url('/annelaure.rivolu?rc=p&__tn__=R')
 >>> FacebookUser(id=None, handle='annelaure.rivolu', url='https://www.facebook.com/annelaure.rivolu)
+```
+
+---
+
+### Youtube
+
+#### is_youtube_url
+
+Returns whether the given url is from Youtube.
+
+```python
+from ural.youtube import is_youtube_url
+
+is_youtube_url('https://lemonde.fr')
+>>> False
+
+is_youtube_url('https://www.youtube.com/watch?v=otRTOE9i51o')
+>>> True
+
+is_youtube_url('https://youtu.be/otRTOE9i51o)
+>>> True
+```
+
+#### is_youtube_video_id
+
+Returns whether the given string is a formally valid Youtube id. Note that it won't validate the fact that this id actually refers to an existing video or not. You will need to call Youtube servers for that.
+
+```python
+from ural.youtube import is_youtube_video_id
+
+is_youtube_video_id('otRTOE9i51o')
+>>> True
+
+is_youtube_video_id('bDYTYET')
+>>> False
+```
+
+#### parse_youtube_url
+
+Returns parsed information about the given youtube url: either about the linked video, user or channel. If the url is an invalid Youtube url or if not a Youtube url, the function returns `None`.
+
+```python
+from ural.youtube import (
+  parse_youtube_url,
+
+  # You can also import the named tuples if you need them
+  YoutubeVideo,
+  YoutubeUser,
+  YoutubeChannel
+)
+
+parse_youtube_url('https://www.youtube.com/watch?v=otRTOE9i51o')
+>>> YoutubeVideo(id='otRTOE9i51o')
+
+parse_youtube_url('https://lemonde.fr')
+>>> None
+
+parse_youtube_url('http://www.youtube.com/channel/UCWvUxN9LAjJ-sTc5JJ3gEyA/videos')
+>>> YoutubeChannel(id='UCWvUxN9LAjJ-sTc5JJ3gEyA', name=None)
+
+parse_youtube_url('http://www.youtube.com/user/ojimfrance')
+>>> YoutubeUser(id=None, name='ojimfrance')
+
+parse_youtube_url('https://www.youtube.com/taranisnews')
+>>> YoutubeChannel(id=None, name='taranisnews')
+```
+
+*Arguments*
+
+* **url** *str*: Youtube url to parse.
+* **fix_common_mistakes** *bool* [`True`]: Whether to fix common mistakes that can be found in Youtube urls as you can find them when crawling the web.
+
+#### extract_video_id_from_youtube_url
+
+Return a video id from the given Youtube url or `None` if we could not find one.
+
+```python
+from ural.youtube import extract_video_id_from_youtube_url
+
+extract_video_id_from_youtube_url('https://www.youtube.com/watch?v=otRTOE9i51o')
+>>> 'otRTOE9i51o'
+
+extract_video_id_from_youtube_url('https://lemonde.fr')
+>>> None
+
+extract_video_id_from_youtube_url('http://youtu.be/afa-5HQHiAs')
+>>> 'afa-5HQHiAs'
+```
+
+#### normalize_youtube_url
+
+Returns a normalized version of the given Youtube url. It will normalize video, user and channel urls so you can easily match them.
+
+```python
+from ural.youtube import normalize_youtube_url
+
+normalize_youtube_url('https://www.youtube.com/watch?v=otRTOE9i51o')
+>>> 'https://www.youtube.com/watch?v=otRTOE9i51o'
+
+normalize_youtube_url('http://youtu.be/afa-5HQHiAs')
+>>> 'https://www.youtube.com/watch?v=afa-5HQHiAs'
 ```
 
 ---
