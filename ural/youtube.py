@@ -21,6 +21,11 @@ NEXT_V_RE = re.compile(r'next=%2Fwatch%3Fv%3D([^%&]+)', re.I)
 NESTED_NEXT_V_RE = re.compile(r'next%3D%252Fwatch%253Fv%253D([^%&]+)', re.I)
 FRAGMENT_V_RE = re.compile(r'^(?:%2F|/)watch(?:%3F|\?)v(?:%3D|=)([a-zA-Z0-9_-]{11})', re.I)
 
+YOUTUBE_VIDEO_URL_TEMPLATE = 'https://www.youtube.com/watch?v=%s'
+YOUTUBE_USER_URL_TEMPLATE = 'https://www.youtube.com/user/%s'
+YOUTUBE_CHANNEL_ID_URL_TEMPLATE = 'https://www.youtube.com/channel/%s'
+YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE = 'https://www.youtube.com/c/%s'
+
 YoutubeVideo = namedtuple('YoutubeVideo', ['id'])
 YoutubeUser = namedtuple('YoutubeUser', ['id', 'name'])
 YoutubeChannel = namedtuple('YoutubeChannel', ['id', 'name'])
@@ -147,11 +152,6 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 
         return YoutubeUser(id=None, name=user)
 
-    elif path.startswith('/profile_redirector/'):
-        uid = path.split('/')[2]
-
-        return YoutubeUser(id=uid, name=None)
-
     # Channel path?
     elif path.startswith('/c/'):
         name = path.split('/')[2]
@@ -177,4 +177,25 @@ def extract_video_id_from_youtube_url(url):
 
     return parsed.id
 
-# TODO: normalizers, basic extractors
+
+def normalize_youtube_url(url):
+    parsed = parse_youtube_url(url)
+
+    if parsed is None:
+
+        # TODO: should we normalize at least www and protocol here?
+        return url
+
+    if isinstance(parsed, YoutubeVideo):
+        return YOUTUBE_VIDEO_URL_TEMPLATE % parsed.id
+
+    if isinstance(parsed, YoutubeUser):
+        return YOUTUBE_USER_URL_TEMPLATE % parsed.name
+
+    if isinstance(parsed, YoutubeChannel):
+        if parsed.id is not None:
+            return YOUTUBE_CHANNEL_ID_URL_TEMPLATE % parsed.id
+
+        return YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE % parsed.name
+
+    raise TypeError('normalize_youtube_url: impossible path reached')
