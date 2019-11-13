@@ -40,6 +40,7 @@ pip install ural
 *Platform-specific functions*
 
 * [facebook](#facebook)
+  * [is_facebook_url](#is_facebook_url)
   * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
   * [extract_user_from_url](#extract_user_from_url)
 * [youtube](#youtube)
@@ -318,6 +319,23 @@ for value in trie.values():
 ---
 
 ### Facebook
+
+#### is_facebook_url
+
+Function returning whether given url is from Facebook or not.
+
+```python
+from ural.facebook import is_facebook_url
+
+is_facebook_url('http://www.facebook.com/post/974583586343')
+>>> True
+
+is_facebook_url('https://fb.me/846748464')
+>>> True
+
+is_facebook_url('https://www.lemonde.fr')
+>>> False
+```
 
 #### convert_facebook_url_to_mobile
 

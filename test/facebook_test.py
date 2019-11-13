@@ -3,6 +3,7 @@
 # =============================================================================
 import pytest
 from ural.facebook import (
+    is_facebook_url,
     convert_facebook_url_to_mobile,
     extract_user_from_facebook_url
 )
@@ -31,6 +32,15 @@ USER_EXTRACT_TESTS = [
     ('https://www.facebook.com/people/Clare-Roche/100020635422861', '100020635422861', 'id')
 ]
 
+IS_FACEBOOK_URL_TESTS = [
+    ('http://www.facebook.com/profile.php?id=398633', True),
+    ('facebook.com', True),
+    ('http://lemonde.fr', False),
+    ('fr-FR.facebook.fr', True),
+    ('http://m.facebook.com', True),
+    ('https://fb.me/47574', True)
+]
+
 
 class TestFacebook(object):
     def test_convert_facebook_url_to_mobile(self):
@@ -46,3 +56,7 @@ class TestFacebook(object):
             comparison = user.id if kind == 'id' else user.handle
 
             assert comparison == target
+
+    def test_is_facebook_url(self):
+        for url, result in IS_FACEBOOK_URL_TESTS:
+            assert is_facebook_url(url) == result
