@@ -12,10 +12,12 @@ except ImportError:
     from urlparse import parse_qs, urljoin, urlsplit, urlunsplit, SplitResult
 
 from ural.ensure_protocol import ensure_protocol
+from ural.patterns import DOMAIN_TEMPLATE
 
 BASE_FACEBOOK_URL = 'https://www.facebook.com'
 
 FACEBOOK_DOMAIN_RE = re.compile(r'(?:facebook\.[^.]+$|fb\.me$)', re.I)
+FACEBOOK_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:facebook\.[^.]+|fb\.me)', re.I)
 MOBILE_REPLACE_RE = re.compile(r'^([^.]+\.)?facebook\.', re.I)
 
 
@@ -30,14 +32,10 @@ def is_facebook_url(url):
         bool: Whether given url is from Facebook.
 
     """
-
     if isinstance(url, SplitResult):
-        parsed = url
-    else:
-        url = ensure_protocol(url)
-        parsed = urlsplit(url)
+        return bool(re.search(FACEBOOK_DOMAIN_RE, url.hostname))
 
-    return bool(re.search(FACEBOOK_DOMAIN_RE, parsed.hostname))
+    return bool(re.match(FACEBOOK_URL_RE, url))
 
 
 def convert_facebook_url_to_mobile(url):

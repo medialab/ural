@@ -16,7 +16,8 @@ from ural.youtube import (
 IS_TESTS = [
     ('https://youtube.com', True),
     ('youtu.be/ugroiehfetef', True),
-    ('http://www.lemonde.fr', False)
+    ('http://www.lemonde.fr', False),
+    ('http://www.youtube.com', True)
 ]
 
 IS_VIDEO_TESTS = [

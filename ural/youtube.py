@@ -12,11 +12,12 @@ except ImportError:
     from urlparse import urlsplit, SplitResult
 
 from ural.ensure_protocol import ensure_protocol
-from ural.patterns import QUERY_VALUE
+from ural.patterns import QUERY_VALUE_TEMPLATE, DOMAIN_TEMPLATE
 
-YOUTUBE_DOMAIN_RE = re.compile(r'(?:youtube(?:\.googleapis)?\.[^.]+$|youtu\.be$)', re.I)
+YOUTUBE_DOMAINS_RE = re.compile(r'(?:youtube(?:\.googleapis)?\.[^.]+$|youtu\.be$)', re.I)
+YOUTUBE_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:youtube(?:\.googleapis)?\.[^.]+|youtu\.be)', re.I)
 YOUTUBE_VIDEO_ID_RE = re.compile(r'^[a-zA-Z0-9_-]{11}$')
-QUERY_V_RE = re.compile(QUERY_VALUE % r'v', re.I)
+QUERY_V_RE = re.compile(QUERY_VALUE_TEMPLATE % r'v', re.I)
 NEXT_V_RE = re.compile(r'next=%2Fwatch%3Fv%3D([^%&]+)', re.I)
 NESTED_NEXT_V_RE = re.compile(r'next%3D%252Fwatch%253Fv%253D([^%&]+)', re.I)
 FRAGMENT_V_RE = re.compile(r'^(?:%2F|/)watch(?:%3F|\?)v(?:%3D|=)([a-zA-Z0-9_-]{11})', re.I)
@@ -42,14 +43,10 @@ def is_youtube_url(url):
         bool: Whether given url is from Youtube.
 
     """
-
     if isinstance(url, SplitResult):
-        parsed = url
-    else:
-        url = ensure_protocol(url)
-        parsed = urlsplit(url)
+        return bool(re.search(YOUTUBE_DOMAINS_RE, url.hostname))
 
-    return bool(re.search(YOUTUBE_DOMAIN_RE, parsed.hostname))
+    return bool(re.match(YOUTUBE_URL_RE, url))
 
 
 def is_youtube_video_id(value):
