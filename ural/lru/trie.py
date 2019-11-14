@@ -17,10 +17,16 @@ class NormalizedLRUTrie(object):
 
     def set(self, url, metadata):
         lru = self.normalize(url)
+        self.setLRU(lru, metadata)
+
+    def setLRU(self, lru, metadata):
         self.trie.set(lru, metadata)
 
     def match(self, url):
         lru = self.normalize(url)
+        return self.matchLRU(lru)
+
+    def matchLRU(self, lru):
         return self.trie.longest(lru)
 
     def values(self):
