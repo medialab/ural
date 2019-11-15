@@ -21,6 +21,14 @@ class TestNormalizedLRUTrie(object):
         assert trie.match('http://lemonde.fr/categories/whatever') == 1
         assert trie.match('http://lemonde.fr/articles/economy/index.html') == 2
 
+        trie.set_lru(['s:http', 'h:fr', 'h:lefigaro'], 3)
+        trie.set_lru('s:http|h:fr|h:lefigaro|p:articles|p:whatever.html|', 4)
+
+        assert len(trie) == 4
+
+        assert trie.match_lru(['s:http', 'h:fr', 'h:lefigaro', 'p:test']) == 3
+        assert trie.match_lru('s:http|h:fr|h:lefigaro|p:articles|p:whatever.html|') == 4
+
     def test_normalized_lru_trie(self):
         trie = NormalizedLRUTrie()
         trie.set('http://www.lemonde.fr', {'media': 'lemonde'})

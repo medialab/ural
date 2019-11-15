@@ -34,7 +34,9 @@ pip install ural
 
 * [LRUTrie](#LRUTrie)
   * [set](#set)
+  * [set_lru](#set_lru)
   * [match](#match)
+  * [match_lru](#match_lru)
 
 * [NormalizedLRUTrie](#NormalizedLRUTrie)
 
@@ -258,7 +260,7 @@ Note that this class directly inherits from the `phylactery` library's [`TrieDic
 
 #### set
 
-Method storing an url in a LRUTrie along with its metadata.
+Method storing a URL in a LRUTrie along with its metadata.
 
 ```python
 from ural.lru import LRUTrie
@@ -273,9 +275,28 @@ trie.match('http://www.lemonde.fr')
 *Arguments*
 
 * **url** *string*: url to store in the LRUTrie.
-* **metadata** *dict*: metadata of the url.
+* **metadata** *any*: metadata of the url.
 
----
+#### set_lru
+
+Method storing a URL already represented as a LRU or LRU stems along with its metadata.
+
+```python
+from ural.lru import LRUTrie
+
+trie = LRUTrie()
+
+# Using stems
+trie.set_lru(['s:http', 'h:fr', 'h:lemonde', 'h:www'], {'type': 'general press'})
+
+# Using serialized lru
+trie.set_lru('s:http|h:fr|h:lemonde|h:www|', {'type': 'general_press'})
+```
+
+*Arguments*
+
+* **lru** *string|list*: lru to store in the Trie.
+* **metadata** *any*: metadata to attach to the lru.
 
 #### match
 
@@ -299,6 +320,29 @@ trie.match('http://www.lefigaro.fr')
 *Arguments*
 
 * **url** *string*: url to match in the LRUTrie.
+
+#### match_lru
+
+Method returning the metadata attached to the longest prefix match of your query LRU. Will return `None` if no common prefix can be found.
+
+```python
+from ural.lru import LRUTrie
+
+trie = LRUTrie()
+trie.set(['s:http', 'h:fr', 'h:lemonde', 'h:www'], {'media': 'lemonde'})
+
+trie.match(['s:http', 'h:fr', 'h:lemonde', 'h:www'])
+>>> {'media': 'lemonde'}
+trie.match('s:http|h:fr|h:lemonde|h:www|p:politique|')
+>>> {'media': 'lemonde'}
+
+trie.match(['s:http', 'h:fr', 'h:lefigaro', 'h:www'])
+>>> None
+```
+
+*Arguments*
+
+* **lru** *string|list*: lru to match in the LRUTrie.
 
 ---
 

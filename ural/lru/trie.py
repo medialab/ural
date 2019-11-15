@@ -6,8 +6,25 @@
 # matching routines.
 #
 from phylactery import TrieDict
-from ural.lru import normalized_lru_stems, lru_stems
 from functools import partial
+
+from ural.lru.stems import normalized_lru_stems, lru_stems
+from ural.lru.serialization import unserialize_lru
+
+# PY2/PY3 compatible string_type...
+string_type = str
+
+try:
+    string_type = basestring
+except NameError:
+    pass
+
+
+def ensure_lru_stems(lru):
+    if isinstance(lru, string_type):
+        return unserialize_lru(lru)
+
+    return lru
 
 
 class LRUTrie(TrieDict):
@@ -17,6 +34,14 @@ class LRUTrie(TrieDict):
 
     def match(self, url):
         stems = lru_stems(url)
+        return self.longest(stems)
+
+    def set_lru(self, lru, metadata):
+        stems = ensure_lru_stems(lru)
+        super(LRUTrie, self).set(stems, metadata)
+
+    def match_lru(self, lru):
+        stems = ensure_lru_stems(lru)
         return self.longest(stems)
 
     def __iter__(sefl):
