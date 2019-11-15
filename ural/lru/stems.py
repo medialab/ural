@@ -14,7 +14,7 @@ from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
 
 
-def lru_stems_from_parse_url(parsed_url, tld_aware=True):
+def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
@@ -93,10 +93,10 @@ def lru_stems(url, tld_aware=False):
     """
 
     full_url = ensure_protocol(url)
-    return lru_stems_from_parse_url(urlsplit(full_url), tld_aware=tld_aware)
+    return lru_stems_from_parsed_url(urlsplit(full_url), tld_aware=tld_aware)
 
 
 def normalized_lru_stems(url, tld_aware=False, **kwargs):
     full_url = ensure_protocol(url)
     parsed_url = normalize_url(full_url, parsed=True, **kwargs)
-    return lru_stems_from_parse_url(parsed_url, tld_aware=tld_aware)
+    return lru_stems_from_parsed_url(parsed_url, tld_aware=tld_aware)
