@@ -61,7 +61,13 @@ def lru_to_url(lru):
     if t is not None:
         netloc += ':' + t
 
-    path = '/' + stems_index.get('p', '')
+    p = stems_index.get('p')
+
+    path = ''
+
+    if p is not None:
+        path = '/' + p
+
     query = stems_index.get('q', '')
     fragment = stems_index.get('f', '')
 
