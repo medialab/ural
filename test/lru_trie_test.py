@@ -20,3 +20,10 @@ class TestNormalizedLRUTrie(object):
         assert trie.match(
             'http://www.lemonde.fr/politique/article/randompath') == {'media': 'lemonde', 'type': 'article'}
         assert trie.match('http://www.legorafi.fr') is None
+
+        assert len(trie) == 2
+
+        assert list(trie) == [
+            {'media': 'lemonde'},
+            {'media': 'lemonde', 'type': 'article'}
+        ]
