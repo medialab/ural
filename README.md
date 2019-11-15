@@ -19,6 +19,7 @@ pip install ural
 * [ensure_protocol](#ensure_protocol)
 * [get_domain_name](#get_domain_name)
 * [force_protocol](#force_protocol)
+* [is_shortened_url](#is_shortened_url)
 * [is_url](#is_url)
 * [normalize_url](#normalize_url)
 * [strip_protocol](#strip_protocol)
@@ -110,9 +111,25 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 ---
 
+### is_shortened_url
+
+Function returning whether the given url is *probably* a shortened url. It works by matching the given url domain against most prominent shortener domains. So the result could be a false negative.
+
+```python
+from ural import is_shortened_url
+
+is_shortened_url('http://lemonde.fr')
+>>> False
+
+is_shortened_url('http://bit.ly/1sNZMwL')
+>>> True
+```
+
+---
+
 ### is_url
 
-Function returning True if its argument is a url.
+Function returning whether the given string is a valid url.
 
 ```python
 from ural import is_url

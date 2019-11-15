@@ -6,6 +6,9 @@
 #
 from phylactery import TrieDict
 
+from ural.utils import urlsplit
+from ural.ensure_protocol import ensure_protocol
+
 SHORTENER_DOMAINS = [
     'adec.co',
     'amn.st',
@@ -61,3 +64,14 @@ SHORTENER_DOMAINS = [
     'youtu.be',
     'zpr.io'
 ]
+
+TRIE = TrieDict()
+
+for domain in SHORTENER_DOMAINS:
+    TRIE.set(reversed(domain.split('.')), True)
+
+
+def is_shortened_url(url):
+    hostname = urlsplit(ensure_protocol(url)).hostname
+
+    return bool(TRIE.longest(reversed(hostname.split('.'))))

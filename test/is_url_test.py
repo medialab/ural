@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # =============================================================================
-# Ural URL Is URL Unit Tests
+# Ural Is URL Unit Tests
 # =============================================================================
 from ural import is_url
 
