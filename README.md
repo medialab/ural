@@ -231,6 +231,10 @@ url_to_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 >>> 's:http|t:8000|h:fr|h:lemonde|h:www|p:article|p:1234|p:index.html|q:field=value|f:2|'
 ```
 
+*Arguments*
+
+* **url** *string*: url to convert.
+* **tld_aware** *?bool*: whether to acknowledge TLDs when converting.
 ---
 
 ### lru.lru_to_url
@@ -263,6 +267,7 @@ lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 *Arguments*
 
 * **url** *string*: URL to parse.
+* **tld_aware** *?bool*: whether to acknowledge TLDs when stemming.
 
 ---
 
@@ -288,6 +293,15 @@ This function accepts the same arguments as [normalize_url](#normalize_url).
 Class implementing a prefix tree (Trie) storing URLs hierarchically by storing them as LRUs along with some arbitrary metadata. It is very useful when needing to match URLs by longest common prefix.
 
 Note that this class directly inherits from the `phylactery` library's [`TrieDict`](https://github.com/Yomguithereal/phylactery/blob/master/phylactery/triedict.py) so you can also use any of its methods.
+
+```python
+from ural.lru import LRUTrie
+
+trie = LRUTrie()
+
+# To respect tlds
+trie = LRUTrie(tld_aware=True)
+```
 
 #### set
 
@@ -388,6 +402,11 @@ from ural.lru import NormalizedLRUTrie
 
 trie = NormalizedLRUTrie(strip_trailing_slash=True)
 ```
+
+Note that there are still some differences between the `LRUTrie` and the `NormalizedLRUTrie`:
+
+1. The `NormalizedLRUTrie` cannot be TLD aware.
+2. The `NormalizedLRUTrie` does not have the `#.set_lru` and `#.match_lru`  methods.
 
 ---
 

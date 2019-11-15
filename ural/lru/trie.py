@@ -21,12 +21,16 @@ def ensure_lru_stems(lru):
 
 
 class LRUTrie(TrieDict):
+    def __init__(self, tld_aware=False):
+        super(LRUTrie, self).__init__()
+        self.__lru_stems = partial(lru_stems, tld_aware=tld_aware)
+
     def set(self, url, metadata):
-        stems = lru_stems(url)
+        stems = self.__lru_stems(url)
         super(LRUTrie, self).set(stems, metadata)
 
     def match(self, url):
-        stems = lru_stems(url)
+        stems = self.__lru_stems(url)
         return self.longest(stems)
 
     def set_lru(self, lru, metadata):
