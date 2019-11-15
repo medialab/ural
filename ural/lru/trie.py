@@ -8,16 +8,9 @@
 from phylactery import TrieDict
 from functools import partial
 
+from ural.utils import string_type
 from ural.lru.stems import normalized_lru_stems, lru_stems
 from ural.lru.serialization import unserialize_lru
-
-# PY2/PY3 compatible string_type...
-string_type = str
-
-try:
-    string_type = basestring
-except NameError:
-    pass
 
 
 def ensure_lru_stems(lru):
