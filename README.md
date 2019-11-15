@@ -592,8 +592,8 @@ Now look how the beforementioned URL could be splitted into LRU stems:
 
 And typically, this list of stems will be serialized thusly:
 
-```python
-'s:http|h:fr|h:lemonde|h:business|p:articles|p:money.html|q:id=34|f:content|'
+```
+s:http|h:fr|h:lemonde|h:business|p:articles|p:money.html|q:id=34|f:content|
 ```
 
 The trailing slash is added so that serialized LRUs can be *prefix-free*.
