@@ -563,15 +563,15 @@ normalize_youtube_url('http://youtu.be/afa-5HQHiAs')
 
 <h3 id="lru-explanation">About LRUs</h2>
 
-*TL;DR*: a LRU is a hierarchical reordering of a URL enabling meaningful prefix queries on URLs.
+*TL;DR*: a LRU is a hierarchical reordering of a URL so that one can perform meaningful prefix queries on URLs.
 
-If you look closely to many URLs, you will quickly notice that they are not written in a sound hierarchical order. In this url, for instance:
+If you observe many URLs, you will quickly notice that they are not written in sound hierarchical order. In this URL, for instance:
 
 ```
 http://business.lemonde.fr/articles/money.html?id=34#content
 ```
 
-Some parts, such as the subdomain, are written in an "incorrect order". And this is fine, really, this is how urls always worked.
+Some parts, such as the subdomain, are written in an "incorrect order". And this is fine, really, this is how URLs always worked.
 
 But if what you really want is to match URLs, you will need to reorder them so that their order closely reflects the hierarchy of their targeted content. And this is exactly what LRUs are (that and also a bad pun on URL, since a LRU is basically a "reversed" URL).
 
@@ -589,3 +589,11 @@ Now look how the beforementioned URL could be splitted into LRU stems:
   'f:content'
 ]
 ```
+
+And typically, this list of stems will be serialized thusly:
+
+```python
+'s:http|h:fr|h:lemonde|h:business|p:articles|p:money.html|q:id=34|f:content|'
+```
+
+The trailing slash is added so that serialized LRUs can be *prefix-free*.
