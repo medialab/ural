@@ -32,10 +32,11 @@ pip install ural
 
 *LRU-related classes*
 
-* [NormalizedLRUTrie](#NormalizedLRUTrie)
+* [LRUTrie](#LRUTrie)
   * [set](#set)
   * [match](#match)
-  * [values](#values)
+
+* [NormalizedLRUTrie](#NormalizedLRUTrie)
 
 *Platform-specific functions*
 
@@ -249,18 +250,20 @@ This function accepts the same arguments as [normalize_url](#normalize_url).
 
 ---
 
-### NormalizedLRUTrie
+### LRUTrie
 
-Class implementing a prefix tree (Trie) storing LRUs and their metadata, allowing to find the longest common prefix between two urls.
+Class implementing a prefix tree (Trie) storing URLs hierarchically by storing them as LRUs along with some arbitrary metadata. It is very useful when needing to match URLs by longest common prefix.
+
+Note that this class directly inherits from the `phylactery` library's [`TrieDict`](https://github.com/Yomguithereal/phylactery/blob/master/phylactery/triedict.py) so you can also use any of its methods.
 
 #### set
 
-A method storing an url in a LRUTrie along with its metadata.
+Method storing an url in a LRUTrie along with its metadata.
 
 ```python
-from ural.lru import NormalizedLRUTrie
+from ural.lru import LRUTrie
 
-trie = NormalizedLRUTrie()
+trie = LRUTrie()
 trie.set('http://www.lemonde.fr', {'type': 'general press'})
 
 trie.match('http://www.lemonde.fr')
@@ -269,51 +272,46 @@ trie.match('http://www.lemonde.fr')
 
 *Arguments*
 
-* **url** *string*: url to store in the NormalizedLRUTrie.
+* **url** *string*: url to store in the LRUTrie.
 * **metadata** *dict*: metadata of the url.
 
 ---
 
 #### match
 
-Method returning the metadata of the given url as it is stored in the NormalizedLRUTrie.
-If the exact given url doesn't exist in the NormalizedLRUTrie, it returns the metadata of the longest common prefix, or `None` if there is no common prefix.
+Method returning the metadata attached to the longest prefix match of your query URL. Will return `None` if no common prefix can be found.
 
 ```python
-from ural.lru import NormalizedLRUTrie
+from ural.lru import LRUTrie
 
-trie = NormalizedLRUTrie()
+trie = LRUTrie()
 trie.set('http://www.lemonde.fr', {'media': 'lemonde'})
 
 trie.match('http://www.lemonde.fr')
 >>> {'media': 'lemonde'}
 trie.match('http://www.lemonde.fr/politique')
 >>> {'media': 'lemonde'}
+
+trie.match('http://www.lefigaro.fr')
+>>> None
 ```
 
 *Arguments*
 
-* **url** *string*: url to match in the NormalizedLRUTrie.
+* **url** *string*: url to match in the LRUTrie.
 
 ---
 
-#### values
+### NormalizedLRUTrie
 
-Method yielding the metadata of each url stored in the NormalizedLRUTrie.
+The `NormalizedLRUTrie` is nearly identical to the standard [`LRUTrie`](#LRUTrie) except that it normalized urls given to it before attempting any operation. It is a good choice if you want to avoid prefix queries issues related to `http` vs `https` or `www` shenanigans, for instance.
+
+To tweak its normalization, you can give to `NormalizedLRUTrie` the same options you would give to [`normalize_url`](#normalize_url):
 
 ```python
 from ural.lru import NormalizedLRUTrie
 
-trie = NormalizedLRUTrie()
-trie.set('http://www.lemonde.fr', {'media' : 'lemonde'})
-trie.set('http://www.lefigaro.fr', {'media' : 'lefigaro'})
-trie.set('https://www.liberation.fr', {'media' : 'liberation'})
-
-for value in trie.values():
-  print(value)
->>> {'media': 'lemonde'}
->>> {'media': 'liberation'}
->>> {'media': 'lefigaro'}
+trie = NormalizedLRUTrie(strip_trailing_slash=True)
 ```
 
 ---

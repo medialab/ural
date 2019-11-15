@@ -6,8 +6,21 @@
 # matching routines.
 #
 from phylactery import TrieDict
-from ural.lru import normalized_lru_stems
+from ural.lru import normalized_lru_stems, lru_stems
 from functools import partial
+
+
+class LRUTrie(TrieDict):
+    def set(self, url, metadata):
+        stems = lru_stems(url)
+        super(LRUTrie, self).set(stems, metadata)
+
+    def match(self, url):
+        stems = lru_stems(url)
+        return self.longest(stems)
+
+    def __iter__(sefl):
+        return self.values()
 
 
 class NormalizedLRUTrie(TrieDict):
@@ -16,12 +29,12 @@ class NormalizedLRUTrie(TrieDict):
         self.normalize = partial(normalized_lru_stems, **kwargs)
 
     def set(self, url, metadata):
-        lru = self.normalize(url)
-        super(NormalizedLRUTrie, self).set(lru, metadata)
+        stems = self.normalize(url)
+        super(NormalizedLRUTrie, self).set(stems, metadata)
 
     def match(self, url):
-        lru = self.normalize(url)
-        return self.longest(lru)
+        stems = self.normalize(url)
+        return self.longest(stems)
 
     def __iter__(self):
         return self.values()
