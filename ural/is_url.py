@@ -1,5 +1,5 @@
 # =============================================================================
-# Ural Url testing Function
+# Ural Url Testing Function
 # =============================================================================
 #
 # A function returning True if its argument is a url.
