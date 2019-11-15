@@ -8,11 +8,8 @@
 import re
 import pycountry
 from os.path import normpath, splitext
-try:
-    from urllib.parse import parse_qsl, urlsplit, urlunsplit
-except ImportError:
-    from urlparse import parse_qsl, urlsplit, urlunsplit
 
+from ural.utils import parse_qsl, urlsplit, urlunsplit
 from ural.patterns import PROTOCOL_RE
 
 IRRELEVANT_QUERY_RE = re.compile(

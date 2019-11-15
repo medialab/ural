@@ -12,3 +12,23 @@ try:
     string_type = basestring
 except NameError:
     pass
+
+# PY2/PY3 compatible urlparse
+try:
+    from urllib.parse import (
+        parse_qs,
+        parse_qsl,
+        urljoin,
+        urlsplit,
+        urlunsplit,
+        SplitResult
+    )
+except ImportError:
+    from urlparse import (
+        parse_qs,
+        parse_qsl,
+        urljoin,
+        urlsplit,
+        urlunsplit,
+        SplitResult
+    )

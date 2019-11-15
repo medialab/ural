@@ -4,12 +4,7 @@
 #
 # Module gathering LRU-related functions.
 #
-try:
-    from urllib.parse import urlunsplit
-except ImportError:
-    from urlparse import urlunsplit
-
-from ural.utils import string_type
+from ural.utils import string_type, urlunsplit
 from ural.lru.serialization import serialize_lru, unserialize_lru
 from ural.lru.stems import lru_stems, normalized_lru_stems
 from ural.lru.trie import LRUTrie, NormalizedLRUTrie

@@ -6,11 +6,8 @@
 #
 import re
 from collections import namedtuple
-try:
-    from urllib.parse import urlsplit, SplitResult
-except ImportError:
-    from urlparse import urlsplit, SplitResult
 
+from ural.utils import urlsplit, SplitResult
 from ural.ensure_protocol import ensure_protocol
 from ural.patterns import QUERY_VALUE_TEMPLATE, DOMAIN_TEMPLATE
 

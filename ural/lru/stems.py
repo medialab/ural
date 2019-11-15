@@ -5,11 +5,8 @@
 # A function returning the url parts in hierarchical order.
 #
 from tld.utils import process_url
-try:
-    from urllib.parse import urlsplit
-except ImportError:
-    from urlparse import urlsplit
 
+from ural.utils import urlsplit
 from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
 
