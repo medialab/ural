@@ -27,6 +27,7 @@ pip install ural
 
 *LRU-related functions* ([What on earth is a LRU?](#lru-explanation))
 
+* [lru.url_to_lru](#lruurl_to_lru)
 * [lru.lru_stems](#lrulru_stems)
 * [lru.normalized_lru_stems](#lrunormalized_lru_stems)
 
@@ -215,6 +216,19 @@ for url in urls_from_text(text):
 *Arguments*
 
 * **string** *string*: source string.
+
+---
+
+### lru.url_to_lru
+
+Function converting the given url to a serialized lru.
+
+```python
+from ural.lru import url_to_lru
+
+url_to_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
+>>> 's:http|t:8000|h:fr|h:lemonde|h:www|p:article|p:1234|p:index.html|q:field=value|f:2|'
+```
 
 ---
 
