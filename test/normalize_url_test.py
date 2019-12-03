@@ -44,7 +44,10 @@ TESTS = [
     ('http://lemonde.fr:80', 'lemonde.fr'),
     ('https://lemonde.fr:443', 'lemonde.fr'),
     ('https://lemonde.fr?ref=ts&fref=ts', 'lemonde.fr'),
-    ('https://lemonde.fr?utm_source&utm_medium&utm_campaign', 'lemonde.fr')
+    ('https://lemonde.fr?utm_source&utm_medium&utm_campaign', 'lemonde.fr'),
+    ('http://www.europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641.amp', 'europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641'),
+    ('http://www.sciencesetavenir.fr/fondamental/journee-mondiale-du-bonheur-le-secret-pour-etre-heureux-selon-albert-einstein_117633.amp?__twitter_impression=true', 'sciencesetavenir.fr/fondamental/journee-mondiale-du-bonheur-le-secret-pour-etre-heureux-selon-albert-einstein_117633'),
+    ('http://www.sudouest.fr/2017/08/15/un-an-ferme-pour-avoir-frappe-des-gendarmesle-dimanche-moins-frequente-3696402-3350.amp.html', 'sudouest.fr/2017/08/15/un-an-ferme-pour-avoir-frappe-des-gendarmesle-dimanche-moins-frequente-3696402-3350.html')
 ]
 
 

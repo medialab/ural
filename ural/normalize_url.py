@@ -115,6 +115,13 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         if trailing_slash and not strip_trailing_slash:
             path = path + '/'
 
+    # Handling Google AMP extensions
+    if path.endswith('.amp'):
+        path = path[:-4]
+
+    elif path.endswith('.amp.html'):
+        path = path[:-8] + 'html'
+
     # Dropping index:
     if strip_index:
         segments = path.rsplit('/', 1)
