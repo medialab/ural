@@ -122,6 +122,13 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     elif path.endswith('.amp.html'):
         path = path[:-8] + 'html'
 
+    # Handling Google AMP suffixes
+    if path.endswith('/amp/'):
+        path = path[:-4]
+
+    elif path.endswith('/amp'):
+        path = path[:-3]
+
     # Dropping index:
     if strip_index:
         segments = path.rsplit('/', 1)
