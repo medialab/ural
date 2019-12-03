@@ -15,7 +15,7 @@ from ural.patterns import PROTOCOL_RE
 IRRELEVANT_QUERY_RE = re.compile(
     r'^(?:__twitter_impression|echobox|fbclid|fref|utm_.+|amp_.+|amp|s?een|xt(?:loc|ref|cr|np|or|s))$', re.I)
 
-IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|m)\.', re.I)
+IRRELEVANT_SUBDOMAIN_RE = re.compile(r'\b(?:www\d?|mobile|amp|m)\.', re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
     'ref': ('fb', 'ts', 'tw', 'tw_i', 'twitter'),

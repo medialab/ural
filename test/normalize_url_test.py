@@ -50,7 +50,8 @@ TESTS = [
     ('http://www.sudouest.fr/2017/08/15/un-an-ferme-pour-avoir-frappe-des-gendarmesle-dimanche-moins-frequente-3696402-3350.amp.html', 'sudouest.fr/2017/08/15/un-an-ferme-pour-avoir-frappe-des-gendarmesle-dimanche-moins-frequente-3696402-3350.html'),
     ('http://newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/amp', 'newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/'),
     ('http://newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/amp/', 'newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/'),
-    ('https://fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/amp/?__twitter_impression=true', 'fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/')
+    ('https://fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/amp/?__twitter_impression=true', 'fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/'),
+    ('http://amp.lefigaro.fr/actualite-france/les-geysers-de-rue-redoublent-avec-la-canicule-20190628', 'lefigaro.fr/actualite-france/les-geysers-de-rue-redoublent-avec-la-canicule-20190628')
 ]
 
 
