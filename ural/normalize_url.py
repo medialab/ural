@@ -17,9 +17,13 @@ IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
 AMP_SUBDOMAIN_PATTERN = r'|amp'
+AMPPROJECT_REDIRECTION_RE = re.compile(r'^/[cv](?:/s)?/', re.I)
 
-IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % AMP_QUERY_PATTERN, re.I)
-IRRELEVANT_SUBDOMAIN_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % AMP_SUBDOMAIN_PATTERN, re.I)
+IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % r'', re.I)
+IRRELEVANT_SUBDOMAIN_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % r'', re.I)
+
+IRRELEVANT_QUERY_AMP_RE = re.compile(IRRELEVANT_QUERY_PATTERN % AMP_QUERY_PATTERN, re.I)
+IRRELEVANT_SUBDOMAIN_AMP_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % AMP_SUBDOMAIN_PATTERN, re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
     'ref': ('fb', 'ts', 'tw', 'tw_i', 'twitter'),
@@ -42,10 +46,12 @@ def stringify_qs(item):
     return '%s=%s' % item
 
 
-def should_strip_query_item(item):
+def should_strip_query_item(item, normalize_amp=True):
     key = item[0].lower()
 
-    if IRRELEVANT_QUERY_RE.match(key):
+    pattern = IRRELEVANT_QUERY_AMP_RE if normalize_amp else IRRELEVANT_QUERY_RE
+
+    if pattern.match(key):
         return True
 
     value = item[1]
@@ -59,7 +65,7 @@ def should_strip_query_item(item):
 def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
-                  strip_fragment='except-routing'):
+                  strip_fragment='except-routing', normalize_amp=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -84,6 +90,8 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
             If set to `except-routing` will only drop non-routing fragment (i.e. fragments that
             do not contain a "/").
             Defaults to `except-routing`.
+        normalize_amp (bool, optional): Whether to attempt to normalize Google
+            AMP urls. Defaults to True.
 
     Returns:
         string: The normalized url.
@@ -91,12 +99,31 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     """
 
     has_protocol = PROTOCOL_RE.match(url)
+
     # Ensuring scheme so parsing works correctly
     if not has_protocol:
         url = 'http://' + url
 
     # Parsing
-    scheme, netloc, path, query, fragment = urlsplit(url)
+    splitted = urlsplit(url)
+
+    # Handling *.ampproject.org redirections
+    if (
+        normalize_amp and
+        splitted.hostname.endswith('.ampproject.org') and
+        AMPPROJECT_REDIRECTION_RE.search(splitted.path)
+    ):
+        amp_redirected = 'https://' + AMPPROJECT_REDIRECTION_RE.sub('', splitted.path)
+
+        if splitted.query:
+            amp_redirected += '?' + splitted.query
+
+        if splitted.fragment:
+            amp_redirected += '#' + splitted.fragment
+
+        splitted = urlsplit(amp_redirected)
+
+    scheme, netloc, path, query, fragment = splitted
 
     # Handling punycode
     if 'xn--' in netloc:
@@ -119,19 +146,21 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         if trailing_slash and not strip_trailing_slash:
             path = path + '/'
 
-    # Handling Google AMP extensions
-    if path.endswith('.amp'):
-        path = path[:-4]
+    if normalize_amp:
 
-    elif path.endswith('.amp.html'):
-        path = path[:-8] + 'html'
+        # Handling Google AMP extensions
+        if path.endswith('.amp'):
+            path = path[:-4]
 
-    # Handling Google AMP suffixes
-    if path.endswith('/amp/'):
-        path = path[:-4]
+        elif path.endswith('.amp.html'):
+            path = path[:-8] + 'html'
 
-    elif path.endswith('/amp'):
-        path = path[:-3]
+        # Handling Google AMP suffixes
+        if path.endswith('/amp/'):
+            path = path[:-4]
+
+        elif path.endswith('/amp'):
+            path = path[:-3]
 
     # Dropping index:
     if strip_index:
@@ -151,7 +180,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         qsl = [
             stringify_qs(item)
             for item in qsl
-            if not should_strip_query_item(item)
+            if not should_strip_query_item(item, normalize_amp=normalize_amp)
         ]
 
         if sort_query:
@@ -167,7 +196,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     # Dropping irrelevant subdomains
     if strip_irrelevant_subdomain:
         netloc = re.sub(
-            IRRELEVANT_SUBDOMAIN_RE,
+            IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE,
             '',
             netloc
         )
