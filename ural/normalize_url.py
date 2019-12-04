@@ -63,6 +63,13 @@ def should_strip_query_item(item, normalize_amp=True):
     return False
 
 
+def is_routing_fragment(fragment):
+    return (
+        fragment.startswith('/') or
+        fragment.startswith('!')
+    )
+
+
 def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
@@ -179,7 +186,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
 
     # Dropping fragment if it's not routing
     if fragment and strip_fragment:
-        if strip_fragment is True or '/' not in fragment:
+        if strip_fragment is True or not is_routing_fragment(fragment):
             fragment = ''
 
     # Dropping irrelevant subdomains
