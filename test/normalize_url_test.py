@@ -52,7 +52,8 @@ TESTS = [
     ('http://newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/amp/', 'newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/'),
     ('https://fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/amp/?__twitter_impression=true', 'fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/'),
     ('http://amp.lefigaro.fr/actualite-france/les-geysers-de-rue-redoublent-avec-la-canicule-20190628', 'lefigaro.fr/actualite-france/les-geysers-de-rue-redoublent-avec-la-canicule-20190628'),
-    ('http://mashable-com.cdn.ampproject.org/c/s/mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp', 'mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing')
+    ('http://mashable-com.cdn.ampproject.org/c/s/mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp', 'mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing'),
+    ('http://www.europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641.amp/', 'europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641')
 ]
 
 

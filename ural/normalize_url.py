@@ -18,6 +18,7 @@ IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
 AMP_SUBDOMAIN_PATTERN = r'|amp'
 AMPPROJECT_REDIRECTION_RE = re.compile(r'^/[cv](?:/s)?/', re.I)
+AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
 
 IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % r'', re.I)
 IRRELEVANT_SUBDOMAIN_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % r'', re.I)
@@ -146,21 +147,9 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         if trailing_slash and not strip_trailing_slash:
             path = path + '/'
 
+    # Handling Google AMP suffixes
     if normalize_amp:
-
-        # Handling Google AMP extensions
-        if path.endswith('.amp'):
-            path = path[:-4]
-
-        elif path.endswith('.amp.html'):
-            path = path[:-8] + 'html'
-
-        # Handling Google AMP suffixes
-        if path.endswith('/amp/'):
-            path = path[:-4]
-
-        elif path.endswith('/amp'):
-            path = path[:-3]
+        path = AMP_SUFFIXES_RE.sub('', path)
 
     # Dropping index:
     if strip_index:
