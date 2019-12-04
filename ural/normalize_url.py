@@ -9,7 +9,8 @@ import re
 import pycountry
 from os.path import normpath, splitext
 
-from ural.utils import parse_qsl, urlsplit, urlunsplit
+from ural.ensure_protocol import ensure_protocol
+from ural.utils import parse_qsl, urlsplit, urlunsplit, SplitResult
 from ural.patterns import PROTOCOL_RE
 
 IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|fref|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
@@ -17,8 +18,8 @@ IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
 AMP_SUBDOMAIN_PATTERN = r'|amp'
-AMPPROJECT_REDIRECTION_RE = re.compile(r'^/[cv]/(?:s/)?', re.I)
 AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
+AMPPROJECT_REDIRECTION_RE = re.compile(r'^/[cv]/(?:s/)?', re.I)
 
 IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % r'', re.I)
 IRRELEVANT_SUBDOMAIN_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % r'', re.I)
@@ -69,6 +70,30 @@ def is_routing_fragment(fragment):
         fragment.startswith('/') or
         fragment.startswith('!')
     )
+
+
+def decode_punycode(netloc):
+    if 'xn--' in netloc:
+        netloc = '.'.join(
+            attempt_to_decode_idna(x) for x in netloc.split('.')
+        )
+
+    return netloc
+
+
+def strip_lang_subdomains_from_netloc(netloc):
+    if netloc.count('.') > 1:
+        subdomain, remaining_netloc = netloc.split('.', 1)
+        if len(subdomain) == 5 and '-' in subdomain:
+            lang, country = subdomain.split('-', 1)
+            if len(lang) == 2 and len(country) == 2:
+                if pycountry.countries.get(alpha_2=lang.upper()) and pycountry.countries.get(alpha_2=country.upper()):
+                    netloc = remaining_netloc
+        elif len(subdomain) == 2:
+            if pycountry.countries.get(alpha_2=subdomain.upper()):
+                netloc = remaining_netloc
+
+    return netloc
 
 
 def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
@@ -135,10 +160,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     scheme, netloc, path, query, fragment = splitted
 
     # Handling punycode
-    if 'xn--' in netloc:
-        netloc = '.'.join(
-            attempt_to_decode_idna(x) for x in netloc.split('.')
-        )
+    netloc = decode_punycode(netloc)
 
     # Dropping :80 & :443
     if netloc.endswith(':80'):
@@ -200,16 +222,7 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
 
     # Dropping language as subdomains
     if strip_lang_subdomains:
-        if netloc.count('.') > 1:
-            subdomain, remaining_netloc = netloc.split('.', 1)
-            if len(subdomain) == 5 and '-' in subdomain:
-                lang, country = subdomain.split('-', 1)
-                if len(lang) == 2 and len(country) == 2:
-                    if pycountry.countries.get(alpha_2=lang.upper()) and pycountry.countries.get(alpha_2=country.upper()):
-                        netloc = remaining_netloc
-            elif len(subdomain) == 2:
-                if pycountry.countries.get(alpha_2=subdomain.upper()):
-                    netloc = remaining_netloc
+        netloc = strip_lang_subdomains_from_netloc(netloc)
 
     # Dropping scheme
     if strip_protocol or not has_protocol:
@@ -246,3 +259,26 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         result = urlunsplit(result)
 
     return result
+
+
+def get_normalized_hostname(url, normalize_amp=True):
+    if isinstance(url, SplitResult):
+        splitted = url
+    else:
+        splitted = urlsplit(ensure_protocol(url))
+
+    hostname = splitted.hostname.lower()
+
+    pattern = IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE
+
+    hostname = pattern.sub('', hostname)
+
+    if normalize_amp and hostname.startswith('amp-'):
+        hostname = hostname[4:]
+
+    # if 'xn--' in netloc:
+    #     netloc = '.'.join(
+    #         attempt_to_decode_idna(x) for x in netloc.split('.')
+    #     )
+
+    # lang subdomains
