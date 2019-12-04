@@ -96,6 +96,24 @@ def strip_lang_subdomains_from_netloc(netloc):
     return netloc
 
 
+def resolve_ampproject_redirect(splitted):
+    if (
+        splitted.hostname.endswith('.ampproject.org') and
+        AMPPROJECT_REDIRECTION_RE.search(splitted.path)
+    ):
+        amp_redirected = 'https://' + AMPPROJECT_REDIRECTION_RE.sub('', splitted.path)
+
+        if splitted.query:
+            amp_redirected += '?' + splitted.query
+
+        if splitted.fragment:
+            amp_redirected += '#' + splitted.fragment
+
+        splitted = urlsplit(amp_redirected)
+
+    return splitted
+
+
 def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
@@ -142,20 +160,8 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     splitted = urlsplit(url)
 
     # Handling *.ampproject.org redirections
-    if (
-        normalize_amp and
-        splitted.hostname.endswith('.ampproject.org') and
-        AMPPROJECT_REDIRECTION_RE.search(splitted.path)
-    ):
-        amp_redirected = 'https://' + AMPPROJECT_REDIRECTION_RE.sub('', splitted.path)
-
-        if splitted.query:
-            amp_redirected += '?' + splitted.query
-
-        if splitted.fragment:
-            amp_redirected += '#' + splitted.fragment
-
-        splitted = urlsplit(amp_redirected)
+    if normalize_amp:
+        splitted = resolve_ampproject_redirect(splitted)
 
     scheme, netloc, path, query, fragment = splitted
 
@@ -261,11 +267,14 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     return result
 
 
-def get_normalized_hostname(url, normalize_amp=True):
+def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False):
     if isinstance(url, SplitResult):
         splitted = url
     else:
         splitted = urlsplit(ensure_protocol(url))
+
+    if normalize_amp:
+        splitted = resolve_ampproject_redirect(splitted)
 
     hostname = splitted.hostname.lower()
 
@@ -276,9 +285,9 @@ def get_normalized_hostname(url, normalize_amp=True):
     if normalize_amp and hostname.startswith('amp-'):
         hostname = hostname[4:]
 
-    # if 'xn--' in netloc:
-    #     netloc = '.'.join(
-    #         attempt_to_decode_idna(x) for x in netloc.split('.')
-    #     )
+    hostname = decode_punycode(hostname)
 
-    # lang subdomains
+    if strip_lang_subdomains:
+        hostname = strip_lang_subdomains_from_netloc(hostname)
+
+    return hostname

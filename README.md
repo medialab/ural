@@ -19,6 +19,7 @@ pip install ural
 * [ensure_protocol](#ensure_protocol)
 * [get_domain_name](#get_domain_name)
 * [get_hostname](#get_hostname)
+* [get_normalized_hostname](#get_normalized_hostname)
 * [force_protocol](#force_protocol)
 * [is_shortened_url](#is_shortened_url)
 * [is_url](#is_url)
@@ -103,6 +104,28 @@ from ural import get_hostname
 get_hostname('http://www.facebook.com/path')
 >>> 'www.facebook.com'
 ```
+
+---
+
+### get_normalized_hostname
+
+Function returning the given url's normalized hostname, i.e. without usually irrelevant subdomains etc. Works a lot like [normalize_url](#normalize_url).
+
+```python
+from ural import get_normalized_hostname
+
+get_normalized_hostname('http://www.facebook.com/path')
+>>> 'facebook.com'
+
+get_normalized_hostname('http://fr-FR.facebook.com/path', strip_lang_subdomains=True)
+>>> 'facebook.com'
+```
+
+*Arguments*
+
+* **url** *str*: Target url.
+* **normalized_amp** *?bool*: Whether to attempt to normalize Google AMP subdomains.
+* **strip_lang_subdomains** *?bool*: Whether to drop language-specific subdomains.
 
 ---
 

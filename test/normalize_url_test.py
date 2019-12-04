@@ -2,7 +2,7 @@
 # =============================================================================
 # Ural URL Normalization Unit Tests
 # =============================================================================
-from ural import normalize_url
+from ural import normalize_url, get_normalized_hostname, get_hostname
 
 TESTS = [
     ('http://lemonde.fr///a/./b/..', 'lemonde.fr/a'),
@@ -80,9 +80,19 @@ TESTS_ADVANCED = [
 
 
 class TestNormalizeUrl(object):
-    def test_basics(self):
+    def test_normalize_url(self):
         for url, normalized in TESTS:
             assert normalize_url(url) == normalized, url
 
         for url, normalized, kwargs in TESTS_ADVANCED:
             assert normalize_url(url, **kwargs) == normalized, url
+
+    def test_get_normalized_hostname(self):
+        for url, normalized in TESTS:
+            assert get_normalized_hostname(url) == get_hostname(normalized)
+
+        for url, normalized, kwargs in TESTS_ADVANCED:
+            if 'strip_lang_subdomains' not in kwargs:
+                continue
+
+            assert get_normalized_hostname(url, **kwargs) == get_hostname(normalized)
