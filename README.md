@@ -51,6 +51,7 @@ pip install ural
   * [extract_user_from_url](#extract_user_from_url)
 * [google](#google)
   * [is_amp_url](#is_amp_url)
+  * [extract_url_from_google_link](#extract_url_from_google_link)
 * [youtube](#youtube)
   * [is_youtube_url](#is_youtube_url)
   * [is_youtube_video_id](#is_youtube_video_id)
@@ -492,6 +493,18 @@ is_amp_url('http://www.europe1.fr/sante/les-onze-vaccins.amp')
 
 is_amp_url('https://www.lemonde.fr')
 >>> False
+```
+
+#### extract_url_from_google_link
+
+Extracts the url from the given Google search link. This is useful to "resolve" the links scraped from Google's search results.
+
+```python
+from ural.google import extract_url_from_google_link
+
+extract_url_from_google_link('https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwicu4K-rZzmAhWOEBQKHRNWA08QFjAAegQIARAB&url=https%3A%2F%2Fwww.facebook.com%2Fieff.ogbeide&usg=AOvVaw0vrBVCiIHUr5pncjeLpPUp')
+
+>>> 'https://www.facebook.com/ieff.ogbeide'
 ```
 
 ---

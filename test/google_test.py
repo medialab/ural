@@ -3,7 +3,8 @@
 # =============================================================================
 import pytest
 from ural.google import (
-    is_amp_url
+    is_amp_url,
+    extract_url_from_google_link
 )
 
 IS_AMP_TESTS = [
@@ -28,8 +29,23 @@ IS_AMP_TESTS = [
     ('http://indystar.com/amp/551071002', True)
 ]
 
+LINK_TESTS = [
+    (
+        'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwicu4K-rZzmAhWOEBQKHRNWA08QFjAAegQIARAB&url=https%3A%2F%2Fwww.facebook.com%2Fiygeff.ogbeide&usg=AOvVaw0vrBVCiIHUr5pncjeLpPUp',
+        'https://www.facebook.com/iygeff.ogbeide'
+    ),
+    (
+        'http://lemonde.fr',
+        None
+    )
+]
+
 
 class TestGoogle(object):
     def test_is_amp_url(self):
         for url, result in IS_AMP_TESTS:
             assert is_amp_url(url) == result
+
+    def test_extract_url_from_google_link(self):
+        for link, url in LINK_TESTS:
+            assert extract_url_from_google_link(link) == url

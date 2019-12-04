@@ -5,10 +5,13 @@
 # Collection of functions related to Google urls.
 #
 import re
-from ural.utils import urlsplit, SplitResult
+from ural.utils import urlsplit, SplitResult, unquote
+from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
 
 AMP_QUERY_RE = re.compile(r'amp(_.+)=?', re.I)
 AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
+
+URL_EXTRACT_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'url')
 
 
 def is_amp_url(url):
@@ -36,3 +39,12 @@ def is_amp_url(url):
         return True
 
     return False
+
+
+def extract_url_from_google_link(url):
+    m = URL_EXTRACT_RE.search(url)
+
+    if m is None:
+        return None
+
+    return unquote(m.group(1))

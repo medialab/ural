@@ -18,6 +18,7 @@ try:
     from urllib.parse import (
         parse_qs,
         parse_qsl,
+        unquote,
         urljoin,
         urlsplit,
         urlunsplit,
@@ -27,6 +28,7 @@ except ImportError:
     from urlparse import (
         parse_qs,
         parse_qsl,
+        unquote,
         urljoin,
         urlsplit,
         urlunsplit,
