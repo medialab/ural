@@ -17,7 +17,7 @@ IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
 AMP_SUBDOMAIN_PATTERN = r'|amp'
-AMPPROJECT_REDIRECTION_RE = re.compile(r'^/[cv](?:/s)?/', re.I)
+AMPPROJECT_REDIRECTION_RE = re.compile(r'^/[cv]/(?:s/)?', re.I)
 AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
 
 IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % r'', re.I)
@@ -210,6 +210,10 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
     # Dropping authentication
     if strip_authentication:
         netloc = netloc.split('@', 1)[-1]
+
+    # Normalizing AMP subdomains
+    if normalize_amp and netloc.startswith('amp-'):
+        netloc = netloc[4:]
 
     # Dropping trailing slash
     if strip_trailing_slash and path.endswith('/'):
