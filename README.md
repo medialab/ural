@@ -18,6 +18,7 @@ pip install ural
 
 * [ensure_protocol](#ensure_protocol)
 * [get_domain_name](#get_domain_name)
+* [get_hostname](#get_hostname)
 * [force_protocol](#force_protocol)
 * [is_shortened_url](#is_shortened_url)
 * [is_url](#is_url)
@@ -90,9 +91,18 @@ get_domain_name('https://facebook.com/path')
 >>> 'facebook.com'
 ```
 
-*Arguments*
+---
 
-* **url** *string*: Target url.
+### get_hostname
+
+Function returning the given url's full hostname. It can work on scheme-less urls.
+
+```python
+from ural import get_hostname
+
+get_hostname('http://www.facebook.com/path')
+>>> 'www.facebook.com'
+```
 
 ---
 
