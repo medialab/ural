@@ -63,6 +63,7 @@ def should_strip_query_item(item, normalize_amp=True):
     return False
 
 
+# TODO: exclude #/ and #!/ raws
 def is_routing_fragment(fragment):
     return (
         fragment.startswith('/') or
