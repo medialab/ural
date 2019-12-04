@@ -49,6 +49,8 @@ pip install ural
   * [is_facebook_url](#is_facebook_url)
   * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
   * [extract_user_from_url](#extract_user_from_url)
+* [google](#google)
+  * [is_amp_url](#is_amp_url)
 * [youtube](#youtube)
   * [is_youtube_url](#is_youtube_url)
   * [is_youtube_video_id](#is_youtube_video_id)
@@ -472,6 +474,24 @@ extract_user_from_url('https://www.facebook.com/people/Sophia-Aman/1020167839289
 
 extract_user_from_url('/annelaure.rivolu?rc=p&__tn__=R')
 >>> FacebookUser(id=None, handle='annelaure.rivolu', url='https://www.facebook.com/annelaure.rivolu)
+```
+
+---
+
+### Google
+
+#### is_amp_url
+
+Returns whether the given url is probably a Google AMP url.
+
+```python
+from ural.google import is_amp_url
+
+is_amp_url('http://www.europe1.fr/sante/les-onze-vaccins.amp')
+>>> True
+
+is_amp_url('https://www.lemonde.fr')
+>>> False
 ```
 
 ---
