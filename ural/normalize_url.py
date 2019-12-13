@@ -13,6 +13,8 @@ from ural.ensure_protocol import ensure_protocol
 from ural.utils import parse_qsl, urlsplit, urlunsplit, SplitResult
 from ural.patterns import PROTOCOL_RE
 
+MISTAKES_RE = re.compile(r'&amp;')
+
 IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|recruiter|fref|igshid|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
@@ -138,7 +140,7 @@ def resolve_ampproject_redirect(splitted):
 def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
-                  strip_fragment='except-routing', normalize_amp=True):
+                  strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -165,6 +167,8 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             Defaults to `except-routing`.
         normalize_amp (bool, optional): Whether to attempt to normalize Google
             AMP urls. Defaults to True.
+        fix_common_mistakes (bool, optional): Whether to attempt solving common mistakes.
+            Defaults to True.
 
     Returns:
         string: The normalized url.
@@ -193,6 +197,11 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         splitted = resolve_ampproject_redirect(splitted)
 
     scheme, netloc, path, query, fragment = splitted
+
+    # Fixing common mistakes
+    if fix_common_mistakes:
+        if query:
+            query = re.sub(MISTAKES_RE, '&', query)
 
     # Handling punycode
     netloc = decode_punycode(netloc)

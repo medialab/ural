@@ -205,6 +205,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 *Arguments*
 
+* **fix_common_mistakes** *bool* [`True`]: whether to attempt to fix common URL mistakes.
 * **url** *string*: URL to normalize.
 * **normalize_amp** *bool* [`True`]: whether to attempt to normalize Google AMP urls.
 * **sort_query** *bool* [`True`]: whether to sort query items.
