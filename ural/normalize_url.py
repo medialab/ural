@@ -98,6 +98,7 @@ def strip_lang_subdomains_from_netloc(netloc):
 
 def resolve_ampproject_redirect(splitted):
     if (
+        splitted.hostname and
         splitted.hostname.endswith('.ampproject.org') and
         AMPPROJECT_REDIRECTION_RE.search(splitted.path)
     ):
@@ -149,6 +150,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         string: The normalized url.
 
     """
+    original_url_arg = url
 
     if isinstance(url, SplitResult):
         has_protocol = bool(splitted.scheme)
@@ -161,7 +163,10 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             url = 'http://' + url
 
         # Parsing
-        splitted = urlsplit(url)
+        try:
+            splitted = urlsplit(url)
+        except ValueError:
+            return original_url_arg
 
     # Handling *.ampproject.org redirections
     if normalize_amp:
@@ -275,10 +280,16 @@ def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False
     if isinstance(url, SplitResult):
         splitted = url
     else:
-        splitted = urlsplit(ensure_protocol(url))
+        try:
+            splitted = urlsplit(ensure_protocol(url))
+        except ValueError:
+            return None
 
     if normalize_amp:
         splitted = resolve_ampproject_redirect(splitted)
+
+    if not splitted.hostname:
+        return None
 
     hostname = splitted.hostname.lower()
 

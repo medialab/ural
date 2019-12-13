@@ -25,4 +25,7 @@ def get_domain_name(url):
 
 
 def get_hostname(url):
-    return urlsplit(ensure_protocol(url)).hostname
+    try:
+        return urlsplit(ensure_protocol(url)).hostname or None
+    except ValueError:
+        return None
