@@ -61,7 +61,9 @@ TESTS = [
     ('https://lemonde.fr/test#!/', 'lemonde.fr/test'),
     ('https://lemonde.fr/test#!', 'lemonde.fr/test'),
     ('http://lemonde.fr/test#xtor=RSS-11', 'lemonde.fr/test'),
-    ('http://m.youtube.com/watch?v=X2gSGCOVaZk&feature=youtu.be', 'youtube.com/watch?v=X2gSGCOVaZk')
+    ('http://m.youtube.com/watch?v=X2gSGCOVaZk&feature=youtu.be', 'youtube.com/watch?v=X2gSGCOVaZk'),
+    ('https://www.instagram.com/wondher/?utm_source=ig_profile_share&igshid=if58b3qro9yw', 'instagram.com/wondher/'),
+    ('https://www.change.org/p/ville-de-saint-malo-electrik-parade-saint-malo?recruiter=797274685&utm_source=share_petition&utm_medium=twitter&utm_campaign=share_petition&utm_term=autopublish&utm_content=nafta_twitter_large_image_card%3Areal_control', 'change.org/p/ville-de-saint-malo-electrik-parade-saint-malo')
 ]
 
 
