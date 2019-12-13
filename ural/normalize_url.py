@@ -64,8 +64,10 @@ def should_strip_query_item(item, normalize_amp=True):
     return False
 
 
-# TODO: exclude #/ and #!/ raws
-def is_routing_fragment(fragment):
+def should_strip_fragment(fragment):
+    if fragment == '/' or fragment == '!/':
+        return False
+
     return (
         fragment.startswith('/') or
         fragment.startswith('!')
@@ -224,7 +226,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
 
     # Dropping fragment if it's not routing
     if fragment and strip_fragment:
-        if strip_fragment is True or not is_routing_fragment(fragment):
+        if strip_fragment is True or not should_strip_fragment(fragment):
             fragment = ''
 
     # Dropping irrelevant subdomains
