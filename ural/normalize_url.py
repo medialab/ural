@@ -13,7 +13,7 @@ from ural.ensure_protocol import ensure_protocol
 from ural.utils import parse_qsl, urlsplit, urlunsplit, SplitResult
 from ural.patterns import PROTOCOL_RE
 
-IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|recruiter|fref|igshid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
+IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|recruiter|fref|igshid|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
@@ -28,6 +28,7 @@ IRRELEVANT_QUERY_AMP_RE = re.compile(IRRELEVANT_QUERY_PATTERN % AMP_QUERY_PATTER
 IRRELEVANT_SUBDOMAIN_AMP_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % AMP_SUBDOMAIN_PATTERN, re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
+    'platform': ('hootsuite', ),
     'ref': set([
         'bookmark',
         'bookmarks',
@@ -46,8 +47,8 @@ IRRELEVANT_QUERY_COMBOS = {
         'twitter',
         'viral'
     ]),
-    'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter'),
-    'platform': ('hootsuite', )
+    'sns': ('tw', ),
+    'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter')
 }
 
 
