@@ -58,7 +58,8 @@ TESTS = [
     ('http://pluzz.francetv.fr/videos/jt_1920_champagne_ardenne.html#xtref=https://www.google.fr/', 'pluzz.francetv.fr/videos/jt_1920_champagne_ardenne.html'),
     ('https://ohioamf.org]', 'https://ohioamf.org]'),
     ('https://lemonde.fr/test#/', 'lemonde.fr/test'),
-    ('https://lemonde.fr/test#!/', 'lemonde.fr/test')
+    ('https://lemonde.fr/test#!/', 'lemonde.fr/test'),
+    ('https://lemonde.fr/test#!', 'lemonde.fr/test')
 ]
 
 

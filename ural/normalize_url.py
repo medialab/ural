@@ -65,7 +65,7 @@ def should_strip_query_item(item, normalize_amp=True):
 
 
 def should_strip_fragment(fragment):
-    if fragment == '/' or fragment == '!/':
+    if fragment == '!/' or fragment == '/' or fragment == '!':
         return False
 
     return (
