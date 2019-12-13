@@ -13,7 +13,7 @@ from ural.ensure_protocol import ensure_protocol
 from ural.utils import parse_qsl, urlsplit, urlunsplit, SplitResult
 from ural.patterns import PROTOCOL_RE
 
-IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|fref|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
+IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|fref|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
 AMP_QUERY_PATTERN = r'|amp_.+|amp'

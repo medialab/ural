@@ -59,7 +59,9 @@ TESTS = [
     ('https://ohioamf.org]', 'https://ohioamf.org]'),
     ('https://lemonde.fr/test#/', 'lemonde.fr/test'),
     ('https://lemonde.fr/test#!/', 'lemonde.fr/test'),
-    ('https://lemonde.fr/test#!', 'lemonde.fr/test')
+    ('https://lemonde.fr/test#!', 'lemonde.fr/test'),
+    ('http://lemonde.fr/test#xtor=RSS-11', 'lemonde.fr/test'),
+    ('http://m.youtube.com/watch?v=X2gSGCOVaZk&feature=youtu.be', 'youtube.com/watch?v=X2gSGCOVaZk')
 ]
 
 
