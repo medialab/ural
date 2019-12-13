@@ -95,5 +95,5 @@ def lru_stems(url, tld_aware=False):
 
 def normalized_lru_stems(url, tld_aware=False, **kwargs):
     full_url = ensure_protocol(url)
-    parsed_url = normalize_url(full_url, parsed=True, **kwargs)
+    parsed_url = normalize_url(full_url, unsplit=False, **kwargs)
     return lru_stems_from_parsed_url(parsed_url, tld_aware=tld_aware)

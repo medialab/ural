@@ -114,7 +114,7 @@ def resolve_ampproject_redirect(splitted):
     return splitted
 
 
-def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
+def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
                   strip_fragment='except-routing', normalize_amp=True):
@@ -259,10 +259,10 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
         fragment
     )
 
-    if parsed:
+    if not unsplit:
         return result
 
-    # TODO: check if works with `parsed=True`
+    # TODO: check if works with `unsplit=False`
     if strip_protocol or not has_protocol:
         result = urlunsplit(result)[2:]
     else:
