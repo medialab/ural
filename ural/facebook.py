@@ -7,9 +7,16 @@
 import re
 from collections import namedtuple
 
-from ural.utils import parse_qs, urljoin, urlsplit, urlunsplit, SplitResult
 from ural.ensure_protocol import ensure_protocol
 from ural.patterns import DOMAIN_TEMPLATE
+
+from ural.utils import (
+    parse_qs,
+    urljoin,
+    urlsplit,
+    urlunsplit,
+    SplitResult
+)
 
 BASE_FACEBOOK_URL = 'https://www.facebook.com'
 
