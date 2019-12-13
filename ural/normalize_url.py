@@ -150,14 +150,18 @@ def normalize_url(url, parsed=False, sort_query=True, strip_authentication=True,
 
     """
 
-    has_protocol = PROTOCOL_RE.match(url)
+    if isinstance(url, SplitResult):
+        has_protocol = bool(splitted.scheme)
+        splitted = url
+    else:
+        has_protocol = PROTOCOL_RE.match(url)
 
-    # Ensuring scheme so parsing works correctly
-    if not has_protocol:
-        url = 'http://' + url
+        # Ensuring scheme so parsing works correctly
+        if not has_protocol:
+            url = 'http://' + url
 
-    # Parsing
-    splitted = urlsplit(url)
+        # Parsing
+        splitted = urlsplit(url)
 
     # Handling *.ampproject.org redirections
     if normalize_amp:
