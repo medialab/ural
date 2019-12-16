@@ -8,13 +8,15 @@ import re
 from collections import namedtuple
 
 from ural.ensure_protocol import ensure_protocol
-from ural.patterns import DOMAIN_TEMPLATE
+from ural.patterns import DOMAIN_TEMPLATE, QUERY_VALUE_IN_URL_TEMPLATE
 
 from ural.utils import (
     parse_qs,
+    unquote,
     urljoin,
     urlsplit,
     urlunsplit,
+    safe_urlsplit,
     SplitResult
 )
 
@@ -23,6 +25,8 @@ BASE_FACEBOOK_URL = 'https://www.facebook.com'
 FACEBOOK_DOMAIN_RE = re.compile(r'(?:facebook\.[^.]+$|fb\.me$)', re.I)
 FACEBOOK_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:facebook\.[^.]+|fb\.me)', re.I)
 MOBILE_REPLACE_RE = re.compile(r'^([^.]+\.)?facebook\.', re.I)
+
+URL_EXTRACT_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'u')
 
 
 def is_facebook_url(url):
@@ -40,6 +44,27 @@ def is_facebook_url(url):
         return bool(re.search(FACEBOOK_DOMAIN_RE, url.hostname))
 
     return bool(re.match(FACEBOOK_URL_RE, url))
+
+
+def is_facebook_link(url):
+    splitted = safe_urlsplit(url)
+
+    if not splitted.hostname or '.facebook.' not in splitted.hostname:
+        return False
+
+    if splitted.path != '/l.php':
+        return False
+
+    return True
+
+
+def extract_url_from_facebook_link(url):
+    m = URL_EXTRACT_RE.search(url)
+
+    if m is None:
+        return None
+
+    return unquote(m.group(1))
 
 
 def convert_facebook_url_to_mobile(url):

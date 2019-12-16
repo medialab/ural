@@ -49,8 +49,10 @@ pip install ural
 
 * [facebook](#facebook)
   * [is_facebook_url](#is_facebook_url)
+  * [is_facebook_link](#is_facebook_link)
   * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
-  * [extract_user_from_url](#extract_user_from_url)
+  * [extract_user_from_facebook_url](#extract_user_from_facebook_url)
+  * [extract_url_from_facebook_link](#extract_url_from_facebook_link)
 * [google](#google)
   * [is_amp_url](#is_amp_url)
   * [is_google_link](#is_google_link)
@@ -485,6 +487,20 @@ is_facebook_url('https://www.lemonde.fr')
 >>> False
 ```
 
+#### is_facebook_link
+
+Function returning whether the given url is a Facebook redirection link.
+
+```python
+from ural.facebook import is_facebook_link
+
+is_facebook_link('https://l.facebook.com/l.php?u=http%3A%2F%2Fwww.chaos-controle.com%2Farchives%2F2013%2F10%2F14%2F28176300.html&amp;h=AT0iUqJpUTMzHAH8HAXwZ11p8P3Z-SrY90wIXZhcjMnxBTHMiau8Fv1hvz00ZezRegqmF86SczyUXx3Gzdt_MdFH-I4CwHIXKKU9L6w522xwOqkOvLAylxojGEwrp341uC-GlVyGE2N7XwTPK9cpP0mQ8PIrWh8Qj2gHIIR08Js0mUr7G8Qe9fx66uYcfnNfTTF1xi0Us8gTo4fOZxAgidGWXsdgtU_OdvQqyEm97oHzKbWfXjkhsrzbtb8ZNMDwCP5099IMcKRD8Hi5H7W3vwh9hd_JlRgm5Z074epD_mGAeoEATE_QUVNTxO0SHO4XNn2Z7LgBamvevu1ENBcuyuSOYA0BsY2cx8mPWJ9t44tQcnmyQhBlYm_YmszDaQx9IfVP26PRqhsTLz-kZzv0DGMiJFU78LVWVPc9QSw2f9mA5JYWr29w12xJJ5XGQ6DhJxDMWRnLdG8Tnd7gZKCaRdqDER1jkO72u75-o4YuV3CLh4j-_4u0fnHSzHdVD8mxr9pNEgu8rvJF1E2H3-XbzA6F2wMQtFCejH8MBakzYtTGNvHSexSiKphE04Ci1Z23nBjCZFsgNXwL3wbIXWfHjh2LCKyihQauYsnvxp6fyioStJSGgyA9GGEswizHa20lucQF0S0F8H9-')
+>>> True
+
+is_facebook_link('https://lemonde.fr')
+>>> False
+```
+
 #### convert_facebook_url_to_mobile
 
 Function returning the mobile version of the given Facebook url. Will raise an exception if a non-Facebook url is given.
@@ -496,20 +512,32 @@ convert_facebook_url_to_mobile('http://www.facebook.com/post/974583586343')
 >>> 'http://m.facebook.com/post/974583586343'
 ```
 
----
-
-#### extract_user_from_url
+#### extract_user_from_facebook_url
 
 Function extracting user information from a facebook user url.
 
 ```python
-from ural.facebook import extract_user_from_url
+from ural.facebook import extract_user_from_facebook_url
 
-extract_user_from_url('https://www.facebook.com/people/Sophia-Aman/102016783928989')
+extract_user_from_facebook_url('https://www.facebook.com/people/Sophia-Aman/102016783928989')
 >>> FacebookUser(id='102016783928989', handle=None, url='https://www.facebook.com/profile.php?id=102016783928989)
 
-extract_user_from_url('/annelaure.rivolu?rc=p&__tn__=R')
+extract_user_from_facebook_url('/annelaure.rivolu?rc=p&__tn__=R')
 >>> FacebookUser(id=None, handle='annelaure.rivolu', url='https://www.facebook.com/annelaure.rivolu)
+```
+
+#### extract_url_from_facebook_link
+
+Function extracting target url from a Facebook redirection link.
+
+```python
+from ural.facebook import extract_url_from_facebook_link
+
+extract_url_from_facebook_link('https://l.facebook.com/l.php?u=http%3A%2F%2Fwww.chaos-controle.com%2Farchives%2F2013%2F10%2F14%2F28176300.html&amp;h=AT0iUqJpUTMzHAH8HAXwZ11p8P3Z-SrY90wIXZhcjMnxBTHMiau8Fv1hvz00ZezRegqmF86SczyUXx3Gzdt_MdFH-I4CwHIXKKU9L6w522xwOqkOvLAylxojGEwrp341uC-GlVyGE2N7XwTPK9cpP0mQ8PIrWh8Qj2gHIIR08Js0mUr7G8Qe9fx66uYcfnNfTTF1xi0Us8gTo4fOZxAgidGWXsdgtU_OdvQqyEm97oHzKbWfXjkhsrzbtb8ZNMDwCP5099IMcKRD8Hi5H7W3vwh9hd_JlRgm5Z074epD_mGAeoEATE_QUVNTxO0SHO4XNn2Z7LgBamvevu1ENBcuyuSOYA0BsY2cx8mPWJ9t44tQcnmyQhBlYm_YmszDaQx9IfVP26PRqhsTLz-kZzv0DGMiJFU78LVWVPc9QSw2f9mA5JYWr29w12xJJ5XGQ6DhJxDMWRnLdG8Tnd7gZKCaRdqDER1jkO72u75-o4YuV3CLh4j-_4u0fnHSzHdVD8mxr9pNEgu8rvJF1E2H3-XbzA6F2wMQtFCejH8MBakzYtTGNvHSexSiKphE04Ci1Z23nBjCZFsgNXwL3wbIXWfHjh2LCKyihQauYsnvxp6fyioStJSGgyA9GGEswizHa20lucQF0S0F8H9-')
+>>> 'http://www.chaos-controle.com/archives/2013/10/14/28176300.html'
+
+extract_url_from_facebook_link('http://lemonde.fr')
+>>> None
 ```
 
 ---

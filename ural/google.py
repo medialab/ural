@@ -11,7 +11,6 @@ from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
 AMP_QUERY_RE = re.compile(r'amp(_.+)=?', re.I)
 AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
 
-GOOGLE_LINK_RE = re.compile(r'')
 URL_EXTRACT_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'url')
 
 
@@ -42,10 +41,7 @@ def is_amp_url(url):
 def is_google_link(url):
     splitted = safe_urlsplit(url)
 
-    if not splitted.hostname:
-        return False
-
-    if 'google.' not in splitted.hostname:
+    if not splitted.hostname or 'google.' not in splitted.hostname:
         return False
 
     if splitted.path != '/url':
