@@ -66,6 +66,8 @@ IRRELEVANT_QUERY_COMBOS = {
     'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter')
 }
 
+LANG_QUERY_KEYS = ('gl', 'hl')
+
 
 def attempt_to_decode_idna(string):
     try:
@@ -81,7 +83,7 @@ def stringify_qs(item):
     return '%s=%s' % item
 
 
-def should_strip_query_item(item, normalize_amp=True):
+def should_strip_query_item(item, normalize_amp=True, strip_lang_query_items=False):
     key = item[0].lower()
 
     pattern = IRRELEVANT_QUERY_AMP_RE if normalize_amp else IRRELEVANT_QUERY_RE
@@ -93,6 +95,9 @@ def should_strip_query_item(item, normalize_amp=True):
 
     if key in IRRELEVANT_QUERY_COMBOS:
         return value in IRRELEVANT_QUERY_COMBOS[key]
+
+    if strip_lang_query_items and key in LANG_QUERY_KEYS:
+        return True
 
     return False
 
@@ -152,7 +157,7 @@ def resolve_ampproject_redirect(splitted):
 
 def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
-                  strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
+                  strip_irrelevant_subdomain=True, strip_lang_subdomains=False, strip_lang_query_items=False,
                   strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True,
                   resolve_obvious_redirects=False, quoted=True):
     """
@@ -270,7 +275,11 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         qsl = [
             stringify_qs(item)
             for item in qsl
-            if not should_strip_query_item(item, normalize_amp=normalize_amp)
+            if not should_strip_query_item(
+                item,
+                normalize_amp=normalize_amp,
+                strip_lang_query_items=strip_lang_query_items
+            )
         ]
 
         if sort_query:

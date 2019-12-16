@@ -99,6 +99,11 @@ TESTS_ADVANCED = [
         'http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B',
         'mozilla.org?x=шеллы',
         {'quoted': False}
+    ),
+    (
+        'https://www.lemonde.fr/path?gl=pt_BR&hl=fr',
+        'lemonde.fr/path',
+        {'strip_lang_query_items': True}
     )
 ]
 

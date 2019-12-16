@@ -220,7 +220,8 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_authentication** *bool* [`True`]: whether to strip authentication.
 * **strip_fragment** *bool|str* [`'except-routing'`]: whether to strip the url's fragment. If set to `except-routing`, will only strip the fragment if the fragment is not deemed to be js routing (i.e. if it contains a `/`).
 * **strip_index** *bool* [`True`]: whether to strip trailing index.
-* **strip_lang_subdomains** *bool* [`False`]: whether to strip language subdomains (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
+* **strip_lang_query_items** *bool* [`False`]: whether to strip language query items (ex: `gl=pt_BR`).
+* **strip_lang_subdomains** *bool* [`False`]: whether to strip language subdomains (ex: `fr-FR.lemonde.fr` to only `lemonde.fr` because `fr-FR` isn't a relevant subdomain, it indicates the language and the country).
 * **strip_trailing_slash** *bool* [`False`]: whether to strip trailing slash.
 * **unsplit** *bool* [`True`]: whether to return a stringified version of the normalized url or directly the `SplitResult` instance worked on by the normalization process.
 
