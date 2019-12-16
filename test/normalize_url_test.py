@@ -21,8 +21,7 @@ TESTS = [
     ('http://www2.lemonde.fr/index.html', 'lemonde.fr'),
     ('http://m.lemonde.fr/index.html', 'lemonde.fr'),
     ('http://mobile.lemonde.fr/index.html', 'lemonde.fr'),
-    ('https://en.m.wikipedia.org/wiki/Ulam_spiral',
-     'en.wikipedia.org/wiki/Ulam_spiral'),
+    ('https://en.m.wikipedia.org/wiki/Ulam_spiral', 'en.wikipedia.org/wiki/Ulam_spiral'),
     ('http://lemonde.fr?XTOR=whatever', 'lemonde.fr'),
     ('http://lemonde.fr?xtref=1&xtcr=2&xts=3&xtnp=3&xtloc=4', 'lemonde.fr'),
     ('lemonde.fr?utm_hp_ref=test', 'lemonde.fr'),
@@ -64,7 +63,8 @@ TESTS = [
     ('http://m.youtube.com/watch?v=X2gSGCOVaZk&feature=youtu.be', 'youtube.com/watch?v=X2gSGCOVaZk'),
     ('https://www.instagram.com/wondher/?utm_source=ig_profile_share&igshid=if58b3qro9yw', 'instagram.com/wondher/'),
     ('https://www.change.org/p/ville-de-saint-malo-electrik-parade-saint-malo?recruiter=797274685&utm_source=share_petition&utm_medium=twitter&utm_campaign=share_petition&utm_term=autopublish&utm_content=nafta_twitter_large_image_card%3Areal_control', 'change.org/p/ville-de-saint-malo-electrik-parade-saint-malo'),
-    ('http://bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?utm_campaign=transit&amp;utm_source=main&amp;utm_medium=page_0&amp;domain=mirtesen.ru&amp;paid=1&amp;pad=1', 'bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?domain=mirtesen.ru&pad=1&paid=1')
+    ('http://bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?utm_campaign=transit&amp;utm_source=main&amp;utm_medium=page_0&amp;domain=mirtesen.ru&amp;paid=1&amp;pad=1', 'bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?domain=mirtesen.ru&pad=1&paid=1'),
+    ('http://mozilla.org?x=шеллы', 'mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B')
 ]
 
 
@@ -89,6 +89,16 @@ TESTS_ADVANCED = [
         'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB&url=http%3A%2F%2Fwww.mon-ip.com%2F&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes',
         'mon-ip.com',
         {'resolve_obvious_redirects': True}
+    ),
+    (
+        'http://mozilla.org?x=шеллы',
+        'mozilla.org?x=шеллы',
+        {'quoted': False}
+    ),
+    (
+        'http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B',
+        'mozilla.org?x=шеллы',
+        {'quoted': False}
     )
 ]
 

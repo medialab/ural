@@ -211,9 +211,10 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 *Arguments*
 
-* **fix_common_mistakes** *bool* [`True`]: whether to attempt to fix common URL mistakes.
 * **url** *string*: URL to normalize.
+* **fix_common_mistakes** *bool* [`True`]: whether to attempt to fix common URL mistakes.
 * **normalize_amp** *bool* [`True`]: whether to attempt to normalize Google AMP urls.
+* **quoted** *bool* [`True`]: whether to normalize to a quoted or unquoted version of the url.
 * **resolve_obvious_redirects** *bool* [`False`]: whether to attempt resolving common redirects by leveraging well-known GET parameters.
 * **sort_query** *bool* [`True`]: whether to sort query items.
 * **strip_authentication** *bool* [`True`]: whether to strip authentication.
@@ -221,6 +222,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_index** *bool* [`True`]: whether to strip trailing index.
 * **strip_lang_subdomains** *bool* [`False`]: whether to strip language subdomains (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
 * **strip_trailing_slash** *bool* [`False`]: whether to strip trailing slash.
+* **unsplit** *bool* [`True`]: whether to return a stringified version of the normalized url or directly the `SplitResult` instance worked on by the normalization process.
 
 ---
 

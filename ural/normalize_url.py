@@ -12,12 +12,17 @@ from os.path import normpath, splitext
 from ural.ensure_protocol import ensure_protocol
 from ural.utils import (
     parse_qsl,
+    quote,
     urlsplit,
     urlunsplit,
     unquote,
     SplitResult
 )
 from ural.patterns import PROTOCOL_RE, QUERY_VALUE_IN_URL_TEMPLATE
+
+RESERVED_CHARACTERS = ';,/?:@&=+$'
+UNRESERVED_CHARACTERS = '-_.!~*\'()'
+SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
 MISTAKES_RE = re.compile(r'&amp;')
 
@@ -149,7 +154,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
                   strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True,
-                  resolve_obvious_redirects=False):
+                  resolve_obvious_redirects=False, quoted=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -180,6 +185,8 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             Defaults to True.
         resolve_obvious_redirects (bool, optional): Whether to attempt resolving common
             redirects by leveraging well-known GET parameters. Defaults to `False`.
+        quoted (bool, optional): Normalizing to quoted or unquoted.
+            Defaults to True.
 
     Returns:
         string: The normalized url.
@@ -308,8 +315,18 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     if strip_trailing_slash and path.endswith('/'):
         path = path.rstrip('/')
 
+    # Quoting or not
+    if quoted:
+        path = quote(path)
+        query = quote(query, RESERVED_CHARACTERS)
+        fragment = quote(fragment, SAFE_CHARACTERS)
+    else:
+        path = unquote(path)
+        query = unquote(query)
+        fragment = unquote(fragment)
+
     # Result
-    result = (
+    result = SplitResult(
         scheme,
         netloc.lower(),
         path,
