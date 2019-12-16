@@ -51,6 +51,7 @@ pip install ural
 
 * [facebook](#facebook)
   * [is_facebook_url](#is_facebook_url)
+  * [is_facebook_post_url](#is_facebook_post_url)
   * [is_facebook_link](#is_facebook_link)
   * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
   * [parse_facebook_url](#parse_facebook_url)
@@ -513,6 +514,23 @@ is_facebook_url('https://fb.me/846748464')
 >>> True
 
 is_facebook_url('https://www.lemonde.fr')
+>>> False
+```
+
+#### is_facebook_post_url
+
+Function returning whether the given url is a Facebook post or not.
+
+```python
+from ural.facebook import is_facebook_post_url
+
+is_facebook_post_url('http://www.facebook.com/post/974583586343')
+>>> True
+
+is_facebook_post_url('http://www.facebook.com')
+>>> False
+
+is_facebook_post_url('https://www.lemonde.fr')
 >>> False
 ```
 

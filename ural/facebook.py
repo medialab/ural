@@ -48,6 +48,17 @@ def is_facebook_url(url):
     return bool(re.match(FACEBOOK_URL_RE, url))
 
 
+def is_facebook_post_url(url):
+    if not is_facebook_url(url):
+        return False
+
+    return (
+        '/posts/' in url or
+        '/permalink/' in url or
+        '/permalink.php' in url
+    )
+
+
 def is_facebook_link(url):
     splitted = safe_urlsplit(url)
 

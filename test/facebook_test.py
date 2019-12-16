@@ -10,6 +10,7 @@ from ural.facebook import (
     convert_facebook_url_to_mobile,
     parse_facebook_url,
     is_facebook_link,
+    is_facebook_post_url,
     extract_url_from_facebook_link
 )
 
@@ -136,6 +137,10 @@ class TestFacebook(object):
     def test_is_facebook_url(self):
         for url, result in IS_FACEBOOK_URL_TESTS:
             assert is_facebook_url(url) == result
+
+    def test_is_facebook_post_url(self):
+        for url, target in PARSE_TESTS:
+            assert is_facebook_post_url(url) == (isinstance(target, FacebookPost))
 
     def test_extract_url_from_facebook_link(self):
         for link, url in FACEBOOK_LINK_TESTS:
