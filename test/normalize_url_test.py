@@ -12,7 +12,7 @@ TESTS = [
     ('lemonde.fr/index.php?utm_content=whatever', 'lemonde.fr'),
     ('https://lemonde.fr?', 'lemonde.fr'),
     ('https://lemonde.fr#anchor', 'lemonde.fr'),
-    ('https://lemonde.fr/#anchor', 'lemonde.fr/'),
+    ('https://lemonde.fr/#anchor', 'lemonde.fr'),
     ('https://lemonde.fr/#/path/is/here', 'lemonde.fr/#/path/is/here'),
     ('https://lemonde.fr#!/path/is/here', 'lemonde.fr#!/path/is/here'),
     ('//www.lemonde.fr', 'lemonde.fr'),
@@ -87,7 +87,7 @@ TESTS_ADVANCED = [
     ('https://www.lemonde.fr#/path', 'lemonde.fr#/path', {"strip_fragment": 'except-routing'}),
     (
         'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB&url=http%3A%2F%2Fwww.mon-ip.com%2F&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes',
-        'mon-ip.com/',
+        'mon-ip.com',
         {'resolve_obvious_redirects': True}
     )
 ]

@@ -276,6 +276,10 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         if strip_fragment is True or not should_strip_fragment(fragment):
             fragment = ''
 
+    # Always dropping trailing slash with empty query & fragment
+    if path == '/' and not fragment and not query:
+        path = ''
+
     # Dropping irrelevant subdomains
     if strip_irrelevant_subdomain:
         netloc = re.sub(
