@@ -14,6 +14,9 @@ DEFAULT_TESTS = [
     ('http://user@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user']),
     ('http://user:mdp@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user', 'w:mdp']),
     ('http://theguardian.co.uk', ['s:http', 'h:uk', 'h:co', 'h:theguardian'])
+    # ('http://theguardian.co.uk/path?', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'q:']),
+    # ('http://theguardian.co.uk/path#', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'f:']),
+    # ('http://theguardian.co.uk/path?#', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'q:', 'f:'])
 ]
 
 TLD_AWARE_TESTS = [
