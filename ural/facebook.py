@@ -5,7 +5,6 @@
 # Collection of functions crafted to work with Facebook's urls.
 #
 import re
-from collections import namedtuple
 
 from ural.ensure_protocol import ensure_protocol
 from ural.patterns import DOMAIN_TEMPLATE, QUERY_VALUE_IN_URL_TEMPLATE
@@ -99,36 +98,86 @@ def convert_facebook_url_to_mobile(url):
     return result
 
 
-FacebookUser = namedtuple('FacebookUser', ['id', 'handle', 'url'])
+class FacebookUser(object):
+    __slot__ = ('id', 'handle')
+
+    def __init__(self, user_id, handle=None):
+        self.id = user_id
+        self.handle = handle
+
+    @property
+    def url(self):
+        if self.handle is None:
+            return urljoin(BASE_FACEBOOK_URL, '/profile.php?id=%s' % self.id)
+
+        return urljoin(BASE_FACEBOOK_URL, '/%s' % self.handle)
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+
+        return (
+            '<%(class_name)s id=%(id)s handle=%(handle)s>'
+        ) % {
+            'class_name': class_name,
+            'id': self.id,
+            'handle': self.handle
+        }
 
 
-def extract_user_from_facebook_url(url):
-    if 'facebook.' not in url:
+class FacebookHandle(object):
+    __slots__ = ('handle',)
+
+    def __init__(self, handle):
+        self.handle = handle
+
+    @property
+    def url(self):
+        return urljoin(BASE_FACEBOOK_URL, '/profile.php?id=%s' % self.id)
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+
+        return (
+            '<%(class_name)s handle=%(handle)s>'
+        ) % {
+            'class_name': class_name,
+            'handle': self.handle
+        }
+
+
+def parse_facebook_url(url, allow_relative_urls=False):
+
+    # Allowing relative urls scraped from facebook?
+    if (
+        allow_relative_urls and
+        not url.startswith('http://') and
+        not url.startswith('https://') and
+        'facebook.' not in url
+    ):
         url = urljoin(BASE_FACEBOOK_URL, url)
-
-    url = ensure_protocol(url)
-
-    parsed = urlsplit(url)
-
-    if parsed.path == '/profile.php':
-        query = parse_qs(parsed.query)
-
-        user_id = query['id'][0]
-        user_handle = None
-        user_url = urljoin(BASE_FACEBOOK_URL, '/profile.php?id=%s' % user_id)
-    elif parsed.path.startswith('/people'):
-        parts = parsed.path.split('/')
-
-        user_id = parts[3]
-        user_handle = None
-        user_url = urljoin(BASE_FACEBOOK_URL, '/profile.php?id=%s' % user_id)
     else:
-        user_id = None
-        user_handle = parsed.path.split('/')[1]
-        user_url = urljoin(BASE_FACEBOOK_URL, '/%s' % user_handle)
+        if not is_facebook_url(url):
+            return None
 
-    return FacebookUser(
-        user_id,
-        user_handle,
-        user_url
-    )
+    splitted = safe_urlsplit(url)
+
+    # Profile path
+    if splitted.path == '/profile.php':
+        query = parse_qs(splitted.query)
+        user_id = query['id'][0]
+        return FacebookUser(user_id)
+
+    # People path
+    if splitted.path.startswith('/people'):
+        parts = splitted.path.split('/', 4)
+        user_id = parts[3]
+        return FacebookUser(user_id)
+
+    # Handle path
+    if splitted.path:
+        parts = splitted.path.split('/', 1)
+
+        if not parts[1].endswith('.php'):
+            return FacebookHandle(parts[1])
+
+    return None

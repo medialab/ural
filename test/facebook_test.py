@@ -3,9 +3,11 @@
 # =============================================================================
 import pytest
 from ural.facebook import (
+    FacebookHandle,
+    FacebookUser,
     is_facebook_url,
     convert_facebook_url_to_mobile,
-    extract_user_from_facebook_url,
+    parse_facebook_url,
     is_facebook_link,
     extract_url_from_facebook_link
 )
@@ -20,18 +22,19 @@ MOBILE_TESTS = [
     ('facebook.com', 'm.facebook.com')
 ]
 
-USER_EXTRACT_TESTS = [
-    ('/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92', 'handle'),
-    ('naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92', 'handle'),
-    ('http://fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92', 'handle'),
-    ('fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92', 'handle'),
-    ('facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92', 'handle'),
-    ('/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363', 'id'),
-    ('profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363', 'id'),
-    ('https://www.facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363', 'id'),
-    ('https://facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363', 'id'),
-    ('facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363', 'id'),
-    ('https://www.facebook.com/people/Clare-Roche/100020635422861', '100020635422861', 'id')
+PARSE_TESTS = [
+    ('/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
+    ('naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
+    ('http://fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
+    ('fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
+    ('facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
+    ('/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
+    ('profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
+    ('https://www.facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
+    ('https://facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
+    ('facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
+    ('https://www.facebook.com/people/Clare-Roche/100020635422861', '100020635422861'),
+    ('https://lemonde.fr/path', None)
 ]
 
 IS_FACEBOOK_URL_TESTS = [
@@ -68,11 +71,15 @@ class TestFacebook(object):
             convert_facebook_url_to_mobile('http://twitter.com')
 
     def test_extract_user_from_facebook_url(self):
-        for url, target, kind in USER_EXTRACT_TESTS:
-            user = extract_user_from_facebook_url(url)
-            comparison = user.id if kind == 'id' else user.handle
+        for url, target in PARSE_TESTS:
+            result = parse_facebook_url(url, allow_relative_urls=True)
 
-            assert comparison == target
+            if isinstance(result, FacebookHandle):
+                assert result.handle == target
+            elif isinstance(result, FacebookUser):
+                assert result.id == target
+            else:
+                assert result is None
 
     def test_is_facebook_url(self):
         for url, result in IS_FACEBOOK_URL_TESTS:
