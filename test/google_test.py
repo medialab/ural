@@ -4,6 +4,7 @@
 import pytest
 from ural.google import (
     is_amp_url,
+    is_google_link,
     extract_url_from_google_link
 )
 
@@ -35,6 +36,10 @@ LINK_TESTS = [
         'https://www.facebook.com/iygeff.ogbeide'
     ),
     (
+        'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB&url=http%3A%2F%2Fwww.mon-ip.com%2F&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes',
+        'http://www.mon-ip.com/'
+    ),
+    (
         'http://lemonde.fr',
         None
     )
@@ -45,6 +50,10 @@ class TestGoogle(object):
     def test_is_amp_url(self):
         for url, result in IS_AMP_TESTS:
             assert is_amp_url(url) == result
+
+    def test_is_google_link(self):
+        for link, url in LINK_TESTS:
+            assert is_google_link(link) == (url is not None)
 
     def test_extract_url_from_google_link(self):
         for link, url in LINK_TESTS:

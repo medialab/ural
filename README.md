@@ -53,6 +53,7 @@ pip install ural
   * [extract_user_from_url](#extract_user_from_url)
 * [google](#google)
   * [is_amp_url](#is_amp_url)
+  * [is_google_link](#is_google_link)
   * [extract_url_from_google_link](#extract_url_from_google_link)
 * [youtube](#youtube)
   * [is_youtube_url](#is_youtube_url)
@@ -526,6 +527,20 @@ is_amp_url('http://www.europe1.fr/sante/les-onze-vaccins.amp')
 >>> True
 
 is_amp_url('https://www.lemonde.fr')
+>>> False
+```
+
+#### is_google_link
+
+Returns whether the given url is a Google search link.
+
+```python
+from ural.google import is_google_link
+
+is_google_link('https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB&url=http%3A%2F%2Fwww.mon-ip.com%2F&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes')
+>>> True
+
+is_google_link('https://www.lemonde.fr')
 >>> False
 ```
 

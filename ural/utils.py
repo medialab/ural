@@ -40,6 +40,9 @@ except ImportError:
 
 
 def safe_urlsplit(url, scheme='http'):
+    if isinstance(url, SplitResult):
+        return url
+
     if not re.match(PROTOCOL_RE, url):
         url = scheme + '://' + url
 

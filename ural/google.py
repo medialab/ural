@@ -5,20 +5,18 @@
 # Collection of functions related to Google urls.
 #
 import re
-from ural.utils import urlsplit, SplitResult, unquote
+from ural.utils import safe_urlsplit, unquote
 from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
 
 AMP_QUERY_RE = re.compile(r'amp(_.+)=?', re.I)
 AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
 
+GOOGLE_LINK_RE = re.compile(r'')
 URL_EXTRACT_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'url')
 
 
 def is_amp_url(url):
-    if not isinstance(url, SplitResult):
-        splitted = urlsplit(url)
-    else:
-        splitted = url
+    splitted = safe_urlsplit(url)
 
     if splitted.hostname.endswith('.ampproject.org'):
         return True
@@ -39,6 +37,21 @@ def is_amp_url(url):
         return True
 
     return False
+
+
+def is_google_link(url):
+    splitted = safe_urlsplit(url)
+
+    if not splitted.hostname:
+        return False
+
+    if 'google.' not in splitted.hostname:
+        return False
+
+    if splitted.path != '/url':
+        return False
+
+    return True
 
 
 def extract_url_from_google_link(url):
