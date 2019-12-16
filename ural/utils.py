@@ -29,11 +29,14 @@ try:
         SplitResult
     )
 except ImportError:
+    from urllib import (
+        quote,
+        unquote
+    )
+
     from urlparse import (
         parse_qs,
         parse_qsl,
-        quote,
-        unquote,
         urljoin,
         urlsplit,
         urlunsplit,
