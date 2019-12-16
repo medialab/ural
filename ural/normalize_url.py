@@ -10,10 +10,18 @@ import pycountry
 from os.path import normpath, splitext
 
 from ural.ensure_protocol import ensure_protocol
-from ural.utils import parse_qsl, urlsplit, urlunsplit, SplitResult
-from ural.patterns import PROTOCOL_RE
+from ural.utils import (
+    parse_qsl,
+    urlsplit,
+    urlunsplit,
+    unquote,
+    SplitResult
+)
+from ural.patterns import PROTOCOL_RE, QUERY_VALUE_IN_URL_TEMPLATE
 
 MISTAKES_RE = re.compile(r'&amp;')
+
+OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|url|[lu])', re.I)
 
 IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|recruiter|fref|igshid|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
@@ -140,7 +148,8 @@ def resolve_ampproject_redirect(splitted):
 def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False,
-                  strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True):
+                  strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True,
+                  resolve_obvious_redirects=False):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -169,12 +178,23 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             AMP urls. Defaults to True.
         fix_common_mistakes (bool, optional): Whether to attempt solving common mistakes.
             Defaults to True.
+        resolve_obvious_redirects (bool, optional): Whether to attempt resolving common
+            redirects by leveraging well-known GET parameters. Defaults to `False`.
 
     Returns:
         string: The normalized url.
 
     """
     original_url_arg = url
+
+    if resolve_obvious_redirects:
+        obvious_redirect_match = re.search(OBVIOUS_REDIRECTS_RE, url)
+
+        if obvious_redirect_match is not None:
+            target = unquote(obvious_redirect_match.group(1))
+
+            if target.startswith('http://') or target.startswith('https://'):
+                url = target
 
     if isinstance(url, SplitResult):
         has_protocol = bool(splitted.scheme)

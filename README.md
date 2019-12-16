@@ -213,6 +213,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **fix_common_mistakes** *bool* [`True`]: whether to attempt to fix common URL mistakes.
 * **url** *string*: URL to normalize.
 * **normalize_amp** *bool* [`True`]: whether to attempt to normalize Google AMP urls.
+* **resolve_obvious_redirects** *bool* [`False`]: whether to attempt resolving common redirects by leveraging well-known GET parameters.
 * **sort_query** *bool* [`True`]: whether to sort query items.
 * **strip_authentication** *bool* [`True`]: whether to strip authentication.
 * **strip_fragment** *bool|str* [`'except-routing'`]: whether to strip the url's fragment. If set to `except-routing`, will only strip the fragment if the fragment is not deemed to be js routing (i.e. if it contains a `/`).
