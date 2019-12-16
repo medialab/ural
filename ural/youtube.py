@@ -7,7 +7,7 @@
 import re
 from collections import namedtuple
 
-from ural.utils import urlsplit, SplitResult
+from ural.utils import urlsplit, urlpathsplit, SplitResult
 from ural.ensure_protocol import ensure_protocol
 from ural.patterns import QUERY_VALUE_TEMPLATE, DOMAIN_TEMPLATE
 
@@ -85,7 +85,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
     if parsed.hostname.endswith('youtu.be'):
 
         if path.count('/') > 0:
-            v = path.split('/')[1]
+            v = urlpathsplit(path)[0]
 
             if fix_common_mistakes:
                 v = v[:11]
@@ -130,7 +130,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
         path.startswith('/video/') or
         path.startswith('/embed/')
     ):
-        v = path.rsplit('/', 1)[-1]
+        v = urlpathsplit(path)[-1]
 
         if fix_common_mistakes:
             v = v[:11]
@@ -142,18 +142,18 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 
     # Typical user url
     elif path.startswith('/user/'):
-        user = path.split('/')[2]
+        user = urlpathsplit(path)[1]
 
         return YoutubeUser(id=None, name=user)
 
     # Channel path?
     elif path.startswith('/c/'):
-        name = path.split('/')[2]
+        name = urlpathsplit(path)[1]
 
         return YoutubeChannel(id=None, name=name)
 
     elif path.startswith('/channel/'):
-        cid = path.split('/')[2]
+        cid = urlpathsplit(path)[1]
 
         return YoutubeChannel(id=cid, name=None)
 
