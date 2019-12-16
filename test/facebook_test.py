@@ -23,18 +23,58 @@ MOBILE_TESTS = [
 ]
 
 PARSE_TESTS = [
-    ('/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
-    ('naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
-    ('http://fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
-    ('fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
-    ('facebook.com/naat.ouhafs.92?rc=p&__tn__=R', 'naat.ouhafs.92'),
-    ('/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
-    ('profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
-    ('https://www.facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
-    ('https://facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
-    ('facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R', '100012241140363'),
-    ('https://www.facebook.com/people/Clare-Roche/100020635422861', '100020635422861'),
-    ('https://lemonde.fr/path', None)
+    (
+        '/naat.ouhafs.92?rc=p&__tn__=R',
+        FacebookHandle('naat.ouhafs.92')
+    ),
+    (
+        'naat.ouhafs.92?rc=p&__tn__=R',
+        FacebookHandle('naat.ouhafs.92')
+    ),
+    (
+        'http://fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R',
+        FacebookHandle('naat.ouhafs.92')
+    ),
+    (
+        'fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R',
+        FacebookHandle('naat.ouhafs.92')
+    ),
+    (
+        'facebook.com/naat.ouhafs.92?rc=p&__tn__=R',
+        FacebookHandle('naat.ouhafs.92')
+    ),
+    (
+        '/profile.php?id=100012241140363&rc=p&__tn__=R',
+        FacebookUser('100012241140363')
+    ),
+    (
+        'profile.php?id=100012241140363&rc=p&__tn__=R',
+        FacebookUser('100012241140363')
+    ),
+    (
+        'https://www.facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R',
+        FacebookUser('100012241140363')
+    ),
+    (
+        'https://facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R',
+        FacebookUser('100012241140363')
+    ),
+    (
+        'facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R',
+        FacebookUser('100012241140363')
+    ),
+    (
+        'https://www.facebook.com/people/Clare-Roche/100020635422861',
+        FacebookUser('100020635422861')
+    ),
+    (
+        'https://www.facebook.com/astucerie/',
+        FacebookHandle('astucerie')
+    ),
+    (
+        'https://lemonde.fr/path',
+        None
+    )
 ]
 
 IS_FACEBOOK_URL_TESTS = [
@@ -74,12 +114,7 @@ class TestFacebook(object):
         for url, target in PARSE_TESTS:
             result = parse_facebook_url(url, allow_relative_urls=True)
 
-            if isinstance(result, FacebookHandle):
-                assert result.handle == target
-            elif isinstance(result, FacebookUser):
-                assert result.id == target
-            else:
-                assert result is None
+            assert result == target
 
     def test_is_facebook_url(self):
         for url, result in IS_FACEBOOK_URL_TESTS:

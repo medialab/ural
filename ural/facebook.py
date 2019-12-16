@@ -98,8 +98,20 @@ def convert_facebook_url_to_mobile(url):
     return result
 
 
-class FacebookUser(object):
-    __slot__ = ('id', 'handle')
+class FacebookParsedItem(object):
+    def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return False
+
+        for attr in self.__slots__:
+            if getattr(self, attr) != getattr(other, attr):
+                return False
+
+        return True
+
+
+class FacebookUser(FacebookParsedItem):
+    __slots__ = ('id', 'handle')
 
     def __init__(self, user_id, handle=None):
         self.id = user_id
@@ -124,7 +136,7 @@ class FacebookUser(object):
         }
 
 
-class FacebookHandle(object):
+class FacebookHandle(FacebookParsedItem):
     __slots__ = ('handle',)
 
     def __init__(self, handle):
@@ -175,7 +187,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # Handle path
     if splitted.path:
-        parts = splitted.path.split('/', 1)
+        parts = splitted.path.split('/', 2)
 
         if not parts[1].endswith('.php'):
             return FacebookHandle(parts[1])
