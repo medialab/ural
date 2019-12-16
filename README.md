@@ -53,7 +53,7 @@ pip install ural
   * [is_facebook_url](#is_facebook_url)
   * [is_facebook_link](#is_facebook_link)
   * [convert_facebook_url_to_mobile](#convert_facebook_url_to_mobile)
-  * [extract_user_from_facebook_url](#extract_user_from_facebook_url)
+  * [parse_facebook_url](#parse_facebook_url)
   * [extract_url_from_facebook_link](#extract_url_from_facebook_link)
 * [google](#google)
   * [is_amp_url](#is_amp_url)
@@ -541,18 +541,28 @@ convert_facebook_url_to_mobile('http://www.facebook.com/post/974583586343')
 >>> 'http://m.facebook.com/post/974583586343'
 ```
 
-#### extract_user_from_facebook_url
+#### parse_facebook_url
 
-Function extracting user information from a facebook user url.
+Function parsing the given Facebook url.
 
 ```python
-from ural.facebook import extract_user_from_facebook_url
+from ural.facebook import parse_facebook_url
 
-extract_user_from_facebook_url('https://www.facebook.com/people/Sophia-Aman/102016783928989')
->>> FacebookUser(id='102016783928989', handle=None, url='https://www.facebook.com/profile.php?id=102016783928989)
+# Importing related classes if you need to perform tests
+from ural.facebook import (
+  FacebookHandle,
+  FacebookUser,
+  FacebookPost
+)
 
-extract_user_from_facebook_url('/annelaure.rivolu?rc=p&__tn__=R')
->>> FacebookUser(id=None, handle='annelaure.rivolu', url='https://www.facebook.com/annelaure.rivolu)
+parse_facebook_url('https://www.facebook.com/people/Sophia-Aman/102016783928989')
+>>> FacebookUser(id='102016783928989')
+
+parse_facebook_url('/annelaure.rivolu?rc=p&__tn__=R', allow_relative_urls=True)
+>>> FacebookHandle(handle='annelaure.rivolu')
+
+parse_facebook_url('https://lemonde.fr')
+>>> None
 ```
 
 #### extract_url_from_facebook_link
