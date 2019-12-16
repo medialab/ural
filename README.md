@@ -34,6 +34,8 @@ pip install ural
 * [lru.lru_to_url](#lrulru_to_url)
 * [lru.lru_stems](#lrulru_stems)
 * [lru.normalized_lru_stems](#lrunormalized_lru_stems)
+* [lru.serialize_lru](#lruserialize_lru)
+* [lru.unserialize_lru](#lruunserialize_lru)
 
 *LRU-related classes*
 
@@ -343,6 +345,32 @@ normalized_lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=v
 *Arguments*
 
 This function accepts the same arguments as [normalize_url](#normalize_url).
+
+---
+
+### lru.serialize_lru
+
+Function serializing lru stems to a string.
+
+```python
+from ural.lru import serialize_lru
+
+serialize_lru(['s:https', 'h:fr', 'h:lemonde'])
+>>> 's:https|h:fr|h:lemonde|'
+```
+
+---
+
+### lru.unserialize_lru
+
+Function unserializing stringified lru to a list of stems.
+
+```python
+from ural.lru import unserialize_lru
+
+unserialize_lru('s:https|h:fr|h:lemonde|')
+>>> ['s:https', 'h:fr', 'h:lemonde']
+```
 
 ---
 
