@@ -20,6 +20,8 @@ from ural.utils import (
     SplitResult
 )
 
+NUMERIC_ID_RE = re.compile(r'[0-9]{8,}')
+
 BASE_FACEBOOK_URL = 'https://www.facebook.com'
 
 FACEBOOK_DOMAIN_RE = re.compile(r'(?:facebook\.[^.]+$|fb\.me$)', re.I)
@@ -145,7 +147,7 @@ class FacebookHandle(FacebookParsedItem):
 
     @property
     def url(self):
-        return urljoin(BASE_FACEBOOK_URL, '/profile.php?id=%s' % self.id)
+        return urljoin(BASE_FACEBOOK_URL, '/%s' % self.handle)
 
     def __repr__(self):
         class_name = self.__class__.__name__
@@ -155,6 +157,40 @@ class FacebookHandle(FacebookParsedItem):
         ) % {
             'class_name': class_name,
             'handle': self.handle
+        }
+
+
+class FacebookPost(FacebookParsedItem):
+    __slots__ = ('id', 'parent_id', 'group_id', 'parent_handle')
+
+    def __init__(self, post_id, parent_id=None, group_id=None, parent_handle=None):
+        self.id = post_id
+        self.parent_id = parent_id
+        self.group_id = group_id
+        self.parent_handle = parent_handle
+
+    @property
+    def url(self):
+        if self.parent_handle is not None:
+            return urljoin(BASE_FACEBOOK_URL, '/%s/posts/%s' % (self.parent_handle, self.id))
+
+        if self.parent_id is not None:
+            return urljoin(BASE_FACEBOOK_URL, '/permalink.php?story_fbid=%s&id=%s' % (self.id, self.parent_id))
+
+        if self.group_id is not None:
+            return urljoin(BASE_FACEBOOK_URL, '/groups/%s/permalink/%s' % (self.group_id, self.id))
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+
+        return (
+            '<%(class_name)s id=%(id)s parent_id=%(parent_id)s group_id=%(group_id)s parent_handle=%(parent_handle)s>'
+        ) % {
+            'class_name': class_name,
+            'id': self.id,
+            'group_id': self.group_id,
+            'parent_id': self.parent_id,
+            'parent_handle': self.parent_handle
         }
 
 
@@ -176,6 +212,28 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     if not splitted.path or splitted.path == '/':
         return None
+
+    # Obvious post path
+    if '/posts/' in splitted.path:
+        parts = urlpathsplit(splitted.path)
+
+        parent_id_or_handle = parts[0]
+
+        if NUMERIC_ID_RE.match(parent_id_or_handle):
+            return FacebookPost(parts[2], parent_id=parent_id_or_handle)
+
+        return FacebookPost(parts[2], parent_handle=parent_id_or_handle)
+
+    # Ye olded permalink path
+    if splitted.query and '/permalink.php' in splitted.path:
+        query = parse_qs(splitted.query)
+        return FacebookPost(query['story_fbid'][0], parent_id=query['id'][0])
+
+    # Group permalink path
+    if '/groups/' in splitted.path and '/permalink/' in splitted.path:
+        parts = urlpathsplit(splitted.path)
+
+        return FacebookPost(parts[3], group_id=parts[1])
 
     # Profile path
     if splitted.path == '/profile.php':

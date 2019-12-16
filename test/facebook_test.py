@@ -5,6 +5,7 @@ import pytest
 from ural.facebook import (
     FacebookHandle,
     FacebookUser,
+    FacebookPost,
     is_facebook_url,
     convert_facebook_url_to_mobile,
     parse_facebook_url,
@@ -74,6 +75,22 @@ PARSE_TESTS = [
     (
         'https://lemonde.fr/path',
         None
+    ),
+    (
+        'https://www.facebook.com/astucerie/posts/428202057564823',
+        FacebookPost('428202057564823', parent_handle='astucerie')
+    ),
+    (
+        'https://www.facebook.com/permalink.php?story_fbid=1354978971282622&id=598338556946671',
+        FacebookPost('1354978971282622', parent_id='598338556946671')
+    ),
+    (
+        'https://www.facebook.com/groups/175634843342347/permalink/235340200705144',
+        FacebookPost('235340200705144', group_id='175634843342347')
+    ),
+    (
+        'https://www.facebook.com/598338556946671/posts/1416659045114614',
+        FacebookPost('1416659045114614', parent_id='598338556946671')
     )
 ]
 
@@ -110,7 +127,7 @@ class TestFacebook(object):
         with pytest.raises(Exception):
             convert_facebook_url_to_mobile('http://twitter.com')
 
-    def test_extract_user_from_facebook_url(self):
+    def test_parse_facebook_url(self):
         for url, target in PARSE_TESTS:
             result = parse_facebook_url(url, allow_relative_urls=True)
 
