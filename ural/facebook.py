@@ -13,6 +13,7 @@ from ural.utils import (
     parse_qs,
     unquote,
     urljoin,
+    urlpathsplit,
     urlsplit,
     urlunsplit,
     safe_urlsplit,
@@ -173,6 +174,9 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     splitted = safe_urlsplit(url)
 
+    if not splitted.path or splitted.path == '/':
+        return None
+
     # Profile path
     if splitted.path == '/profile.php':
         query = parse_qs(splitted.query)
@@ -181,15 +185,15 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # People path
     if splitted.path.startswith('/people'):
-        parts = splitted.path.split('/', 4)
-        user_id = parts[3]
+        parts = urlpathsplit(splitted.path)
+        user_id = parts[2]
         return FacebookUser(user_id)
 
     # Handle path
     if splitted.path:
-        parts = splitted.path.split('/', 2)
+        parts = urlpathsplit(splitted.path)
 
-        if not parts[1].endswith('.php'):
-            return FacebookHandle(parts[1])
+        if not parts[0].endswith('.php'):
+            return FacebookHandle(parts[0])
 
     return None

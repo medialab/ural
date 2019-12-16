@@ -49,3 +49,12 @@ def safe_urlsplit(url, scheme='http'):
     splitted = urlsplit(url)
 
     return splitted
+
+
+def urlpathsplit(urlpath):
+    if urlpath == '/':
+        return []
+
+    urlpath = urlpath.strip('/')
+
+    return urlpath.split('/')
