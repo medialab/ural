@@ -19,6 +19,6 @@ setup(name='ural',
       install_requires=[
         'phylactery>=0.2.2',
         'pycountry>=18.12.8',
-        'tld>=0.11.8'
+        'tld>=0.11.10'
       ],
       zip_safe=True)
