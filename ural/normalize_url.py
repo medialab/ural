@@ -28,7 +28,7 @@ MISTAKES_RE = re.compile(r'&amp;')
 
 OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|url|[lu])', re.I)
 
-IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|recruiter|fref|igshid|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
+IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
@@ -60,7 +60,8 @@ IRRELEVANT_QUERY_COMBOS = {
         'twhr',
         'twhs',
         'twitter',
-        'viral'
+        'viral',
+        'feed'
     ]),
     'sns': ('tw', ),
     'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter')
