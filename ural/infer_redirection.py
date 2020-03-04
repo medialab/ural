@@ -14,7 +14,8 @@ from ural.utils import unquote
 OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|url|[lu])', re.I)
 
 
-# TODO: relative cases, AMP
+# TODO: relative cases, AMP, use on splitted result
+# https://github.com/medialab/ural/issues/59
 def infer_redirection(url):
     """
     Function returning the url that the given url will redirect to. This is done
