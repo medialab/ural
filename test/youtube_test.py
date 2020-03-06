@@ -150,6 +150,11 @@ PARSE_TESTS = [
         'http://www.youtube.com/v/mZiqexz7aqQ%26hl%3Den%26fs%3D1',
         YoutubeVideo(id='mZiqexz7aqQ'),
         'https://www.youtube.com/watch?v=mZiqexz7aqQ'
+    ),
+    (
+        'https://www.youtube.com/attribution_link?a=bWdZjuszr4I&u=%2Fwatch%3Fv%3Df5ZJLklAIQc%26feature%3Dshare',
+        YoutubeVideo(id='f5ZJLklAIQc'),
+        'https://www.youtube.com/watch?v=f5ZJLklAIQc'
     )
 ]
 

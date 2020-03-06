@@ -9,6 +9,7 @@ from collections import namedtuple
 
 from ural.utils import urlsplit, urlpathsplit, SplitResult
 from ural.ensure_protocol import ensure_protocol
+from ural.infer_redirection import infer_redirection
 from ural.patterns import QUERY_VALUE_TEMPLATE, DOMAIN_TEMPLATE
 
 YOUTUBE_DOMAINS_RE = re.compile(r'(?:youtube(?:\.googleapis)?\.[^.]+$|youtu\.be$)', re.I)
@@ -62,6 +63,9 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             in Youtube urls as you can find them on the web. Defaults to `True`.
 
     """
+
+    # Inferring redirection
+    url = infer_redirection(url)
 
     # Continuation urls
     m = NEXT_V_RE.search(url) or NESTED_NEXT_V_RE.search(url)
