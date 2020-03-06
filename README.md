@@ -131,7 +131,8 @@ get_normalized_hostname('http://fr-FR.facebook.com/path', strip_lang_subdomains=
 *Arguments*
 
 * **url** *str*: Target url.
-* **normalized_amp** *?bool*: Whether to attempt to normalize Google AMP subdomains.
+* **infer_redirection** *bool* [`False`]: whether to attempt resolving common redirects by leveraging well-known GET parameters.
+* **normalize_amp** *?bool*: Whether to attempt to normalize Google AMP subdomains.
 * **strip_lang_subdomains** *?bool*: Whether to drop language-specific subdomains.
 
 ---
@@ -231,10 +232,10 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 *Arguments*
 
 * **url** *string*: URL to normalize.
+* **infer_redirection** *bool* [`False`]: whether to attempt resolving common redirects by leveraging well-known GET parameters.
 * **fix_common_mistakes** *bool* [`True`]: whether to attempt to fix common URL mistakes.
 * **normalize_amp** *bool* [`True`]: whether to attempt to normalize Google AMP urls.
 * **quoted** *bool* [`True`]: whether to normalize to a quoted or unquoted version of the url.
-* **resolve_obvious_redirects** *bool* [`False`]: whether to attempt resolving common redirects by leveraging well-known GET parameters.
 * **sort_query** *bool* [`True`]: whether to sort query items.
 * **strip_authentication** *bool* [`True`]: whether to strip authentication.
 * **strip_fragment** *bool|str* [`'except-routing'`]: whether to strip the url's fragment. If set to `except-routing`, will only strip the fragment if the fragment is not deemed to be js routing (i.e. if it contains a `/`).
