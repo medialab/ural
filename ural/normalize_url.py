@@ -10,6 +10,7 @@ import pycountry
 from os.path import normpath, splitext
 
 from ural.ensure_protocol import ensure_protocol
+from ural.infer_redirection import infer_redirection as resolve
 from ural.utils import (
     parse_qsl,
     quote,
@@ -18,15 +19,13 @@ from ural.utils import (
     unquote,
     SplitResult
 )
-from ural.patterns import PROTOCOL_RE, QUERY_VALUE_IN_URL_TEMPLATE
+from ural.patterns import PROTOCOL_RE
 
 RESERVED_CHARACTERS = ';,/?:@&=+$'
 UNRESERVED_CHARACTERS = '-_.!~*\'()'
 SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
-MISTAKES_RE = re.compile(r'&amp;')
-
-OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|url|[lu])', re.I)
+MISTAKES_RE = re.compile(r'&amp(?:%3B|;)', re.I)
 
 IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
@@ -34,7 +33,6 @@ IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
 AMP_SUBDOMAIN_PATTERN = r'|amp'
 AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
-AMPPROJECT_REDIRECTION_RE = re.compile(r'^/[cv]/(?:s/)?', re.I)
 
 IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % r'', re.I)
 IRRELEVANT_SUBDOMAIN_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % r'', re.I)
@@ -137,30 +135,11 @@ def strip_lang_subdomains_from_netloc(netloc):
     return netloc
 
 
-def resolve_ampproject_redirect(splitted):
-    if (
-        splitted.hostname and
-        splitted.hostname.endswith('.ampproject.org') and
-        AMPPROJECT_REDIRECTION_RE.search(splitted.path)
-    ):
-        amp_redirected = 'https://' + AMPPROJECT_REDIRECTION_RE.sub('', splitted.path)
-
-        if splitted.query:
-            amp_redirected += '?' + splitted.query
-
-        if splitted.fragment:
-            amp_redirected += '#' + splitted.fragment
-
-        splitted = urlsplit(amp_redirected)
-
-    return splitted
-
-
 def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomain=True, strip_lang_subdomains=False, strip_lang_query_items=False,
                   strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True,
-                  resolve_obvious_redirects=False, quoted=True):
+                  infer_redirection=True, quoted=True):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -189,7 +168,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             AMP urls. Defaults to True.
         fix_common_mistakes (bool, optional): Whether to attempt solving common mistakes.
             Defaults to True.
-        resolve_obvious_redirects (bool, optional): Whether to attempt resolving common
+        infer_redirection (bool, optional): Whether to attempt resolving common
             redirects by leveraging well-known GET parameters. Defaults to `False`.
         quoted (bool, optional): Normalizing to quoted or unquoted.
             Defaults to True.
@@ -200,14 +179,8 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     """
     original_url_arg = url
 
-    if resolve_obvious_redirects:
-        obvious_redirect_match = re.search(OBVIOUS_REDIRECTS_RE, url)
-
-        if obvious_redirect_match is not None:
-            target = unquote(obvious_redirect_match.group(1))
-
-            if target.startswith('http://') or target.startswith('https://'):
-                url = target
+    if infer_redirection:
+        url = resolve(url, amp=normalize_amp)
 
     if isinstance(url, SplitResult):
         has_protocol = bool(splitted.scheme)
@@ -224,10 +197,6 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             splitted = urlsplit(url)
         except ValueError:
             return original_url_arg
-
-    # Handling *.ampproject.org redirections
-    if normalize_amp:
-        splitted = resolve_ampproject_redirect(splitted)
 
     scheme, netloc, path, query, fragment = splitted
 
@@ -356,7 +325,12 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     return result
 
 
-def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False):
+def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False,
+                            infer_redirection=True):
+
+    if infer_redirection:
+        url = resolve(url, amp=normalize_amp)
+
     if isinstance(url, SplitResult):
         splitted = url
     else:
@@ -364,9 +338,6 @@ def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False
             splitted = urlsplit(ensure_protocol(url))
         except ValueError:
             return None
-
-    if normalize_amp:
-        splitted = resolve_ampproject_redirect(splitted)
 
     if not splitted.hostname:
         return None
