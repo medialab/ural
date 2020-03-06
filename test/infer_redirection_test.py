@@ -60,6 +60,14 @@ TESTS = [
     (
         'https://www.youtube.com/attribution_link?a=bWdZjuszr4I&u=%2Fwatch%3Fv%3Df5ZJLklAIQc%26feature%3Dshare',
         'https://www.youtube.com/watch?v=f5ZJLklAIQc&feature=share'
+    ),
+    (
+        'http://cdn.ampproject.org/c/s/bc.marfeel.com/www.capital.fr/carriere-management/actualites/l-ecole-42-de-xavier-niel-classee-meilleure-ecole-de-code-au-monde-1199824?marfeeltn=amp',
+        'https://www.capital.fr/carriere-management/actualites/l-ecole-42-de-xavier-niel-classee-meilleure-ecole-de-code-au-monde-1199824?marfeeltn=amp'
+    ),
+    (
+        'http://bc-marfeelcache-com.cdn.ampproject.org/c/s/bc.marfeelcache.com/amp/positivr.fr/grenoble-interdit-panneaux-publicitaires/',
+        'https://positivr.fr/grenoble-interdit-panneaux-publicitaires/'
     )
 ]
 

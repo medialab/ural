@@ -166,11 +166,6 @@ infer_redirection('https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A
 >>> 'https://m.youtube.com/watch?v=4iJBsjHMviQ'
 ```
 
-*Arguments*
-
-* **url** *string*: Target url.
-* **amp** *?bool* [`True`]: Whether to handle `ampproject` redirections.
-
 ---
 
 ### is_shortened_url

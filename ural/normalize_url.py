@@ -41,6 +41,7 @@ IRRELEVANT_QUERY_AMP_RE = re.compile(IRRELEVANT_QUERY_PATTERN % AMP_QUERY_PATTER
 IRRELEVANT_SUBDOMAIN_AMP_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % AMP_SUBDOMAIN_PATTERN, re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
+    'marfeeltn': ('amp', ),
     'mode': ('amp', ),
     'output': ('amp', ),
     'platform': ('hootsuite', ),
@@ -186,7 +187,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     original_url_arg = url
 
     if infer_redirection:
-        url = resolve(url, amp=normalize_amp)
+        url = resolve(url)
 
     if isinstance(url, SplitResult):
         has_protocol = bool(splitted.scheme)
@@ -335,7 +336,7 @@ def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False
                             infer_redirection=True):
 
     if infer_redirection:
-        url = resolve(url, amp=normalize_amp)
+        url = resolve(url)
 
     if isinstance(url, SplitResult):
         splitted = url
