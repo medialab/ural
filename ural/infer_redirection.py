@@ -9,14 +9,12 @@
 import re
 
 from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
-from ural.utils import unquote
+from ural.utils import unquote, urljoin
 
 OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|url|[lu])', re.I)
 AMPPROJECT_REDIRECTION_RE = re.compile(r'.ampproject.org/[cv]/(?:s/)?', re.I)
 
 
-# TODO: relative cases
-# https://github.com/medialab/ural/issues/59
 def infer_redirection(url, amp=True):
     """
     Function returning the url that the given url will redirect to. This is done
@@ -45,5 +43,8 @@ def infer_redirection(url, amp=True):
 
         if target.startswith('http://') or target.startswith('https://'):
             return target
+
+        if target.startswith('/'):
+            return urljoin(url, target)
 
     return url

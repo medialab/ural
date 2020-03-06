@@ -52,6 +52,14 @@ TESTS = [
     (
         'http://mashable-com.cdn.ampproject.org/c/s/mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp?test#test',
         'https://mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp?test#test'
+    ),
+    (
+        'https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A%2F%2Fm.youtube.com%2Fwatch%3Fv%3D4iJBsjHMviQ&ved=2ahUKEwiBm-TO3OvkAhUnA2MBHQRPAR4QwqsBMAB6BAgDEAQ&usg=AOvVaw0i7y2_fEy3nwwdIZyo_qug',
+        'https://m.youtube.com/watch?v=4iJBsjHMviQ'
+    ),
+    (
+        'https://www.youtube.com/attribution_link?a=bWdZjuszr4I&u=%2Fwatch%3Fv%3Df5ZJLklAIQc%26feature%3Dshare',
+        'https://www.youtube.com/watch?v=f5ZJLklAIQc&feature=share'
     )
 ]
 
