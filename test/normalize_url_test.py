@@ -73,8 +73,8 @@ TESTS = [
 TESTS_ADVANCED = [
     ('lemonde.fr/index/', 'lemonde.fr', {'strip_trailing_slash': True}),
     ('https://yomgui@lemonde.fr', 'yomgui@lemonde.fr', {'strip_authentication': False}),
-    ('https://www.lemonde.fr', 'https://www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
-    ('www.lemonde.fr', 'www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomain": False}),
+    ('https://www.lemonde.fr', 'https://www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomains": False}),
+    ('www.lemonde.fr', 'www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomains": False}),
     ('https://www.fr.lemonde.fr', 'lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.fu.lemonde.fr', 'fu.lemonde.fr', {"strip_lang_subdomains": True}),
     ('https://www.fr-fu.lemonde.fr', 'fr-fu.lemonde.fr', {"strip_lang_subdomains": True}),

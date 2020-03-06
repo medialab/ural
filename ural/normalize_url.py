@@ -137,7 +137,7 @@ def strip_lang_subdomains_from_netloc(netloc):
 
 def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                   strip_trailing_slash=False, strip_index=True, strip_protocol=True,
-                  strip_irrelevant_subdomain=True, strip_lang_subdomains=False, strip_lang_query_items=False,
+                  strip_irrelevant_subdomains=True, strip_lang_subdomains=False, strip_lang_query_items=False,
                   strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True,
                   infer_redirection=True, quoted=True):
     """
@@ -157,9 +157,13 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             Defaults to `False`.
         strip_index (bool, optional): Whether to drop trailing index at the end
             of the url. Defaults to `True`.
+        strip_irrelevant_subdomains (bool, optional): Whether to strip irrelevant subdomains such as www etc.
+            Default to True.
         strip_lang_subdomains (bool, optional): Whether to drop language subdomains
             (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
             Defaults to `False`.
+        strip_protocol (bool, optional): Whether to strip the url's protocol.
+            Defaults to `True`.
         strip_fragment (bool|str, optional): Whether to drop non-routing fragment from the url?
             If set to `except-routing` will only drop non-routing fragment (i.e. fragments that
             do not contain a "/").
@@ -267,7 +271,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         path = ''
 
     # Dropping irrelevant subdomains
-    if strip_irrelevant_subdomain:
+    if strip_irrelevant_subdomains:
         netloc = re.sub(
             IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE,
             '',
