@@ -66,7 +66,9 @@ TESTS = [
     ('http://bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?utm_campaign=transit&amp;utm_source=main&amp;utm_medium=page_0&amp;domain=mirtesen.ru&amp;paid=1&amp;pad=1', 'bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?domain=mirtesen.ru&pad=1&paid=1'),
     ('http://mozilla.org?x=шеллы', 'mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B'),
     ('https://facebook.com/kaliwakatee?refid=52&__tn__=R', 'facebook.com/kaliwakatee'),
-    ('http://www.wired.co.uk/magazine/archive/2012/11/features/open-university?fb_source=feed&ref=feed&refid=28&_ft_=qid.5811242880099719698:mf_story_key.371116929646636', 'wired.co.uk/magazine/archive/2012/11/features/open-university')
+    ('http://www.wired.co.uk/magazine/archive/2012/11/features/open-university?fb_source=feed&ref=feed&refid=28&_ft_=qid.5811242880099719698:mf_story_key.371116929646636', 'wired.co.uk/magazine/archive/2012/11/features/open-university'),
+    ('http://lemonde.fr?wpamp', 'lemonde.fr'),
+    ('http://lemonde.fr?mode=amp&output=amp', 'lemonde.fr')
 ]
 
 

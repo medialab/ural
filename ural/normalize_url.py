@@ -27,7 +27,7 @@ SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
 MISTAKES_RE = re.compile(r'&amp(?:%3B|;)', re.I)
 
-IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
+IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|wpamp|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
 
 AMP_QUERY_PATTERN = r'|amp_.+|amp'
@@ -41,6 +41,8 @@ IRRELEVANT_QUERY_AMP_RE = re.compile(IRRELEVANT_QUERY_PATTERN % AMP_QUERY_PATTER
 IRRELEVANT_SUBDOMAIN_AMP_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % AMP_SUBDOMAIN_PATTERN, re.I)
 
 IRRELEVANT_QUERY_COMBOS = {
+    'mode': ('amp', ),
+    'output': ('amp', ),
     'platform': ('hootsuite', ),
     'ref': set([
         'bookmark',
