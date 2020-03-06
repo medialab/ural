@@ -44,6 +44,14 @@ TESTS = [
     (
         'http://www.portailrh.org/_Externe.aspx?l=http%3a%2f%2fwww.ledevoir.com%2fsociete%2feducation%2f497900%2fune-reflexion-sur-l-employabilite-des-doctorants%3fp%3d668624&utm_source=Sociallymap&utm_medium=Sociallymap&utm_campaign=Sociallymap',
         'http://www.ledevoir.com/societe/education/497900/une-reflexion-sur-l-employabilite-des-doctorants?p=668624'
+    ),
+    (
+        'http://mashable-com.cdn.ampproject.org/c/s/mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp',
+        'https://mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp'
+    ),
+    (
+        'http://mashable-com.cdn.ampproject.org/c/s/mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp?test#test',
+        'https://mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp?test#test'
     )
 ]
 
