@@ -21,6 +21,7 @@ pip install ural
 * [get_hostname](#get_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
 * [force_protocol](#force_protocol)
+* [infer_redirection](#infer_redirection)
 * [is_shortened_url](#is_shortened_url)
 * [is_url](#is_url)
 * [normalize_url](#normalize_url)
@@ -150,6 +151,24 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
+
+---
+
+### infer_redirection
+
+Function attempting to find obvious clues in the given url that it is in fact a redirection and resolving the redirection automatically without firing any HTTP request. If nothing is found, the given url will be returned as-is.
+
+```python
+from ural import infer_redirection
+
+infer_redirection('https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A%2F%2Fm.youtube.com%2Fwatch%3Fv%3D4iJBsjHMviQ&ved=2ahUKEwiBm-TO3OvkAhUnA2MBHQRPAR4QwqsBMAB6BAgDEAQ&usg=AOvVaw0i7y2_fEy3nwwdIZyo_qug')
+>>> 'https://m.youtube.com/watch?v=4iJBsjHMviQ'
+```
+
+*Arguments*
+
+* **url** *string*: Target url.
+* **amp** *?bool* [`True`]: Whether to handle `ampproject` redirections.
 
 ---
 

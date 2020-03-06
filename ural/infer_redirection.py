@@ -23,7 +23,7 @@ def infer_redirection(url, amp=True):
 
     Args:
         url (string): Target url.
-        amp (boolean, optional): Whether to handle ampproject domain redirects.
+        amp (bool, optional): Whether to handle ampproject domain redirects.
             Defaults to True.
 
     Returns:
