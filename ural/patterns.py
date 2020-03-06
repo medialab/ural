@@ -80,7 +80,7 @@ URL_IN_HTML_RE = re.compile(
     r"<a\s.*?href=(?:\"([.#]+?)\"|\'([.#]+?)\'|([^\s]+?))(?:>|\s.*?>)(?:.*?)<[/ ]?a>",
     re.DOTALL | re.IGNORECASE)
 
-QUERY_VALUE_IN_URL_TEMPLATE = r'[?&]%s=([^&]+)'
+QUERY_VALUE_IN_URL_TEMPLATE = r'(?:^|[?&])%s=([^&]+)'
 QUERY_VALUE_TEMPLATE = r'%s=([^&]+)'
 
 DOMAIN_TEMPLATE = r'^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/]|\s*$)'
