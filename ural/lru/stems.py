@@ -12,17 +12,30 @@ from ural.normalize_url import normalize_url
 
 
 def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
-    scheme, _, path, query, fragment = parsed_url
-    hostname = parsed_url.hostname or ''
-
+    scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
     if scheme:
         lru.append('s:' + scheme)
 
-    # Handling port
-    if parsed_url.port is not None:
-        lru.append('t:' + str(parsed_url.port))
+    user = None
+    password = None
+
+    # Handling auth
+    if '@' in netloc:
+        auth, netloc = netloc.split('@', 1)
+
+        if ':' in auth:
+            user, password = auth.split(':', 1)
+        else:
+            user = auth
+
+    # Parsing domain & port
+    netloc = netloc.split(':', 1)
+
+    if len(netloc) == 2:
+        port = netloc[1]
+        lru.append('t:' + port)
 
     # Need to process TLD?
     should_process_normally = not tld_aware
@@ -47,7 +60,7 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
                 lru.append('h:' + element)
 
     if should_process_normally:
-        for element in reversed(hostname.split('.')):
+        for element in reversed(netloc[0].split('.')):
             lru.append('h:' + element)
 
     # Path
@@ -63,13 +76,12 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
         lru.append('f:' + fragment)
 
     # User
-    if parsed_url.username is not None:
-        lru.append('u:' + parsed_url.username)
+    if user:
+        lru.append('u:' + user)
 
     # Password
-    if parsed_url.password is not None:
-        lru.append('w:' + parsed_url.password)
-
+    if password:
+        lru.append('w:' + password)
     return lru
 
 
