@@ -13,10 +13,12 @@ DEFAULT_TESTS = [
     ('site.com?', ['s:http', 'h:com', 'h:site']),
     ('http://user@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user']),
     ('http://user:mdp@lemonde.fr', ['s:http', 'h:fr', 'h:lemonde', 'u:user', 'w:mdp']),
-    ('http://theguardian.co.uk', ['s:http', 'h:uk', 'h:co', 'h:theguardian'])
+    ('http://theguardian.co.uk', ['s:http', 'h:uk', 'h:co', 'h:theguardian']),
     # ('http://theguardian.co.uk/path?', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'q:']),
     # ('http://theguardian.co.uk/path#', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'f:']),
-    # ('http://theguardian.co.uk/path?#', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'q:', 'f:'])
+    # ('http://theguardian.co.uk/path?#', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'q:', 'f:']),
+    ('http://cuts.An', ['s:http', 'h:an', 'h:cuts']),
+    ('http://black.bl', ['s:http', 'h:bl', 'h:black'])
 ]
 
 TLD_AWARE_TESTS = [
@@ -25,7 +27,9 @@ TLD_AWARE_TESTS = [
     ('http://www.example.com/wpstyle/?p=364&q=365&a=284#anchor', ['s:http', 'h:com', 'h:example', 'h:www', 'p:wpstyle', 'p:', 'q:p=364&q=365&a=284', 'f:anchor']),
     ('http://www.lemonde.fr:8000/article/1234/index.html?query=mobile#2', ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:query=mobile', 'f:2']),
     ('https://www.lemonde.frcom', ['s:https', 'h:frcom', 'h:lemonde', 'h:www']),
-    ('https://www.courrierinternational.compage', ['s:https', 'h:compage', 'h:courrierinternational', 'h:www'])
+    ('https://www.courrierinternational.compage', ['s:https', 'h:compage', 'h:courrierinternational', 'h:www']),
+    ('http://cuts.An', ['s:http', 'h:an', 'h:cuts']),
+    ('http://black.bl', ['s:http', 'h:bl', 'h:black'])
 ]
 
 
