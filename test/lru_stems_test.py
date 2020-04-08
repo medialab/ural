@@ -17,8 +17,11 @@ DEFAULT_TESTS = [
     # ('http://theguardian.co.uk/path?', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'q:']),
     # ('http://theguardian.co.uk/path#', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'f:']),
     # ('http://theguardian.co.uk/path?#', ['s:http', 'h:uk', 'h:co', 'h:theguardian', 'p:path', 'q:', 'f:']),
-    ('http://cuts.An', ['s:http', 'h:an', 'h:cuts']),
-    ('http://black.bl', ['s:http', 'h:bl', 'h:black'])
+    ('http://cuts.An', ['s:http', 'h:An', 'h:cuts']),
+    ('http://black.bl', ['s:http', 'h:bl', 'h:black']),
+    ('http://[2001:4860:0:2001::68]/', ['s:http', 'h:[2001:4860:0:2001::68]', 'p:']),
+    ('http://192.14.253.56/hello.html', ['s:http', 'h:192.14.253.56', 'p:hello.html']),
+    ('http://localhost:443/hello.html', ['s:http', 't:443', 'h:localhost', 'p:hello.html'])
 ]
 
 TLD_AWARE_TESTS = [
@@ -28,8 +31,11 @@ TLD_AWARE_TESTS = [
     ('http://www.lemonde.fr:8000/article/1234/index.html?query=mobile#2', ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:query=mobile', 'f:2']),
     ('https://www.lemonde.frcom', ['s:https', 'h:frcom', 'h:lemonde', 'h:www']),
     ('https://www.courrierinternational.compage', ['s:https', 'h:compage', 'h:courrierinternational', 'h:www']),
-    ('http://cuts.An', ['s:http', 'h:an', 'h:cuts']),
-    ('http://black.bl', ['s:http', 'h:bl', 'h:black'])
+    ('http://cuts.An', ['s:http', 'h:An', 'h:cuts']),
+    ('http://black.bl', ['s:http', 'h:bl', 'h:black']),
+    ('http://[2001:4860:0:2001::68]/', ['s:http', 'h:[2001:4860:0:2001::68]', 'p:']),
+    ('http://192.14.253.56/hello.html', ['s:http', 'h:192.14.253.56', 'p:hello.html']),
+    ('http://localhost:443/hello.html', ['s:http', 't:443', 'h:localhost', 'p:hello.html'])
 ]
 
 

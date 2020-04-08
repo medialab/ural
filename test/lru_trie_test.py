@@ -49,3 +49,8 @@ class TestNormalizedLRUTrie(object):
             {'media': 'lemonde'},
             {'media': 'lemonde', 'type': 'article'}
         ]
+
+    def test_edge_cases(sefl):
+        trie = LRUTrie()
+
+        assert trie.match('http://127.0.0.1/economie/2019/01/08/un-journaliste-poursuit-richard-ferrand-pour-lavoir-bloque-sur-twitter/') is None

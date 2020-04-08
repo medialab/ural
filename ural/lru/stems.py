@@ -4,11 +4,15 @@
 #
 # A function returning the url parts in hierarchical order.
 #
+import re
 from tld.utils import process_url
 
 from ural.utils import urlsplit
 from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
+from ural.patterns import SPECIAL_HOSTS_RE
+
+PORT_SPLITTER = re.compile(r':(?![\d:]+])')
 
 
 def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
@@ -31,7 +35,7 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
             user = auth
 
     # Parsing domain & port
-    netloc = netloc.split(':', 1)
+    netloc = PORT_SPLITTER.split(netloc)
 
     if len(netloc) == 2:
         port = netloc[1]
@@ -60,8 +64,11 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
                 lru.append('h:' + element)
 
     if should_process_normally:
-        for element in reversed(netloc[0].split('.')):
-            lru.append('h:' + element)
+        if SPECIAL_HOSTS_RE.search(netloc[0]) is not None:
+            lru.append('h:' + netloc[0])
+        else:
+            for element in reversed(netloc[0].split('.')):
+                lru.append('h:' + element)
 
     # Path
     for element in path.split('/')[1:]:
