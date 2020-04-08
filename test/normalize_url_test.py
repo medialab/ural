@@ -69,8 +69,8 @@ TESTS = [
     ('http://www.wired.co.uk/magazine/archive/2012/11/features/open-university?fb_source=feed&ref=feed&refid=28&_ft_=qid.5811242880099719698:mf_story_key.371116929646636', 'wired.co.uk/magazine/archive/2012/11/features/open-university'),
     ('http://lemonde.fr?wpamp', 'lemonde.fr'),
     ('http://lemonde.fr?mode=amp&output=amp', 'lemonde.fr'),
-    ('https://www.jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html', 'jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html'),
-    ('http://www.milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad', 'milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad')
+    (u'https://www.jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html', 'jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html'),
+    (u'http://www.milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad', 'milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad')
 ]
 
 

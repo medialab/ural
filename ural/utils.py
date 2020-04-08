@@ -30,9 +30,24 @@ try:
     )
 except ImportError:
     from urllib import (
-        quote,
-        unquote
+        unquote,
+        quote as original_quote
     )
+
+    ALWAYS_SAFE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-~'
+
+    def quote(string, safe='/'):
+        if isinstance(string, unicode):
+            safe_set = set(ord(c) for c in ALWAYS_SAFE)
+
+            for c in safe:
+                safe_set.add(ord(c))
+
+            chars = [c if ord(c) in safe_set else '%{:02X}'.format(ord(c)) for c in string]
+
+            return ''.join(chars)
+
+        return original_quote(string, safe)
 
     from urlparse import (
         parse_qs,
