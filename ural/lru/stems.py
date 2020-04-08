@@ -38,6 +38,8 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
         lru.append('t:' + port)
 
     # Need to process TLD?
+    should_process_normally = not tld_aware
+
     if tld_aware:
         domain_parts, non_zero_i, _ = process_url(
             url=parsed_url,
@@ -46,12 +48,18 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
             search_public=True,
             search_private=True
         )
-        tld = '.'.join(domain_parts[non_zero_i:])
-        lru.append('h:' + tld)
-        for element in reversed(domain_parts[0:non_zero_i]):
-            lru.append('h:' + element)
 
-    else:
+        if domain_parts is None:
+            should_process_normally = True
+
+        else:
+            tld = '.'.join(domain_parts[non_zero_i:])
+            lru.append('h:' + tld)
+
+            for element in reversed(domain_parts[0:non_zero_i]):
+                lru.append('h:' + element)
+
+    if should_process_normally:
         for element in reversed(netloc[0].split('.')):
             lru.append('h:' + element)
 

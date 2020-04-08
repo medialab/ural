@@ -23,7 +23,9 @@ TLD_AWARE_TESTS = [
     ('http://theguardian.co.uk', ['s:http', 'h:co.uk', 'h:theguardian']),
     ('http://user:mdp@lemonde.co.uk', ['s:http', 'h:co.uk', 'h:lemonde', 'u:user', 'w:mdp']),
     ('http://www.example.com/wpstyle/?p=364&q=365&a=284#anchor', ['s:http', 'h:com', 'h:example', 'h:www', 'p:wpstyle', 'p:', 'q:p=364&q=365&a=284', 'f:anchor']),
-    ('http://www.lemonde.fr:8000/article/1234/index.html?query=mobile#2', ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:query=mobile', 'f:2'])
+    ('http://www.lemonde.fr:8000/article/1234/index.html?query=mobile#2', ['s:http', 't:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'p:index.html', 'q:query=mobile', 'f:2']),
+    ('https://www.lemonde.frcom', ['s:https', 'h:frcom', 'h:lemonde', 'h:www']),
+    ('https://www.courrierinternational.compage', ['s:https', 'h:compage', 'h:courrierinternational', 'h:www'])
 ]
 
 
@@ -32,4 +34,4 @@ class TestLruStems(object):
         for url, result in DEFAULT_TESTS:
             assert lru_stems(url, tld_aware=False) == result
         for url, result in TLD_AWARE_TESTS:
-            assert lru_stems(url, tld_aware=True) == result
+            assert lru_stems(url, tld_aware=True) == result, url
