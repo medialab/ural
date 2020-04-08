@@ -4,7 +4,6 @@
 #
 # A function returning an iterator over the urls present in the string argument.
 #
-from __future__ import unicode_literals
 import re
 from ural.patterns import URL_IN_TEXT_RE
 
