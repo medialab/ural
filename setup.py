@@ -14,7 +14,7 @@ setup(name='ural',
       author_email='kropotkinepiotr@gmail.com',
       keywords='url',
       python_requires='>=2.7',
-      packages=find_packages(exclude=['test']),
+      packages=find_packages(exclude=['scripts', 'test']),
       package_data={'docs': ['README.md']},
       install_requires=[
         'phylactery>=0.2.2',
