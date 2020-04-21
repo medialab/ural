@@ -4,7 +4,7 @@ with open('./README.md', 'r') as f:
     long_description = f.read()
 
 setup(name='ural',
-      version='0.22.0',
+      version='0.22.1',
       description='A helper library full of URL-related heuristics.',
       long_description=long_description,
       long_description_content_type='text/markdown',
@@ -19,6 +19,6 @@ setup(name='ural',
       install_requires=[
         'phylactery>=0.2.2',
         'pycountry>=18.12.8',
-        'tld>=0.11.10'
+        'tld>=0.12'
       ],
       zip_safe=True)
