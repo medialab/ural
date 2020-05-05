@@ -239,7 +239,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_lang_query_items** *?bool* [`False`]: whether to strip language query items (ex: `gl=pt_BR`).
 * **strip_lang_subdomains** *?bool* [`False`]: whether to strip language subdomains (ex: `fr-FR.lemonde.fr` to only `lemonde.fr` because `fr-FR` isn't a relevant subdomain, it indicates the language and the country).
 * **strip_protocol** *?bool* [`True`]: whether to strip the url's protocol.
-* **strip_trailing_slash** *?bool* [`False`]: whether to strip trailing slash.
+* **strip_trailing_slash** *?bool* [`True`]: whether to strip trailing slash.
 * **unsplit** *?bool* [`True`]: whether to return a stringified version of the normalized url or directly the `SplitResult` instance worked on by the normalization process.
 
 ---
@@ -508,7 +508,7 @@ To tweak its normalization, you can give to `NormalizedLRUTrie` the same options
 ```python
 from ural.lru import NormalizedLRUTrie
 
-trie = NormalizedLRUTrie(strip_trailing_slash=True)
+trie = NormalizedLRUTrie(normalize_amp=False)
 ```
 
 Note that there are still some differences between the `LRUTrie` and the `NormalizedLRUTrie`:

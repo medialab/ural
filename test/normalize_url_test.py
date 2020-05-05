@@ -8,12 +8,13 @@ TESTS = [
     ('http://lemonde.fr///a/./b/..', 'lemonde.fr/a'),
     ('lemonde.fr/index.html', 'lemonde.fr'),
     ('lemonde.fr/index.php', 'lemonde.fr'),
+    ('lemonde.fr/index/', 'lemonde.fr'),
     ('lemonde.fr/index.php?utm_content=whatever&test=toto', 'lemonde.fr?test=toto'),
     ('lemonde.fr/index.php?utm_content=whatever', 'lemonde.fr'),
     ('https://lemonde.fr?', 'lemonde.fr'),
     ('https://lemonde.fr#anchor', 'lemonde.fr'),
     ('https://lemonde.fr/#anchor', 'lemonde.fr'),
-    ('https://lemonde.fr/#/path/is/here', 'lemonde.fr/#/path/is/here'),
+    ('https://lemonde.fr/#/path/is/here', 'lemonde.fr#/path/is/here'),
     ('https://lemonde.fr#!/path/is/here', 'lemonde.fr#!/path/is/here'),
     ('//www.lemonde.fr', 'lemonde.fr'),
     ('//www.lemonde.fr?XTOR=whatev', 'lemonde.fr'),
@@ -47,9 +48,9 @@ TESTS = [
     ('http://www.europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641.amp', 'europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641'),
     ('http://www.sciencesetavenir.fr/fondamental/journee-mondiale-du-bonheur-le-secret-pour-etre-heureux-selon-albert-einstein_117633.amp?__twitter_impression=true', 'sciencesetavenir.fr/fondamental/journee-mondiale-du-bonheur-le-secret-pour-etre-heureux-selon-albert-einstein_117633'),
     ('http://www.sudouest.fr/2017/08/15/un-an-ferme-pour-avoir-frappe-des-gendarmesle-dimanche-moins-frequente-3696402-3350.amp.html', 'sudouest.fr/2017/08/15/un-an-ferme-pour-avoir-frappe-des-gendarmesle-dimanche-moins-frequente-3696402-3350.html'),
-    ('http://newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/amp', 'newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/'),
-    ('http://newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/amp/', 'newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/'),
-    ('https://fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/amp/?__twitter_impression=true', 'fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/'),
+    ('http://newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/amp', 'newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens'),
+    ('http://newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens/amp/', 'newsinfo.inquirer.net/900478/maute-gunmen-in-their-teens'),
+    ('https://fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee/amp/?__twitter_impression=true', 'fr.aleteia.org/2018/07/17/lhonnetete-de-huit-jeunes-garcons-recompensee'),
     ('http://amp.lefigaro.fr/actualite-france/les-geysers-de-rue-redoublent-avec-la-canicule-20190628', 'lefigaro.fr/actualite-france/les-geysers-de-rue-redoublent-avec-la-canicule-20190628'),
     ('http://mashable-com.cdn.ampproject.org/c/s/mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing.amp', 'mashable.com/2018/08/10/deep-web-challenge-youtube-unboxing'),
     ('http://www.europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641.amp/', 'europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641'),
@@ -61,7 +62,7 @@ TESTS = [
     ('https://lemonde.fr/test#!', 'lemonde.fr/test'),
     ('http://lemonde.fr/test#xtor=RSS-11', 'lemonde.fr/test'),
     ('http://m.youtube.com/watch?v=X2gSGCOVaZk&feature=youtu.be', 'youtube.com/watch?v=X2gSGCOVaZk'),
-    ('https://www.instagram.com/wondher/?utm_source=ig_profile_share&igshid=if58b3qro9yw', 'instagram.com/wondher/'),
+    ('https://www.instagram.com/wondher/?utm_source=ig_profile_share&igshid=if58b3qro9yw', 'instagram.com/wondher'),
     ('https://www.change.org/p/ville-de-saint-malo-electrik-parade-saint-malo?recruiter=797274685&utm_source=share_petition&utm_medium=twitter&utm_campaign=share_petition&utm_term=autopublish&utm_content=nafta_twitter_large_image_card%3Areal_control', 'change.org/p/ville-de-saint-malo-electrik-parade-saint-malo'),
     ('http://bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?utm_campaign=transit&amp;utm_source=main&amp;utm_medium=page_0&amp;domain=mirtesen.ru&amp;paid=1&amp;pad=1', 'bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?domain=mirtesen.ru&pad=1&paid=1'),
     ('http://mozilla.org?x=шеллы', 'mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B'),
@@ -75,7 +76,6 @@ TESTS = [
 
 
 TESTS_ADVANCED = [
-    ('lemonde.fr/index/', 'lemonde.fr', {'strip_trailing_slash': True}),
     ('https://yomgui@lemonde.fr', 'yomgui@lemonde.fr', {'strip_authentication': False}),
     ('https://www.lemonde.fr', 'https://www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomains": False}),
     ('www.lemonde.fr', 'www.lemonde.fr', {"strip_protocol": False, "strip_irrelevant_subdomains": False}),
@@ -115,6 +115,16 @@ TESTS_ADVANCED = [
         'https://www.lemonde.fr/path?gl=pt_BR&hl=fr',
         'lemonde.fr/path',
         {'strip_lang_query_items': True}
+    ),
+    (
+        'https://lemonde.fr/#/path/is/here',
+        'lemonde.fr/#/path/is/here',
+        {'strip_trailing_slash': False}
+    ),
+    (
+        'lemonde.fr/article/',
+        'lemonde.fr/article/',
+        {'strip_trailing_slash': False}
     )
 ]
 

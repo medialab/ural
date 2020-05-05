@@ -139,7 +139,7 @@ def strip_lang_subdomains_from_netloc(netloc):
 
 
 def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
-                  strip_trailing_slash=False, strip_index=True, strip_protocol=True,
+                  strip_trailing_slash=True, strip_index=True, strip_protocol=True,
                   strip_irrelevant_subdomains=True, strip_lang_subdomains=False, strip_lang_query_items=False,
                   strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True,
                   infer_redirection=True, quoted=True):

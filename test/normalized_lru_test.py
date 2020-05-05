@@ -6,7 +6,7 @@ from ural.lru import normalized_lru_stems
 
 DEFAULT_TESTS = [
     ('http://www.lemonde.fr:8000/article/1234/index.html?query=mobile#2', ['t:8000', 'h:fr', 'h:lemonde', 'p:article', 'p:1234', 'q:query=mobile']),
-    ('http://www.example.com/wpstyle/?p=364&q=365', ['h:com', 'h:example', 'p:wpstyle', 'p:', 'q:p=364&q=365']),
+    ('http://www.example.com/wpstyle/?p=364&q=365', ['h:com', 'h:example', 'p:wpstyle', 'q:p=364&q=365']),
     ('www.foo.bar/index.html', ['h:bar', 'h:foo'])
 ]
 
