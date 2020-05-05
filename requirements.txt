@@ -8,4 +8,4 @@ twine==1.11.0
 # Dependencies
 phylactery==0.2.2
 pycountry>=18.12.8
-tld==0.12
+tld==0.12.1
