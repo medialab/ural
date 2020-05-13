@@ -203,8 +203,13 @@ class FacebookPost(FacebookParsedItem):
 
     @property
     def full_id(self):
+        if self.parent_id is not None:
+            return '%s_%s' % (self.parent_id, self.id)
+
         if self.group_id is not None:
             return '%s_%s' % (self.group_id, self.id)
+
+        return None
 
     def __repr__(self):
         class_name = self.__class__.__name__

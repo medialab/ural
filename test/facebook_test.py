@@ -142,7 +142,7 @@ class TestFacebook(object):
 
         result = parse_facebook_url('https://www.facebook.com/permalink.php?story_fbid=1354978971282622&id=598338556946671')
 
-        assert result.full_id is None
+        assert result.full_id == '598338556946671_1354978971282622'
 
         result = parse_facebook_url('https://www.facebook.com/meilleurdesmondesoff/posts/1810737099256795')
 
