@@ -201,6 +201,11 @@ class FacebookPost(FacebookParsedItem):
         if self.group_id is not None:
             return urljoin(BASE_FACEBOOK_URL, '/groups/%s/permalink/%s' % (self.group_id, self.id))
 
+    @property
+    def full_id(self):
+        if self.group_id is not None:
+            return '%s_%s' % (self.group_id, self.id)
+
     def __repr__(self):
         class_name = self.__class__.__name__
 
