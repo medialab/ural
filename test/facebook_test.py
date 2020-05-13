@@ -11,6 +11,8 @@ from ural.facebook import (
     parse_facebook_url,
     is_facebook_link,
     is_facebook_post_url,
+    is_facebook_id,
+    is_facebook_full_id,
     extract_url_from_facebook_link
 )
 
@@ -141,6 +143,16 @@ class TestFacebook(object):
     def test_is_facebook_post_url(self):
         for url, target in PARSE_TESTS:
             assert is_facebook_post_url(url) == (isinstance(target, FacebookPost))
+
+    def test_is_facebook_id(self):
+        assert not is_facebook_id('test')
+        assert is_facebook_id('8745346')
+
+    def test_is_facebook_full_id(self):
+        assert not is_facebook_full_id('test')
+        assert not is_facebook_full_id('86868684')
+        assert is_facebook_full_id('974954_48758359854')
+        assert is_facebook_full_id('4_898683848643')
 
     def test_extract_url_from_facebook_link(self):
         for link, url in FACEBOOK_LINK_TESTS:

@@ -24,11 +24,21 @@ NUMERIC_ID_RE = re.compile(r'[0-9]{8,}')
 
 BASE_FACEBOOK_URL = 'https://www.facebook.com'
 
+FACEBOOK_ID_RE = re.compile(r'^\d+$')
+FACEBOOK_FULL_ID_RE = re.compile(r'^\d+_\d+$')
 FACEBOOK_DOMAIN_RE = re.compile(r'(?:facebook\.[^.]+$|fb\.me$)', re.I)
 FACEBOOK_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:facebook\.[^.]+|fb\.me)', re.I)
 MOBILE_REPLACE_RE = re.compile(r'^([^.]+\.)?facebook\.', re.I)
 
 URL_EXTRACT_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'u')
+
+
+def is_facebook_id(value):
+    return bool(re.search(FACEBOOK_ID_RE, value))
+
+
+def is_facebook_full_id(value):
+    return bool(re.search(FACEBOOK_FULL_ID_RE, value))
 
 
 def is_facebook_url(url):

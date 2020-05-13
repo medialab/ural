@@ -51,6 +51,8 @@ pip install ural
 *Platform-specific functions*
 
 * [facebook](#facebook)
+  * [is_facebook_id](#is_facebook_id)
+  * [is_facebook_full_id](#is_facebook_full_id)
   * [is_facebook_url](#is_facebook_url)
   * [is_facebook_post_url](#is_facebook_post_url)
   * [is_facebook_link](#is_facebook_link)
@@ -519,6 +521,37 @@ Note that there are still some differences between the `LRUTrie` and the `Normal
 ---
 
 ### Facebook
+
+#### is_facebook_id
+
+Function returning whether the given string is a valid Facebook id or not.
+
+```python
+from ural.facebook import is_facebook_id
+
+is_facebook_id('974583586343')
+>>> True
+
+is_facebook_id('whatever')
+>>> False
+```
+
+#### is_facebook_full_id
+
+Function returning whether the given string is a valid Facebook full post id or not.
+
+```python
+from ural.facebook import is_facebook_full_id
+
+is_facebook_full_id('974583586343_9749757953')
+>>> True
+
+is_facebook_full_id('974583586343')
+>>> False
+
+is_facebook_full_id('whatever')
+>>> False
+```
 
 #### is_facebook_url
 
