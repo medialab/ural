@@ -2,7 +2,7 @@
 # Ural Twitter Unit Tests
 # =============================================================================
 import pytest
-from ural.twitter import is_twitter_url, normalisation, extract_screen_name_from_twitter_url
+from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url
 
 
 IS_TESTS = [
