@@ -11,7 +11,7 @@ from ural.utils import SplitResult, urlsplit, urlpathsplit
 
 TWITTER_DOMAINS_RE = re.compile(r'twitter\.com', re.I)
 TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*twitter\.com', re.I)
-USERNAME_EXCEPTIONS = ['home', 'hashtag', 'search', 'explore', 'settings', 'messages', 'notifications', 'explore', 'i']
+TWITTER_SCREEN_NAME_BLACKLIST = ('home', 'hashtag', 'search', 'explore', 'settings', 'messages', 'notifications', 'explore', 'i')
 
 
 def is_twitter_url(url):
@@ -31,7 +31,7 @@ def is_twitter_url(url):
     return bool(re.match(TWITTER_URL_RE, url))
 
 
-def normalisation(username):
+def normalize_screen_name(username):
     """
     Small function used in extract_screen_name_from_twitter_url(url) in order to normalize username and deal
     with specific exceptions.
@@ -42,12 +42,11 @@ def normalisation(username):
         username (str) or rise an exception.
 
     """
-    if username in USERNAME_EXCEPTIONS:
+    if username in TWITTER_SCREEN_NAME_BLACKLIST:
         return None
-    else:
-        if username[0] == '@':
-            username = username[1:]
-        username = username.lower()
+    if username.startswith('@'):
+        username = username[1:]
+    username = username.lower()
     return username
 
 
@@ -64,13 +63,16 @@ def extract_screen_name_from_twitter_url(url):
 
     """
     # Checking whether the url is a valid twitter url
-    valid_url = is_twitter_url(url)
-    url_fragmente = urlsplit(url)
-    if valid_url and len(url_fragmente.path) >= 1:
-        if len(url_fragmente.path) != 1:
-            username = url_fragmente.path[1:].split('/')[0]
-        else:
-            username = url_fragmente.fragment[2:]
-        return normalisation(username)
-    else:
+    if not is_twitter_url(url):
         return None
+    parsed = urlsplit(url)
+    path = urlpathsplit(parsed.path)
+    username = ''
+    if len(path) >= 1:
+        if len(path[0]) >= 1:
+            username = path[0]
+            return normalize_screen_name(username)
+    elif len(path) == 0:
+        username = urlpathsplit(parsed.fragment)[1]
+        return normalize_screen_name(username)
+    return None
