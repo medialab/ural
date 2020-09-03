@@ -11,7 +11,7 @@ from ural.utils import SplitResult, urlsplit, urlpathsplit
 
 TWITTER_DOMAINS_RE = re.compile(r'twitter\.com', re.I)
 TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*twitter\.com', re.I)
-TWITTER_SCREEN_NAME_BLACKLIST = ('home', 'hashtag', 'search', 'explore', 'settings', 'messages', 'notifications', 'explore', 'i')
+TWITTER_SCREEN_NAME_BLACKLIST = set(['home', 'hashtag', 'search', 'explore', 'settings', 'messages', 'notifications', 'explore', 'i'])
 
 
 def is_twitter_url(url):
