@@ -65,6 +65,7 @@ pip install ural
   * [extract_url_from_google_link](#extract_url_from_google_link)
 * [twitter](#twitter)
   * [is_twitter_url](#is_twitter_url)
+  * [extract_screen_name_from_twitter_url](#extract_screen_name_from_twitter_url)
 * [youtube](#youtube)
   * [is_youtube_url](#is_youtube_url)
   * [is_youtube_video_id](#is_youtube_video_id)
@@ -698,7 +699,7 @@ extract_url_from_google_link('https://www.google.com/url?sa=t&rct=j&q=&esrc=s&so
 
 ---
 
-### Google
+### Twitter
 
 #### is_twitter_url
 
@@ -716,6 +717,24 @@ is_twitter_url('https://www.twitter.com/Yomguithereal')
 is_twitter_url('https://twitter.fr')
 >>> True
 ```
+#### extract_screen_name_from_twitter_url
+
+If the given url is a valid Url Twitter account this function returns the screen_name of the twitter account, nothing otherwise
+
+```python
+
+from ural.twitter import extract_screen_name_from_twitter_url
+
+extract_screen_name_from_twitter_url('https://www.twitter.com/Yomguithereal')
+
+>>> 'yomguithereal'
+
+extract_screen_name_from_twitter_url('https://twitter.fr')
+(nothing happens)
+
+```
+
+
 
 ---
 
