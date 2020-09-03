@@ -63,6 +63,8 @@ pip install ural
   * [is_amp_url](#is_amp_url)
   * [is_google_link](#is_google_link)
   * [extract_url_from_google_link](#extract_url_from_google_link)
+* [twitter](#twitter)
+  * [is_twitter_url](#is_twitter_url)
 * [youtube](#youtube)
   * [is_youtube_url](#is_youtube_url)
   * [is_youtube_video_id](#is_youtube_video_id)
@@ -692,6 +694,27 @@ from ural.google import extract_url_from_google_link
 extract_url_from_google_link('https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwicu4K-rZzmAhWOEBQKHRNWA08QFjAAegQIARAB&url=https%3A%2F%2Fwww.facebook.com%2Fieff.ogbeide&usg=AOvVaw0vrBVCiIHUr5pncjeLpPUp')
 
 >>> 'https://www.facebook.com/ieff.ogbeide'
+```
+
+---
+
+### Google
+
+#### is_twitter_url
+
+Returns whether the given url is from Twitter.
+
+```python
+from ural.twitter import is_twitter_url
+
+is_twitter_url('https://lemonde.fr')
+>>> False
+
+is_twitter_url('https://www.twitter.com/Yomguithereal')
+>>> True
+
+is_twitter_url('https://twitter.fr')
+>>> True
 ```
 
 ---
