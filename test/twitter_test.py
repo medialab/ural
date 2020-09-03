@@ -26,7 +26,7 @@ EXTRACT_SCREEN_NAME_TESTS = [
     ('http://twitter.com/Yomguithereal', 'yomguithereal'),
     ('https://twitter.fr/Yomguithereal', 'yomguithereal'),
     ('https://twitter.com/Yomguithereal/lists', 'yomguithereal'),
-    ('https://twitter.com/medialab_ScPo/status/1284154793376784385', 'medialab_ScPo'),
+    ('https://twitter.com/medialab_ScPo/status/1284154793376784385', 'medialab_scpo'),
     ('https://twitter.com/hashtag/Covid?src=hashtag_click', None),
     ('https://twitter.com/search?q=ue&src=typed_query', None),
     ('https://twitter.com/home', None),
