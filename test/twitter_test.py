@@ -2,9 +2,8 @@
 # Ural Twitter Unit Tests
 # =============================================================================
 import pytest
-from ural.twitter import (
-    is_twitter_url
-)
+from ural.twitter import is_twitter_url, normalisation, extract_screen_name_from_twitter_url
+
 
 IS_TESTS = [
     ('https://twitter.com', True),
@@ -24,7 +23,6 @@ EXTRACT_SCREEN_NAME_TESTS = [
     ('https://twitter.com/Yomguithereal#anchor', 'yomguithereal'),
     ('https://twitter.com/#!/Yomguithereal', 'yomguithereal'),
     ('http://twitter.com/Yomguithereal', 'yomguithereal'),
-    ('https://twitter.fr/Yomguithereal', 'yomguithereal'),
     ('https://twitter.com/Yomguithereal/lists', 'yomguithereal'),
     ('https://twitter.com/medialab_ScPo/status/1284154793376784385', 'medialab_scpo'),
     ('https://twitter.com/hashtag/Covid?src=hashtag_click', None),
@@ -45,6 +43,6 @@ class TestTwitter(object):
         for url, result in IS_TESTS:
             assert is_twitter_url(url) == result
 
-    # def test_extract_screen_name_from_twitter_url(self):
-    #     for url, screen_name in EXTRACT_SCREEN_NAME_TESTS:
-    #         assert extract_screen_name_from_twitter_url(url) == screen_name
+    def test_extract_screen_name_from_twitter_url(self):
+        for url, screen_name in EXTRACT_SCREEN_NAME_TESTS:
+            assert extract_screen_name_from_twitter_url(url) == screen_name
