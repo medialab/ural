@@ -34,7 +34,8 @@ EXTRACT_SCREEN_NAME_TESTS = [
     ('https://twitter.com/notifications', None),
     ('https://twitter.com/i/notifications', None),
     ('https://twitter.com/i/timeline', None),
-    ('https://twitter.com/i/bookmarks', None)
+    ('https://twitter.com/i/bookmarks', None),
+    ('twitter.com/Yomguithereal', 'yomguithereal')
 ]
 
 

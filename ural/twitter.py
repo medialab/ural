@@ -7,7 +7,7 @@
 import re
 
 from ural.patterns import DOMAIN_TEMPLATE
-from ural.utils import SplitResult, urlsplit, urlpathsplit
+from ural.utils import SplitResult, safe_urlsplit, urlpathsplit
 
 TWITTER_DOMAINS_RE = re.compile(r'twitter\.com', re.I)
 TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*twitter\.com', re.I)
@@ -67,7 +67,7 @@ def extract_screen_name_from_twitter_url(url):
     if not is_twitter_url(url):
         return None
 
-    parsed = urlsplit(url)
+    parsed = safe_urlsplit(url)
     path = urlpathsplit(parsed.path)
 
     if path:
