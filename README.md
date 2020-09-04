@@ -714,27 +714,24 @@ is_twitter_url('https://lemonde.fr')
 is_twitter_url('https://www.twitter.com/Yomguithereal')
 >>> True
 
-is_twitter_url('https://twitter.fr')
+is_twitter_url('https://twitter.com')
 >>> True
 ```
+
 #### extract_screen_name_from_twitter_url
 
-If the given url is a valid Url Twitter account this function returns the screen_name of the twitter account, nothing otherwise
+Extracts a normalized user's screen name from a Twitter url. If given an irrelevant url, the function will return `None`.
+
 
 ```python
-
 from ural.twitter import extract_screen_name_from_twitter_url
 
 extract_screen_name_from_twitter_url('https://www.twitter.com/Yomguithereal')
-
 >>> 'yomguithereal'
 
 extract_screen_name_from_twitter_url('https://twitter.fr')
-(nothing happens)
-
+>>> None
 ```
-
-
 
 ---
 
