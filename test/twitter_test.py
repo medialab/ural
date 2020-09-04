@@ -35,7 +35,14 @@ EXTRACT_SCREEN_NAME_TESTS = [
     ('https://twitter.com/i/notifications', None),
     ('https://twitter.com/i/timeline', None),
     ('https://twitter.com/i/bookmarks', None),
-    ('twitter.com/Yomguithereal', 'yomguithereal')
+    ('twitter.com/Yomguithereal', 'yomguithereal'),
+    ('twitter.com/Yomguithereal/#!/boogheta', 'yomguithereal'),
+    ('twitter.com/home/#!/boogheta', None),
+    ('twitter.com/#whatever', None),
+    ('twitter.com/#!boogheta', 'boogheta'),
+    # ('twitter.com#!boogheta', 'boogheta'),
+    ('twitter.com/#!@boogheta', 'boogheta'),
+    ('twitter.com/#!/@boogheta', 'boogheta')
 ]
 
 
@@ -46,4 +53,4 @@ class TestTwitter(object):
 
     def test_extract_screen_name_from_twitter_url(self):
         for url, screen_name in EXTRACT_SCREEN_NAME_TESTS:
-            assert extract_screen_name_from_twitter_url(url) == screen_name
+            assert extract_screen_name_from_twitter_url(url) == screen_name, url
