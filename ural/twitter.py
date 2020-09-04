@@ -11,7 +11,16 @@ from ural.utils import SplitResult, urlsplit, urlpathsplit
 
 TWITTER_DOMAINS_RE = re.compile(r'twitter\.com', re.I)
 TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*twitter\.com', re.I)
-TWITTER_SCREEN_NAME_BLACKLIST = set(['home', 'hashtag', 'search', 'explore', 'settings', 'messages', 'notifications', 'explore', 'i'])
+TWITTER_SCREEN_NAME_BLACKLIST = {
+    'explore',
+    'home',
+    'hashtag',
+    'i',
+    'messages',
+    'notifications',
+    'search',
+    'settings'
+}
 
 
 def is_twitter_url(url):
@@ -32,42 +41,34 @@ def is_twitter_url(url):
 
 
 def normalize_screen_name(username):
-    """
-    Small function used in extract_screen_name_from_twitter_url(url) in order to normalize username and deal
-    with specific exceptions.
-    Args:
-        username (str) : username to test.
-
-    Returns:
-        username (str) or rise an exception.
-
-    """
     if username in TWITTER_SCREEN_NAME_BLACKLIST:
         return None
+
     if username.startswith('@'):
         username = username[1:]
-    username = username.lower()
-    return username
+
+    return username.lower()
 
 
 def extract_screen_name_from_twitter_url(url):
     """
-    Function returning the screen_name
+    Function returning the screen_name from a given Twitter url.
 
     Args:
-        url (str) : Url from which we extract the screen_name if it exists
+        url (str) : Url from which we extract the screen_name if found.
 
     Returns:
-        str : screen_name if the url is a valid twitter url
-              None otherwise
+        str : screen_name if the url is a valid twitter url, None otherwise.
 
     """
+
     # Checking whether the url is a valid twitter url
     if not is_twitter_url(url):
         return None
+
     parsed = urlsplit(url)
     path = urlpathsplit(parsed.path)
-    username = ''
+
     if len(path) >= 1:
         if len(path[0]) >= 1:
             username = path[0]
