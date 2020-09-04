@@ -40,7 +40,7 @@ EXTRACT_SCREEN_NAME_TESTS = [
     ('twitter.com/home/#!/boogheta', None),
     ('twitter.com/#whatever', None),
     ('twitter.com/#!boogheta', 'boogheta'),
-    # ('twitter.com#!boogheta', 'boogheta'),
+    ('twitter.com#!boogheta', 'boogheta'),
     ('twitter.com/#!@boogheta', 'boogheta'),
     ('twitter.com/#!/@boogheta', 'boogheta')
 ]

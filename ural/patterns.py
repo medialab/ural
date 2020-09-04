@@ -83,4 +83,4 @@ URL_IN_HTML_RE = re.compile(
 QUERY_VALUE_IN_URL_TEMPLATE = r'(?:^|[?&])%s=([^&]+)'
 QUERY_VALUE_TEMPLATE = r'%s=([^&]+)'
 
-DOMAIN_TEMPLATE = r'^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/]|\s*$)'
+DOMAIN_TEMPLATE = r'^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/#]|\s*$)'
