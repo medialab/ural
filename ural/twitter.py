@@ -11,6 +11,7 @@ from ural.utils import SplitResult, urlsplit, urlpathsplit
 
 TWITTER_DOMAINS_RE = re.compile(r'twitter\.com', re.I)
 TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*twitter\.com', re.I)
+TWITTER_FRAGMENT_ROUTING_RE = re.compile(r'^!/?')
 TWITTER_SCREEN_NAME_BLACKLIST = {
     'explore',
     'home',
@@ -69,11 +70,12 @@ def extract_screen_name_from_twitter_url(url):
     parsed = urlsplit(url)
     path = urlpathsplit(parsed.path)
 
-    if len(path) >= 1:
-        if len(path[0]) >= 1:
-            username = path[0]
-            return normalize_screen_name(username)
-    elif len(path) == 0:
-        username = urlpathsplit(parsed.fragment)[1]
-        return normalize_screen_name(username)
+    if path:
+        return normalize_screen_name(path[0])
+
+    if parsed.fragment.startswith('!'):
+        path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)
+
+        return normalize_screen_name(path)
+
     return None

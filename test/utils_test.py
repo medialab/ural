@@ -6,6 +6,7 @@
 from ural.utils import urlpathsplit
 
 URLPATHSPLIT_TESTS = [
+    ('', []),
     ('/', []),
     ('/path', ['path']),
     ('/path/', ['path']),

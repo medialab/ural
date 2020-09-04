@@ -72,7 +72,9 @@ def safe_urlsplit(url, scheme='http'):
 
 
 def urlpathsplit(urlpath):
-    if urlpath == '/':
+    urlpath = urlpath.strip()
+
+    if not urlpath or urlpath == '/':
         return []
 
     urlpath = urlpath.strip('/')
