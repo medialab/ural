@@ -1,14 +1,22 @@
 # Variables
 SOURCE = ural
 
+# Functions
+define clean
+	rm -rf *.egg-info .pytest_cache build dist
+	find . -name "*.pyc" | xargs rm -f
+	find . -name __pycache__ | xargs rm -rf
+	rm -f *.spec
+endef
+
 # Commands
 all: lint test
 test: unit
-publish: clean lint test upload clean
+publish: clean lint test upload
+	$(call clean)
 
 clean:
-	rm -rf *.egg-info .pytest_cache build dist
-	find . -name "*.pyc" | xargs rm
+	$(call clean)
 
 lint:
 	@echo Linting source code using pep8...
