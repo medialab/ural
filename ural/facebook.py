@@ -244,13 +244,20 @@ class FacebookVideo(FacebookParsedItem):
 
 
 class FacebookPhoto(FacebookParsedItem):
-    __slots__ = ('id',)
+    __slots__ = ('id', 'group_id')
 
-    def __init__(self, photo_id):
+    def __init__(self, photo_id, group_id=None):
         self.id = photo_id
+        self.group_id = group_id
 
     @property
     def url(self):
+        if self.group_id:
+            return urljoin(
+                BASE_FACEBOOK_URL,
+                '/photo.php?fbid=%s&set=g.%s' % (self.id, self.group_id)
+            )
+
         return urljoin(BASE_FACEBOOK_URL, '/photo.php?fbid=%s' % self.id)
 
 
@@ -290,13 +297,18 @@ def parse_facebook_url(url, allow_relative_urls=False):
         return FacebookVideo(parts[2], parent_id=parts[0])
 
     # Photos
-    if splitted.query and '/photo.php' in splitted.path:
+    if splitted.query and (splitted.path.endswith('/photo.php') or splitted.path.endswith('/photo')):
         query = parse_qs(splitted.query)
 
         if 'fbid' not in query:
             return None
 
-        return FacebookPhoto(query['fbid'][0])
+        group_id = None
+
+        if 'set' in query and query['set'][0].startswith('g.'):
+            group_id = query['set'][0].split('g.', 1)[1]
+
+        return FacebookPhoto(query['fbid'][0], group_id=group_id)
 
     # Obvious post path
     if '/posts/' in splitted.path:

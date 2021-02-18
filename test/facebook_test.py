@@ -133,6 +133,10 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/photo.php?fbid=10222721681573727',
         FacebookPhoto('10222721681573727')
+    ),
+    (
+        'https://www.facebook.com/photo?fbid=4191267614222491&set=g.721653275253020',
+        FacebookPhoto('4191267614222491', group_id='721653275253020')
     )
 ]
 
