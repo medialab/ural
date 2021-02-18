@@ -111,6 +111,14 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/groups/ps.avenches/permalink/5477353885670191/',
         FacebookPost('5477353885670191', group_handle='ps.avenches')
+    ),
+    (
+        'https://www.facebook.com/2233377536730176/posts/3706618546072727',
+        FacebookPost('3706618546072727', parent_id='2233377536730176')
+    ),
+    (
+        'https://www.facebook.com/national.vaccine.information.center/posts/10157313353192931',
+        FacebookPost('10157313353192931', parent_handle='national.vaccine.information.center')
     )
 ]
 
