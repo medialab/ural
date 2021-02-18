@@ -628,6 +628,7 @@ from ural.facebook import (
   FacebookUser,
   FacebookGroup,
   FacebookPost,
+  FacebookPhoto,
   FacebookVideo
 )
 
@@ -642,6 +643,9 @@ parse_facebook_url('https://www.facebook.com/groups/159674260852951/permalink/17
 
 parse_facebook_url('https://www.facebook.com/108824017345866/videos/311658803718223')
 >>> FacebookVideo(id='311658803718223', parent_id='108824017345866')
+
+parse_facebook_url('https://www.facebook.com/photo.php?fbid=10222721681573727')
+>>> FacebookPhoto(id='10222721681573727')
 
 parse_facebook_url('/annelaure.rivolu?rc=p&__tn__=R', allow_relative_urls=True)
 >>> FacebookHandle(handle='annelaure.rivolu')

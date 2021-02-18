@@ -8,6 +8,7 @@ from ural.facebook import (
     FacebookGroup,
     FacebookPost,
     FacebookVideo,
+    FacebookPhoto,
     is_facebook_url,
     convert_facebook_url_to_mobile,
     parse_facebook_url,
@@ -128,6 +129,10 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/108824017345866/videos/311658803718223',
         FacebookVideo('311658803718223', parent_id='108824017345866')
+    ),
+    (
+        'https://www.facebook.com/photo.php?fbid=10222721681573727',
+        FacebookPhoto('10222721681573727')
     )
 ]
 
