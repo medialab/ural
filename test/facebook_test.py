@@ -7,6 +7,7 @@ from ural.facebook import (
     FacebookUser,
     FacebookGroup,
     FacebookPost,
+    FacebookVideo,
     is_facebook_url,
     convert_facebook_url_to_mobile,
     parse_facebook_url,
@@ -119,6 +120,14 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/national.vaccine.information.center/posts/10157313353192931',
         FacebookPost('10157313353192931', parent_handle='national.vaccine.information.center')
+    ),
+    (
+        'https://www.facebook.com/watch/?v=311658803718223',
+        FacebookVideo('311658803718223')
+    ),
+    (
+        'https://www.facebook.com/108824017345866/videos/311658803718223',
+        FacebookVideo('311658803718223', parent_id='108824017345866')
     )
 ]
 

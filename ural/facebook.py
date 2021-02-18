@@ -228,6 +228,21 @@ class FacebookPost(FacebookParsedItem):
         return None
 
 
+class FacebookVideo(FacebookParsedItem):
+    __slots__ = ('id', 'parent_id')
+
+    def __init__(self, video_id, parent_id=None):
+        self.id = video_id
+        self.parent_id = parent_id
+
+    @property
+    def url(self):
+        if self.parent_id is None:
+            return urljoin(BASE_FACEBOOK_URL, '/watch/?v=%s' % self.id)
+
+        return urljoin(BASE_FACEBOOK_URL, '/%s/videos/%s' % (self.parent_id, self.id))
+
+
 def parse_facebook_url(url, allow_relative_urls=False):
 
     # Allowing relative urls scraped from facebook?
@@ -246,6 +261,22 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     if not splitted.path or splitted.path == '/':
         return None
+
+    # Videos
+    if '/watch' in splitted.path:
+        query = parse_qs(splitted.query)
+
+        if 'v' not in query:
+            return None
+
+        video_id = query['v'][0]
+
+        return FacebookVideo(video_id)
+
+    if '/videos/' in splitted.path:
+        parts = urlpathsplit(splitted.path)
+
+        return FacebookVideo(parts[2], parent_id=parts[0])
 
     # Obvious post path
     if '/posts/' in splitted.path:
