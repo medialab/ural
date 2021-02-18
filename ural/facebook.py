@@ -244,11 +244,15 @@ class FacebookVideo(FacebookParsedItem):
 
 
 class FacebookPhoto(FacebookParsedItem):
-    __slots__ = ('id', 'group_id')
+    __slots__ = ('id', 'group_id', 'parent_id', 'parent_handle', 'album_id')
 
-    def __init__(self, photo_id, group_id=None):
+    def __init__(self, photo_id, group_id=None, parent_id=None, parent_handle=None,
+                 album_id=None):
         self.id = photo_id
         self.group_id = group_id
+        self.parent_id = parent_id
+        self.parent_handle = parent_handle
+        self.album_id = album_id
 
     @property
     def url(self):
@@ -256,6 +260,26 @@ class FacebookPhoto(FacebookParsedItem):
             return urljoin(
                 BASE_FACEBOOK_URL,
                 '/photo.php?fbid=%s&set=g.%s' % (self.id, self.group_id)
+            )
+
+        if self.parent_id:
+            return urljoin(
+                BASE_FACEBOOK_URL,
+                '/%s/a.%s/%s' % (
+                    self.parent_id,
+                    self.album_id,
+                    self.id
+                )
+            )
+
+        if self.parent_handle:
+            return urljoin(
+                BASE_FACEBOOK_URL,
+                '/%s/a.%s/%s' % (
+                    self.parent_handle,
+                    self.album_id,
+                    self.id
+                )
             )
 
         return urljoin(BASE_FACEBOOK_URL, '/photo.php?fbid=%s' % self.id)
@@ -309,6 +333,18 @@ def parse_facebook_url(url, allow_relative_urls=False):
             group_id = query['set'][0].split('g.', 1)[1]
 
         return FacebookPhoto(query['fbid'][0], group_id=group_id)
+
+    if '/photos/' in splitted.path:
+        parts = urlpathsplit(splitted.path)
+
+        parent_id_or_handle = parts[0]
+        album_id = parts[2].replace('a.', '')
+        photo_id = parts[3]
+
+        if is_facebook_id(parent_id_or_handle):
+            return FacebookPhoto(photo_id, album_id=album_id, parent_id=parent_id_or_handle)
+
+        return FacebookPhoto(photo_id, album_id=album_id, parent_handle=parent_id_or_handle)
 
     # Obvious post path
     if '/posts/' in splitted.path:

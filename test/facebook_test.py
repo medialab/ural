@@ -138,6 +138,22 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/photo?fbid=4191267614222491&set=g.721653275253020',
         FacebookPhoto('4191267614222491', group_id='721653275253020')
+    ),
+    (
+        'https://www.facebook.com/photo.php?fbid=10222721681573727&set=gm.10157466403417407&type=3',
+        FacebookPhoto('10222721681573727')
+    ),
+    (
+        'https://www.facebook.com/santeplusmag/photos/a.309641465765319/4406607732735318',
+        FacebookPhoto('4406607732735318', album_id='309641465765319', parent_handle='santeplusmag')
+    ),
+    (
+        'https://www.facebook.com/260769680665568/photos/a.305266056215930/524959150913285',
+        FacebookPhoto('524959150913285', album_id='305266056215930', parent_id='260769680665568')
+    ),
+    (
+        'https://www.facebook.com/marklevinshow/photos/a.473101028831/157864073831',
+        FacebookPhoto('157864073831', album_id='473101028831', parent_handle='marklevinshow')
     )
 ]
 
