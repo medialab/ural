@@ -212,6 +212,14 @@ class TestFacebook(object):
 
         assert result.full_id is None
 
+        result = parse_facebook_url('https://www.facebook.com/108082977404530/posts/195887261957434')
+
+        assert result.full_id == '108082977404530_195887261957434'
+
+        result = parse_facebook_url('https://www.facebook.com/groups/US4MF/permalink/787216138752904/')
+
+        assert result.full_id is None
+
     def test_is_facebook_url(self):
         for url, result in IS_FACEBOOK_URL_TESTS:
             assert is_facebook_url(url) == result
