@@ -181,6 +181,27 @@ class FacebookHandle(FacebookParsedItem):
         }
 
 
+class FacebookGroup(FacebookParsedItem):
+    __slots__ = ('id',)
+
+    def __init__(self, group_id):
+        self.id = group_id
+
+    @property
+    def url(self):
+        return urljoin(BASE_FACEBOOK_URL, 'groups/%s' % self.id)
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+
+        return (
+            '<%(class_name)s id=%(id)s>'
+        ) % {
+            'class_name': class_name,
+            'id': self.id
+        }
+
+
 class FacebookPost(FacebookParsedItem):
     __slots__ = ('id', 'parent_id', 'group_id', 'parent_handle')
 
@@ -261,10 +282,13 @@ def parse_facebook_url(url, allow_relative_urls=False):
         return FacebookPost(query['story_fbid'][0], parent_id=query['id'][0])
 
     # Group permalink path
-    if '/groups/' in splitted.path and '/permalink/' in splitted.path:
+    if '/groups/' in splitted.path:
         parts = urlpathsplit(splitted.path)
 
-        return FacebookPost(parts[3], group_id=parts[1])
+        if '/permalink/' in splitted.path:
+            return FacebookPost(parts[3], group_id=parts[1])
+
+        return FacebookGroup(parts[1])
 
     # Profile path
     if splitted.path == '/profile.php':

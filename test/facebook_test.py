@@ -5,6 +5,7 @@ import pytest
 from ural.facebook import (
     FacebookHandle,
     FacebookUser,
+    FacebookGroup,
     FacebookPost,
     is_facebook_url,
     convert_facebook_url_to_mobile,
@@ -94,6 +95,14 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/598338556946671/posts/1416659045114614',
         FacebookPost('1416659045114614', parent_id='598338556946671')
+    ),
+    (
+        'https://www.facebook.com/groups/159674260852951',
+        FacebookGroup('159674260852951')
+    ),
+    (
+        'https://www.facebook.com/groups/159674260852951/permalink/1786992671454427/',
+        FacebookPost('1786992671454427', group_id='159674260852951')
     )
 ]
 

@@ -626,11 +626,18 @@ from ural.facebook import parse_facebook_url
 from ural.facebook import (
   FacebookHandle,
   FacebookUser,
+  FacebookGroup,
   FacebookPost
 )
 
 parse_facebook_url('https://www.facebook.com/people/Sophia-Aman/102016783928989')
 >>> FacebookUser(id='102016783928989')
+
+parse_facebook_url('https://www.facebook.com/groups/159674260452951')
+>>> FacebookGroup(id='159674260452951')
+
+parse_facebook_url('https://www.facebook.com/groups/159674260852951/permalink/1786992671454427/')
+>>> FacebookPost(id='1786992671454427', group_id='159674260852951')
 
 parse_facebook_url('/annelaure.rivolu?rc=p&__tn__=R', allow_relative_urls=True)
 >>> FacebookHandle(handle='annelaure.rivolu')
