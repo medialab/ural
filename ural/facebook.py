@@ -133,6 +133,23 @@ class FacebookParsedItem(object):
 
         return True
 
+    def __repr__(self):
+        class_name = self.__class__.__name__
+
+        representation = '<' + class_name
+
+        for key in self.__slots__:
+            value = getattr(self, key)
+
+            if value is None:
+                continue
+
+            representation += ' %s=%s' % (key, value)
+
+        representation += '>'
+
+        return representation
+
 
 class FacebookUser(FacebookParsedItem):
     __slots__ = ('id', 'handle')
@@ -148,17 +165,6 @@ class FacebookUser(FacebookParsedItem):
 
         return urljoin(BASE_FACEBOOK_URL, '/%s' % self.handle)
 
-    def __repr__(self):
-        class_name = self.__class__.__name__
-
-        return (
-            '<%(class_name)s id=%(id)s handle=%(handle)s>'
-        ) % {
-            'class_name': class_name,
-            'id': self.id,
-            'handle': self.handle
-        }
-
 
 class FacebookHandle(FacebookParsedItem):
     __slots__ = ('handle',)
@@ -170,19 +176,9 @@ class FacebookHandle(FacebookParsedItem):
     def url(self):
         return urljoin(BASE_FACEBOOK_URL, '/%s' % self.handle)
 
-    def __repr__(self):
-        class_name = self.__class__.__name__
-
-        return (
-            '<%(class_name)s handle=%(handle)s>'
-        ) % {
-            'class_name': class_name,
-            'handle': self.handle
-        }
-
 
 class FacebookGroup(FacebookParsedItem):
-    __slots__ = ('id',)
+    __slots__ = ('id', 'handle')
 
     def __init__(self, id=None, handle=None):
         self.id = id
@@ -195,19 +191,9 @@ class FacebookGroup(FacebookParsedItem):
 
         return urljoin(BASE_FACEBOOK_URL, 'groups/%s' % self.id)
 
-    def __repr__(self):
-        class_name = self.__class__.__name__
-
-        return (
-            '<%(class_name)s id=%(id)s>'
-        ) % {
-            'class_name': class_name,
-            'id': self.id
-        }
-
 
 class FacebookPost(FacebookParsedItem):
-    __slots__ = ('id', 'parent_id', 'group_id', 'parent_handle')
+    __slots__ = ('id', 'parent_id', 'parent_handle', 'group_id', 'group_handle')
 
     def __init__(self, post_id, parent_id=None, parent_handle=None,
                  group_id=None, group_handle=None):
@@ -240,20 +226,6 @@ class FacebookPost(FacebookParsedItem):
             return '%s_%s' % (self.group_id, self.id)
 
         return None
-
-    def __repr__(self):
-        class_name = self.__class__.__name__
-
-        return (
-            '<%(class_name)s id=%(id)s group_id=%(group_id)s group_handle=%(group_handle)s parent_id=%(parent_id)s parent_handle=%(parent_handle)s>'
-        ) % {
-            'class_name': class_name,
-            'id': self.id,
-            'group_id': self.group_id,
-            'group_handle': self.group_handle,
-            'parent_id': self.parent_id,
-            'parent_handle': self.parent_handle
-        }
 
 
 def parse_facebook_url(url, allow_relative_urls=False):
