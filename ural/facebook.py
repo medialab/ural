@@ -361,3 +361,19 @@ def parse_facebook_url(url, allow_relative_urls=False):
             return FacebookHandle(parts[0])
 
     return None
+
+
+FACEBOOK_TYPES_HAVING_COMMENTS = (
+    FacebookPost,
+    FacebookPhoto,
+    FacebookVideo
+)
+
+
+def has_facebook_comments(url, allow_relative_urls=False):
+    if not is_facebook_url(url):
+        return False
+
+    result = parse_facebook_url(url, allow_relative_urls=allow_relative_urls)
+
+    return isinstance(result, FACEBOOK_TYPES_HAVING_COMMENTS)

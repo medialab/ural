@@ -51,6 +51,7 @@ pip install ural
 *Platform-specific functions*
 
 * [facebook](#facebook)
+  * [has_facebook_comments](#has_facebook_comments)
   * [is_facebook_id](#is_facebook_id)
   * [is_facebook_full_id](#is_facebook_full_id)
   * [is_facebook_url](#is_facebook_url)
@@ -524,6 +525,29 @@ Note that there are still some differences between the `LRUTrie` and the `Normal
 ---
 
 ### Facebook
+
+#### has_facebook_comments
+
+Function returning whether the given url is pointing to a Facebook resource potentially having comments (such as a post, photo or video for instance).
+
+```python
+from ural.facebook import has_facebook_comments
+
+has_facebook_comments('https://www.facebook.com/permalink.php?story_fbid=1354978971282622&id=598338556946671')
+>>> True
+
+has_facebook_comments('https://www.facebook.com/108824017345866/videos/311658803718223')
+>>> True
+
+has_facebook_comments('https://www.facebook.com/astucerie/')
+>>> False
+
+has_facebook_comments('https://www.lemonde.fr')
+>>> False
+
+has_facebook_comments('/permalink.php?story_fbid=1354978971282622&id=598338556946671', allow_relative_urls=True)
+>>> True
+```
 
 #### is_facebook_id
 

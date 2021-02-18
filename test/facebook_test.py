@@ -16,7 +16,8 @@ from ural.facebook import (
     is_facebook_post_url,
     is_facebook_id,
     is_facebook_full_id,
-    extract_url_from_facebook_link
+    extract_url_from_facebook_link,
+    has_facebook_comments
 )
 
 MOBILE_TESTS = [
@@ -216,3 +217,11 @@ class TestFacebook(object):
     def test_is_facebook_link(self):
         for link, url in FACEBOOK_LINK_TESTS:
             assert is_facebook_link(link) == (url is not None)
+
+    def test_has_facebook_comments(self):
+        for url, target in PARSE_TESTS:
+            assert has_facebook_comments(url) == isinstance(target, (
+                FacebookPost,
+                FacebookPhoto,
+                FacebookVideo
+            ))
