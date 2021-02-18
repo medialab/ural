@@ -137,8 +137,8 @@ class FacebookParsedItem(object):
 class FacebookUser(FacebookParsedItem):
     __slots__ = ('id', 'handle')
 
-    def __init__(self, user_id, handle=None):
-        self.id = user_id
+    def __init__(self, id, handle=None):
+        self.id = id
         self.handle = handle
 
     @property
@@ -184,11 +184,15 @@ class FacebookHandle(FacebookParsedItem):
 class FacebookGroup(FacebookParsedItem):
     __slots__ = ('id',)
 
-    def __init__(self, group_id):
-        self.id = group_id
+    def __init__(self, id=None, handle=None):
+        self.id = id
+        self.handle = handle
 
     @property
     def url(self):
+        if self.handle is not None:
+            return urljoin(BASE_FACEBOOK_URL, 'groups/%s' % self.handle)
+
         return urljoin(BASE_FACEBOOK_URL, 'groups/%s' % self.id)
 
     def __repr__(self):
@@ -205,11 +209,13 @@ class FacebookGroup(FacebookParsedItem):
 class FacebookPost(FacebookParsedItem):
     __slots__ = ('id', 'parent_id', 'group_id', 'parent_handle')
 
-    def __init__(self, post_id, parent_id=None, group_id=None, parent_handle=None):
+    def __init__(self, post_id, parent_id=None, parent_handle=None,
+                 group_id=None, group_handle=None):
         self.id = post_id
         self.parent_id = parent_id
-        self.group_id = group_id
         self.parent_handle = parent_handle
+        self.group_id = group_id
+        self.group_handle = group_handle
 
     @property
     def url(self):
@@ -221,6 +227,9 @@ class FacebookPost(FacebookParsedItem):
 
         if self.group_id is not None:
             return urljoin(BASE_FACEBOOK_URL, '/groups/%s/permalink/%s' % (self.group_id, self.id))
+
+        if self.group_handle is not None:
+            return urljoin(BASE_FACEBOOK_URL, '/groups/%s/permalink/%s' % (self.group_handle, self.id))
 
     @property
     def full_id(self):
@@ -236,11 +245,12 @@ class FacebookPost(FacebookParsedItem):
         class_name = self.__class__.__name__
 
         return (
-            '<%(class_name)s id=%(id)s parent_id=%(parent_id)s group_id=%(group_id)s parent_handle=%(parent_handle)s>'
+            '<%(class_name)s id=%(id)s group_id=%(group_id)s group_handle=%(group_handle)s parent_id=%(parent_id)s parent_handle=%(parent_handle)s>'
         ) % {
             'class_name': class_name,
             'id': self.id,
             'group_id': self.group_id,
+            'group_handle': self.group_handle,
             'parent_id': self.parent_id,
             'parent_handle': self.parent_handle
         }
@@ -286,9 +296,15 @@ def parse_facebook_url(url, allow_relative_urls=False):
         parts = urlpathsplit(splitted.path)
 
         if '/permalink/' in splitted.path:
-            return FacebookPost(parts[3], group_id=parts[1])
+            if is_facebook_id(parts[1]):
+                return FacebookPost(parts[3], group_id=parts[1])
 
-        return FacebookGroup(parts[1])
+            return FacebookPost(parts[3], group_handle=parts[1])
+
+        if is_facebook_id(parts[1]):
+            return FacebookGroup(id=parts[1])
+
+        return FacebookGroup(handle=parts[1])
 
     # Profile path
     if splitted.path == '/profile.php':

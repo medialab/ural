@@ -98,11 +98,19 @@ PARSE_TESTS = [
     ),
     (
         'https://www.facebook.com/groups/159674260852951',
-        FacebookGroup('159674260852951')
+        FacebookGroup(id='159674260852951')
     ),
     (
         'https://www.facebook.com/groups/159674260852951/permalink/1786992671454427/',
         FacebookPost('1786992671454427', group_id='159674260852951')
+    ),
+    (
+        'https://www.facebook.com/groups/ps.avenches',
+        FacebookGroup(handle='ps.avenches')
+    ),
+    (
+        'https://www.facebook.com/groups/ps.avenches/permalink/5477353885670191/',
+        FacebookPost('5477353885670191', group_handle='ps.avenches')
     )
 ]
 
