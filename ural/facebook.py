@@ -328,11 +328,26 @@ def parse_facebook_url(url, allow_relative_urls=False):
             return None
 
         group_id = None
+        album_id = None
 
-        if 'set' in query and query['set'][0].startswith('g.'):
-            group_id = query['set'][0].split('g.', 1)[1]
+        if 'set' in query:
+            sets = query['set']
 
-        return FacebookPhoto(query['fbid'][0], group_id=group_id)
+            group_id = next((s for s in sets if s.startswith('g.')), None)
+
+            if group_id:
+                group_id = group_id.split('g.', 1)[1]
+
+            album_id = next((s for s in sets if s.startswith('a.')), None)
+
+            if album_id:
+                album_id = album_id.split('a.', 1)[1]
+
+        return FacebookPhoto(
+            query['fbid'][0],
+            group_id=group_id,
+            album_id=album_id
+        )
 
     if '/photos/' in splitted.path:
         parts = urlpathsplit(splitted.path)
