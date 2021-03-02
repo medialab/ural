@@ -73,7 +73,9 @@ TESTS = [
     (u'https://www.jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html', 'jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html'),
     (u'http://www.milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad', 'milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad'),
     ('https://facebook.com/photo.php?fbid=1454919154621936&amp;id=598338556946671&amp;set=a.600335226747004&amp;__ccr=ARalImU2qhrrHFuCIUFpLdb30fXaDuEj2KsKk_ikE_-8ww&amp;__tn__=%2B%3E', 'facebook.com/photo.php?__ccr=ARalImU2qhrrHFuCIUFpLdb30fXaDuEj2KsKk_ikE_-8ww&fbid=1454919154621936&id=598338556946671&set=a.600335226747004'),
-    ('https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Flavraiedemocratie%2Fvideos%2F2443555575953497', 'facebook.com/lavraiedemocratie/videos/2443555575953497')
+    ('https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Flavraiedemocratie%2Fvideos%2F2443555575953497', 'facebook.com/lavraiedemocratie/videos/2443555575953497'),
+    ('https://twitter.com/Yomguithereal/status/1357999398492512256?s=20', 'twitter.com/Yomguithereal/status/1357999398492512256'),
+    ('https://twitter.com/Yomguithereal/status/1357999398492512256?arbitrary=test', 'twitter.com/Yomguithereal/status/1357999398492512256?arbitrary=test')
 ]
 
 

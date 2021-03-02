@@ -68,6 +68,10 @@ IRRELEVANT_QUERY_COMBOS = {
     'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter')
 }
 
+PER_DOMAIN_QUERY_FILTERS = {
+    'twitter.com': lambda k, v: k == 's'
+}
+
 LANG_QUERY_KEYS = ('gl', 'hl')
 
 
@@ -85,7 +89,8 @@ def stringify_qs(item):
     return '%s=%s' % item
 
 
-def should_strip_query_item(item, normalize_amp=True, strip_lang_query_items=False):
+def should_strip_query_item(item, normalize_amp=True, strip_lang_query_items=False,
+                            domain_filter=None):
     key = item[0].lower()
 
     pattern = IRRELEVANT_QUERY_AMP_RE if normalize_amp else IRRELEVANT_QUERY_RE
@@ -100,6 +105,9 @@ def should_strip_query_item(item, normalize_amp=True, strip_lang_query_items=Fal
 
     if strip_lang_query_items and key in LANG_QUERY_KEYS:
         return True
+
+    if domain_filter is not None:
+        return domain_filter(key, value)
 
     return False
 
@@ -248,6 +256,11 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
 
     # Dropping irrelevant query items
     if query:
+        domain_filter = None
+
+        if splitted.hostname:
+            domain_filter = PER_DOMAIN_QUERY_FILTERS.get(splitted.hostname)
+
         qsl = parse_qsl(query, keep_blank_values=True)
         qsl = [
             stringify_qs(item)
@@ -255,7 +268,8 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             if not should_strip_query_item(
                 item,
                 normalize_amp=normalize_amp,
-                strip_lang_query_items=strip_lang_query_items
+                strip_lang_query_items=strip_lang_query_items,
+                domain_filter=domain_filter
             )
         ]
 
