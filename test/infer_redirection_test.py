@@ -69,9 +69,17 @@ TESTS = [
         'http://bc-marfeelcache-com.cdn.ampproject.org/c/s/bc.marfeelcache.com/amp/positivr.fr/grenoble-interdit-panneaux-publicitaires/',
         'https://positivr.fr/grenoble-interdit-panneaux-publicitaires/'
     ),
+
+    # Recursive case
     (
         'https://test.com?url=http%3A%2F%2Flemonde.fr%3Fnext%3Dhttp%253A%252F%252Ftarget.fr',
         'http://target.fr'
+    ),
+
+    # Degenerate loop case
+    (
+        'http://lemonde.fr?url=http%3A%2F%2Flemonde.fr',
+        'http://lemonde.fr'
     )
 ]
 
