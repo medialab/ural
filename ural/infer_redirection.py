@@ -15,7 +15,7 @@ OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:
 REDIRECTION_DOMAINS_RE = re.compile(r'(?:\.ampproject\.org/[cv]/(?:s/)?|bc\.marfeelcache\.com/amp/|bc\.marfeel\.com/)', re.I)
 
 
-def infer_redirection(url):
+def infer_redirection(url, recursive=True):
     """
     Function returning the url that the given url will redirect to. This is done
     by finding obvious hints in the GET parameters that the given url is in
@@ -23,6 +23,8 @@ def infer_redirection(url):
 
     Args:
         url (string): Target url.
+        recursive (bool): Whether to apply the function recursively until
+            no redirection can be inferred. Defaults to `True`.
 
     Returns:
         string: Redirected url or the original url if nothing was found.
@@ -30,18 +32,27 @@ def infer_redirection(url):
 
     redirection_split = REDIRECTION_DOMAINS_RE.split(url, 1)
 
+    target = None
+
     if len(redirection_split) > 1:
-        return infer_redirection('https://' + redirection_split[1])
+        target = 'https://' + redirection_split[1]
 
-    obvious_redirect_match = re.search(OBVIOUS_REDIRECTS_RE, url)
+    else:
+        obvious_redirect_match = re.search(OBVIOUS_REDIRECTS_RE, url)
 
-    if obvious_redirect_match is not None:
-        target = unquote(obvious_redirect_match.group(1))
+        if obvious_redirect_match is not None:
+            potential_target = unquote(obvious_redirect_match.group(1))
 
-        if target.startswith('http://') or target.startswith('https://'):
-            return target
+            if potential_target.startswith('http://') or potential_target.startswith('https://'):
+                target = potential_target
 
-        if target.startswith('/'):
-            return urljoin(url, target)
+            if potential_target.startswith('/'):
+                target = urljoin(url, potential_target)
 
-    return url
+    if target is None:
+        return url
+
+    if recursive:
+        return infer_redirection(target, recursive=True)
+
+    return target

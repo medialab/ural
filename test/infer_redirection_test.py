@@ -68,6 +68,10 @@ TESTS = [
     (
         'http://bc-marfeelcache-com.cdn.ampproject.org/c/s/bc.marfeelcache.com/amp/positivr.fr/grenoble-interdit-panneaux-publicitaires/',
         'https://positivr.fr/grenoble-interdit-panneaux-publicitaires/'
+    ),
+    (
+        'https://test.com?url=http%3A%2F%2Flemonde.fr%3Fnext%3Dhttp%253A%252F%252Ftarget.fr',
+        'http://target.fr'
     )
 ]
 
@@ -76,3 +80,11 @@ class TestInferRedirection(object):
     def test_basics(self):
         for url, redirected in TESTS:
             assert infer_redirection(url) == redirected
+
+    def test_nonrecursive(self):
+        target = infer_redirection(
+            'https://test.com?url=http%3A%2F%2Flemonde.fr%3Fnext%3Dhttp%253A%252F%252Ftarget.fr',
+            recursive=False
+        )
+
+        assert target == 'http://lemonde.fr?next=http%3A%2F%2Ftarget.fr'

@@ -165,11 +165,22 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 Function attempting to find obvious clues in the given url that it is in fact a redirection and resolving the redirection automatically without firing any HTTP request. If nothing is found, the given url will be returned as-is.
 
+The function is by default recursive and will attempt to infer redirections until none is found, but you can disable this behavior if you need to.
+
 ```python
 from ural import infer_redirection
 
 infer_redirection('https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A%2F%2Fm.youtube.com%2Fwatch%3Fv%3D4iJBsjHMviQ&ved=2ahUKEwiBm-TO3OvkAhUnA2MBHQRPAR4QwqsBMAB6BAgDEAQ&usg=AOvVaw0i7y2_fEy3nwwdIZyo_qug')
 >>> 'https://m.youtube.com/watch?v=4iJBsjHMviQ'
+
+infer_redirection('https://test.com?url=http%3A%2F%2Flemonde.fr%3Fnext%3Dhttp%253A%252F%252Ftarget.fr')
+>>> 'http://target.fr'
+
+infer_redirection(
+  'https://test.com?url=http%3A%2F%2Flemonde.fr%3Fnext%3Dhttp%253A%252F%252Ftarget.fr',
+  recursive=False
+)
+>>> 'http://lemonde.fr?next=http%3A%2F%2Ftarget.fr'
 ```
 
 ---
