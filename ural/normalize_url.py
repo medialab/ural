@@ -68,9 +68,10 @@ IRRELEVANT_QUERY_COMBOS = {
     'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter')
 }
 
-PER_DOMAIN_QUERY_FILTERS = {
-    'twitter.com': lambda k, v: k == 's'
-}
+PER_DOMAIN_QUERY_FILTERS = [
+    ('twitter.com', lambda k, v: k == 's'),
+    ('facebook.com', lambda k, v: k == '_rdc' or k == '_rdr')
+]
 
 LANG_QUERY_KEYS = ('gl', 'hl')
 
@@ -259,7 +260,10 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         domain_filter = None
 
         if splitted.hostname:
-            domain_filter = PER_DOMAIN_QUERY_FILTERS.get(splitted.hostname)
+            domain_filter = next(
+                (f for d, f in PER_DOMAIN_QUERY_FILTERS if splitted.hostname.endswith(d)),
+                None
+            )
 
         qsl = parse_qsl(query, keep_blank_values=True)
         qsl = [
