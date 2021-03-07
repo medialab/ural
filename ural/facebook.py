@@ -65,7 +65,8 @@ def is_facebook_post_url(url):
     return (
         '/posts/' in url or
         '/permalink/' in url or
-        '/permalink.php' in url
+        '/permalink.php' in url or
+        '/story.php' in url
     )
 
 
@@ -373,7 +374,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
         return FacebookPost(parts[2], parent_handle=parent_id_or_handle)
 
     # Ye olded permalink path
-    if splitted.query and '/permalink.php' in splitted.path:
+    if splitted.query and ('/permalink.php' in splitted.path or '/story.php' in splitted.path):
         query = parse_qs(splitted.query)
         return FacebookPost(query['story_fbid'][0], parent_id=query['id'][0])
 

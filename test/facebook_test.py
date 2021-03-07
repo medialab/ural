@@ -158,6 +158,10 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/photo.php?fbid=1454919154621936&id=598338556946671&set=a.600335226747004',
         FacebookPhoto('1454919154621936', album_id='600335226747004')
+    ),
+    (
+        'https://m.facebook.com/story.php?story_fbid=1175066705875628&id=369911139724526',
+        FacebookPost('1175066705875628', parent_id='369911139724526')
     )
 ]
 
