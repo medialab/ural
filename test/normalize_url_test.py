@@ -76,7 +76,8 @@ TESTS = [
     ('https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Flavraiedemocratie%2Fvideos%2F2443555575953497', 'facebook.com/lavraiedemocratie/videos/2443555575953497'),
     ('https://twitter.com/Yomguithereal/status/1357999398492512256?s=20', 'twitter.com/Yomguithereal/status/1357999398492512256'),
     ('https://twitter.com/Yomguithereal/status/1357999398492512256?arbitrary=test', 'twitter.com/Yomguithereal/status/1357999398492512256?arbitrary=test'),
-    ('https://m.facebook.com/story.php?story_fbid=1175066705875628&id=369911139724526&_rdc=1&_rdr', 'facebook.com/story.php?id=369911139724526&story_fbid=1175066705875628')
+    ('https://m.facebook.com/story.php?story_fbid=1175066705875628&id=369911139724526&_rdc=1&_rdr', 'facebook.com/story.php?id=369911139724526&story_fbid=1175066705875628'),
+    ('https://techcrunch.com/2021/03/03/1-3m-in-grants-go-towards-making-the-webs-open-source-infrastructure-more-equitable/?guccounter=2&_guc_consent_skip=1615314979', 'techcrunch.com/2021/03/03/1-3m-in-grants-go-towards-making-the-webs-open-source-infrastructure-more-equitable')
 ]
 
 
