@@ -5,7 +5,8 @@ import pytest
 from ural.google import (
     is_amp_url,
     is_google_link,
-    extract_url_from_google_link
+    extract_url_from_google_link,
+    extract_id_from_google_drive_url
 )
 
 IS_AMP_TESTS = [
@@ -45,6 +46,41 @@ LINK_TESTS = [
     )
 ]
 
+GOOGLE_DRIVE_TESTS = [
+    (
+        'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit#gid=0',
+        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+    ),
+    (
+        'docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit#gid=0',
+        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+    ),
+    (
+        'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit',
+        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+    ),
+    (
+        'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/',
+        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+    ),
+    (
+        'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg',
+        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+    ),
+    (
+        'https://docs.google.com/document/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg',
+        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+    ),
+    (
+        'https://docs.google.com/presentation/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg',
+        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+    ),
+    (
+        'https://www.lemonde.fr',
+        None
+    )
+]
+
 
 class TestGoogle(object):
     def test_is_amp_url(self):
@@ -58,3 +94,7 @@ class TestGoogle(object):
     def test_extract_url_from_google_link(self):
         for link, url in LINK_TESTS:
             assert extract_url_from_google_link(link) == url
+
+    def test_extract_id_from_google_drive_url(self):
+        for url, drive_id in GOOGLE_DRIVE_TESTS:
+            assert extract_id_from_google_drive_url(url) == drive_id

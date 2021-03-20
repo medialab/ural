@@ -64,6 +64,7 @@ pip install ural
   * [is_amp_url](#is_amp_url)
   * [is_google_link](#is_google_link)
   * [extract_url_from_google_link](#extract_url_from_google_link)
+  * [extract_id_from_google_drive_url](#extract_id_from_google_drive_url)
 * [twitter](#twitter)
   * [is_twitter_url](#is_twitter_url)
   * [extract_screen_name_from_twitter_url](#extract_screen_name_from_twitter_url)
@@ -737,7 +738,7 @@ is_google_link('https://www.lemonde.fr')
 
 #### extract_url_from_google_link
 
-Extracts the url from the given Google search link. This is useful to "resolve" the links scraped from Google's search results.
+Extracts the url from the given Google search link. This is useful to "resolve" the links scraped from Google's search results. Returns `None` if given url is not valid nor relevant.
 
 ```python
 from ural.google import extract_url_from_google_link
@@ -745,6 +746,23 @@ from ural.google import extract_url_from_google_link
 extract_url_from_google_link('https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwicu4K-rZzmAhWOEBQKHRNWA08QFjAAegQIARAB&url=https%3A%2F%2Fwww.facebook.com%2Fieff.ogbeide&usg=AOvVaw0vrBVCiIHUr5pncjeLpPUp')
 
 >>> 'https://www.facebook.com/ieff.ogbeide'
+
+extract_url_from_google_link('https://www.lemonde.fr')
+>>> None
+```
+
+#### extract_id_from_google_drive_url
+
+Extracts a file id from the given Google drive url. Returns `None` if given url is not valid nor relevant.
+
+```python
+from ural.google import extract_id_from_google_drive_url
+
+extract_id_from_google_drive_url('https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit#gid=0')
+>>> '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+
+extract_id_from_google_drive_url('https://www.lemonde.fr')
+>>> None
 ```
 
 ---
