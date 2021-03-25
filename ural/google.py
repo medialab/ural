@@ -111,10 +111,23 @@ class GoogleDriveFile(GoogleDriveParsedItem):
 
 
 class GoogleDrivePublicLink(GoogleDriveParsedItem):
-    __slots__ = ('type', )
+    __slots__ = ('type', 'id')
 
-    def __init__(self, _type):
+    def __init__(self, _type, _id):
         self.type = _type
+        self.id = _id
+
+    @property
+    def url():
+        return 'https://docs.google.com/%s/d/e/%s/pub' % (self.type, self.id)
+
+    @property
+    def export_url(format='csv'):
+        return 'https://docs.google.com/%s/d/e/%s/pub?output=%s' % (
+            self.type,
+            self.id,
+            format
+        )
 
 
 def parse_google_drive_url(url):
@@ -137,7 +150,10 @@ def parse_google_drive_url(url):
         return None
 
     if path[-1] == 'pub':
-        return GoogleDrivePublicLink(drive_type)
+        if path[2] != 'e':
+            return None
+
+        return GoogleDrivePublicLink(drive_type, path[3])
 
     return GoogleDriveFile(drive_type, path[2])
 

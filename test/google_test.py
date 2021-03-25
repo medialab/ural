@@ -80,15 +80,15 @@ GOOGLE_DRIVE_TESTS = [
     ),
     (
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub?output=csv',
-        GoogleDrivePublicLink('spreadsheets')
+        GoogleDrivePublicLink('spreadsheets', '2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh')
     ),
     (
         'https://docs.google.com/spreadsheets/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub',
-        GoogleDrivePublicLink('spreadsheets')
+        GoogleDrivePublicLink('spreadsheets', '2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh')
     ),
     (
         'https://docs.google.com/document/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub',
-        GoogleDrivePublicLink('document')
+        GoogleDrivePublicLink('document', '2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh')
     ),
     (
         'https://docs.google.com/nothing/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub',
