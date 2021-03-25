@@ -61,7 +61,63 @@ def extract_url_from_google_link(url):
     return unquote(m.group(1))
 
 
-def extract_id_from_google_drive_url(url):
+class GoogleDriveParsedItem(object):
+    def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return False
+
+        for attr in self.__slots__:
+            if getattr(self, attr) != getattr(other, attr):
+                return False
+
+        return True
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+
+        representation = '<' + class_name
+
+        for key in self.__slots__:
+            value = getattr(self, key)
+
+            if value is None:
+                continue
+
+            representation += ' %s=%s' % (key, value)
+
+        representation += '>'
+
+        return representation
+
+
+class GoogleDriveFile(GoogleDriveParsedItem):
+    __slots__ = ('type', 'id')
+
+    def __init__(self, _type, _id):
+        self.type = _type
+        self.id = _id
+
+    @property
+    def url():
+        return 'https://docs.google.com/%s/d/%s' % (self.type, self.id)
+
+    @property
+    def export_url(format='csv'):
+        return 'https://docs.google.com/%s/d/%s/export?exportFormat=%s' % (
+            self.type,
+            self.id,
+            format
+        )
+
+
+class GoogleDrivePublicLink(GoogleDriveParsedItem):
+    __slots__ = ('type', )
+
+    def __init__(self, _type):
+        self.type = _type
+
+
+def parse_google_drive_url(url):
     splitted = safe_urlsplit(url)
 
     if 'docs.google.com' not in splitted.netloc:
@@ -72,10 +128,24 @@ def extract_id_from_google_drive_url(url):
     if len(path) < 3:
         return None
 
-    if path[0] not in DRIVE_TYPES:
+    drive_type = path[0]
+
+    if drive_type not in DRIVE_TYPES:
         return None
 
     if path[1] != 'd':
         return None
 
-    return path[2]
+    if path[-1] == 'pub':
+        return GoogleDrivePublicLink(drive_type)
+
+    return GoogleDriveFile(drive_type, path[2])
+
+
+def extract_id_from_google_drive_url(url):
+    parsed = parse_google_drive_url(url)
+
+    if isinstance(parsed, GoogleDriveFile):
+        return parsed.id
+
+    return None

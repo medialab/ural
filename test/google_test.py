@@ -6,7 +6,10 @@ from ural.google import (
     is_amp_url,
     is_google_link,
     extract_url_from_google_link,
-    extract_id_from_google_drive_url
+    extract_id_from_google_drive_url,
+    parse_google_drive_url,
+    GoogleDriveFile,
+    GoogleDrivePublicLink
 )
 
 IS_AMP_TESTS = [
@@ -49,31 +52,47 @@ LINK_TESTS = [
 GOOGLE_DRIVE_TESTS = [
     (
         'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit#gid=0',
-        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+        GoogleDriveFile('spreadsheets', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
     ),
     (
         'docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit#gid=0',
-        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+        GoogleDriveFile('spreadsheets', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
     ),
     (
         'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit',
-        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+        GoogleDriveFile('spreadsheets', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
     ),
     (
         'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/',
-        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+        GoogleDriveFile('spreadsheets', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
     ),
     (
         'https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg',
-        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+        GoogleDriveFile('spreadsheets', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
     ),
     (
         'https://docs.google.com/document/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg',
-        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+        GoogleDriveFile('document', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
     ),
     (
         'https://docs.google.com/presentation/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg',
-        '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
+        GoogleDriveFile('presentation', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
+    ),
+    (
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub?output=csv',
+        GoogleDrivePublicLink('spreadsheets')
+    ),
+    (
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub',
+        GoogleDrivePublicLink('spreadsheets')
+    ),
+    (
+        'https://docs.google.com/document/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub',
+        GoogleDrivePublicLink('document')
+    ),
+    (
+        'https://docs.google.com/nothing/d/e/2PACX-1vTnztpQzW--0H0MBA6EtrZjMvIgepWDACVGj-jC5C5pNb3F2v1kl-dgEDSP79IXb80H0LVSaDwez-nh/pub',
+        None
     ),
     (
         'https://www.lemonde.fr',
@@ -95,6 +114,13 @@ class TestGoogle(object):
         for link, url in LINK_TESTS:
             assert extract_url_from_google_link(link) == url
 
+    def test_parse_google_drive_url(self):
+        for url, parsed in GOOGLE_DRIVE_TESTS:
+            assert parse_google_drive_url(url) == parsed
+
     def test_extract_id_from_google_drive_url(self):
-        for url, drive_id in GOOGLE_DRIVE_TESTS:
-            assert extract_id_from_google_drive_url(url) == drive_id
+        for url, parsed in GOOGLE_DRIVE_TESTS:
+            if isinstance(parsed, GoogleDriveFile):
+                assert extract_id_from_google_drive_url(url) == parsed.id
+            else:
+                assert extract_id_from_google_drive_url(url) is None

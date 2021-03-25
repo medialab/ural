@@ -65,6 +65,7 @@ pip install ural
   * [is_google_link](#is_google_link)
   * [extract_url_from_google_link](#extract_url_from_google_link)
   * [extract_id_from_google_drive_url](#extract_id_from_google_drive_url)
+  * [parse_google_drive_url](#parse_google_drive_url)
 * [twitter](#twitter)
   * [is_twitter_url](#is_twitter_url)
   * [extract_screen_name_from_twitter_url](#extract_screen_name_from_twitter_url)
@@ -762,6 +763,24 @@ extract_id_from_google_drive_url('https://docs.google.com/spreadsheets/d/1Q9sJtA
 >>> '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg'
 
 extract_id_from_google_drive_url('https://www.lemonde.fr')
+>>> None
+```
+
+#### parse_google_drive_url
+
+Parse the given Google drive url. Returns `None` if given is not valid nor relevant.
+
+```python
+from ural.google import (
+  parse_google_drive_url,
+  GoogleDriveFile,
+  GoogleDrivePublicLink
+)
+
+parse_google_drive_url('https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg/edit#gid=0')
+>>> GoogleDriveFile('spreadsheets', '1Q9sJtAb1BZhUMjxCLMrVASx3AoNDp5iV3VkbPjlg')
+
+parse_google_drive_url('https://www.lemonde.fr')
 >>> None
 ```
 
