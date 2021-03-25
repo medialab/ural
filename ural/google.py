@@ -98,10 +98,10 @@ class GoogleDriveFile(GoogleDriveParsedItem):
         self.id = _id
 
     @property
-    def url():
+    def url(self):
         return 'https://docs.google.com/%s/d/%s' % (self.type, self.id)
 
-    def get_export_url(format='csv'):
+    def get_export_url(self, format='csv'):
         return 'https://docs.google.com/%s/d/%s/export?exportFormat=%s' % (
             self.type,
             self.id,
@@ -117,10 +117,10 @@ class GoogleDrivePublicLink(GoogleDriveParsedItem):
         self.id = _id
 
     @property
-    def url():
+    def url(self):
         return 'https://docs.google.com/%s/d/e/%s/pub' % (self.type, self.id)
 
-    def get_export_url(format='csv'):
+    def get_export_url(self, format='csv'):
         return 'https://docs.google.com/%s/d/e/%s/pub?output=%s' % (
             self.type,
             self.id,
