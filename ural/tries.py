@@ -11,6 +11,9 @@ from ural.utils import safe_urlsplit
 
 # NOTE: this trie currently has undefined behavior with some special hosts
 class HostnameTrieSet(TrieDict):
+    def __init__(self):
+        super(HostnameTrieSet, self).__init__(list)
+
     def add(self, hostname):
         key = list(reversed(hostname.split('.')))
 
@@ -29,3 +32,7 @@ class HostnameTrieSet(TrieDict):
         key = reversed(url.hostname.split('.'))
 
         return bool(self.longest(key))
+
+    def __iter__(self):
+        for key in super(HostnameTrieSet, self).keys():
+            yield '.'.join(reversed(key))
