@@ -80,3 +80,24 @@ def urlpathsplit(urlpath):
     urlpath = urlpath.strip('/')
 
     return urlpath.split('/')
+
+
+SLASH_SQUEEZE_RE = re.compile(r'\/{2,}')
+
+
+def normpath(urlpath, drop_consecutive_slashes=True):
+    if drop_consecutive_slashes:
+        urlpath = SLASH_SQUEEZE_RE.sub('/', urlpath)
+
+    segments = urlpath.split('/')
+    segments = [segment + '/' for segment in segments[:-1]] + [segments[-1]]
+    resolved = []
+
+    for segment in segments:
+        if segment in ('../', '..'):
+            if resolved[1:]:
+                resolved.pop()
+        elif segment not in ('./', '.'):
+            resolved.append(segment)
+
+    return ''.join(resolved).rstrip('/')

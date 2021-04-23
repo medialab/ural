@@ -7,7 +7,7 @@
 #
 import re
 import pycountry
-from os.path import normpath, splitext
+from os.path import splitext
 
 from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection as resolve
@@ -17,6 +17,7 @@ from ural.utils import (
     urlsplit,
     urlunsplit,
     unquote,
+    normpath,
     SplitResult
 )
 from ural.patterns import PROTOCOL_RE

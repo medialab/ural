@@ -124,7 +124,7 @@ TESTS_ADVANCED = [
     ),
     (
         'https://lemonde.fr/#/path/is/here',
-        'lemonde.fr/#/path/is/here',
+        'lemonde.fr#/path/is/here',
         {'strip_trailing_slash': False}
     ),
     (
@@ -141,7 +141,7 @@ class TestNormalizeUrl(object):
             assert normalize_url(url) == normalized, url
 
         for url, normalized, kwargs in TESTS_ADVANCED:
-            assert normalize_url(url, **kwargs) == normalized, url
+            assert normalize_url(url, **kwargs) == normalized, '*kwargs %s' % url
 
     def test_get_normalized_hostname(self):
         for url, normalized in TESTS:
