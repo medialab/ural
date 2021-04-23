@@ -1,7 +1,6 @@
 # =============================================================================
 # Ural Youtube Unit Tests
 # =============================================================================
-import pytest
 from ural.youtube import (
     is_youtube_url,
     is_youtube_video_id,

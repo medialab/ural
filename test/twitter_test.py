@@ -1,7 +1,6 @@
 # =============================================================================
 # Ural Twitter Unit Tests
 # =============================================================================
-import pytest
 from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url
 
 
