@@ -4,9 +4,7 @@
 #
 # Function testing whether the given url is probably a shortened url or not.
 #
-from phylactery import TrieDict
-
-from ural.utils import safe_urlsplit, SplitResult
+from ural.tries import HostnameTrieSet
 
 SHORTENER_DOMAINS = [
     'adec.co',
@@ -64,19 +62,13 @@ SHORTENER_DOMAINS = [
     'zpr.io'
 ]
 
-TRIE = TrieDict()
+# NOTE: we use a trie to perform efficient queries and so we don't
+# need to test every domain/subdomain linearly
+TRIE = HostnameTrieSet()
 
 for domain in SHORTENER_DOMAINS:
-    TRIE.set(reversed(domain.split('.')), True)
+    TRIE.add(domain)
 
 
 def is_shortened_url(url):
-    if isinstance(url, SplitResult):
-        parsed = url
-    else:
-        parsed = safe_urlsplit(url)
-
-    if parsed.hostname is None:
-        return False
-
-    return bool(TRIE.longest(reversed(parsed.hostname.split('.'))))
+    return TRIE.match_url(url)
