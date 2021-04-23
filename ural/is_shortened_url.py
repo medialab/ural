@@ -6,8 +6,7 @@
 #
 from phylactery import TrieDict
 
-from ural.utils import urlsplit
-from ural.ensure_protocol import ensure_protocol
+from ural.utils import safe_urlsplit, SplitResult
 
 SHORTENER_DOMAINS = [
     'adec.co',
@@ -72,6 +71,12 @@ for domain in SHORTENER_DOMAINS:
 
 
 def is_shortened_url(url):
-    hostname = urlsplit(ensure_protocol(url)).hostname
+    if isinstance(url, SplitResult):
+        parsed = url
+    else:
+        parsed = safe_urlsplit(url)
 
-    return bool(TRIE.longest(reversed(hostname.split('.'))))
+    if parsed.hostname is None:
+        return False
+
+    return bool(TRIE.longest(reversed(parsed.hostname.split('.'))))
