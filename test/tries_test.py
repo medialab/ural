@@ -9,6 +9,7 @@ class TestTries(object):
         trie = HostnameTrieSet()
 
         trie.add('lemonde.fr')
+        trie.add('business.lemonde.fr')
         trie.add('feedproxy.google.com')
 
         assert len(trie) == 2
