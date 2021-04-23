@@ -9,13 +9,21 @@ from phylactery import TrieDict
 from ural.utils import safe_urlsplit
 
 
+def tokenize_hostname(hostname):
+    return reversed(hostname.strip().lower().split('.'))
+
+
+def join_hostname(key):
+    return '.'.join(reversed(key))
+
+
 # NOTE: this trie currently has undefined behavior with some special hosts
 class HostnameTrieSet(TrieDict):
     def __init__(self):
         super(HostnameTrieSet, self).__init__(list)
 
     def add(self, hostname):
-        key = list(reversed(hostname.split('.')))
+        key = list(tokenize_hostname(hostname))
 
         # If a shortest key already exist, we can trim the subdomain
         if self.longest(key) is not None:
@@ -29,10 +37,10 @@ class HostnameTrieSet(TrieDict):
         if not url.hostname:
             return False
 
-        key = reversed(url.hostname.split('.'))
+        key = tokenize_hostname(url.hostname)
 
         return bool(self.longest(key))
 
     def __iter__(self):
         for key in super(HostnameTrieSet, self).keys():
-            yield '.'.join(reversed(key))
+            yield join_hostname(key)
