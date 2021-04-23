@@ -91,8 +91,8 @@ Function checking if the url has a protocol, and adding the given one if there i
 ```python
 from ural import ensure_protocol
 
-ensure_protocol('www2.lemonde.fr', protocol='https')
->>> 'https://www2.lemonde.fr'
+ensure_protocol('www.lemonde.fr', protocol='https')
+>>> 'https://www.lemonde.fr'
 ```
 
 *Arguments*
