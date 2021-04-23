@@ -29,6 +29,12 @@ pip install ural
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
 
+*Classes*
+
+* [HostnameTrieSet](#hostnametrieset)
+  * [#.add](#hostnametrieset-add)
+  * [#.match](#hostnametrieset-match)
+
 *LRU-related functions* ([What on earth is a LRU?](#lru-explanation))
 
 * [lru.url_to_lru](#lruurl_to_lru)
@@ -41,10 +47,10 @@ pip install ural
 *LRU-related classes*
 
 * [LRUTrie](#LRUTrie)
-  * [set](#set)
-  * [set_lru](#set_lru)
-  * [match](#match)
-  * [match_lru](#match_lru)
+  * [#.set](#lrutrie-set)
+  * [#.set_lru](#lrutrie-set_lru)
+  * [#.match](#lrutrie-match)
+  * [#.match_lru](#lrutrie-match_lru)
 
 * [NormalizedLRUTrie](#NormalizedLRUTrie)
 
@@ -321,6 +327,72 @@ for url in urls_from_text(text):
 
 ---
 
+### HostnameTrieSet
+
+Class implementing a hierarchic set of hostnames so you can efficiently query whether urls match hostnames in the set.
+
+```python
+from ural import HostnameTrieSet
+
+trie = HostnameTrieSet()
+
+trie.add('lemonde.fr')
+trie.add('business.lefigaro.fr')
+
+trie.match('https://liberation.fr/article1.html')
+>>> False
+
+trie.match('https://lemonde.fr/article1.html')
+>>> True
+
+trie.match('https://www.lemonde.fr/article1.html')
+>>> True
+
+trie.match('https://lefigaro.fr/article1.html')
+>>> False
+
+trie.match('https://business.lefigaro.fr/article1.html')
+>>> True
+```
+
+<h4 id="hostnametrieset-add">#.add</h4>
+
+Method add a single hostname to the set.
+
+```python
+from ural import HostnameTrieSet
+
+trie = HostnameTrieSet()
+trie.add('lemonde.fr')
+```
+
+*Arguments*
+
+* **hostname** *string*: hostname to add to the set.
+
+<h4 id="hostnametrieset-match">#.match</h4>
+
+Method returning whether the given url matches any of the set's hostnames.
+
+```python
+from ural import HostnameTrieSet
+
+trie = HostnameTrieSet()
+trie.add('lemonde.fr')
+
+trie.match('https://liberation.fr/article1.html')
+>>> False
+
+trie.match('https://lemonde.fr/article1.html')
+>>> True
+```
+
+*Arguments*
+
+* **url** *string|urllib.parse.SplitResult*: url to match.
+
+---
+
 ### lru.url_to_lru
 
 Function converting the given url to a serialized lru.
@@ -430,7 +502,7 @@ trie = LRUTrie()
 trie = LRUTrie(tld_aware=True)
 ```
 
-#### set
+<h4 id="lrutrie-set">#.set</h4>
 
 Method storing a URL in a LRUTrie along with its metadata.
 
@@ -449,7 +521,7 @@ trie.match('http://www.lemonde.fr')
 * **url** *string*: url to store in the LRUTrie.
 * **metadata** *any*: metadata of the url.
 
-#### set_lru
+<h4 id="lrutrie-set_lru">#.set_lru</h4>
 
 Method storing a URL already represented as a LRU or LRU stems along with its metadata.
 
@@ -470,7 +542,7 @@ trie.set_lru('s:http|h:fr|h:lemonde|h:www|', {'type': 'general_press'})
 * **lru** *string|list*: lru to store in the Trie.
 * **metadata** *any*: metadata to attach to the lru.
 
-#### match
+<h4 id="lrutrie-match">#.match</h4>
 
 Method returning the metadata attached to the longest prefix match of your query URL. Will return `None` if no common prefix can be found.
 
@@ -493,7 +565,7 @@ trie.match('http://www.lefigaro.fr')
 
 * **url** *string*: url to match in the LRUTrie.
 
-#### match_lru
+<h4 id="lrutrie-match_lru">#.match_lru</h4>
 
 Method returning the metadata attached to the longest prefix match of your query LRU. Will return `None` if no common prefix can be found.
 

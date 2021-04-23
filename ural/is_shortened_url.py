@@ -71,4 +71,4 @@ for domain in SHORTENER_DOMAINS:
 
 
 def is_shortened_url(url):
-    return TRIE.match_url(url)
+    return TRIE.match(url)

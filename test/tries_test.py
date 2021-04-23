@@ -14,10 +14,10 @@ class TestTries(object):
 
         assert len(trie) == 2
 
-        assert not trie.match_url('https://lefigaro.fr/article1.html')
-        assert not trie.match_url('http://localhost:8000')
-        assert not trie.match_url('https://192.168.0.1')
-        assert trie.match_url('https://lemonde.fr/article1.html')
-        assert trie.match_url('https://business.lemonde.fr/article1.html')
-        assert not trie.match_url('https://google.com/article1.html')
-        assert trie.match_url('https://feedproxy.google.com/article1.html')
+        assert not trie.match('https://lefigaro.fr/article1.html')
+        assert not trie.match('http://localhost:8000')
+        assert not trie.match('https://192.168.0.1')
+        assert trie.match('https://lemonde.fr/article1.html')
+        assert trie.match('https://business.lemonde.fr/article1.html')
+        assert not trie.match('https://google.com/article1.html')
+        assert trie.match('https://feedproxy.google.com/article1.html')

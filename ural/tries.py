@@ -20,7 +20,7 @@ class HostnameTrieSet(TrieDict):
 
         self.set(key, True)
 
-    def match_url(self, url):
+    def match(self, url):
         url = safe_urlsplit(url)
 
         if not url.hostname:
