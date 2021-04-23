@@ -122,6 +122,11 @@ PARSE_TESTS = [
         'http://youtu.be/aHQHiAs'
     ),
     (
+        'http://youtu.be/ZxCwPm_es4A?a',
+        YoutubeVideo(id='ZxCwPm_es4A'),
+        'https://www.youtube.com/watch?v=ZxCwPm_es4A'
+    ),
+    (
         'https://youtu.be/rbXhnI_E0hQ%5D',
         YoutubeVideo(id='rbXhnI_E0hQ'),
         'https://www.youtube.com/watch?v=rbXhnI_E0hQ'
