@@ -451,8 +451,8 @@ Function normalizing url and returning its parts in hierarchical order.
 ```python
 from ural.lru import normalized_lru_stems
 
-normalized_lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
->>> ['t:8000', 'h:fr', 'h:lemonde', 'h:www', 'p:article', 'p:1234', 'q:field=value']
+normalized_lru_stems('http://www.lemonde.fr/article/1234/index.html?field=value#2')
+>>> ['h:fr', 'h:lemonde', 'p:article', 'p:1234', 'q:field=value']
 ```
 
 *Arguments*
