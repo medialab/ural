@@ -80,7 +80,7 @@ LANG_QUERY_KEYS = ('gl', 'hl')
 def attempt_to_decode_idna(string):
     try:
         return string.encode('utf8').decode('idna')
-    except:
+    except Exception:
         return string
 
 
