@@ -29,3 +29,12 @@ def get_hostname(url):
         return urlsplit(ensure_protocol(url)).hostname or None
     except ValueError:
         return None
+
+
+def get_hostname_prefixes(hostname):
+    result = []
+    if hostname:
+        domain_parts = hostname.split(".")
+        for enum, part in enumerate(domain_parts):
+            result.append(".".join(domain_parts[enum:]))
+    return result
