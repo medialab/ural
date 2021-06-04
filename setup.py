@@ -4,7 +4,7 @@ with open('./README.md', 'r') as f:
     long_description = f.read()
 
 setup(name='ural',
-      version='0.30.1',
+      version='0.30.2',
       description='A helper library full of URL-related heuristics.',
       long_description=long_description,
       long_description_content_type='text/markdown',
