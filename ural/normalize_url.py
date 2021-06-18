@@ -200,7 +200,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         url = resolve(url)
 
     if isinstance(url, SplitResult):
-        has_protocol = bool(splitted.scheme)
+        has_protocol = bool(url.scheme)
         splitted = url
     else:
         has_protocol = PROTOCOL_RE.match(url)
