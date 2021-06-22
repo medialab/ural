@@ -30,3 +30,17 @@ class TestTries(object):
             'feedproxy.google.com',
             'lacamargue.net'
         }
+
+        trie.add('xn--tlrama-bvab.fr')
+
+        assert len(trie) == 4
+
+        assert trie.match('xn--tlrama-bvab.fr')
+        assert trie.match('télérama.fr')
+
+        assert set(trie) == {
+            'lemonde.fr',
+            'feedproxy.google.com',
+            'lacamargue.net',
+            'télérama.fr'
+        }

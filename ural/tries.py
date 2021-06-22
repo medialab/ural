@@ -6,11 +6,11 @@
 #
 from phylactery import TrieDict
 
-from ural.utils import safe_urlsplit
+from ural.utils import safe_urlsplit, decode_punycode_hostname
 
 
 def tokenize_hostname(hostname):
-    return reversed(hostname.strip().lower().split('.'))
+    return reversed(decode_punycode_hostname(hostname).strip().lower().split('.'))
 
 
 def join_hostname(key):

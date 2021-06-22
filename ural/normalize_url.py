@@ -16,6 +16,7 @@ from ural.utils import (
     quote,
     urlsplit,
     urlunsplit,
+    decode_punycode_hostname,
     unquote,
     normpath,
     SplitResult
@@ -77,13 +78,6 @@ PER_DOMAIN_QUERY_FILTERS = [
 LANG_QUERY_KEYS = ('gl', 'hl')
 
 
-def attempt_to_decode_idna(string):
-    try:
-        return string.encode('utf8').decode('idna')
-    except Exception:
-        return string
-
-
 def stringify_qs(item):
     if item[1] == '':
         return item[0]
@@ -122,15 +116,6 @@ def should_strip_fragment(fragment):
         fragment.startswith('/') or
         fragment.startswith('!')
     )
-
-
-def decode_punycode(netloc):
-    if 'xn--' in netloc:
-        netloc = '.'.join(
-            attempt_to_decode_idna(x) for x in netloc.split('.')
-        )
-
-    return netloc
 
 
 def strip_lang_subdomains_from_netloc(netloc):
@@ -223,7 +208,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
             query = re.sub(MISTAKES_RE, '&', query)
 
     # Handling punycode
-    netloc = decode_punycode(netloc)
+    netloc = decode_punycode_hostname(netloc)
 
     # Dropping :80 & :443
     if netloc.endswith(':80'):
@@ -377,7 +362,7 @@ def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False
     if normalize_amp and hostname.startswith('amp-'):
         hostname = hostname[4:]
 
-    hostname = decode_punycode(hostname)
+    hostname = decode_punycode_hostname(hostname)
 
     if strip_lang_subdomains:
         hostname = strip_lang_subdomains_from_netloc(hostname)

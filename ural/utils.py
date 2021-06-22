@@ -101,3 +101,19 @@ def normpath(urlpath, drop_consecutive_slashes=True):
             resolved.append(segment)
 
     return ''.join(resolved).rstrip('/')
+
+
+def attempt_to_decode_idna(string):
+    try:
+        return string.encode('utf8').decode('idna')
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return string
+
+
+def decode_punycode_hostname(hostname):
+    if 'xn--' in hostname:
+        hostname = '.'.join(
+            attempt_to_decode_idna(x) for x in hostname.split('.')
+        )
+
+    return hostname
