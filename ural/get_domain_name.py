@@ -33,8 +33,11 @@ def get_hostname(url):
 
 def get_hostname_prefixes(hostname):
     result = []
+
     if hostname:
-        domain_parts = hostname.split(".")
-        for enum, part in enumerate(domain_parts):
-            result.append(".".join(domain_parts[enum:]))
+        domain_parts = hostname.split('.')
+
+        for i in range(len(domain_parts)):
+            result.append('.'.join(domain_parts[i:]))
+
     return result
