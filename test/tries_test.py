@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # =============================================================================
 # Ural Tries Unit Tests
 # =============================================================================
@@ -36,11 +37,11 @@ class TestTries(object):
         assert len(trie) == 4
 
         assert trie.match('xn--tlrama-bvab.fr')
-        assert trie.match('télérama.fr')
+        assert trie.match(u'télérama.fr')
 
         assert set(trie) == {
             'lemonde.fr',
             'feedproxy.google.com',
             'lacamargue.net',
-            'télérama.fr'
+            u'télérama.fr'
         }
