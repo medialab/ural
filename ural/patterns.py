@@ -9,9 +9,9 @@ PROTOCOL_RE = re.compile(r'^%s' % PROTOCOL)
 WEB_PROTOCOL_RE = re.compile(r'^%s' % WEB_PROTOCOL)
 HTTP_PROTOCOL_RE = re.compile(r'^%s' % HTTP_PROTOCOL)
 
-# Taken from:
-#  https://gist.github.com/dperini/729294
-#  https://gist.github.com/pchc2005/b5f13e136a9c9bb2984e5b92802fc7c9
+# Adapted from:
+#  - https://gist.github.com/dperini/729294
+#  - https://gist.github.com/pchc2005/b5f13e136a9c9bb2984e5b92802fc7c9
 URL = (
     # protocol identifier
     # "(?:(?:(?:https?|ftp):)?//)"
@@ -20,9 +20,9 @@ URL = (
     r"(?:"
     # IP address exclusion
     # private & local networks
-    r"(?!(?:10|127)(?:\.\d{1,3}){3})"
-    r"(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})"
-    r"(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})"
+    # r"(?!(?:10|127)(?:\.\d{1,3}){3})"
+    # r"(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})"
+    # r"(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})"
     # IP address dotted notation octets
     # excludes loopback network 0.0.0.0
     # excludes reserved space >= 224.0.0.0
