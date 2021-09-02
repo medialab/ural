@@ -7,7 +7,6 @@
 #
 from ural.is_url import is_url
 from ural.strip_protocol import strip_protocol
-from ural.lru import normalized_lru_stems
 
 ERROR_TLDS = {'.cab', '.global', '.ren', '.gay', '.baby', '.gallery', '.red', '.tattoo', '.lincoln', '.ooo', '.new', '.barcelona', '.med', '.photos',
               '.africa', '.film', '.sale', '.amazon', '.rip', '.love', '.py', '.android', '.video', '.kim', '.ro', '.ck', '.ba', '.day', '.bayern', '.mm',
