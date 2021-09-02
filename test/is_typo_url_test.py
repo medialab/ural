@@ -21,7 +21,8 @@ TESTS = [
     ('https://www.instagram.com', False),
     ('http://mon.infolink.link/r/jdiz3yz', False),
     ('pharmacien.ne', True),
-    ('forms.gle/EG2GpgRJea44DAbN7', False)
+    ('forms.gle/EG2GpgRJea44DAbN7', False),
+    ('http://dirigeants.es/', True),
 ]
 
 

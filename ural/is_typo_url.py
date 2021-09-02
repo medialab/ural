@@ -47,7 +47,8 @@ def is_typo_url(link):
     protocoleless_link = strip_protocol(link)
     tmp = protocoleless_link.split('/')
     if len(tmp) > 1:
-        return False
+        if tmp[1] != '':
+            return False
 
     # tests if there is a ? in the url
     if '?' in protocoleless_link:
@@ -57,6 +58,8 @@ def is_typo_url(link):
     if '.co.' in protocoleless_link:
         return False
 
+    if link.endswith('/'):
+        link = link.rstrip('/')
     split_link = link.rsplit('.', 1)
     tld = '.' + split_link[1]
 
