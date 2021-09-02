@@ -23,6 +23,7 @@ pip install ural
 * [force_protocol](#force_protocol)
 * [infer_redirection](#infer_redirection)
 * [is_shortened_url](#is_shortened_url)
+* [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
 * [normalize_url](#normalize_url)
 * [strip_protocol](#strip_protocol)
@@ -324,6 +325,22 @@ for url in urls_from_text(text):
 *Arguments*
 
 * **string** *string*: source string.
+
+---
+
+### is_typo_url
+
+Function returning whether the given string is *probably* a typo error. It works by matching the given url tld against most prominent typo-like tlds or by matching the given string against most prominent inclusive language terminations. So the result could be a false negative.
+
+```python
+from ural import is_typo_url
+
+is_typo_url('http://dirigeants.es')
+>>> True
+
+is_typo_url('https://www.instagram.com')
+>>> False
+```
 
 ---
 

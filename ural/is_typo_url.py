@@ -1,0 +1,76 @@
+# =============================================================================
+# Ural URL Is Typo Url Function
+# =============================================================================
+#
+# A function returning True if its argument is detected as typo.
+#
+from ural.is_url import is_url
+from ural.strip_protocol import strip_protocol
+from ural.lru import normalized_lru_stems
+
+ERROR_TLDS = {".cab", ".global", ".ren", ".gay", ".baby", ".gallery", ".red", ".tattoo", ".lincoln", ".ooo", ".new", ".barcelona", ".med", ".photos",
+              ".africa", ".film", ".sale", ".amazon", ".rip", ".love", ".py", ".android", ".video", ".kim", ".ro", ".ck", ".ba", ".day", ".bayern", ".mm",
+              ".luxe", ".blog", ".mo", ".gm", ".design", ".vote", ".pub", ".blue", ".bn", ".onion", ".zip", ".style", ".nu", ".ml", ".mil", ".youtube", ".eco",
+              ".place", ".et", ".fk", ".ni", ".rent", ".bond", ".prod", ".post", ".berlin", ".protection", ".you", ".gh", ".by", ".clothing", ".ls", ".np",
+              ".sexy", ".il", ".ferrero", ".map", ".bom", ".bb", ".skin", ".bible", ".buy", ".market", ".ice", ".cfa",
+              ".group", ".office", ".meme", ".dm", ".vi", ".xxx", ".audio", ".dupont", ".cv", ".science", ".pharmacy", ".systems", ".ga", ".contact", ".family",
+              ".sport", ".gallup", ".zara", ".ms", ".cz", ".sj", ".maison", ".dj", ".hockey", ".pk", ".cash", ".ag",
+              ".cr", ".ink", ".website", ".mt", ".pr", ".bio", ".ses", ".lol", ".iq", ".norton", ".kh", ".la", ".hair", ".chat", ".wow", ".bo", ".mg", ".ss",
+              ".osaka", ".sh", ".ge", ".lifestyle", ".now", ".tel", ".mr", ".click", ".ping", ".earth", ".eus", ".shell", ".football", ".tours", ".surgery",
+              ".dot", ".mma", ".zero", ".ing", ".read", ".credit", ".mc", ".black", ".inc", ".tennis", ".author", ".like", ".social", ".mov", ".er", ".apple",
+              ".moi", ".google", ".suzuki", ".smile", ".able", ".xin", ".sm", ".sx", ".plus", ".ao", ".am", ".lk", ".no", ".box",
+              ".vision", ".gp", ".vu", ".name", ".delta", ".ve", ".quebec", ".lat", ".off", ".house", ".ltd", ".na", ".bs", ".bmw", ".game", ".rugby", ".mw",
+              ".total", ".aw", ".man", ".ceo", ".madrid", ".star", ".build", ".data", ".ye", ".pictures", ".gu", ".gle", ".baseball", ".je", ".car",
+              ".helsinki", ".buzz", ".im", ".kn", ".mu", ".sr", ".va", ".pa", ".sakura", ".fox", ".phone", ".sa", ".ki", ".tiffany", ".ps", ".rocher", ".re",
+              ".men", ".beauty", ".boo", ".sy", ".pet", ".km", ".gb", ".open", ".pin", ".jo", ".zw", ".ne", ".so", ".ky", ".play",
+              ".pics", ".mtn"}
+
+ERROR_INCLUSIVE = ["é.es", "eux.se", "s.es", "eur.se", "eu.r.se", "ant.es", "eu.x.se", "eu.se", "un.es", ".e.es",
+                   "eux.ses", "r.es", "ois.es", "t.es", "l.es", "i.es", "n.es", "u.es"]
+
+
+def is_typo_url(link):
+    """
+    Function returning True if its argument is detected as url typo.
+
+    Args:
+        link (str): string to test.
+
+    Returns:
+        bool: True if the argument contains typo, False if not.
+
+    """
+    if not is_url(link, tld_aware=True, require_protocol=False):
+        return True
+
+    # tests if there is a "/" in the url except if it is at the end
+    protocoleless_link = strip_protocol(link)
+    tmp = protocoleless_link.split("/")
+    if len(tmp) > 1:
+        return False
+
+    # tests if there is a ? in the url
+    if "?" in protocoleless_link:
+        return False
+
+    # tests if ".co" is contained in the url
+    if ".co." in protocoleless_link:
+        return False
+
+    split_link = link.rsplit(".", 1)
+    tld = "." + split_link[1]
+
+    if tld in ERROR_TLDS or is_inclusive_language(link):
+        return True
+
+    return False
+
+
+def is_inclusive_language(link):
+    """
+    Function returning True if its argument contains inclusive language (in french)
+    """
+    for pattern in ERROR_INCLUSIVE:
+        if link.endswith(pattern):
+            return True
+    return False
