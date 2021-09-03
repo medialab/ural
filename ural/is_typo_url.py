@@ -40,9 +40,6 @@ def is_typo_url(link):
         bool: True if the argument contains typo, False if not.
 
     """
-    if not is_url(link, tld_aware=True, require_protocol=False):
-        return True
-
     # tests if there is a '/' in the url except if it is at the end
     protocoleless_link = strip_protocol(link)
     slash_count = protocoleless_link.count("/")
