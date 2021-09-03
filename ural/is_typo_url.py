@@ -10,7 +10,7 @@ from ural.strip_protocol import strip_protocol
 
 ERROR_TLDS = {'.cab', '.global', '.ren', '.gay', '.baby', '.gallery', '.red', '.tattoo', '.lincoln', '.ooo', '.new', '.barcelona', '.med', '.photos',
               '.africa', '.film', '.sale', '.amazon', '.rip', '.love', '.py', '.android', '.video', '.kim', '.ro', '.ck', '.ba', '.day', '.bayern', '.mm',
-              '.luxe', '.blog', '.mo', '.gm', '.design', '.vote', '.pub', '.blue', '.bn', '.onion', '.zip', '.style', '.nu', '.ml', '.mil', '.youtube', '.eco',
+              '.luxe', '.blog', '.mo', '.gm', '.design', '.vote', '.pub', '.blue', '.bn', '.zip', '.style', '.nu', '.ml', '.mil', '.youtube', '.eco',
               '.place', '.et', '.fk', '.ni', '.rent', '.bond', '.prod', '.post', '.berlin', '.protection', '.you', '.gh', '.by', '.clothing', '.ls', '.np',
               '.sexy', '.il', '.ferrero', '.map', '.bom', '.bb', '.skin', '.bible', '.buy', '.market', '.ice', '.cfa',
               '.group', '.office', '.meme', '.dm', '.vi', '.xxx', '.audio', '.dupont', '.cv', '.science', '.pharmacy', '.systems', '.ga', '.contact', '.family',
@@ -45,9 +45,11 @@ def is_typo_url(link):
 
     # tests if there is a '/' in the url except if it is at the end
     protocoleless_link = strip_protocol(link)
-    tmp = protocoleless_link.split('/')
-    if len(tmp) > 1:
-        if tmp[1] != '':
+    slash_count = protocoleless_link.count("/")
+    if slash_count > 1:
+        return False
+    elif slash_count == 1:
+        if not protocoleless_link.endswith("/"):
             return False
 
     # tests if there is a ? in the url

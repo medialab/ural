@@ -10,7 +10,6 @@ TESTS = [
     ('http://france.plus', True),
     ('http://anxieu.x.se', True),
     ('http://dirigeants.es', True),
-    ('http://aplebzu47wgazapdqks6vrcv6zcnjppkbxbr6wketf56nf6aq2nmyoyd.onion', True),
     ('http://designandhuman.com-labo.mg', True),
     ('http://www.membres.republicains.fr/rentreejr', False),
     ('http://www.livreblanc.urbassist.fr', False),
