@@ -6,6 +6,7 @@ from ural import is_typo_url
 
 TESTS = [
     ('http://nombreux.se', True),
+    ('http://10.37.42.04.dvr', True),
     ('http://france.plus', True),
     ('http://anxieu.x.se', True),
     ('http://dirigeants.es', True),

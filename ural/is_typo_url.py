@@ -23,7 +23,7 @@ ERROR_TLDS = {'cab', 'global', 'ren', 'gay', 'baby', 'gallery', 'red', 'tattoo',
               'total', 'aw', 'man', 'ceo', 'madrid', 'star', 'build', 'data', 'ye', 'pictures', 'gu', 'gle', 'baseball', 'je', 'car',
               'helsinki', 'buzz', 'im', 'kn', 'mu', 'sr', 'va', 'pa', 'sakura', 'fox', 'phone', 'sa', 'ki', 'tiffany', 'ps', 'rocher', 're',
               'men', 'beauty', 'boo', 'sy', 'pet', 'km', 'gb', 'open', 'pin', 'jo', 'zw', 'ne', 'so', 'ky', 'play',
-              'pics', 'mtn', '.dvr'}
+              'pics', 'mtn', 'dvr'}
 
 ERROR_INCLUSIVE = [u'é.es', 'eux.se', 's.es', 'eur.se', 'eu.r.se', 'ant.es', 'eu.x.se', 'eu.se', 'un.es', '.e.es',
                    'eux.ses', 'r.es', 'ois.es', 't.es', 'l.es', 'i.es', 'n.es', 'u.es']
