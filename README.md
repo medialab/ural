@@ -17,10 +17,10 @@ pip install ural
 *Generic functions*
 
 * [ensure_protocol](#ensure_protocol)
+* [force_protocol](#force_protocol)
 * [get_domain_name](#get_domain_name)
 * [get_hostname](#get_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
-* [force_protocol](#force_protocol)
 * [infer_redirection](#infer_redirection)
 * [is_shortened_url](#is_shortened_url)
 * [is_typo_url](#is_typo_url)
@@ -103,6 +103,24 @@ ensure_protocol('www.lemonde.fr', protocol='https')
 
 ---
 
+### force_protocol
+
+Function force-replacing the protocol of the given url.
+
+```python
+from ural import force_protocol
+
+force_protocol('https://www2.lemonde.fr', protocol='ftp')
+>>> 'ftp://www2.lemonde.fr'
+```
+
+*Arguments*
+
+* **url** *string*: URL to format.
+* **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
+
+---
+
 ### get_domain_name
 
 Function returning an url's domain name. This function is of course tld-aware and will return `None` if no valid domain name can be found.
@@ -149,24 +167,6 @@ get_normalized_hostname('http://fr-FR.facebook.com/path', strip_lang_subdomains=
 * **infer_redirection** *bool* [`False`]: whether to attempt resolving common redirects by leveraging well-known GET parameters.
 * **normalize_amp** *?bool*: Whether to attempt to normalize Google AMP subdomains.
 * **strip_lang_subdomains** *?bool*: Whether to drop language-specific subdomains.
-
----
-
-### force_protocol
-
-Function force-replacing the protocol of the given url.
-
-```python
-from ural import force_protocol
-
-force_protocol('https://www2.lemonde.fr', protocol='ftp')
->>> 'ftp://www2.lemonde.fr'
-```
-
-*Arguments*
-
-* **url** *string*: URL to format.
-* **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
 
 ---
 

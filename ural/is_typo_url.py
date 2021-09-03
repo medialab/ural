@@ -5,7 +5,6 @@
 #
 # A function returning True if its argument is detected as typo.
 #
-from ural.is_url import is_url
 from ural.strip_protocol import strip_protocol
 
 ERROR_TLDS = {'cab', 'global', 'ren', 'gay', 'baby', 'gallery', 'red', 'tattoo', 'lincoln', 'ooo', 'new', 'barcelona', 'med', 'photos',
