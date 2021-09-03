@@ -212,7 +212,7 @@ is_shortened_url('http://bit.ly/1sNZMwL')
 
 ### is_typo_url
 
-Function returning whether the given string is *probably* a typo error. It works by matching the given url tld against most prominent typo-like tlds or by matching the given string against most prominent inclusive language terminations. So the result could be a false negative.
+Function returning whether the given string is *probably* a typo error. This function doesn't test if the given string is a valid url. It works by matching the given url tld against most prominent typo-like tlds or by matching the given string against most prominent inclusive language terminations. So the result could be a false negative.
 
 ```python
 from ural import is_typo_url
