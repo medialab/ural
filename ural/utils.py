@@ -106,7 +106,7 @@ def normpath(urlpath, drop_consecutive_slashes=True):
 def attempt_to_decode_idna(string):
     try:
         return string.encode('utf8').decode('idna')
-    except (UnicodeEncodeError, UnicodeDecodeError):
+    except UnicodeError:
         return string
 
 
