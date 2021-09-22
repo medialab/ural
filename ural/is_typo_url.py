@@ -5,7 +5,6 @@
 #
 # A function returning True if its argument is detected as typo.
 #
-from ural.is_url import is_url
 from ural.strip_protocol import strip_protocol
 
 ERROR_TLDS = {'cab', 'global', 'ren', 'gay', 'baby', 'gallery', 'red', 'tattoo', 'lincoln', 'ooo', 'new', 'barcelona', 'med', 'photos',
@@ -60,7 +59,7 @@ def is_typo_url(link):
     link = link.rstrip('/')
     _, tld = link.rsplit('.', 1)
 
-    return tld in ERROR_TLDS or is_inclusive_language(link)
+    return tld in ERROR_TLDS or is_inclusive_language(link) or (tld.lower() in ERROR_TLDS and tld[0].isupper() and tld[1:].islower())
 
 
 def is_inclusive_language(link):
@@ -68,6 +67,6 @@ def is_inclusive_language(link):
     Function returning True if its argument contains inclusive language (in french)
     """
     for pattern in ERROR_INCLUSIVE:
-        if link.endswith(pattern):
+        if link.lower().endswith(pattern):
             return True
     return False

@@ -22,6 +22,8 @@ TESTS = [
     ('pharmacien.ne', True),
     ('forms.gle/EG2GpgRJea44DAbN7', False),
     ('http://dirigeants.es/', True),
+    ('DIRIGEANTS.ES', True),
+    ('triste.Il', True),
 ]
 
 
