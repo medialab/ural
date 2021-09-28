@@ -59,7 +59,7 @@ def is_typo_url(link):
     link = link.rstrip('/')
     _, tld = link.rsplit('.', 1)
 
-    return tld in ERROR_TLDS or is_inclusive_language(link)
+    return (any(char.islower() for char in tld) and any(char.isupper() for char in tld)) or tld.lower() in ERROR_TLDS or is_inclusive_language(link)
 
 
 def is_inclusive_language(link):
@@ -67,6 +67,6 @@ def is_inclusive_language(link):
     Function returning True if its argument contains inclusive language (in french)
     """
     for pattern in ERROR_INCLUSIVE:
-        if link.endswith(pattern):
+        if link.lower().endswith(pattern):
             return True
     return False
