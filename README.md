@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/medialab/ural.svg)](https://travis-ci.org/medialab/ural)
+[![Build Status](https://github.com/medialab/ural/workflows/Tests/badge.svg)](https://github.com/medialab/ural/actions)
 
 # Ural
 
