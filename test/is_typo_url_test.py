@@ -24,7 +24,9 @@ TESTS = [
     ('http://dirigeants.es/', True),
     ('DIRIGEANTS.ES', True),
     ('triste.Il', True),
-    ('site.Com', True)
+    ('site.Com', True),
+    ('site.COM', False),
+    ('site.cOM', True)
 ]
 
 

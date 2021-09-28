@@ -59,7 +59,7 @@ def is_typo_url(link):
     link = link.rstrip('/')
     _, tld = link.rsplit('.', 1)
 
-    return (tld[0].isupper() and tld[1:].islower()) or tld.lower() in ERROR_TLDS or is_inclusive_language(link)
+    return (any(char.islower() for char in tld) and any(char.isupper() for char in tld)) or tld.lower() in ERROR_TLDS or is_inclusive_language(link)
 
 
 def is_inclusive_language(link):
