@@ -20,6 +20,6 @@ setup(name='ural',
         'phylactery>=0.2.3,<0.3',
         'pycountry>=18.12.8,<19',
         'tld>=0.12.1,<1',
-        'more-itertools=8.5.0,<8.6'
+        'more-itertools>=8.5.0,<8.6'
       ],
       zip_safe=True)
