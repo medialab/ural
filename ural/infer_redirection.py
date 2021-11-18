@@ -11,8 +11,8 @@ import re
 from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
 from ural.utils import unquote, urljoin
 
-OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|next|url|[lu])', re.I)
-REDIRECTION_DOMAINS_RE = re.compile(r'(?:\.ampproject\.org/[cv]/(?:s/)?|bc\.marfeelcache\.com/amp/|bc\.marfeel\.com/)', re.I)
+OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|next|url|link|redir|target|orig|q|goto|[lu])', re.I)
+REDIRECTION_DOMAINS_RE = re.compile(r'(?:\.ampproject\.org/[cv]/(?:s/)?|bc\.marfeelcache\.com/amp/|bc\.marfeel\.com/|google\.[a-z]{2,3}/url)', re.I)
 
 
 def infer_redirection(url, recursive=True):
