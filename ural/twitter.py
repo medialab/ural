@@ -24,8 +24,8 @@ TWITTER_SCREEN_NAME_BLACKLIST = {
     'settings'
 }
 
-TwitterUrlParsedResult = namedtuple('TwitterUrlParsedResult', ['user_screen_name', 'tweet_id'])
-TwitterUrlParsedResult.__new__.__defaults__ = (None,) * len(TwitterUrlParsedResult._fields)
+TweetInfo = namedtuple('TweetInfo', ['user_screen_name', 'tweet_id'])
+UserInfo = namedtuple('UserInfo', ['user_screen_name'])
 
 
 def is_twitter_url(url):
@@ -93,10 +93,10 @@ def parse_twitter_url(url):
     path = urlpathsplit(parsed.path)
 
     if path and len(path) == 3:
-        return TwitterUrlParsedResult(user_screen_name=normalize_screen_name(path[0]), tweet_id=path[2])
+        return TweetInfo(user_screen_name=normalize_screen_name(path[0]), tweet_id=path[2])
 
     if path:
-        return TwitterUrlParsedResult(user_screen_name=normalize_screen_name(path[0]))
+        return UserInfo(user_screen_name=normalize_screen_name(path[0]))
 
     if parsed.fragment.startswith('!'):
         path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)

@@ -1,7 +1,7 @@
 # =============================================================================
 # Ural Twitter Unit Tests
 # =============================================================================
-from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url, parse_twitter_url
+from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url, parse_twitter_url, UserInfo
 
 
 IS_TESTS = [
@@ -48,7 +48,7 @@ PARSE_TWEET_URL_TESTS = [
     ('https://twitter.com/NetflixFR/status/1455202987844857861', ('netflixfr', '1455202987844857861')),
     ('twitter.com/#!/@boogheta/statuses/1250082665765666816', ('boogheta', '1250082665765666816')),
     ('https://twitter.com', None),
-    ('https://twitter.com/Yomguithereal?s=19', ('yomguithereal', None))
+    ('https://twitter.com/Yomguithereal?s=19', UserInfo(user_screen_name='yomguithereal'))
 ]
 
 
