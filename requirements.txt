@@ -1,5 +1,6 @@
 # Dev Dependencies
 importchecker==2.0
+more-itertools<8.6
 pycodestyle==2.4.0
 pytest==3.5.1
 tqdm==4.31.1

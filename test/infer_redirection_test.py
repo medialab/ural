@@ -80,7 +80,26 @@ TESTS = [
     (
         'http://lemonde.fr?url=http%3A%2F%2Flemonde.fr',
         'http://lemonde.fr'
+    ),
+
+    # google.com/url case
+    (
+        'http://www.google.com/url?q=http://www.unwomen.org/es/digital-library/publications/2014/8/modelo-de-protocolo-latinoamericano&sa=D&sntz=1&usg=AFQjCNHAbpLxShgtUW-gsJa0TCxfK8GZ_g',
+        'http://www.unwomen.org/es/digital-library/publications/2014/8/modelo-de-protocolo-latinoamericano'
+    ),
+    (
+        'https://www.google.com/url?q=https%3A%2F%2Fwww.facebook.com%2Fgroups%2F58383368963%2F&sa=D&sntz=1&usg=AFQjCNFEV50Fn9Peac6rDCzX4qbcpWdrrA',
+        'https://www.facebook.com/groups/58383368963/'
+    ),
+    (
+        'https://www.google.fr/url?q=https://www.medisite.fr/coronavirus-vaccin-pfizer-un-americain-de-13-ans-meurt-dans-son-sommeil-apres-la-seconde-dose.5620367.806703.html%253fv=amp',
+        'https://www.medisite.fr/coronavirus-vaccin-pfizer-un-americain-de-13-ans-meurt-dans-son-sommeil-apres-la-seconde-dose.5620367.806703.html%3fv=amp'
+    ),
+    (
+        'https://www.google.es/url?q=https://www.lavanguardia.com/politica/elecciones-catalanas/20121024/54353836096/elecciones-catalanas-53-catalanes-a-favor-independencia-referendum.html%253ffacet=amp',
+        'https://www.lavanguardia.com/politica/elecciones-catalanas/20121024/54353836096/elecciones-catalanas-53-catalanes-a-favor-independencia-referendum.html%3ffacet=amp'
     )
+
 ]
 
 
