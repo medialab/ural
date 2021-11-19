@@ -1,7 +1,7 @@
 # =============================================================================
 # Ural Twitter Unit Tests
 # =============================================================================
-from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url, parse_twitter_url, TwitterUser
+from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url, parse_twitter_url, TwitterTweet, TwitterUser
 
 
 IS_TESTS = [
@@ -45,10 +45,13 @@ EXTRACT_SCREEN_NAME_TESTS = [
 ]
 
 PARSE_TWEET_URL_TESTS = [
-    ('https://twitter.com/NetflixFR/status/1455202987844857861', ('netflixfr', '1455202987844857861')),
-    ('twitter.com/#!/@boogheta/statuses/1250082665765666816', ('boogheta', '1250082665765666816')),
+    ('https://twitter.com/NetflixFR/status/1455202987844857861', TwitterTweet(user_screen_name='netflixfr', id='1455202987844857861')),
+    ('twitter.com/#!/@boogheta/statuses/1250082665765666816', TwitterTweet(user_screen_name='boogheta', id='1250082665765666816')),
     ('https://twitter.com', None),
-    ('https://twitter.com/Yomguithereal?s=19', TwitterUser(screen_name='yomguithereal'))
+    ('https://twitter.com/Yomguithereal?s=19', TwitterUser(screen_name='yomguithereal')),
+    ('https://twitter.com/notifications', None),
+    ('twitter.com/#whatever', None),
+    ('twitter.com#!boogheta', TwitterUser(screen_name='boogheta'))
 ]
 
 
