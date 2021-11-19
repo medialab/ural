@@ -67,20 +67,13 @@ def extract_screen_name_from_twitter_url(url):
 
     """
 
-    # Checking whether the url is a valid twitter url
-    if not is_twitter_url(url):
-        return None
+    parsed_twitter_url = parse_twitter_url(url)
 
-    parsed = safe_urlsplit(url)
-    path = urlpathsplit(parsed.path)
+    if isinstance(parsed_twitter_url, TwitterUser):
+        return parsed_twitter_url.screen_name
 
-    if path:
-        return normalize_screen_name(path[0])
-
-    if parsed.fragment.startswith('!'):
-        path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)
-
-        return normalize_screen_name(path)
+    if isinstance(parsed_twitter_url, TwitterTweet):
+        return parsed_twitter_url.user_screen_name
 
     return None
 
