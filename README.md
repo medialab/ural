@@ -909,6 +909,25 @@ extract_screen_name_from_twitter_url('https://twitter.fr')
 >>> None
 ```
 
+### parse_twitter_url
+
+Takes a Twitter url and returns either a TwitterUser namedtuple (contains a screen_name) if the given url is a link to a twitter user,
+a TwitterTweet namedtuple (contains a user_screen_name and an id) if the given url is a tweet's url or `None` if the given url is irrelevant.
+
+
+```python
+from ural.twitter import parse_twitter_url
+
+parse_twitter_url('https://twitter.com/Yomguithereal')
+>>> TwitterUser(screen_name='yomguithereal')
+
+parse_twitter_url('https://twitter.com/medialab_ScPo/status/1284154793376784385')
+>>> TwitterTweet(user_screen_name='medialab_scpo', id='1284154793376784385')
+
+parse_twitter_url('https://twitter.com/home')
+>>> None
+```
+
 ---
 
 ### Youtube

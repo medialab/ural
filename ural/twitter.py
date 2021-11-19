@@ -93,8 +93,8 @@ def parse_twitter_url(url):
         url (str) : Url from which to extract information if found.
 
     Returns:
-        TwitterTweet (namedtuple containing a user_screen_name and a tweet id) instance
-        or TwitterUser (namedtuple containing a user_screen_name) instance if the url is a valid twitter url,
+        TwitterTweet (namedtuple containing a user_screen_name and a tweet id) instance if the url is a link to a tweet
+        or TwitterUser (namedtuple containing a user_screen_name) instance if the url is a link to a twitter user,
         None otherwise.
 
     """

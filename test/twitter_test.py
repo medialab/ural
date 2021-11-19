@@ -51,7 +51,8 @@ PARSE_TWEET_URL_TESTS = [
     ('https://twitter.com/Yomguithereal?s=19', TwitterUser(screen_name='yomguithereal')),
     ('https://twitter.com/notifications', None),
     ('twitter.com/#whatever', None),
-    ('twitter.com#!boogheta', TwitterUser(screen_name='boogheta'))
+    ('twitter.com#!boogheta', TwitterUser(screen_name='boogheta')),
+    ('https://twitter.com/home', None)
 ]
 
 
