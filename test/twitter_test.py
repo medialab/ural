@@ -1,7 +1,7 @@
 # =============================================================================
 # Ural Twitter Unit Tests
 # =============================================================================
-from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url
+from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url, parse_twitter_url, TwitterTweet, TwitterUser
 
 
 IS_TESTS = [
@@ -44,6 +44,17 @@ EXTRACT_SCREEN_NAME_TESTS = [
     ('twitter.com/#!/@boogheta', 'boogheta')
 ]
 
+PARSE_TWEET_URL_TESTS = [
+    ('https://twitter.com/NetflixFR/status/1455202987844857861', TwitterTweet(user_screen_name='netflixfr', id='1455202987844857861')),
+    ('twitter.com/#!/@boogheta/statuses/1250082665765666816', TwitterTweet(user_screen_name='boogheta', id='1250082665765666816')),
+    ('https://twitter.com', None),
+    ('https://twitter.com/Yomguithereal?s=19', TwitterUser(screen_name='yomguithereal')),
+    ('https://twitter.com/notifications', None),
+    ('twitter.com/#whatever', None),
+    ('twitter.com#!boogheta', TwitterUser(screen_name='boogheta')),
+    ('https://twitter.com/home', None)
+]
+
 
 class TestTwitter(object):
     def test_is_twitter_url(self):
@@ -53,3 +64,7 @@ class TestTwitter(object):
     def test_extract_screen_name_from_twitter_url(self):
         for url, screen_name in EXTRACT_SCREEN_NAME_TESTS:
             assert extract_screen_name_from_twitter_url(url) == screen_name, url
+
+    def test_parse_twitter_url(self):
+        for url, results in PARSE_TWEET_URL_TESTS:
+            assert parse_twitter_url(url) == results

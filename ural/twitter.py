@@ -5,6 +5,7 @@
 # Collection of functions related to Twitter urls.
 #
 import re
+from collections import namedtuple
 
 from ural.patterns import DOMAIN_TEMPLATE
 from ural.utils import SplitResult, safe_urlsplit, urlpathsplit
@@ -22,6 +23,9 @@ TWITTER_SCREEN_NAME_BLACKLIST = {
     'search',
     'settings'
 }
+
+TwitterTweet = namedtuple('TweetInfo', ['user_screen_name', 'id'])
+TwitterUser = namedtuple('UserInfo', ['screen_name'])
 
 
 def is_twitter_url(url):
@@ -77,5 +81,44 @@ def extract_screen_name_from_twitter_url(url):
         path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)
 
         return normalize_screen_name(path)
+
+    return None
+
+
+def parse_twitter_url(url):
+    """
+    Function returning a parsed result from a given Twitter url.
+
+    Args:
+        url (str) : Url from which to extract information if found.
+
+    Returns:
+        TwitterTweet (namedtuple containing a user_screen_name and a tweet id) instance if the url is a link to a tweet
+        or TwitterUser (namedtuple containing a user_screen_name) instance if the url is a link to a twitter user,
+        None otherwise.
+
+    """
+
+    if not is_twitter_url(url):
+        return None
+
+    parsed = safe_urlsplit(url)
+    path = urlpathsplit(parsed.path)
+
+    if path:
+        user_screen_name = normalize_screen_name(path[0])
+
+        if user_screen_name is None:
+            return None
+
+        if len(path) == 3:
+            return TwitterTweet(user_screen_name=user_screen_name, id=path[2])
+
+        return TwitterUser(screen_name=user_screen_name)
+
+    if parsed.fragment.startswith('!'):
+        path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)
+
+        return parse_twitter_url('twitter.com/' + path)
 
     return None
