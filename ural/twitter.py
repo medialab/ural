@@ -5,6 +5,7 @@
 # Collection of functions related to Twitter urls.
 #
 import re
+from collections import namedtuple
 
 from ural.patterns import DOMAIN_TEMPLATE
 from ural.utils import SplitResult, safe_urlsplit, urlpathsplit
@@ -22,6 +23,9 @@ TWITTER_SCREEN_NAME_BLACKLIST = {
     'search',
     'settings'
 }
+
+TwitterUrlParsedResult = namedtuple('TwitterUrlParsedResult', ['user_screen_name', 'tweet_id'])
+TwitterUrlParsedResult.__new__.__defaults__ = (None,) * len(TwitterUrlParsedResult._fields)
 
 
 def is_twitter_url(url):
@@ -77,5 +81,26 @@ def extract_screen_name_from_twitter_url(url):
         path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)
 
         return normalize_screen_name(path)
+
+    return None
+
+
+def parse_twitter_url(url):
+    if not is_twitter_url(url):
+        return None
+
+    parsed = safe_urlsplit(url)
+    path = urlpathsplit(parsed.path)
+
+    if path and len(path) == 3:
+        return TwitterUrlParsedResult(user_screen_name=normalize_screen_name(path[0]), tweet_id=path[2])
+
+    if path:
+        return TwitterUrlParsedResult(user_screen_name=normalize_screen_name(path[0]))
+
+    if parsed.fragment.startswith('!'):
+        path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)
+
+        return parse_twitter_url('twitter.com/' + path)
 
     return None
