@@ -162,6 +162,18 @@ PARSE_TESTS = [
     (
         'https://m.facebook.com/story.php?story_fbid=1175066705875628&id=369911139724526',
         FacebookPost('1175066705875628', parent_id='369911139724526')
+    ),
+    (
+        'https://www.facebook.com/groups/CPOpenForum',
+        FacebookGroup(handle='CPOpenForum')
+    ),
+    (
+        'https://www.facebook.com/groups/CPOpenForum/posts/2834682806759086/',
+        FacebookPost(group_handle='CPOpenForum', post_id='2834682806759086')
+    ),
+    (
+        'https://www.facebook.com/groups/2047323015495073/posts/2834682806759086/',
+        FacebookPost(group_id='2047323015495073', post_id='2834682806759086')
     )
 ]
 

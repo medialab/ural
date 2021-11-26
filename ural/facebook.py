@@ -366,6 +366,13 @@ def parse_facebook_url(url, allow_relative_urls=False):
     if '/posts/' in splitted.path:
         parts = urlpathsplit(splitted.path)
 
+        if parts[0] == 'groups':
+            group_id_or_handle = parts[1]
+
+            if NUMERIC_ID_RE.match(group_id_or_handle):
+                return FacebookPost(parts[3], group_id=group_id_or_handle)
+            return FacebookPost(parts[3], group_handle=group_id_or_handle)
+
         parent_id_or_handle = parts[0]
 
         if NUMERIC_ID_RE.match(parent_id_or_handle):
