@@ -1,5 +1,6 @@
 __pycache__
 .DS_Store
+.ipynb_checkpoints
 .pytest_cache
 .python-version
 .vscode
