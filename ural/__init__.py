@@ -14,3 +14,4 @@ from ural.strip_protocol import strip_protocol
 from ural.tries import HostnameTrieSet
 from ural.urls_from_text import urls_from_text
 from ural.urls_from_html import urls_from_html
+from ural.is_homepage import is_homepage
