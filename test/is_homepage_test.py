@@ -7,6 +7,7 @@ DEFAULT_TESTS = [
     ('http://www.lemonde.fr', True)
 ]
 
+
 class TestIsHomepage(object):
 
     def test_basics(self):
