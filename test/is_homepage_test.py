@@ -20,8 +20,6 @@ DEFAULT_TESTS = [
 
 
 class TestIsHomepage(object):
-
     def test_basics(self):
-
         for url, result in DEFAULT_TESTS:
             assert is_homepage(url) == result
