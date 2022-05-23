@@ -1,7 +1,6 @@
 from operator import is_
 from regex import D
 from ural.utils import safe_urlsplit
-import re
 
 
 def is_homepage(url):
