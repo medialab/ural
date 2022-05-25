@@ -22,6 +22,7 @@ pip install ural
 * [get_hostname](#get_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
 * [infer_redirection](#infer_redirection)
+* [is_homepage](#is_homepage)
 * [is_shortened_url](#is_shortened_url)
 * [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
@@ -191,6 +192,25 @@ infer_redirection(
   recursive=False
 )
 >>> 'http://lemonde.fr?next=http%3A%2F%2Ftarget.fr'
+```
+
+---
+
+### is_homepage
+
+Function returning whether the given url is *probably* a website's homepage, based on its path.
+
+```python
+from ural import is_homepage
+
+is_homepage('http://lemonde.fr')
+>>> True
+
+is_homepage('http://lemonde.fr./index.html')
+>>> True
+
+is_homepage('http://lemonde.fr./business/article5.html')
+>>> False
 ```
 
 ---
