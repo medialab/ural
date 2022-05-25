@@ -13,6 +13,7 @@ DEFAULT_TESTS = [
     ("https://www.lemonde.fr/index.html/", True),
     ("https://www.lemonde.fr/index.html/?hello", True),
     ("https://www.lemonde.fr/index.aspx", True),
+    ("https://www.lemonde.fr/jokesindex", False),
     ("https://www.lemonde.fr/home", True),
     ("https://www.lemonde.fr/home.html", True),
     ("https://www.modulargrid.net/e/shakmat-modular-dual-dagger-", False)

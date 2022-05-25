@@ -3,8 +3,17 @@ from ural.utils import safe_urlsplit
 
 def is_homepage(url):
     url_tuple = safe_urlsplit(url)
-    if (url_tuple.path == '' or url_tuple.path == '/' or 'index' in url_tuple.path or 'home' in url_tuple.path) \
-            and (url_tuple.query == '' or url_tuple.fragment == ''):
+    if url_tuple.path == '' or \
+            url_tuple.path == ' ' \
+                or url_tuple.path == '/' \
+                    or url_tuple.path == 'index' \
+                        or url_tuple.path == '/index' \
+                            or url_tuple.path == '/index.html' \
+                                or url_tuple.path =='/index.html/' \
+                                    or url_tuple.path =='/index.aspx' \
+                                        or url_tuple.path =='index' \
+                                            or url_tuple.path =='home' \
+                                                or url_tuple.path =='/home.html' \
+                                                    or url_tuple.path == '/home':
         return True
-    else:
-        return False
+    return False
