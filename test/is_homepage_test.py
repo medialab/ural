@@ -1,3 +1,7 @@
+# coding: utf-8
+# =============================================================================
+# Ural Is Homepage Unit Tests
+# =============================================================================
 from ural import is_homepage
 
 DEFAULT_TESTS = [
@@ -16,7 +20,8 @@ DEFAULT_TESTS = [
     ("https://www.lemonde.fr/jokesindex", False),
     ("https://www.lemonde.fr/home", True),
     ("https://www.lemonde.fr/home.html", True),
-    ("https://www.modulargrid.net/e/shakmat-modular-dual-dagger-", False)
+    ("https://www.modulargrid.net/e/shakmat-modular-dual-dagger-", False),
+    ("https://www.lemonde.fr/index.xhtml?ok", True),
 ]
 
 

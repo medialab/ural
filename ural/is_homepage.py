@@ -1,10 +1,30 @@
+# -*- coding: utf-8 -*-
+# =============================================================================
+# Ural Is Homepage Function
+# =============================================================================
+#
+# Function returning whether the given url looks like a website's homepage.
+#
+from os.path import splitext
+
 from ural.utils import safe_urlsplit
 
-homepage_paths = ['', '/', 'index', '/index', '/index.html', '/index.html/', '/index.aspx', 'index', 'home', '/home.html', '/home']
+HOMEPAGE_PATHS = ['', '/', '/index', '/home']
 
 
 def is_homepage(url):
-    url_tuple = safe_urlsplit(url)
-    if url_tuple.path in homepage_paths:
-        return True
-    return False
+    """
+    Function returning whether the given url looks like a website's homepage.
+
+    Args:
+        url (str): url to test.
+
+    Returns:
+        bool
+
+    """
+    parsed = safe_urlsplit(url)
+    path = parsed.path.strip().rstrip('/')
+    path, _ = splitext(path)
+
+    return path in HOMEPAGE_PATHS
