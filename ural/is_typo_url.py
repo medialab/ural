@@ -28,45 +28,52 @@ ERROR_INCLUSIVE = [u'é.es', 'eux.se', 's.es', 'eur.se', 'eu.r.se', 'ant.es', 'e
                    'eux.ses', 'r.es', 'ois.es', 't.es', 'l.es', 'i.es', 'n.es', 'u.es']
 
 
-def is_typo_url(link):
+def is_typo_url(url):
     """
     Function returning True if its argument is detected as url typo.
 
     Args:
-        link (str): string to test.
+        url (str): string to test.
 
     Returns:
         bool: True if the argument contains typo, False if not.
 
     """
     # tests if there is a '/' in the url except if it is at the end
-    protocoleless_link = strip_protocol(link)
-    slash_count = protocoleless_link.count("/")
+    protocoleless_url = strip_protocol(url)
+    slash_count = protocoleless_url.count("/")
+
     if slash_count > 1:
         return False
-    elif slash_count == 1:
-        if not protocoleless_link.endswith("/"):
-            return False
+    elif slash_count == 1 and not protocoleless_url.endswith("/"):
+        return False
 
     # tests if there is a ? in the url
-    if '?' in protocoleless_link:
+    if '?' in protocoleless_url:
         return False
 
     # tests if '.co' is contained in the url
-    if '.co.' in protocoleless_link:
+    if '.co.' in protocoleless_url:
         return False
 
-    link = link.rstrip('/')
-    _, tld = link.rsplit('.', 1)
+    url = url.rstrip('/')
+    _, tld = url.rsplit('.', 1)
 
-    return (any(char.islower() for char in tld) and any(char.isupper() for char in tld)) or tld.lower() in ERROR_TLDS or is_inclusive_language(link)
+    return (
+        (
+            any(char.islower() for char in tld) and
+            any(char.isupper() for char in tld)
+        ) or
+        tld.lower() in ERROR_TLDS or is_inclusive_language(url)
+    )
 
 
-def is_inclusive_language(link):
+def is_inclusive_language(string):
     """
     Function returning True if its argument contains inclusive language (in french)
     """
     for pattern in ERROR_INCLUSIVE:
-        if link.lower().endswith(pattern):
+        if string.lower().endswith(pattern):
             return True
+
     return False
