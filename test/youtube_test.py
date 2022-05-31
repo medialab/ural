@@ -159,6 +159,16 @@ PARSE_TESTS = [
         'https://www.youtube.com/attribution_link?a=bWdZjuszr4I&u=%2Fwatch%3Fv%3Df5ZJLklAIQc%26feature%3Dshare',
         YoutubeVideo(id='f5ZJLklAIQc'),
         'https://www.youtube.com/watch?v=f5ZJLklAIQc'
+    ),
+    (
+        'https://www.youtube.com/results?search_query=Nicolas+Sarkozy+Amar+Saadani+Drs',
+        None,
+        'https://www.youtube.com/results?search_query=Nicolas+Sarkozy+Amar+Saadani+Drs'
+    ),
+    (
+        'https://www.youtube.com/feed/history',
+        None,
+        'https://www.youtube.com/feed/history'
     )
 ]
 

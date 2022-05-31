@@ -25,6 +25,21 @@ YOUTUBE_USER_URL_TEMPLATE = 'https://www.youtube.com/user/%s'
 YOUTUBE_CHANNEL_ID_URL_TEMPLATE = 'https://www.youtube.com/channel/%s'
 YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE = 'https://www.youtube.com/c/%s'
 
+YOUTUBE_CHANNEL_NAME_BLACKLIST = {
+    'about',
+    'account',
+    'ads',
+    'creators',
+    'feed',
+    'howyoutubeworks',
+    'new',
+    'paid_memberships',
+    'playlist',
+    'reporthistory',
+    'results',
+    't'
+}
+
 YoutubeVideo = namedtuple('YoutubeVideo', ['id'])
 YoutubeUser = namedtuple('YoutubeUser', ['id', 'name'])
 YoutubeChannel = namedtuple('YoutubeChannel', ['id', 'name'])
@@ -164,7 +179,12 @@ def parse_youtube_url(url, fix_common_mistakes=True):
     else:
         path = path.rstrip('/')
         if path.count('/') == 1:
-            return YoutubeChannel(id=None, name=path.lstrip('/'))
+            name = path.lstrip('/')
+
+            if name in YOUTUBE_CHANNEL_NAME_BLACKLIST:
+                return
+
+            return YoutubeChannel(id=None, name=name)
 
 
 def extract_video_id_from_youtube_url(url):
