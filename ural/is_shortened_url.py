@@ -18,10 +18,12 @@ TRIE = HostnameTrieSet()
 for domain in SHORTENER_DOMAINS:
     TRIE.add(domain)
 
+
 def is_shortened_url(url):
     if is_homepage(url) is True:
         return False
     return TRIE.match(url)
+
 
 DOMAINS_TO_RESOLVE = ['doi.org', 'list-manage.com']
 
