@@ -20,7 +20,7 @@ for domain in SHORTENER_DOMAINS:
 
 
 def is_shortened_url(url):
-    if is_homepage(url) == True:
+    if is_homepage(url) is True:
         return 'url is a homepage'
     return TRIE.match(url)
 
@@ -31,7 +31,8 @@ TRIE2 = HostnameTrieSet()
 for domain in DOMAINS_TO_RESOLVE:
     TRIE2.add(domain)
 
+
 def should_resolve(url):
-    if is_homepage(url) == True:
+    if is_homepage(url) is True:
         return 'url is a homepage'
     return TRIE2.match(url)
