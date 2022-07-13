@@ -18,7 +18,6 @@ TRIE = HostnameTrieSet()
 for domain in SHORTENER_DOMAINS:
     TRIE.add(domain)
 
-
 def is_shortened_url(url):
     if is_homepage(url) is True:
         return False
