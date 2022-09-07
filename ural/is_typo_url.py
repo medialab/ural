@@ -5,7 +5,9 @@
 #
 # A function returning True if its argument is detected as typo.
 #
+from posixpath import split
 from ural.strip_protocol import strip_protocol
+from ural.utils import safe_urlsplit
 
 ERROR_TLDS = {'cab', 'global', 'ren', 'gay', 'baby', 'gallery', 'red', 'tattoo', 'lincoln', 'ooo', 'new', 'barcelona', 'med', 'photos',
               'africa', 'film', 'sale', 'amazon', 'rip', 'love', 'py', 'android', 'video', 'kim', 'ro', 'ck', 'ba', 'day', 'bayern', 'mm',
@@ -54,6 +56,19 @@ def is_typo_url(url):
 
     # tests if '.co' is contained in the url
     if '.co.' in protocoleless_url:
+        return False
+
+    # tests if there is a # in the url
+    if '#' in protocoleless_url:
+        return False
+
+    # tests if domain starts with 'www'
+    domain = safe_urlsplit(url).netloc
+
+    if '@' in domain:
+        _, domain = domain.rsplit('@', 1)
+
+    if domain.startswith('www'):
         return False
 
     url = url.rstrip('/')
