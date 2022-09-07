@@ -13,10 +13,10 @@ SHORTENER_DOMAINS = ['0rz.tw', '1-url.net', '126.am', '1link.in', '1tk.us', '1un
 
 # NOTE: we use a trie to perform efficient queries and so we don't
 # need to test every domain/subdomain linearly
-TRIE = HostnameTrieSet()
+SHORTENER_DOMAINS_TRIE = HostnameTrieSet()
 
 for domain in SHORTENER_DOMAINS:
-    TRIE.add(domain)
+    SHORTENER_DOMAINS_TRIE.add(domain)
 
 
 def is_shortened_url(url):
@@ -25,4 +25,4 @@ def is_shortened_url(url):
     if is_homepage(url):
         return False
 
-    return TRIE.match(url)
+    return SHORTENER_DOMAINS_TRIE.match(url)

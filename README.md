@@ -27,6 +27,7 @@ pip install ural
 * [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
 * [normalize_url](#normalize_url)
+* [should_resolve](#should_resolve)
 * [strip_protocol](#strip_protocol)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
@@ -304,6 +305,27 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_protocol** *?bool* [`True`]: whether to strip the url's protocol.
 * **strip_trailing_slash** *?bool* [`True`]: whether to strip trailing slash.
 * **unsplit** *?bool* [`True`]: whether to return a stringified version of the normalized url or directly the `SplitResult` instance worked on by the normalization process.
+
+---
+
+### should_resolve
+
+Function returning whether the given function looks like something you would want to resolve because the url will *probably* lead to some redirection.
+
+It is quite similar to [is_shortened_url](#is_shortened_url) but covers more ground since it also deal with url patterns which are not shortened per se.
+
+```python
+from ural import should_resolve
+
+should_resolve('http://lemonde.fr')
+>>> False
+
+should_resolve('http://bit.ly/1sNZMwL')
+>>> True
+
+should_resolve('https://doi.org/10.4000/vertigo.26405')
+>>> True
+```
 
 ---
 
