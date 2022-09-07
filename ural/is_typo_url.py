@@ -5,7 +5,6 @@
 #
 # A function returning True if its argument is detected as typo.
 #
-from posixpath import split
 from ural.strip_protocol import strip_protocol
 from ural.utils import safe_urlsplit
 
@@ -63,11 +62,7 @@ def is_typo_url(url):
         return False
 
     # tests if domain starts with 'www'
-    domain = safe_urlsplit(url).netloc
-
-    if '@' in domain:
-        _, domain = domain.rsplit('@', 1)
-
+    domain = safe_urlsplit(url).hostname
     if domain.startswith('www'):
         return False
 

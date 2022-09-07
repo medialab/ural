@@ -27,8 +27,9 @@ TESTS = [
     ('site.Com', True),
     ('site.COM', False),
     ('site.cOM', True),
-    ('https://www.transilien.com#icv-P-6efefc31-f418-45e4-a6dc-f93567a79ac7', False),
+    ('https://transilien.com#icv-P-6efefc31-f418-45e4-a6dc-f93567a79ac7', False),
     ('https://www.gaiff.am', False),
+    ('http://username:password@www.my_site.com', False),
     ('http://user@name:pass@word@www.my_site.com', False),
 ]
 
