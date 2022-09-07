@@ -207,10 +207,10 @@ from ural import is_homepage
 is_homepage('http://lemonde.fr')
 >>> True
 
-is_homepage('http://lemonde.fr./index.html')
+is_homepage('http://lemonde.fr/index.html')
 >>> True
 
-is_homepage('http://lemonde.fr./business/article5.html')
+is_homepage('http://lemonde.fr/business/article5.html')
 >>> False
 ```
 
