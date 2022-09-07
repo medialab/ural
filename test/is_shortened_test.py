@@ -15,7 +15,8 @@ TESTS = [
     ('https://192.168.0.1', False),
     ('http://EasyURL.com/whatever', True),
     ('https://➽.ws/other', True),
-    ('➽.ws/other', True)
+    ('➽.ws/other', True),
+    ('https://bit.ly', False)
 ]
 
 
