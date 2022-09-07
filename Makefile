@@ -18,6 +18,10 @@ publish: clean lint test upload
 clean:
 	$(call clean)
 
+deps:
+	pip3 install -U pip
+	pip3 install -r requirements.txt
+
 lint:
 	@echo Linting source code using pep8...
 	pycodestyle --ignore E501,E722,W504 $(SOURCE) test
