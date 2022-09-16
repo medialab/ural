@@ -27,7 +27,7 @@ def should_resolve(url):
         return True
 
     url_split = safe_urlsplit(url)
-    if url_split.hostname[:2] == 'l.' and re.fullmatch('/[0-9a-zA-Z]*', url_split.path) and not url_split.query and not url_split.fragment:
+    if url_split.hostname[:2] == 'l.' and re.match('^/[0-9a-zA-Z]+$', url_split.path) and not url_split.query and not url_split.fragment:
         return True
 
     return SHOULD_RESOLVE_TRIE.match(url)

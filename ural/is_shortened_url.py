@@ -29,7 +29,7 @@ def is_shortened_url(url):
 
     # shortener domain starting with 'l.'
     url_split = safe_urlsplit(url)
-    if url_split.hostname[:2] == 'l.' and re.fullmatch('/[0-9a-zA-Z]*', url_split.path) and not url_split.query and not url_split.fragment:
+    if url_split.hostname[:2] == 'l.' and re.match('^/[0-9a-zA-Z]+$', url_split.path) and not url_split.query and not url_split.fragment:
         return True
 
     return SHORTENER_DOMAINS_TRIE.match(url)
