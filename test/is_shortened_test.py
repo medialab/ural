@@ -16,7 +16,12 @@ TESTS = [
     ('http://EasyURL.com/whatever', True),
     ('https://➽.ws/other', True),
     ('➽.ws/other', True),
-    ('https://bit.ly', False)
+    ('https://bit.ly', False),
+    ('https://l.francebleu.fr/PhuS', True),
+    ('http://l.test/jha/KJS', False),
+    ('http://l.test/t6-YH', False),
+    ('http://ltest/j56', False),
+    ('https://l.truc.fr?p=11869', False)
 ]
 
 
