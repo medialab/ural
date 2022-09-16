@@ -18,6 +18,7 @@ TESTS = [
     ('➽.ws/other', True),
     ('https://bit.ly', False),
     ('https://l.francebleu.fr/PhuS', True),
+    ('https://l.francebleu.fr/PhuS/', True),
     ('http://l.test/jha/KJS', False),
     ('http://l.test/t6-YH', False),
     ('http://ltest/j56', False),
