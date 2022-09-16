@@ -8,6 +8,7 @@
 from ural.tries import HostnameTrieSet
 from ural.is_shortened_url import SHORTENER_DOMAINS_TRIE
 from ural.is_homepage import is_homepage
+from ural.is_shortened_url import is_shortened_url
 
 
 SHOULD_RESOLVE_DOMAINS = ['doi.org', 'list-manage.com']
@@ -21,7 +22,7 @@ def should_resolve(url):
     if is_homepage(url):
         return False
 
-    if SHORTENER_DOMAINS_TRIE.match(url):
+    if is_shortened_url(url):
         return True
 
     return SHOULD_RESOLVE_TRIE.match(url)
