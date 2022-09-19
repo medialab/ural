@@ -5,10 +5,11 @@
 #
 # Function testing whether the given url is probably a shortened url or not.
 #
+import re
+
 from ural.tries import HostnameTrieSet
 from ural.is_homepage import is_homepage
 from ural.utils import safe_urlsplit
-import re
 
 DOMAIN_STARTS_L_RE = re.compile(r'^/[0-9a-zA-Z]{3,}/?$')
 
@@ -23,15 +24,24 @@ for domain in SHORTENER_DOMAINS:
     SHORTENER_DOMAINS_TRIE.add(domain)
 
 
+def is_l_shortened_domain(url):
+    parsed = safe_urlsplit(url)
+
+    return (
+        parsed.hostname.startswith('l.') and
+        re.search(DOMAIN_STARTS_L_RE, parsed.path)
+    )
+
+
 def is_shortened_url(url):
+    parsed = safe_urlsplit(url)
 
     # NOTE: shortener domain homepages are not shortened urls per se
-    if is_homepage(url):
+    if is_homepage(parsed):
         return False
 
-    # shortener domain starting with 'l.'
-    url_split = safe_urlsplit(url)
-    if url_split.hostname.startswith('l.') and re.match(DOMAIN_STARTS_L_RE, url_split.path) and not url_split.query and not url_split.fragment:
+    # Shortener domains starting with 'l.'
+    if is_l_shortened_domain(parsed):
         return True
 
-    return SHORTENER_DOMAINS_TRIE.match(url)
+    return SHORTENER_DOMAINS_TRIE.match(parsed)
