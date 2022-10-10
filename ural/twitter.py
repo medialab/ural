@@ -26,6 +26,7 @@ TWITTER_SCREEN_NAME_BLACKLIST = {
 
 TwitterTweet = namedtuple('TweetInfo', ['user_screen_name', 'id'])
 TwitterUser = namedtuple('UserInfo', ['screen_name'])
+TwitterList = namedtuple('ListInfo', ['id'])
 
 
 def is_twitter_url(url):
@@ -88,7 +89,8 @@ def parse_twitter_url(url):
     Returns:
         TwitterTweet (namedtuple containing a user_screen_name and a tweet id) instance if the url is a link to a tweet
         or TwitterUser (namedtuple containing a user_screen_name) instance if the url is a link to a twitter user,
-        None otherwise.
+        or TwitterList (namedtuple containing a list id) instance if the url is a link to a twitter list,
+        None othewise.
 
     """
 
@@ -102,6 +104,8 @@ def parse_twitter_url(url):
         user_screen_name = normalize_screen_name(path[0])
 
         if user_screen_name is None:
+            if path[0] == 'i' and path[1] == 'lists' and len(path) == 3:
+                return TwitterList(id=path[2])
             return None
 
         if len(path) == 3:
