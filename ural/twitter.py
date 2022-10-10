@@ -24,9 +24,9 @@ TWITTER_SCREEN_NAME_BLACKLIST = {
     'settings'
 }
 
-TwitterTweet = namedtuple('TweetInfo', ['user_screen_name', 'id'])
-TwitterUser = namedtuple('UserInfo', ['screen_name'])
-TwitterList = namedtuple('ListInfo', ['id'])
+TwitterTweet = namedtuple('TwitterTweet', ['user_screen_name', 'id'])
+TwitterUser = namedtuple('TwitterUser', ['screen_name'])
+TwitterList = namedtuple('TwitterList', ['id'])
 
 
 def is_twitter_url(url):
