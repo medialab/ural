@@ -104,7 +104,7 @@ def parse_twitter_url(url):
         user_screen_name = normalize_screen_name(path[0])
 
         if user_screen_name is None:
-            if path[0] == "i" and path[1] == 'lists' and len(path) == 3:
+            if path[0] == 'i' and path[1] == 'lists' and len(path) == 3:
                 return TwitterList(id=path[2])
             return None
 
