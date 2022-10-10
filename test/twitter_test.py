@@ -1,7 +1,7 @@
 # =============================================================================
 # Ural Twitter Unit Tests
 # =============================================================================
-from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url, parse_twitter_url, TwitterTweet, TwitterUser
+from ural.twitter import is_twitter_url, extract_screen_name_from_twitter_url, parse_twitter_url, TwitterTweet, TwitterUser, TwitterList
 
 
 IS_TESTS = [
@@ -52,7 +52,8 @@ PARSE_TWEET_URL_TESTS = [
     ('https://twitter.com/notifications', None),
     ('twitter.com/#whatever', None),
     ('twitter.com#!boogheta', TwitterUser(screen_name='boogheta')),
-    ('https://twitter.com/home', None)
+    ('https://twitter.com/home', None),
+    ('https://twitter.com/i/lists/1551265122798157826', TwitterList(id='1551265122798157826'))
 ]
 
 
