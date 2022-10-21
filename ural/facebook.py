@@ -65,8 +65,8 @@ def is_facebook_post_url(url):
     return (
         '/posts/' in url or
         '/permalink/' in url or
-        '/permalink.php' in url or
-        '/story.php' in url
+        ('/permalink.php' in url and '&id=' in url) or
+        ('/story.php' in url and '&id=' in url)
     )
 
 
