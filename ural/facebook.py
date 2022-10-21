@@ -322,7 +322,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
         return FacebookVideo(parts[2], parent_id=parts[0])
 
     # Photos
-    if splitted.query and (splitted.path.endswith('/photo.php') or splitted.path.endswith('/photo')):
+    if splitted.query and (splitted.path.endswith('/photo.php') or splitted.path.rstrip('/').endswith('/photo')):
         query = parse_qs(splitted.query)
 
         if 'fbid' not in query:
@@ -383,7 +383,12 @@ def parse_facebook_url(url, allow_relative_urls=False):
     # Ye olded permalink path
     if splitted.query and ('/permalink.php' in splitted.path or '/story.php' in splitted.path):
         query = parse_qs(splitted.query)
-        return FacebookPost(query['story_fbid'][0], parent_id=query['id'][0])
+        parent_id = query.get('id', None)
+
+        if not parent_id:
+            return None
+
+        return FacebookPost(query['story_fbid'][0], parent_id=parent_id[0])
 
     # Group permalink path
     if '/groups/' in splitted.path:
