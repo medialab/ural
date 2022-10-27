@@ -12,8 +12,13 @@ from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection
 from ural.patterns import QUERY_VALUE_TEMPLATE, DOMAIN_TEMPLATE
 
-YOUTUBE_DOMAINS_RE = re.compile(r'(?:youtube(?:\.googleapis)?\.[^.]+$|youtu\.be$)', re.I)
-YOUTUBE_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:youtube(?:\.googleapis)?\.[^.]+|youtu\.be)', re.I)
+DOMAIN_TEMPLATE = r'^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/#]|\s*$)'
+YOUTUBE_SUBDOMAINS_COM_RE = r'(?:(?:ads|analytics|artists|au|br|ca|charts|contributors|creatoracademy|de|director|es|families|fr|gaming|help|hk|ie|il|in|it|kids|kr|m|music|mx|nl|nz|pl|ru|socialimpact|studio|tv|tw|uk|vr|www)\.)?'
+YOUTUBE_TLD_TWO_PARTS_CO_RE = r'(?:\.(?:ae|at|cr|hu|id|il|in|jp|ke|kr|ma|nz|th|tz|ug|uk|ve|za|zw))?'
+YOUTUBE_TLD_TWO_PARTS_COM_RE = r'(?:\.(?:ar|au|az|bd|bh|bo|br|by|co|do|ec|ee|eg|es|gh|gr|gt|hk|hn|hr|jm|jo|kw|lb|lv|mk|mt|mx|my|ng|ni|om|pa|pe|ph|pk|pt|py|qa|ro|sa|sg|sv|tn|tr|tw|ua|uy|ve))?'
+YOUTUBE_TLD_RE = r'(?:ae|al|am|at|az|ba|be|bg|bh|bo|by|ca|cat|ch|cl|co%s|com%s|cr|cz|de|dk|ee|es|fi|fr|ge|googleapis\.com|gr|gt|hk|hu|ie|in|iq|is|it|jo|jp|kr|kz|la|lk|lt|lu|lv|ly|ma|md|me|mk|mn|mx|my|ng|ni|nl|no|pa|pe|ph|pk|pl|pr|pt|qa|ro|rs|ru|sa|se|sg|si|sk|sn|soy|sv|tn|tv|ua|ug|uy|vn)' % (YOUTUBE_TLD_TWO_PARTS_CO_RE, YOUTUBE_TLD_TWO_PARTS_COM_RE)
+YOUTUBE_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:%s(?:youtube.com)|youtu\.be|yt\.be|youtubeeducation.com|youtubekids.com|(?:blog|rewind)\.youtube|youtube\.%s)' % (YOUTUBE_SUBDOMAINS_COM_RE, YOUTUBE_TLD_RE), re.I)
+YOUTUBE_DOMAINS_RE = re.compile(r'(?:%s(?:youtube.com$)|youtu\.be$|yt\.be$|youtubeeducation.com$|youtubekids.com$|(?:blog|rewind)\.youtube$|youtube\.%s$)' % (YOUTUBE_SUBDOMAINS_COM_RE, YOUTUBE_TLD_RE), re.I)
 YOUTUBE_VIDEO_ID_RE = re.compile(r'^[a-zA-Z0-9_-]{11}$')
 QUERY_V_RE = re.compile(QUERY_VALUE_TEMPLATE % r'v', re.I)
 NEXT_V_RE = re.compile(r'next=%2Fwatch%3Fv%3D([^%&]+)', re.I)
