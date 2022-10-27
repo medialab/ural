@@ -10,7 +10,7 @@ from ural.ensure_protocol import ensure_protocol
 from ural.patterns import DOMAIN_TEMPLATE, QUERY_VALUE_IN_URL_TEMPLATE
 
 from ural.utils import (
-    parse_qs,
+    safe_parse_qs,
     unquote,
     urljoin,
     urlpathsplit,
@@ -65,8 +65,8 @@ def is_facebook_post_url(url):
     return (
         '/posts/' in url or
         '/permalink/' in url or
-        ('/permalink.php' in url and '&id=' in url) or
-        ('/story.php' in url and '&id=' in url)
+        ('/permalink.php' in url and ('&id=' in url or '&amp;id=' in url)) or
+        ('/story.php' in url and ('&id=' in url or '&amp;id=' in url))
     )
 
 
@@ -307,7 +307,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # Videos
     if '/watch' in splitted.path:
-        query = parse_qs(splitted.query)
+        query = safe_parse_qs(splitted.query)
 
         if 'v' not in query:
             return None
@@ -323,7 +323,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # Photos
     if splitted.query and (splitted.path.endswith('/photo.php') or splitted.path.rstrip('/').endswith('/photo')):
-        query = parse_qs(splitted.query)
+        query = safe_parse_qs(splitted.query)
 
         if 'fbid' not in query:
             return None
@@ -382,7 +382,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # Ye olded permalink path
     if splitted.query and ('/permalink.php' in splitted.path or '/story.php' in splitted.path):
-        query = parse_qs(splitted.query)
+        query = safe_parse_qs(splitted.query)
         parent_id = query.get('id', None)
 
         if not parent_id:
@@ -407,7 +407,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # Profile path
     if splitted.path == '/profile.php':
-        query = parse_qs(splitted.query)
+        query = safe_parse_qs(splitted.query)
         user_id = query['id'][0]
         return FacebookUser(user_id)
 
