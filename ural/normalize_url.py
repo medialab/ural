@@ -202,9 +202,8 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     scheme, netloc, path, query, fragment = splitted
 
     # Fixing common mistakes
-    if fix_common_mistakes:
-        if query:
-            query = fix_common_query_mistakes(query)
+    if fix_common_mistakes and query:
+        query = fix_common_query_mistakes(query)
 
     # Handling punycode
     netloc = decode_punycode_hostname(netloc)
