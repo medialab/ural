@@ -58,6 +58,8 @@ except ImportError:
         SplitResult
     )
 
+MISTAKES_RE = re.compile(r'&amp(?:%3B|;)', re.I)
+
 
 def safe_urlsplit(url, scheme='http'):
     if isinstance(url, SplitResult):
@@ -117,3 +119,11 @@ def decode_punycode_hostname(hostname):
         )
 
     return hostname
+
+
+def fix_common_query_mistakes(query):
+    return re.sub(MISTAKES_RE, '&', query)
+
+
+def safe_parse_qs(query):
+    return parse_qs(fix_common_query_mistakes(query))

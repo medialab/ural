@@ -174,6 +174,14 @@ PARSE_TESTS = [
     (
         'https://www.facebook.com/groups/2047323015495073/posts/2834682806759086/',
         FacebookPost(group_id='2047323015495073', post_id='2834682806759086')
+    ),
+    (
+        'https://www.facebook.com/photo/?fbid=10219572212489943&amp;set=gm.1346655122189658',
+        FacebookPhoto('10219572212489943')
+    ),
+    (
+        'https://www.facebook.com/permalink.php?story_fbid=pfbid0soaW7kxMr4D3iAPFaqmN2c7ZFTFF8FiyarH67nX5CfgYeZWU9DqLX55C8bqFxhRwl&amp;id=106692535436432',
+        FacebookPost('pfbid0soaW7kxMr4D3iAPFaqmN2c7ZFTFF8FiyarH67nX5CfgYeZWU9DqLX55C8bqFxhRwl', parent_id='106692535436432')
     )
 ]
 

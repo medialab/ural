@@ -19,6 +19,7 @@ from ural.utils import (
     decode_punycode_hostname,
     unquote,
     normpath,
+    fix_common_query_mistakes,
     SplitResult
 )
 from ural.patterns import PROTOCOL_RE
@@ -26,8 +27,6 @@ from ural.patterns import PROTOCOL_RE
 RESERVED_CHARACTERS = ';,/?:@&=+$'
 UNRESERVED_CHARACTERS = '-_.!~*\'()'
 SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
-
-MISTAKES_RE = re.compile(r'&amp(?:%3B|;)', re.I)
 
 IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|_guc_consent_skip|guccounter|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|wpamp|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
 IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
@@ -205,7 +204,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     # Fixing common mistakes
     if fix_common_mistakes:
         if query:
-            query = re.sub(MISTAKES_RE, '&', query)
+            query = fix_common_query_mistakes(query)
 
     # Handling punycode
     netloc = decode_punycode_hostname(netloc)
