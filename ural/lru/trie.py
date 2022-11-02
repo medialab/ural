@@ -26,16 +26,16 @@ def clean_trailing_path(stems):
 
 class LRUTrie(object):
     def __init__(self, tld_aware=False):
-        self.trie = TrieDict()
+        self._trie = TrieDict()
         self.lru_tokenizer = partial(lru_stems, tld_aware=tld_aware)
 
     def __len__(self):
-        return len(self.trie)
+        return len(self._trie)
 
     def set(self, url, metadata):
         stems = self.lru_tokenizer(url)
         stems = clean_trailing_path(stems)
-        self.trie[stems] = metadata
+        self._trie[stems] = metadata
 
     def __setitem__(self, url, metadata):
         return self.set(url, metadata)
@@ -43,23 +43,23 @@ class LRUTrie(object):
     def match(self, url):
         stems = self.lru_tokenizer(url)
         stems = clean_trailing_path(stems)
-        return self.trie.longest_matching_prefix_value(stems)
+        return self._trie.longest_matching_prefix_value(stems)
 
     def set_lru(self, lru, metadata):
         stems = ensure_lru_stems(lru)
         stems = clean_trailing_path(stems)
-        self.trie[stems] = metadata
+        self._trie[stems] = metadata
 
     def match_lru(self, lru):
         stems = ensure_lru_stems(lru)
         stems = clean_trailing_path(stems)
-        return self.trie.longest_matching_prefix_value(stems)
+        return self._trie.longest_matching_prefix_value(stems)
 
     def __iter__(self):
-        return self.trie.values()
+        return self._trie.values()
 
 
 class NormalizedLRUTrie(LRUTrie):
     def __init__(self, tld_aware=False, **kwargs):
-        self.trie = TrieDict()
+        self._trie = TrieDict()
         self.lru_tokenizer = partial(normalized_lru_stems, tld_aware=tld_aware, **kwargs)

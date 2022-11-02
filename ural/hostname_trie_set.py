@@ -18,18 +18,21 @@ def join_hostname(prefix):
 
 
 # NOTE: this trie currently has undefined behavior with some special hosts
-class HostnameTrieSet(TrieDict):
+class HostnameTrieSet(object):
     def __init__(self):
-        super(HostnameTrieSet, self).__init__()
+        self.__trie = TrieDict()
+
+    def __len__(self):
+        return len(self.__trie)
 
     def add(self, hostname):
         prefix = list(tokenize_hostname(hostname))
 
         # If a shortest prefix already exist, we can trim the subdomain
-        if self.longest_matching_prefix_value(prefix) is not None:
+        if self.__trie.longest_matching_prefix_value(prefix) is not None:
             return
 
-        self[prefix] = True
+        self.__trie[prefix] = True
 
     def match(self, url):
         url = safe_urlsplit(url)
@@ -39,8 +42,8 @@ class HostnameTrieSet(TrieDict):
 
         prefix = tokenize_hostname(url.hostname)
 
-        return bool(self.longest_matching_prefix_value(prefix))
+        return bool(self.__trie.longest_matching_prefix_value(prefix))
 
     def __iter__(self):
-        for prefix in super(HostnameTrieSet, self).prefixes():
+        for prefix in self.__trie.prefixes():
             yield join_hostname(prefix)
