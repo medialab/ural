@@ -8,7 +8,7 @@
 from __future__ import unicode_literals
 import re
 from ural.patterns import URL_IN_HTML_RE
-from ural.is_url import is_url
+from ural.utils import urljoin
 
 
 def clean_link(link):
@@ -31,7 +31,4 @@ def urls_from_html(string, base_url=''):
     for match in re.finditer(URL_IN_HTML_RE, string):
         url = clean_link(match.group(1))
 
-        if not is_url(url):
-            url = base_url + url
-
-        yield url
+        yield urljoin(base_url, url)
