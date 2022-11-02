@@ -20,43 +20,46 @@ def ensure_lru_stems(lru):
     return lru
 
 
-class LRUTrie(TrieDict):
+def clean_trailing_path(stems):
+    return [stem for stem in stems if stem != 'p:']
+
+
+class LRUTrie(object):
     def __init__(self, tld_aware=False):
-        super(LRUTrie, self).__init__()
-        self.__lru_stems = partial(lru_stems, tld_aware=tld_aware)
+        self._trie = TrieDict()
+        self.lru_tokenizer = partial(lru_stems, tld_aware=tld_aware)
+
+    def __len__(self):
+        return len(self._trie)
 
     def set(self, url, metadata):
-        stems = self.__lru_stems(url)
-        super(LRUTrie, self).__setitem__(stems, metadata)
+        stems = self.lru_tokenizer(url)
+        stems = clean_trailing_path(stems)
+        self._trie[stems] = metadata
+
+    def __setitem__(self, url, metadata):
+        return self.set(url, metadata)
 
     def match(self, url):
-        stems = self.__lru_stems(url)
-        return self.longest_matching_prefix_value(stems)
+        stems = self.lru_tokenizer(url)
+        stems = clean_trailing_path(stems)
+        return self._trie.longest_matching_prefix_value(stems)
 
     def set_lru(self, lru, metadata):
         stems = ensure_lru_stems(lru)
-        super(LRUTrie, self).__setitem__(stems, metadata)
+        stems = clean_trailing_path(stems)
+        self._trie[stems] = metadata
 
     def match_lru(self, lru):
         stems = ensure_lru_stems(lru)
-        return self.longest_matching_prefix_value(stems)
+        stems = clean_trailing_path(stems)
+        return self._trie.longest_matching_prefix_value(stems)
 
     def __iter__(self):
-        return self.values()
+        return self._trie.values()
 
 
-class NormalizedLRUTrie(TrieDict):
-    def __init__(self, **kwargs):
-        super(NormalizedLRUTrie, self).__init__()
-        self.normalize = partial(normalized_lru_stems, **kwargs)
-
-    def set(self, url, metadata):
-        stems = self.normalize(url)
-        super(NormalizedLRUTrie, self).__setitem__(stems, metadata)
-
-    def match(self, url):
-        stems = self.normalize(url)
-        return self.longest_matching_prefix_value(stems)
-
-    def __iter__(self):
-        return self.values()
+class NormalizedLRUTrie(LRUTrie):
+    def __init__(self, tld_aware=False, **kwargs):
+        self._trie = TrieDict()
+        self.lru_tokenizer = partial(normalized_lru_stems, tld_aware=tld_aware, **kwargs)

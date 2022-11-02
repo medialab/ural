@@ -15,7 +15,7 @@ class TestNormalizedLRUTrie(object):
 
         assert len(trie) == 2
 
-        assert list(trie.values()) == [1, 2]
+        assert list(trie) == [1, 2]
 
         assert trie.match('http://lefigaro.fr') is None
         assert trie.match('http://lemonde.fr/categories/whatever') == 1
@@ -50,7 +50,14 @@ class TestNormalizedLRUTrie(object):
             {'media': 'lemonde', 'type': 'article'}
         ]
 
-    def test_edge_cases(sefl):
+    def test_edge_cases(self):
         trie = LRUTrie()
 
         assert trie.match('http://127.0.0.1/economie/2019/01/08/un-journaliste-poursuit-richard-ferrand-pour-lavoir-bloque-sur-twitter/') is None
+
+    def test_trailing_path(self):
+        trie = LRUTrie()
+
+        trie.set('http://www.zejournal.mobi/', 'Ze Journal mobi')
+
+        assert trie.match('http://www.zejournal.mobi/id/news/show_detail/14853') == 'Ze Journal mobi'
