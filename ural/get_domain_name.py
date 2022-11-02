@@ -6,7 +6,7 @@
 #
 from tld import get_fld
 from ural.utils import safe_urlsplit
-from ural.is_special_host import is_special_host
+from ural.has_special_host import is_special_host
 
 
 def get_domain_name(url):

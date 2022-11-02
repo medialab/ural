@@ -7,7 +7,21 @@
 #
 
 from ural.utils import safe_urlsplit
-from ural.is_special_host import is_special_host
+from ural.patterns import SPECIAL_HOSTS_RE
+
+
+def is_special_host(hostname):
+    """
+    Function returning whether the given hostname looks like a special host.
+
+    Args:
+        hostname (str): hostname to test.
+
+    Returns:
+        bool
+
+    """
+    return bool(SPECIAL_HOSTS_RE.match(hostname))
 
 
 def has_special_host(url):

@@ -5,7 +5,7 @@
 # A function returning True if its argument is a url.
 #
 from tld.utils import process_url
-from ural.is_special_host import is_special_host
+from ural.has_special_host import is_special_host
 from ural.patterns import (
     URL_RE,
     URL_WITH_PROTOCOL_RE,

@@ -10,7 +10,7 @@ from tld.utils import process_url
 from ural.utils import urlsplit
 from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
-from ural.is_special_host import is_special_host
+from ural.has_special_host import is_special_host
 
 PORT_SPLITTER = re.compile(r':(?![\d:]+])')
 
