@@ -26,7 +26,7 @@ class HostnameTrieSet(TrieDict):
         prefix = list(tokenize_hostname(hostname))
 
         # If a shortest prefix already exist, we can trim the subdomain
-        if self.longest_prefix_value(prefix) is not None:
+        if self.longest_matching_prefix_value(prefix) is not None:
             return
 
         self[prefix] = True
@@ -39,7 +39,7 @@ class HostnameTrieSet(TrieDict):
 
         prefix = tokenize_hostname(url.hostname)
 
-        return bool(self.longest_prefix_value(prefix))
+        return bool(self.longest_matching_prefix_value(prefix))
 
     def __iter__(self):
         for prefix in super(HostnameTrieSet, self).prefixes():

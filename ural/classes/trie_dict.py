@@ -93,7 +93,7 @@ class TrieDict(object):
 
         raise KeyError(prefix)
 
-    def longest_prefix_value(self, prefix):
+    def longest_matching_prefix_value(self, prefix):
         node = self.__root
 
         last_value = NULL

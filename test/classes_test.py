@@ -38,7 +38,7 @@ class TestTrieDict(object):
         assert list(trie.items()) == [(['A', 'B'], None)]
         assert list(trie.values()) == [None]
 
-    def test_longest_prefix_value(self):
+    def test_longest_matching_prefix_value(self):
         trie = TrieDict()
 
         trie['roman'] = 1
@@ -48,13 +48,13 @@ class TestTrieDict(object):
 
         assert len(trie) == 4
 
-        assert trie.longest_prefix_value('jo') == 2
-        assert trie.longest_prefix_value('a') is None
-        assert trie.longest_prefix_value('abcde') is None
-        assert trie.longest_prefix_value('johnsie') == 3
-        assert trie.longest_prefix_value('romani') == 1
-        assert trie.longest_prefix_value('romanesque') == 2
-        assert trie.longest_prefix_value('romanesques') == 2
+        assert trie.longest_matching_prefix_value('jo') == 2
+        assert trie.longest_matching_prefix_value('a') is None
+        assert trie.longest_matching_prefix_value('abcde') is None
+        assert trie.longest_matching_prefix_value('johnsie') == 3
+        assert trie.longest_matching_prefix_value('romani') == 1
+        assert trie.longest_matching_prefix_value('romanesque') == 2
+        assert trie.longest_matching_prefix_value('romanesques') == 2
 
     def test_iteration(self):
         trie = TrieDict()

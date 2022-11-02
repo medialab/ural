@@ -31,7 +31,7 @@ class LRUTrie(TrieDict):
 
     def match(self, url):
         stems = self.__lru_stems(url)
-        return self.longest_prefix_value(stems)
+        return self.longest_matching_prefix_value(stems)
 
     def set_lru(self, lru, metadata):
         stems = ensure_lru_stems(lru)
@@ -39,7 +39,7 @@ class LRUTrie(TrieDict):
 
     def match_lru(self, lru):
         stems = ensure_lru_stems(lru)
-        return self.longest_prefix_value(stems)
+        return self.longest_matching_prefix_value(stems)
 
     def __iter__(self):
         return self.values()
@@ -56,7 +56,7 @@ class NormalizedLRUTrie(TrieDict):
 
     def match(self, url):
         stems = self.normalize(url)
-        return self.longest_prefix_value(stems)
+        return self.longest_matching_prefix_value(stems)
 
     def __iter__(self):
         return self.values()
