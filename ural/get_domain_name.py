@@ -5,7 +5,7 @@
 # Function returning an url's domain name.
 #
 from tld import get_fld
-from ural.utils import urlsplit
+from ural.utils import safe_urlsplit
 from ural.ensure_protocol import ensure_protocol
 
 
@@ -26,7 +26,7 @@ def get_domain_name(url):
 
 def get_hostname(url):
     try:
-        return urlsplit(ensure_protocol(url)).hostname or None
+        return safe_urlsplit(url).hostname or None
     except ValueError:
         return None
 
