@@ -169,6 +169,26 @@ PARSE_TESTS = [
         'https://www.youtube.com/feed/history',
         None,
         'https://www.youtube.com/feed/history'
+    ),
+    (
+        'https://youtube.com/channel/',
+        None,
+        'https://youtube.com/channel/'
+    ),
+    (
+        'https://youtube.com/c',
+        YoutubeChannel(id=None, name='c'),
+        'https://www.youtube.com/c/c'
+    ),
+    (
+        'https://youtube.com/c/',
+        None,
+        'https://youtube.com/c/'
+    ),
+    (
+        'https://youtube.com/user/',
+        None,
+        'https://youtube.com/user/'
     )
 ]
 

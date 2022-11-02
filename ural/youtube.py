@@ -23,6 +23,10 @@ FRAGMENT_V_RE = re.compile(r'^(?:%2F|/)watch(?:%3F|\?)v(?:%3D|=)([a-zA-Z0-9_-]{1
 YOUTUBE_VIDEO_URL_TEMPLATE = 'https://www.youtube.com/watch?v=%s'
 YOUTUBE_USER_URL_TEMPLATE = 'https://www.youtube.com/user/%s'
 YOUTUBE_CHANNEL_ID_URL_TEMPLATE = 'https://www.youtube.com/channel/%s'
+
+# NOTE: it's possible this does not work with all channels...
+# Sometimes I think you need 'https://www.youtube.com/%s' instead
+# but there is no way to infer this...
 YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE = 'https://www.youtube.com/c/%s'
 
 YOUTUBE_CHANNEL_NAME_BLACKLIST = {
@@ -161,18 +165,37 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 
     # Typical user url
     elif path.startswith('/user/'):
-        user = urlpathsplit(path)[1]
+        splitted_path = urlpathsplit(path)
+
+        if len(splitted_path) < 2:
+            return None
+
+        user = splitted_path[1]
 
         return YoutubeUser(id=None, name=user)
 
     # Channel path?
     elif path.startswith('/c/'):
-        name = urlpathsplit(path)[1]
+        # NOTE: there is an edge case here with the "c" channel that does exist
+        # which means /c will parse as a channel, but /c/ will not but I don't
+        # want to spend too much time on this weirdness.
+
+        splitted_path = urlpathsplit(path)
+
+        if len(splitted_path) < 2:
+            return None
+
+        name = splitted_path[1]
 
         return YoutubeChannel(id=None, name=name)
 
     elif path.startswith('/channel/'):
-        cid = urlpathsplit(path)[1]
+        splitted_path = urlpathsplit(path)
+
+        if len(splitted_path) < 2:
+            return None
+
+        cid = splitted_path[1]
 
         return YoutubeChannel(id=cid, name=None)
 
