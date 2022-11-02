@@ -363,6 +363,7 @@ for url in urls_from_html(html):
 *Arguments*
 
 * **string** *string*: html string.
+* **string** *string*: base_url to concatenate at the beginning of the urls.
 
 ---
 
