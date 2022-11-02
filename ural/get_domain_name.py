@@ -6,7 +6,6 @@
 #
 from tld import get_fld
 from ural.utils import safe_urlsplit
-from ural.ensure_protocol import ensure_protocol
 
 
 def get_domain_name(url):

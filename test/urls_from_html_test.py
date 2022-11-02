@@ -21,3 +21,7 @@ REF_SET = set(["https://www.britannica.com/place/Russia",
 class TestUrlsFromHtml(object):
     def test_basics(self):
         assert set(urls_from_html(HTML)) == REF_SET
+
+    def test_edge_cases(self):
+        assert list(urls_from_html('<a href="#">(415) 735-4488</a>')) == ['#']
+        assert list(urls_from_html('<a href="./test">(415) 735-4488</a>')) == ['./test']

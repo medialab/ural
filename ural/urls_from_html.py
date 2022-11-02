@@ -26,6 +26,6 @@ def urls_from_html(string):
         str: an url.
 
     """
-    for a_tag in re.finditer(URL_IN_HTML_RE, string):
-        url = a_tag.group(3)
+    for match in re.finditer(URL_IN_HTML_RE, string):
+        url = match.group(1)
         yield clean_link(url)
