@@ -27,6 +27,17 @@ class TestTrieDict(object):
         with pytest.raises(KeyError):
             _ = trie[['a', 'b']]
 
+    def test_none_value(self):
+        trie = TrieDict()
+
+        trie[['A', 'B']] = None
+
+        assert len(trie) == 1
+        assert trie[['A', 'B']] is None
+        assert trie.get(['A', 'B']) is None
+        assert list(trie.items()) == [(['A', 'B'], None)]
+        assert list(trie.values()) == [None]
+
     def test_longest_prefix_value(self):
         trie = TrieDict()
 
