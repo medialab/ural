@@ -17,7 +17,6 @@ setup(name='ural',
       packages=find_packages(exclude=['scripts', 'test']),
       package_data={'docs': ['README.md']},
       install_requires=[
-        'phylactery>=0.2.3,<0.3',
         'pycountry>=18.12.8,<19',
         'tld>=0.12.1,<1'
       ],

@@ -8,6 +8,5 @@ twine==1.11.0
 wheel
 
 # Dependencies
-phylactery==0.2.3
 pycountry>=18.12.8,<19
 tld==0.12.1

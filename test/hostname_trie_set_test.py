@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # =============================================================================
-# Ural Tries Unit Tests
+# Ural Hostname Trie Set Unit Tests
 # =============================================================================
 from ural import HostnameTrieSet
 
 
-class TestTries(object):
-    def test_hostname_trie_set(self):
+class TestHostnameTrieSet(object):
+    def test_basics(self):
         trie = HostnameTrieSet()
 
         trie.add('lemonde.fr')
