@@ -6,7 +6,7 @@
 #
 from tld import get_fld
 from ural.utils import safe_urlsplit
-from ural.ensure_protocol import ensure_protocol
+from ural.is_special_host import is_special_host
 
 
 def get_domain_name(url):
@@ -33,6 +33,9 @@ def get_hostname(url):
 
 def get_hostname_prefixes(hostname):
     result = []
+
+    if is_special_host(hostname):
+        return [hostname]
 
     if hostname:
         domain_parts = hostname.split('.')

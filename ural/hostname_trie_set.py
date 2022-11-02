@@ -7,6 +7,7 @@
 #
 from ural.classes import TrieDict
 from ural.utils import safe_urlsplit, decode_punycode_hostname
+from ural.is_special_host import is_special_host
 
 
 def tokenize_hostname(hostname):
@@ -23,12 +24,15 @@ class HostnameTrieSet(TrieDict):
         super(HostnameTrieSet, self).__init__()
 
     def add(self, hostname):
+        if is_special_host(hostname):
+            self[[decode_punycode_hostname(hostname).strip().lower()]] = True
+            return
+
         prefix = list(tokenize_hostname(hostname))
 
         # If a shortest prefix already exist, we can trim the subdomain
         if self.longest_matching_prefix_value(prefix) is not None:
             return
-
         self[prefix] = True
 
     def match(self, url):
@@ -38,6 +42,9 @@ class HostnameTrieSet(TrieDict):
             return False
 
         prefix = tokenize_hostname(url.hostname)
+
+        if is_special_host(url.hostname):
+            prefix = [decode_punycode_hostname(url.hostname).strip().lower()]
 
         return bool(self.longest_matching_prefix_value(prefix))
 

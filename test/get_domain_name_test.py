@@ -33,3 +33,5 @@ class TestGetDomainName(object):
             'lemonde.fr',
             'fr'
         ]
+
+        assert get_hostname_prefixes('192.167.45.2') == ['192.167.45.2']

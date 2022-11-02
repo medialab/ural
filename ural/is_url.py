@@ -5,13 +5,13 @@
 # A function returning True if its argument is a url.
 #
 from tld.utils import process_url
+from ural.is_special_host import is_special_host
 from ural.patterns import (
     URL_RE,
     URL_WITH_PROTOCOL_RE,
     RELAXED_URL,
     RELAXED_URL_WITH_PROTOCOL_RE,
     HTTP_PROTOCOL_RE,
-    SPECIAL_HOSTS_RE
 )
 
 
@@ -71,6 +71,6 @@ def is_url(string, require_protocol=True, tld_aware=False,
             if not parsed_url:
                 return False
 
-            return bool(SPECIAL_HOSTS_RE.match(parsed_url.hostname))
+            return is_special_host(parsed_url.hostname)
 
     return True
