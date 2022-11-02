@@ -41,7 +41,7 @@ class LRUTrie(TrieDict):
         stems = ensure_lru_stems(lru)
         return self.longest(stems)
 
-    def __iter__(sefl):
+    def __iter__(self):
         return self.values()
 
 
