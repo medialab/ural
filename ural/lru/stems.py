@@ -10,7 +10,7 @@ from tld.utils import process_url
 from ural.utils import urlsplit
 from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
-from ural.patterns import SPECIAL_HOSTS_RE
+from ural.has_special_host import is_special_host
 
 PORT_SPLITTER = re.compile(r':(?![\d:]+])')
 
@@ -64,7 +64,7 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
                 lru.append('h:' + element)
 
     if should_process_normally:
-        if SPECIAL_HOSTS_RE.search(netloc[0]) is not None:
+        if is_special_host(netloc[0]):
             lru.append('h:' + netloc[0])
         else:
             for element in reversed(netloc[0].split('.')):

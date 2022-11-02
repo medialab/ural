@@ -16,3 +16,4 @@ from ural.hostname_trie_set import HostnameTrieSet
 from ural.urls_from_text import urls_from_text
 from ural.urls_from_html import urls_from_html
 from ural.is_homepage import is_homepage
+from ural.has_special_host import has_special_host, is_special_host

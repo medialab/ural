@@ -59,7 +59,7 @@ URL = (
 RESOURCE_PATH = r"(?:[/?#]\S*)?"
 RELAXED_RESOURCE_PATH = r"(?:[/?#][\S ]*)?"
 
-SPECIAL_HOSTS_RE = re.compile(r'^localhost|(\d{1,3}\.){3}\d{1,3}|\[[\da-f]*:[\da-f:]*\]$', re.I)
+SPECIAL_HOSTS_RE = re.compile(r'^localhost|(\d{1,3}\.){3}\d{1,3}|[\da-f]*:[\da-f:]*$', re.I)
 
 URL_RE = re.compile(
     r'^(?:%s)?%s$' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)

@@ -13,8 +13,9 @@ class TestHostnameTrieSet(object):
         trie.add('business.lemonde.fr')
         trie.add('feedproxy.google.com')
         trie.add('LACAMARGUE.net')
+        trie.add('2001:4860:0:2001::68')
 
-        assert len(trie) == 3
+        assert len(trie) == 4
 
         assert not trie.match('https://lefigaro.fr/article1.html')
         assert not trie.match('http://localhost:8000')
@@ -25,16 +26,18 @@ class TestHostnameTrieSet(object):
         assert trie.match('https://feedproxy.google.com/article1.html')
         assert trie.match('https://www.LACAMARGUE.net/article1.html')
         assert trie.match('https://www.lacamargue.net/article1.html')
+        assert trie.match('https://[2001:4860:0:2001::68]')
 
         assert set(trie) == {
+            '2001:4860:0:2001::68',
             'lemonde.fr',
             'feedproxy.google.com',
-            'lacamargue.net'
+            'lacamargue.net',
         }
 
         trie.add('xn--tlrama-bvab.fr')
 
-        assert len(trie) == 4
+        assert len(trie) == 5
 
         assert trie.match('xn--tlrama-bvab.fr')
         assert trie.match(u'télérama.fr')
@@ -43,5 +46,6 @@ class TestHostnameTrieSet(object):
             'lemonde.fr',
             'feedproxy.google.com',
             'lacamargue.net',
-            u'télérama.fr'
+            u'télérama.fr',
+            '2001:4860:0:2001::68'
         }

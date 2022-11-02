@@ -21,9 +21,11 @@ pip install ural
 * [get_domain_name](#get_domain_name)
 * [get_hostname](#get_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
+* [has_special_host](#has_special_host)
 * [infer_redirection](#infer_redirection)
 * [is_homepage](#is_homepage)
 * [is_shortened_url](#is_shortened_url)
+* [is_special_host](#is_special_host)
 * [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
 * [normalize_url](#normalize_url)
@@ -173,6 +175,22 @@ get_normalized_hostname('http://fr-FR.facebook.com/path', strip_lang_subdomains=
 
 ---
 
+### has_special_host
+
+Function returning whether the given url looks like it has a special host.
+
+```python
+from ural import has_special_host
+
+has_special_host('http://104.19.154.83')
+>>> True
+
+has_special_host('http://youtube.com')
+>>> False
+```
+
+---
+
 ### infer_redirection
 
 Function attempting to find obvious clues in the given url that it is in fact a redirection and resolving the redirection automatically without firing any HTTP request. If nothing is found, the given url will be returned as-is.
@@ -228,6 +246,22 @@ is_shortened_url('http://lemonde.fr')
 
 is_shortened_url('http://bit.ly/1sNZMwL')
 >>> True
+```
+
+---
+
+### is_special_host
+
+Function returning whether the given hostname looks like a special host.
+
+```python
+from ural import is_special_host
+
+is_special_host('104.19.154.83')
+>>> True
+
+is_special_host('youtube.com')
+>>> False
 ```
 
 ---
