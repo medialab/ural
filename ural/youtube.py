@@ -7,18 +7,13 @@
 import re
 from collections import namedtuple
 
-from ural.utils import urlsplit, urlpathsplit, SplitResult
+from ural.tries import HostnameTrieSet
+from ural.utils import urlsplit, urlpathsplit, safe_urlsplit, SplitResult
 from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection
-from ural.patterns import QUERY_VALUE_TEMPLATE, DOMAIN_TEMPLATE
+from ural.patterns import QUERY_VALUE_TEMPLATE
 
-DOMAIN_TEMPLATE = r'^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/#]|\s*$)'
-YOUTUBE_SUBDOMAINS_COM_RE = r'(?:(?:ads|analytics|artists|au|br|ca|charts|contributors|creatoracademy|de|director|es|families|fr|gaming|help|hk|ie|il|in|it|kids|kr|m|music|mx|nl|nz|pl|ru|socialimpact|studio|tv|tw|uk|vr|www)\.)?'
-YOUTUBE_TLD_TWO_PARTS_CO_RE = r'(?:\.(?:ae|at|cr|hu|id|il|in|jp|ke|kr|ma|nz|th|tz|ug|uk|ve|za|zw))?'
-YOUTUBE_TLD_TWO_PARTS_COM_RE = r'(?:\.(?:ar|au|az|bd|bh|bo|br|by|co|do|ec|ee|eg|es|gh|gr|gt|hk|hn|hr|jm|jo|kw|lb|lv|mk|mt|mx|my|ng|ni|om|pa|pe|ph|pk|pt|py|qa|ro|sa|sg|sv|tn|tr|tw|ua|uy|ve))?'
-YOUTUBE_TLD_RE = r'(?:ae|al|am|at|az|ba|be|bg|bh|bo|by|ca|cat|ch|cl|co%s|com%s|cr|cz|de|dk|ee|es|fi|fr|ge|googleapis\.com|gr|gt|hk|hu|ie|in|iq|is|it|jo|jp|kr|kz|la|lk|lt|lu|lv|ly|ma|md|me|mk|mn|mx|my|ng|ni|nl|no|pa|pe|ph|pk|pl|pr|pt|qa|ro|rs|ru|sa|se|sg|si|sk|sn|soy|sv|tn|tv|ua|ug|uy|vn)' % (YOUTUBE_TLD_TWO_PARTS_CO_RE, YOUTUBE_TLD_TWO_PARTS_COM_RE)
-YOUTUBE_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:%s(?:youtube.com)|youtu\.be|yt\.be|youtubeeducation.com|youtubekids.com|(?:blog|rewind)\.youtube|youtube\.%s)' % (YOUTUBE_SUBDOMAINS_COM_RE, YOUTUBE_TLD_RE), re.I)
-YOUTUBE_DOMAINS_RE = re.compile(r'(?:%s(?:youtube.com$)|youtu\.be$|yt\.be$|youtubeeducation.com$|youtubekids.com$|(?:blog|rewind)\.youtube$|youtube\.%s$)' % (YOUTUBE_SUBDOMAINS_COM_RE, YOUTUBE_TLD_RE), re.I)
+YOUTUBE_DOMAINS = ['blog.youtube', 'rewind.youtube', 'youtu.be', 'youtube.ae', 'youtube.al', 'youtube.am', 'youtube.at', 'youtube.az', 'youtube.ba', 'youtube.be', 'youtube.bg', 'youtube.bh', 'youtube.bo', 'youtube.by', 'youtube.ca', 'youtube.cat', 'youtube.ch', 'youtube.cl', 'youtube.co', 'youtube.co.ae', 'youtube.co.at', 'youtube.co.cr', 'youtube.co.hu', 'youtube.co.id', 'youtube.co.il', 'youtube.co.in', 'youtube.co.jp', 'youtube.co.ke', 'youtube.co.kr', 'youtube.co.ma', 'youtube.co.nz', 'youtube.co.th', 'youtube.co.tz', 'youtube.co.ug', 'youtube.co.uk', 'youtube.co.ve', 'youtube.co.za', 'youtube.co.zw', 'youtube.com', 'youtube.com.ar', 'youtube.com.au', 'youtube.com.az', 'youtube.com.bd', 'youtube.com.bh', 'youtube.com.bo', 'youtube.com.br', 'youtube.com.by', 'youtube.com.co', 'youtube.com.do', 'youtube.com.ec', 'youtube.com.ee', 'youtube.com.eg', 'youtube.com.es', 'youtube.com.gh', 'youtube.com.gr', 'youtube.com.gt', 'youtube.com.hk', 'youtube.com.hn', 'youtube.com.hr', 'youtube.com.jm', 'youtube.com.jo', 'youtube.com.kw', 'youtube.com.lb', 'youtube.com.lv', 'youtube.com.ly', 'youtube.com.mk', 'youtube.com.mt', 'youtube.com.mx', 'youtube.com.my', 'youtube.com.ng', 'youtube.com.ni', 'youtube.com.om', 'youtube.com.pa', 'youtube.com.pe', 'youtube.com.ph', 'youtube.com.pk', 'youtube.com.pt', 'youtube.com.py', 'youtube.com.qa', 'youtube.com.ro', 'youtube.com.sa', 'youtube.com.sg', 'youtube.com.sv', 'youtube.com.tn', 'youtube.com.tr', 'youtube.com.tw', 'youtube.com.ua', 'youtube.com.uy', 'youtube.com.ve', 'youtube.cr', 'youtube.cz', 'youtube.de', 'youtube.dk', 'youtube.ee', 'youtube.es', 'youtube.fi', 'youtube.fr', 'youtube.ge', 'youtube.googleapis.com', 'youtube.gr', 'youtube.gt', 'youtube.hk', 'youtube.hr', 'youtube.hu', 'youtube.ie', 'youtube.in', 'youtube.iq', 'youtube.is', 'youtube.it', 'youtube.jo', 'youtube.jp', 'youtube.kr', 'youtube.kz', 'youtube.la', 'youtube.lk', 'youtube.lt', 'youtube.lu', 'youtube.lv', 'youtube.ly', 'youtube.ma', 'youtube.md', 'youtube.me', 'youtube.mk', 'youtube.mn', 'youtube.mx', 'youtube.my', 'youtube.ng', 'youtube.ni', 'youtube.nl', 'youtube.no', 'youtube.pa', 'youtube.pe', 'youtube.ph', 'youtube.pk', 'youtube.pl', 'youtube.pr', 'youtube.pt', 'youtube.qa', 'youtube.ro', 'youtube.rs', 'youtube.ru', 'youtube.sa', 'youtube.se', 'youtube.sg', 'youtube.si', 'youtube.sk', 'youtube.sn', 'youtube.soy', 'youtube.sv', 'youtube.tn', 'youtube.tv', 'youtube.ua', 'youtube.ug', 'youtube.uy', 'youtube.vn', 'youtubeeducation.com', 'youtubekids.com', 'yt.be']
 YOUTUBE_VIDEO_ID_RE = re.compile(r'^[a-zA-Z0-9_-]{11}$')
 QUERY_V_RE = re.compile(QUERY_VALUE_TEMPLATE % r'v', re.I)
 NEXT_V_RE = re.compile(r'next=%2Fwatch%3Fv%3D([^%&]+)', re.I)
@@ -49,6 +44,13 @@ YoutubeVideo = namedtuple('YoutubeVideo', ['id'])
 YoutubeUser = namedtuple('YoutubeUser', ['id', 'name'])
 YoutubeChannel = namedtuple('YoutubeChannel', ['id', 'name'])
 
+# NOTE: we use a trie to perform efficient queries and so we don't
+# need to test every domain/subdomain linearly
+YOUTUBE_DOMAINS_TRIE = HostnameTrieSet()
+
+for domain in YOUTUBE_DOMAINS:
+    YOUTUBE_DOMAINS_TRIE.add(domain)
+
 
 def is_youtube_url(url):
     """
@@ -61,10 +63,9 @@ def is_youtube_url(url):
         bool: Whether given url is from Youtube.
 
     """
-    if isinstance(url, SplitResult):
-        return bool(re.search(YOUTUBE_DOMAINS_RE, url.hostname))
+    parsed = safe_urlsplit(url)
 
-    return bool(re.match(YOUTUBE_URL_RE, url))
+    return YOUTUBE_DOMAINS_TRIE.match(parsed)
 
 
 def is_youtube_video_id(value):
