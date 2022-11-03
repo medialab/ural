@@ -181,7 +181,7 @@ class TrieDict(object):
         for token in prefix:
 
             # Check if we try to add a longer prefix
-            if node.value is True:
+            if node.value is not NULL:
                 return
 
             if node.children is None:
@@ -206,15 +206,15 @@ class TrieDict(object):
                 visited_nodes.append(node)
                 node = child
 
-        # Trie already has longer prefixes of the prefix we are trying to add : we delete those prefixes
+        # Trie already has longer prefixes of the prefix we are trying to add : we delete those prefixes and new (shortest) one
         if node.children is not None:
             node.children = None
             for n in visited_nodes:
-                n.counter -= node.counter
+                n.counter -= (node.counter - 1)
             node.counter = 0
 
         # We add a prefix with no longer prefixes in the Trie
-        if node.value is NULL:
+        elif node.value is NULL:
             for n in visited_nodes:
                 n.counter += 1
 
