@@ -13,18 +13,18 @@ class TrieDictNode(object):
     def __init__(self):
         self.children = None
         self.value = NULL
+        # Counts the number of items in the node's children
         self.counter = 0
 
 
 class TrieDict(object):
-    __slots__ = ('__root', '__size')
+    __slots__ = ('__root')
 
     def __init__(self):
         self.__root = TrieDictNode()
-        self.__size = 0
 
     def __len__(self):
-        return self.__size
+        return self.__root.counter
 
     def __setitem__(self, prefix, value):
         node = self.__root
@@ -59,7 +59,6 @@ class TrieDict(object):
         if node.value is NULL:
             for n in visited_nodes:
                 n.counter += 1
-            self.__size = self.__root.counter
 
         node.value = value
 
@@ -181,6 +180,7 @@ class TrieDict(object):
 
         for token in prefix:
 
+            # Check if we try to add a subdomain
             if node.value is True:
                 return
 
@@ -206,15 +206,16 @@ class TrieDict(object):
                 visited_nodes.append(node)
                 node = child
 
+        # Trie already has subdomains of a domain we are trying to add : we delete those subdomains and add the domain
         if node.children is not None:
             node.children = None
             for n in visited_nodes:
                 n.counter -= node.counter
             node.counter = 0
 
+        # We add a domain with no subdomains in the Trie
         if node.value is NULL:
             for n in visited_nodes:
                 n.counter += 1
-            self.__size = self.__root.counter
 
         node.value = value
