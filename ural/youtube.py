@@ -8,10 +8,9 @@ import re
 from collections import namedtuple
 
 from ural.hostname_trie_set import HostnameTrieSet
-from ural.utils import urlsplit, urlpathsplit, safe_urlsplit, SplitResult
-from ural.ensure_protocol import ensure_protocol
+from ural.utils import urlpathsplit, safe_urlsplit
 from ural.infer_redirection import infer_redirection
-from ural.patterns import QUERY_VALUE_TEMPLATE, DOMAIN_TEMPLATE
+from ural.patterns import QUERY_VALUE_TEMPLATE
 
 YOUTUBE_DOMAINS = ['blog.youtube', 'rewind.youtube', 'youtu.be', 'youtube.ae', 'youtube.al', 'youtube.am', 'youtube.at', 'youtube.az', 'youtube.ba', 'youtube.be', 'youtube.bg', 'youtube.bh', 'youtube.bo', 'youtube.by', 'youtube.ca', 'youtube.cat', 'youtube.ch', 'youtube.cl', 'youtube.co', 'youtube.co.ae', 'youtube.co.at', 'youtube.co.cr', 'youtube.co.hu', 'youtube.co.id', 'youtube.co.il', 'youtube.co.in', 'youtube.co.jp', 'youtube.co.ke', 'youtube.co.kr', 'youtube.co.ma', 'youtube.co.nz', 'youtube.co.th', 'youtube.co.tz', 'youtube.co.ug', 'youtube.co.uk', 'youtube.co.ve', 'youtube.co.za', 'youtube.co.zw', 'youtube.com', 'youtube.com.ar', 'youtube.com.au', 'youtube.com.az', 'youtube.com.bd', 'youtube.com.bh', 'youtube.com.bo', 'youtube.com.br', 'youtube.com.by', 'youtube.com.co', 'youtube.com.do', 'youtube.com.ec', 'youtube.com.ee', 'youtube.com.eg', 'youtube.com.es', 'youtube.com.gh', 'youtube.com.gr', 'youtube.com.gt', 'youtube.com.hk', 'youtube.com.hn', 'youtube.com.hr', 'youtube.com.jm', 'youtube.com.jo', 'youtube.com.kw', 'youtube.com.lb', 'youtube.com.lv', 'youtube.com.ly', 'youtube.com.mk', 'youtube.com.mt', 'youtube.com.mx', 'youtube.com.my', 'youtube.com.ng', 'youtube.com.ni', 'youtube.com.om', 'youtube.com.pa', 'youtube.com.pe', 'youtube.com.ph', 'youtube.com.pk', 'youtube.com.pt', 'youtube.com.py', 'youtube.com.qa', 'youtube.com.ro', 'youtube.com.sa', 'youtube.com.sg', 'youtube.com.sv', 'youtube.com.tn', 'youtube.com.tr', 'youtube.com.tw', 'youtube.com.ua', 'youtube.com.uy', 'youtube.com.ve', 'youtube.cr', 'youtube.cz', 'youtube.de', 'youtube.dk', 'youtube.ee', 'youtube.es', 'youtube.fi', 'youtube.fr', 'youtube.ge', 'youtube.googleapis.com', 'youtube.gr', 'youtube.gt', 'youtube.hk', 'youtube.hr', 'youtube.hu', 'youtube.ie', 'youtube.in', 'youtube.iq', 'youtube.is', 'youtube.it', 'youtube.jo', 'youtube.jp', 'youtube.kr', 'youtube.kz', 'youtube.la', 'youtube.lk', 'youtube.lt', 'youtube.lu', 'youtube.lv', 'youtube.ly', 'youtube.ma', 'youtube.md', 'youtube.me', 'youtube.mk', 'youtube.mn', 'youtube.mx', 'youtube.my', 'youtube.ng', 'youtube.ni', 'youtube.nl', 'youtube.no', 'youtube.pa', 'youtube.pe', 'youtube.ph', 'youtube.pk', 'youtube.pl', 'youtube.pr', 'youtube.pt', 'youtube.qa', 'youtube.ro', 'youtube.rs', 'youtube.ru', 'youtube.sa', 'youtube.se', 'youtube.sg', 'youtube.si', 'youtube.sk', 'youtube.sn', 'youtube.soy', 'youtube.sv', 'youtube.tn', 'youtube.tv', 'youtube.ua', 'youtube.ug', 'youtube.uy', 'youtube.vn', 'youtubeeducation.com', 'youtubekids.com', 'yt.be']
 YOUTUBE_VIDEO_ID_RE = re.compile(r'^[a-zA-Z0-9_-]{11}$')
@@ -68,9 +67,7 @@ def is_youtube_url(url):
         bool: Whether given url is from Youtube.
 
     """
-    parsed = safe_urlsplit(url)
-
-    return YOUTUBE_DOMAINS_TRIE.match(parsed)
+    return YOUTUBE_DOMAINS_TRIE.match(url)
 
 
 def is_youtube_video_id(value):
@@ -100,11 +97,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
         return YoutubeVideo(id=m.group(1))
 
     # Parsing
-    if isinstance(url, SplitResult):
-        parsed = url
-    else:
-        url = ensure_protocol(url)
-        parsed = urlsplit(url)
+    parsed = safe_urlsplit(url)
 
     if not is_youtube_url(parsed):
         return
