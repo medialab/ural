@@ -8,25 +8,28 @@ NULL = object()
 
 
 class TrieDictNode(object):
-    __slots__ = ('children', 'value')
+    __slots__ = ('children', 'value', 'counter')
 
     def __init__(self):
         self.children = None
         self.value = NULL
+        # Counts the number of items in the node's children
+        self.counter = 0
 
 
 class TrieDict(object):
-    __slots__ = ('__root', '__size')
+    __slots__ = ('__root')
 
     def __init__(self):
         self.__root = TrieDictNode()
-        self.__size = 0
 
     def __len__(self):
-        return self.__size
+        return self.__root.counter
 
     def __setitem__(self, prefix, value):
         node = self.__root
+
+        visited_nodes = []
 
         for token in prefix:
 
@@ -37,21 +40,25 @@ class TrieDict(object):
                     token: child
                 }
 
+                visited_nodes.append(node)
                 node = child
                 continue
 
             child = node.children.get(token)
 
             if child is not None:
+                visited_nodes.append(node)
                 node = child
             else:
                 child = TrieDictNode()
 
                 node.children[token] = child
+                visited_nodes.append(node)
                 node = child
 
         if node.value is NULL:
-            self.__size += 1
+            for n in visited_nodes:
+                n.counter += 1
 
         node.value = value
 
@@ -164,3 +171,51 @@ class TrieDict(object):
 
     def __iter__(self):
         return self.items()
+
+    def set_and_prune_if_shorter(self, prefix, value):
+
+        node = self.__root
+
+        visited_nodes = []
+
+        for token in prefix:
+
+            # Check if we try to add a longer prefix
+            if node.value is not NULL:
+                return
+
+            if node.children is None:
+                child = TrieDictNode()
+
+                node.children = {
+                    token: child
+                }
+                visited_nodes.append(node)
+                node = child
+                continue
+
+            child = node.children.get(token)
+
+            if child is not None:
+                visited_nodes.append(node)
+                node = child
+            else:
+                child = TrieDictNode()
+
+                node.children[token] = child
+                visited_nodes.append(node)
+                node = child
+
+        # Trie already has longer prefixes of the prefix we are trying to add : we delete those prefixes and new (shortest) one
+        if node.children is not None:
+            node.children = None
+            for n in visited_nodes:
+                n.counter -= (node.counter - 1)
+            node.counter = 0
+
+        # We add a prefix with no longer prefixes in the Trie
+        elif node.value is NULL:
+            for n in visited_nodes:
+                n.counter += 1
+
+        node.value = value

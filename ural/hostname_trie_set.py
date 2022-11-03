@@ -13,7 +13,7 @@ from ural.has_special_host import is_special_host
 def tokenize_hostname(hostname):
     if is_special_host(hostname):
         return [hostname]
-    return reversed(decode_punycode_hostname(hostname).strip().lower().split('.'))
+    return reversed(decode_punycode_hostname(hostname.strip().lower()).split('.'))
 
 
 def join_hostname(prefix):
@@ -32,11 +32,7 @@ class HostnameTrieSet(object):
 
         prefix = list(tokenize_hostname(hostname))
 
-        # If a shortest prefix already exist, we can trim the subdomain
-        if self.__trie.longest_matching_prefix_value(prefix) is not None:
-            return
-
-        self.__trie[prefix] = True
+        self.__trie.set_and_prune_if_shorter(prefix, True)
 
     def match(self, url):
         url = safe_urlsplit(url)
