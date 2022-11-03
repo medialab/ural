@@ -37,6 +37,7 @@ class TestHostnameTrieSet(object):
             'lacamargue.net',
         }
 
+        trie.add('xN--tlrama-bvAb.fr')
         trie.add('xn--tlrama-bvab.fr')
         trie.add('lemonde.fr')
 
