@@ -8,11 +8,12 @@ NULL = object()
 
 
 class TrieDictNode(object):
-    __slots__ = ('children', 'value')
+    __slots__ = ('children', 'value', 'counter')
 
     def __init__(self):
         self.children = None
         self.value = NULL
+        self.counter = 0
 
 
 class TrieDict(object):
@@ -28,6 +29,8 @@ class TrieDict(object):
     def __setitem__(self, prefix, value):
         node = self.__root
 
+        visited_nodes = []
+
         for token in prefix:
 
             if node.children is None:
@@ -37,21 +40,26 @@ class TrieDict(object):
                     token: child
                 }
 
+                visited_nodes.append(node)
                 node = child
                 continue
 
             child = node.children.get(token)
 
             if child is not None:
+                visited_nodes.append(node)
                 node = child
             else:
                 child = TrieDictNode()
 
                 node.children[token] = child
+                visited_nodes.append(node)
                 node = child
 
         if node.value is NULL:
-            self.__size += 1
+            for n in visited_nodes:
+                n.counter += 1
+            self.__size = self.__root.counter
 
         node.value = value
 
@@ -164,3 +172,49 @@ class TrieDict(object):
 
     def __iter__(self):
         return self.items()
+
+    def set_and_prune_if_shorter(self, prefix, value):
+
+        node = self.__root
+
+        visited_nodes = []
+
+        for token in prefix:
+
+            if node.value is True:
+                return
+
+            if node.children is None:
+                child = TrieDictNode()
+
+                node.children = {
+                    token: child
+                }
+                visited_nodes.append(node)
+                node = child
+                continue
+
+            child = node.children.get(token)
+
+            if child is not None:
+                visited_nodes.append(node)
+                node = child
+            else:
+                child = TrieDictNode()
+
+                node.children[token] = child
+                visited_nodes.append(node)
+                node = child
+
+        if node.children is not None:
+            node.children = None
+            for n in visited_nodes:
+                n.counter -= node.counter
+            node.counter = 0
+
+        if node.value is NULL:
+            for n in visited_nodes:
+                n.counter += 1
+            self.__size = self.__root.counter
+
+        node.value = value
