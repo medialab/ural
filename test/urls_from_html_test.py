@@ -27,4 +27,4 @@ class TestUrlsFromHtml(object):
         assert list(urls_from_html('<a href="./test">(415) 735-4488</a>')) == ['./test']
 
     def test_base_url(self):
-        assert set(urls_from_html('<a href="?q=TYya"> Test</a> <a href="https://www.britannica.com/place/Aral-Sea"> Hello </a>', base_url="hello")) == set(['hello?q=TYya', 'https://www.britannica.com/place/Aral-Sea'])
+        assert set(urls_from_html('<a href="?q=TYya"> Test</a> <a href="https://www.britannica.com/place/Aral-Sea"> Hello </a>', base_url="https://www.lemonde.fr")) == set(['https://www.lemonde.fr?q=TYya', 'https://www.britannica.com/place/Aral-Sea'])
