@@ -16,7 +16,12 @@ IS_TESTS = [
     ('https://youtube.com', True),
     ('youtu.be/ugroiehfetef', True),
     ('http://www.lemonde.fr', False),
-    ('http://www.youtube.com', True)
+    ('http://www.youtube.com', True),
+    ('http://youtube.je', False),
+    ('au.youtube.com', True),
+    ('https://youtube.googleapis.com/', True),
+    ('youtubekids.com', True),
+    ('yt.be', True)
 ]
 
 IS_VIDEO_TESTS = [
