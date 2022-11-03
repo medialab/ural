@@ -180,7 +180,7 @@ class TrieDict(object):
 
         for token in prefix:
 
-            # Check if we try to add a subdomain
+            # Check if we try to add a longer prefix
             if node.value is True:
                 return
 
@@ -206,14 +206,14 @@ class TrieDict(object):
                 visited_nodes.append(node)
                 node = child
 
-        # Trie already has subdomains of a domain we are trying to add : we delete those subdomains and add the domain
+        # Trie already has longer prefixes of a prefix we are trying to add : we delete those prefixes and add the new (and shortest) one
         if node.children is not None:
             node.children = None
             for n in visited_nodes:
                 n.counter -= node.counter
             node.counter = 0
 
-        # We add a domain with no subdomains in the Trie
+        # We add a prefix with no longer prefixes in the Trie
         if node.value is NULL:
             for n in visited_nodes:
                 n.counter += 1
