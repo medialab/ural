@@ -25,3 +25,6 @@ class TestUrlsFromHtml(object):
     def test_edge_cases(self):
         assert list(urls_from_html('<a href="#">(415) 735-4488</a>')) == ['#']
         assert list(urls_from_html('<a href="./test">(415) 735-4488</a>')) == ['./test']
+
+    def test_base_url(self):
+        assert set(urls_from_html('<a href="?q=TYya"> Test</a> <a href="https://www.britannica.com/place/Aral-Sea"> Hello </a>', base_url="hello")) == set(['hello?q=TYya', 'https://www.britannica.com/place/Aral-Sea'])
