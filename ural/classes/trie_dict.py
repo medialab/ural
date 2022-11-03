@@ -206,7 +206,7 @@ class TrieDict(object):
                 visited_nodes.append(node)
                 node = child
 
-        # Trie already has longer prefixes of a prefix we are trying to add : we delete those prefixes and add the new (and shortest) one
+        # Trie already has longer prefixes of the prefix we are trying to add : we delete those prefixes
         if node.children is not None:
             node.children = None
             for n in visited_nodes:
