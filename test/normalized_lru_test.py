@@ -2,6 +2,8 @@
 # =============================================================================
 # Ural Normalized LRU from URL Unit Tests
 # =============================================================================
+from __future__ import unicode_literals
+
 from ural.lru import normalized_lru_stems
 
 DEFAULT_TESTS = [

@@ -3,6 +3,8 @@
 # =============================================================================
 # Ural Utils Unit Tests
 # =============================================================================
+from __future__ import unicode_literals
+
 from ural.utils import urlpathsplit, decode_punycode_hostname
 
 URLPATHSPLIT_TESTS = [

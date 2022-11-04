@@ -3,6 +3,8 @@
 # =============================================================================
 # Ural Is URL Unit Tests
 # =============================================================================
+from __future__ import unicode_literals
+
 from ural import is_url
 
 DEFAULT_TESTS = [

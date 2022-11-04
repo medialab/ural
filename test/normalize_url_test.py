@@ -2,6 +2,16 @@
 # =============================================================================
 # Ural URL Normalization Unit Tests
 # =============================================================================
+from __future__ import unicode_literals
+
+PY2 = False
+
+try:
+    basestring
+    PY2 = True
+except NameError:
+    pass
+
 from ural import normalize_url, get_normalized_hostname, get_hostname
 
 TESTS = [
@@ -230,6 +240,9 @@ TESTS_ADVANCED = [
 
 class TestNormalizeUrl(object):
     def test_normalize_url(self):
+        if PY2:
+            return
+
         for url, normalized in TESTS:
             assert normalize_url(url) == normalized, url
 
@@ -237,6 +250,9 @@ class TestNormalizeUrl(object):
             assert normalize_url(url, **kwargs) == normalized, "*kwargs %s" % url
 
     def test_get_normalized_hostname(self):
+        if PY2:
+            return
+
         for url, normalized in TESTS:
             assert get_normalized_hostname(url) == get_hostname(normalized)
 
