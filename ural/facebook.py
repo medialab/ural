@@ -103,7 +103,7 @@ def convert_facebook_url_to_mobile(url):
     scheme, netloc, path, query, fragment = urlsplit(safe_url)
 
     if 'facebook' not in netloc:
-        raise Exception('ural.facebook.convert_facebook_url_to_mobile: %s is not a facebook url' % url)
+        raise TypeError('ural.facebook.convert_facebook_url_to_mobile: %s is not a facebook url' % url)
 
     netloc = re.sub(MOBILE_REPLACE_RE, 'm.facebook.', netloc)
 

@@ -15,8 +15,8 @@ from ural.telegram import (
 IS_TESTS = [
     ('https://youtube.com', False),
     ('http://www.lemonde.fr', False),
-    ('https://t.me/s/jesstern/76', True),
-    ('https://telegram.me/rapsocialclub', True),
+    ('https://t.me/s/katroulo/76', True),
+    ('https://telegram.me/guigougu', True),
     ('https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w', True),
     ('http://telegram.org', True)
 ]
@@ -25,8 +25,8 @@ MOBILE_TESTS = [
     ('http://www.telegram.org', 'http://t.me/s'),
     ('http://telegram.me/whatever#ok', 'http://t.me/s/whatever#ok'),
     ('telegram.me', 't.me/s'),
-    ('https://t.me/jesstern/76', 'https://t.me/s/jesstern/76'),
-    ('https://telegram.me/rapsocialclub', 'https://t.me/s/rapsocialclub')
+    ('https://t.me/katroulo/76', 'https://t.me/s/katroulo/76'),
+    ('https://telegram.me/guigougu', 'https://t.me/s/guigougu')
 ]
 
 PARSE_TESTS = [
@@ -41,14 +41,14 @@ PARSE_TESTS = [
         'http://www.lemonde.fr'
     ),
     (
-        'https://t.me/s/jesstern/76',
-        TelegramMessage(name='jesstern', id='76'),
-        'https://t.me/s/jesstern/76'
+        'https://t.me/s/katroulo/76',
+        TelegramMessage(name='katroulo', id='76'),
+        'https://t.me/s/katroulo/76'
     ),
     (
-        'https://telegram.me/rapsocialclub',
-        TelegramChannel(name='rapsocialclub'),
-        'https://telegram.me/rapsocialclub'
+        'https://telegram.me/guigougu',
+        TelegramChannel(name='guigougu'),
+        'https://telegram.me/guigougu'
     ),
     (
         'https://telegram.me/s/joinchat/AAAAAE9B8u_wO9d4NiJp3w',
@@ -56,14 +56,14 @@ PARSE_TESTS = [
         'https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w'
     ),
     (
-        'https://telegram.me/jesstern/76',
-        TelegramMessage(name='jesstern', id='76'),
-        'https://t.me/s/jesstern/76'
+        'https://telegram.me/katroulo/76',
+        TelegramMessage(name='katroulo', id='76'),
+        'https://t.me/s/katroulo/76'
     ),
     (
-        'https://t.me/s/rapsocialclub',
-        TelegramChannel(name='rapsocialclub'),
-        'https://telegram.me/rapsocialclub'
+        'https://t.me/s/guigougu',
+        TelegramChannel(name='guigougu'),
+        'https://telegram.me/guigougu'
     ),
     (
         'https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w',
@@ -78,7 +78,7 @@ PARSE_TESTS = [
 ]
 
 
-class TestYoutube(object):
+class TestTelegram(object):
     def test_convert_telegram_url_to_public(self):
         for url, expected in MOBILE_TESTS:
             assert convert_telegram_url_to_public(url) == expected

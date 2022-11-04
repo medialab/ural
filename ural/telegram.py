@@ -18,9 +18,9 @@ from ural.utils import (
 from ural.patterns import DOMAIN_TEMPLATE
 
 TELEGRAM_MESSAGE_ID_RE = re.compile(r'^\d+$')
-TELEGRAM_DOMAINS_RE = re.compile(r'(?:telegram\.me$|t\.me$|telegram\.org$)', re.I)
-TELEGRAM_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:telegram\.me|t\.me|telegram\.org)', re.I)
-PUBLIC_REPLACE_RE = re.compile(r'^(?:[^.]+\.)?(telegram\.me|t\.me|telegram\.org)', re.I)
+TELEGRAM_DOMAINS_RE = re.compile(r'(?:telegram\.(?:org|me)|t\.me)$', re.I)
+TELEGRAM_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*(?:telegram\.(?:org|me)|t\.me)', re.I)
+TELEGRAM_PUBLIC_REPLACE_RE = re.compile(r'^(?:[^.]+\.)?(?:telegram\.(?:org|me)|t\.me)', re.I)
 
 TelegramMessage = namedtuple('TelegramMessage', ['name', 'id'])
 TelegramGroup = namedtuple('TelegramGroup', ['id'])
@@ -60,9 +60,9 @@ def convert_telegram_url_to_public(url):
     scheme, netloc, path, query, fragment = urlsplit(safe_url)
 
     if not is_telegram_url(netloc):
-        raise Exception('ural.telegram.convert_telegram_url_to_public: %s is not a telegram url' % url)
+        raise TypeError('ural.telegram.convert_telegram_url_to_public: %s is not a telegram url' % url)
 
-    netloc = re.sub(PUBLIC_REPLACE_RE, 't.me/s', netloc)
+    netloc = re.sub(TELEGRAM_PUBLIC_REPLACE_RE, 't.me/s', netloc)
 
     result = (
         scheme,
