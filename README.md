@@ -77,6 +77,12 @@ pip install ural
   * [extract_url_from_google_link](#extract_url_from_google_link)
   * [extract_id_from_google_drive_url](#extract_id_from_google_drive_url)
   * [parse_google_drive_url](#parse_google_drive_url)
+* [telegram](#telegram)
+  * [is_telegram_message_id](#is_telegram_message_id)
+  * [is_telegram_url](#is_telegram_url)
+  * [convert_telegram_url_to_public](#convert_telegram_url_to_public)
+  * [extract_channel_name_from_telegram_url](#extract_channel_name_from_telegram_url)
+  * [parse_telegram_url](#parse_telegram_url)
 * [twitter](#twitter)
   * [is_twitter_url](#is_twitter_url)
   * [extract_screen_name_from_twitter_url](#extract_screen_name_from_twitter_url)
@@ -950,6 +956,98 @@ parse_google_drive_url('https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxC
 parse_google_drive_url('https://www.lemonde.fr')
 >>> None
 ```
+
+---
+
+### Telegram
+
+#### is_telegram_message_id
+
+Function returning whether the given string is a valid Telegram message id or not.
+
+```python
+from ural.telegram import is_telegram_message_id
+
+is_telegram_message_id('974583586343')
+>>> True
+
+is_telegram_message_id('whatever')
+>>> False
+```
+
+#### is_telegram_url
+
+Returns whether the given url is from Telegram.
+
+```python
+from ural.telegram import is_telegram_url
+
+is_telegram_url('https://lemonde.fr')
+>>> False
+
+is_telegram_url('https://telegram.me/guillaumelatorre')
+>>> True
+
+is_telegram_url('https://t.me/s/jesstern')
+>>> True
+```
+
+#### convert_telegram_url_to_public
+
+Function returning the public version of the given Telegram url. Will raise an exception if a non-Telegram url is given.
+
+```python
+from ural.teglegram import convert_telegram_url_to_public
+
+convert_telegram_url_to_public('https://t.me/jesstern')
+>>> 'https://t.me/s/jesstern'
+```
+
+#### extract_channel_name_from_telegram_url
+
+Return a channel from the given Telegram url or `None` if we could not find one.
+
+```python
+from ural.telegram import extract_channel_name_from_telegram_url
+
+extract_channel_name_from_telegram_url('https://t.me/s/jesstern/345')
+>>> 'jesstern'
+
+extract_channel_name_from_telegram_url('https://lemonde.fr')
+>>> None
+
+```
+
+#### parse_telegram_url
+
+Returns parsed information about the given telegram url: either about the channel, message or user. If the url is an invalid Telegram url or if not a Telegram url, the function returns `None`.
+
+```python
+from ural.telegram import (
+  parse_telegram_url,
+
+  # You can also import the named tuples if you need them
+  TelegramMessage,
+  TelegramChannel,
+  TelegramGroup
+)
+
+parse_telegram_url('https://t.me/s/jesstern/76')
+>>> TelegramMessage(name='jesstern', id='76')
+
+parse_telegram_url('https://lemonde.fr')
+>>> None
+
+parse_telegram_url('https://telegram.me/rapsocialclub')
+>>> TelegramChannel(name='rapsocialclub')
+
+parse_telegram_url('https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w')
+>>> TelegramGroup(id='AAAAAE9B8u_wO9d4NiJp3w')
+```
+
+*Arguments*
+
+* **url** *str*: Telegram url to parse.
 
 ---
 
