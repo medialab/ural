@@ -21,7 +21,7 @@ IS_TESTS = [
     ("http://telegram.org", True),
 ]
 
-MOBILE_TESTS = [
+PUBLIC_TESTS = [
     ("http://www.telegram.org", "http://t.me/s"),
     ("http://telegram.me/whatever#ok", "http://t.me/s/whatever#ok"),
     ("telegram.me", "t.me/s"),
@@ -72,7 +72,7 @@ PARSE_TESTS = [
 
 class TestTelegram(object):
     def test_convert_telegram_url_to_public(self):
-        for url, expected in MOBILE_TESTS:
+        for url, expected in PUBLIC_TESTS:
             assert convert_telegram_url_to_public(url) == expected
 
     def test_is_telegram_id(self):
