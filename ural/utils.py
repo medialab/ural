@@ -104,11 +104,21 @@ def attempt_to_decode_idna(string):
         return string
 
 
-def decode_punycode_hostname(hostname):
-    if "xn--" in hostname:
-        hostname = ".".join(attempt_to_decode_idna(x) for x in hostname.split("."))
+def decode_punycode_hostname(hostname, as_parts=False):
+    parts = []
 
-    return hostname
+    for part in hostname.split("."):
+        puny_header = part[:4].lower()
+
+        if puny_header == "xn--":
+            part = attempt_to_decode_idna(puny_header + part[4:])
+
+        parts.append(part)
+
+    if as_parts:
+        return parts
+
+    return ".".join(parts)
 
 
 def fix_common_query_mistakes(query):
