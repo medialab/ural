@@ -22,10 +22,12 @@ deps:
 	pip3 install -U pip
 	pip3 install -r requirements.txt
 
-lint:
-	@echo Linting source code using pep8...
-	pycodestyle --ignore E501,E722,W504 $(SOURCE) test
+format:
+	@echo Formatting source code using black
+	black $(SOURCE) *.py scripts test
 	@echo
+
+lint:
 	@echo Searching for unused imports...
 	importchecker $(SOURCE) | grep -v __init__ || true
 	importchecker test | grep -v __init__ || true

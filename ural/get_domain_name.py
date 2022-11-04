@@ -38,9 +38,9 @@ def get_hostname_prefixes(hostname):
         return [hostname]
 
     if hostname:
-        domain_parts = hostname.split('.')
+        domain_parts = hostname.split(".")
 
         for i in range(len(domain_parts)):
-            result.append('.'.join(domain_parts[i:]))
+            result.append(".".join(domain_parts[i:]))
 
     return result

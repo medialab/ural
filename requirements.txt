@@ -1,7 +1,7 @@
 # Dev Dependencies
+black==22.8.0
 importchecker==2.0
 more-itertools<8.6
-pycodestyle==2.4.0
 pytest==3.5.1
 tqdm==4.31.1
 twine==1.11.0

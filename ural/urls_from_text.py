@@ -9,7 +9,7 @@ import re
 
 from ural.patterns import URL_IN_TEXT_RE
 
-IRRELEVANT_PUNCTUATION = set('!?#"$%&\'()*+,-.:;<=>@[\\]^_`{|}~…’‘`‛«»„‟“”-‐‒–—―−‑⁃,،、')
+IRRELEVANT_PUNCTUATION = set("!?#\"$%&'()*+,-.:;<=>@[\\]^_`{|}~…’‘`‛«»„‟“”-‐‒–—―−‑⁃,،、")
 
 
 def urls_from_text(string):
@@ -36,6 +36,6 @@ def urls_from_text(string):
             i -= 1
 
         if i != stop:
-            url = url[:i + 1]
+            url = url[: i + 1]
 
         yield url

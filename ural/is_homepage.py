@@ -9,7 +9,7 @@ from os.path import splitext
 
 from ural.utils import safe_urlsplit
 
-HOMEPAGE_PATHS = ['', '/', '/index', '/home']
+HOMEPAGE_PATHS = ["", "/", "/index", "/home"]
 
 
 def is_homepage(url):
@@ -24,7 +24,7 @@ def is_homepage(url):
 
     """
     parsed = safe_urlsplit(url)
-    path = parsed.path.strip().rstrip('/')
+    path = parsed.path.strip().rstrip("/")
     path, _ = splitext(path)
 
     return path in HOMEPAGE_PATHS

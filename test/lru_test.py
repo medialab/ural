@@ -6,8 +6,14 @@
 from ural.lru import url_to_lru, lru_to_url
 
 TESTS = [
-    ('http://www.lemonde.fr/articles/summary.html', 's:http|h:fr|h:lemonde|h:www|p:articles|p:summary.html|'),
-    ('http://user:mdp@www.lemonde.fr:4000/articles/summary.html?query=ok#fragment', 's:http|t:4000|h:fr|h:lemonde|h:www|p:articles|p:summary.html|q:query=ok|f:fragment|u:user|w:mdp|'),
+    (
+        "http://www.lemonde.fr/articles/summary.html",
+        "s:http|h:fr|h:lemonde|h:www|p:articles|p:summary.html|",
+    ),
+    (
+        "http://user:mdp@www.lemonde.fr:4000/articles/summary.html?query=ok#fragment",
+        "s:http|t:4000|h:fr|h:lemonde|h:www|p:articles|p:summary.html|q:query=ok|f:fragment|u:user|w:mdp|",
+    ),
     # ('http://lemonde.fr?', 's:http|h:fr|h:lemonde|q:|')
 ]
 

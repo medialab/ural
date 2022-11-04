@@ -9,71 +9,63 @@ from ural.telegram import (
     extract_channel_name_from_telegram_url,
     TelegramGroup,
     TelegramMessage,
-    TelegramChannel
+    TelegramChannel,
 )
 
 IS_TESTS = [
-    ('https://youtube.com', False),
-    ('http://www.lemonde.fr', False),
-    ('https://t.me/s/katroulo/76', True),
-    ('https://telegram.me/guigougu', True),
-    ('https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w', True),
-    ('http://telegram.org', True)
+    ("https://youtube.com", False),
+    ("http://www.lemonde.fr", False),
+    ("https://t.me/s/katroulo/76", True),
+    ("https://telegram.me/guigougu", True),
+    ("https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w", True),
+    ("http://telegram.org", True),
 ]
 
 MOBILE_TESTS = [
-    ('http://www.telegram.org', 'http://t.me/s'),
-    ('http://telegram.me/whatever#ok', 'http://t.me/s/whatever#ok'),
-    ('telegram.me', 't.me/s'),
-    ('https://t.me/katroulo/76', 'https://t.me/s/katroulo/76'),
-    ('https://telegram.me/guigougu', 'https://t.me/s/guigougu')
+    ("http://www.telegram.org", "http://t.me/s"),
+    ("http://telegram.me/whatever#ok", "http://t.me/s/whatever#ok"),
+    ("telegram.me", "t.me/s"),
+    ("https://t.me/katroulo/76", "https://t.me/s/katroulo/76"),
+    ("https://telegram.me/guigougu", "https://t.me/s/guigougu"),
 ]
 
 PARSE_TESTS = [
+    ("https://youtube.com", None, "https://youtube.com"),
+    ("http://www.lemonde.fr", None, "http://www.lemonde.fr"),
     (
-        'https://youtube.com',
-        None,
-        'https://youtube.com'
+        "https://t.me/s/katroulo/76",
+        TelegramMessage(name="katroulo", id="76"),
+        "https://t.me/s/katroulo/76",
     ),
     (
-        'http://www.lemonde.fr',
-        None,
-        'http://www.lemonde.fr'
+        "https://telegram.me/guigougu",
+        TelegramChannel(name="guigougu"),
+        "https://telegram.me/guigougu",
     ),
     (
-        'https://t.me/s/katroulo/76',
-        TelegramMessage(name='katroulo', id='76'),
-        'https://t.me/s/katroulo/76'
+        "https://telegram.me/s/joinchat/AAAAAE9B8u_wO9d4NiJp3w",
+        TelegramGroup(id="AAAAAE9B8u_wO9d4NiJp3w"),
+        "https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w",
     ),
     (
-        'https://telegram.me/guigougu',
-        TelegramChannel(name='guigougu'),
-        'https://telegram.me/guigougu'
+        "https://telegram.me/katroulo/76",
+        TelegramMessage(name="katroulo", id="76"),
+        "https://t.me/s/katroulo/76",
     ),
     (
-        'https://telegram.me/s/joinchat/AAAAAE9B8u_wO9d4NiJp3w',
-        TelegramGroup(id='AAAAAE9B8u_wO9d4NiJp3w'),
-        'https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w'
+        "https://t.me/s/guigougu",
+        TelegramChannel(name="guigougu"),
+        "https://telegram.me/guigougu",
     ),
     (
-        'https://telegram.me/katroulo/76',
-        TelegramMessage(name='katroulo', id='76'),
-        'https://t.me/s/katroulo/76'
+        "https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w",
+        TelegramGroup(id="AAAAAE9B8u_wO9d4NiJp3w"),
+        "https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w",
     ),
     (
-        'https://t.me/s/guigougu',
-        TelegramChannel(name='guigougu'),
-        'https://telegram.me/guigougu'
-    ),
-    (
-        'https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w',
-        TelegramGroup(id='AAAAAE9B8u_wO9d4NiJp3w'),
-        'https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w'
-    ),
-    (
-        'https://t.me/joinchat/s/AAAAAE9B8u_wO9d4NiJp3w',
-        TelegramGroup(id='AAAAAE9B8u_wO9d4NiJp3w'),
-        'https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w'
+        "https://t.me/joinchat/s/AAAAAE9B8u_wO9d4NiJp3w",
+        TelegramGroup(id="AAAAAE9B8u_wO9d4NiJp3w"),
+        "https://t.me/joinchat/AAAAAE9B8u_wO9d4NiJp3w",
     ),
 ]
 
@@ -84,8 +76,8 @@ class TestTelegram(object):
             assert convert_telegram_url_to_public(url) == expected
 
     def test_is_telegram_id(self):
-        assert not is_telegram_message_id('test')
-        assert is_telegram_message_id('8745346')
+        assert not is_telegram_message_id("test")
+        assert is_telegram_message_id("8745346")
 
     def test_is_telegram_url(self):
         for url, result in IS_TESTS:
@@ -97,6 +89,10 @@ class TestTelegram(object):
 
     def test_extract_channel_name_from_telegram_url(self):
         for url, result, _ in PARSE_TESTS:
-            extract_result = None if result is None or isinstance(result, TelegramGroup) else result.name
+            extract_result = (
+                None
+                if result is None or isinstance(result, TelegramGroup)
+                else result.name
+            )
 
             assert extract_channel_name_from_telegram_url(url) == extract_result

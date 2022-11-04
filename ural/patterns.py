@@ -1,13 +1,13 @@
 from __future__ import unicode_literals
 import re
 
-PROTOCOL = r'[a-zA-Z]{0,64}:?//'
-WEB_PROTOCOL = r'(?:(?:(?:https?|ftp|wss?):)?//)'
-HTTP_PROTOCOL = r'https?://'
+PROTOCOL = r"[a-zA-Z]{0,64}:?//"
+WEB_PROTOCOL = r"(?:(?:(?:https?|ftp|wss?):)?//)"
+HTTP_PROTOCOL = r"https?://"
 
-PROTOCOL_RE = re.compile(r'^%s' % PROTOCOL)
-WEB_PROTOCOL_RE = re.compile(r'^%s' % WEB_PROTOCOL)
-HTTP_PROTOCOL_RE = re.compile(r'^%s' % HTTP_PROTOCOL)
+PROTOCOL_RE = re.compile(r"^%s" % PROTOCOL)
+WEB_PROTOCOL_RE = re.compile(r"^%s" % WEB_PROTOCOL)
+HTTP_PROTOCOL_RE = re.compile(r"^%s" % HTTP_PROTOCOL)
 
 # Adapted from:
 #  - https://gist.github.com/dperini/729294
@@ -59,28 +59,33 @@ URL = (
 RESOURCE_PATH = r"(?:[/?#]\S*)?"
 RELAXED_RESOURCE_PATH = r"(?:[/?#][\S ]*)?"
 
-SPECIAL_HOSTS_RE = re.compile(r'^localhost|(\d{1,3}\.){3}\d{1,3}|[\da-f]*:[\da-f:]*$', re.I)
+SPECIAL_HOSTS_RE = re.compile(
+    r"^localhost|(\d{1,3}\.){3}\d{1,3}|[\da-f]*:[\da-f:]*$", re.I
+)
 
-URL_RE = re.compile(
-    r'^(?:%s)?%s$' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
+URL_RE = re.compile(r"^(?:%s)?%s$" % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
 
 URL_WITH_PROTOCOL_RE = re.compile(
-    r'^%s%s$' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
+    r"^%s%s$" % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE
+)
 
 RELAXED_URL = re.compile(
-    r'^(?:%s)?%s$' % (PROTOCOL, URL + RELAXED_RESOURCE_PATH), re.I | re.UNICODE)
+    r"^(?:%s)?%s$" % (PROTOCOL, URL + RELAXED_RESOURCE_PATH), re.I | re.UNICODE
+)
 
 RELAXED_URL_WITH_PROTOCOL_RE = re.compile(
-    r'^%s%s$' % (PROTOCOL, URL + RELAXED_RESOURCE_PATH), re.I | re.UNICODE)
+    r"^%s%s$" % (PROTOCOL, URL + RELAXED_RESOURCE_PATH), re.I | re.UNICODE
+)
 
 URL_IN_TEXT_RE = re.compile(
-    r'(%s)%s' % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE)
+    r"(%s)%s" % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE
+)
 
 URL_IN_HTML_RE = re.compile(
-    r"<a\s.*?href=(\S+?)(?:>|\s.*?>)(?:.*?)<[/ ]?a>",
-    re.DOTALL | re.IGNORECASE)
+    r"<a\s.*?href=(\S+?)(?:>|\s.*?>)(?:.*?)<[/ ]?a>", re.DOTALL | re.IGNORECASE
+)
 
-QUERY_VALUE_IN_URL_TEMPLATE = r'(?:^|[?&])%s=([^&]+)'
-QUERY_VALUE_TEMPLATE = r'%s=([^&]+)'
+QUERY_VALUE_IN_URL_TEMPLATE = r"(?:^|[?&])%s=([^&]+)"
+QUERY_VALUE_TEMPLATE = r"%s=([^&]+)"
 
-DOMAIN_TEMPLATE = r'^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/#]|\s*$)'
+DOMAIN_TEMPLATE = r"^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/#]|\s*$)"

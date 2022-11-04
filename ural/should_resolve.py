@@ -10,7 +10,7 @@ from ural.is_shortened_url import SHORTENER_DOMAINS, is_l_shortened_domain
 from ural.is_homepage import is_homepage
 from ural.utils import safe_urlsplit
 
-SHOULD_RESOLVE_DOMAINS = ['doi.org', 'list-manage.com']
+SHOULD_RESOLVE_DOMAINS = ["doi.org", "list-manage.com"]
 SHOULD_RESOLVE_TRIE = HostnameTrieSet()
 
 for domain in SHORTENER_DOMAINS + SHOULD_RESOLVE_DOMAINS:

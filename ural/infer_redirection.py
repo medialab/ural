@@ -11,8 +11,15 @@ import re
 from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
 from ural.utils import unquote, urljoin
 
-OBVIOUS_REDIRECTS_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'(?:redirect(?:_to)?|target|redir|next|link|orig|goto|url|[luq])', re.I)
-REDIRECTION_DOMAINS_RE = re.compile(r'(?:\.ampproject\.org/[cv]/(?:s/)?|bc\.marfeelcache\.com/amp/|bc\.marfeel\.com/)', re.I)
+OBVIOUS_REDIRECTS_RE = re.compile(
+    QUERY_VALUE_IN_URL_TEMPLATE
+    % r"(?:redirect(?:_to)?|target|redir|next|link|orig|goto|url|[luq])",
+    re.I,
+)
+REDIRECTION_DOMAINS_RE = re.compile(
+    r"(?:\.ampproject\.org/[cv]/(?:s/)?|bc\.marfeelcache\.com/amp/|bc\.marfeel\.com/)",
+    re.I,
+)
 
 
 def infer_redirection(url, recursive=True):
@@ -35,7 +42,7 @@ def infer_redirection(url, recursive=True):
     target = None
 
     if len(redirection_split) > 1:
-        target = 'https://' + redirection_split[1]
+        target = "https://" + redirection_split[1]
 
     else:
         obvious_redirect_match = re.search(OBVIOUS_REDIRECTS_RE, url)
@@ -43,10 +50,12 @@ def infer_redirection(url, recursive=True):
         if obvious_redirect_match is not None:
             potential_target = unquote(obvious_redirect_match.group(1))
 
-            if potential_target.startswith('http://') or potential_target.startswith('https://'):
+            if potential_target.startswith("http://") or potential_target.startswith(
+                "https://"
+            ):
                 target = potential_target
 
-            if potential_target.startswith('/'):
+            if potential_target.startswith("/"):
                 target = urljoin(url, potential_target)
 
     if target is None:

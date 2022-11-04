@@ -8,7 +8,7 @@ NULL = object()
 
 
 class TrieDictNode(object):
-    __slots__ = ('children', 'value', 'counter')
+    __slots__ = ("children", "value", "counter")
 
     def __init__(self):
         self.children = None
@@ -18,7 +18,7 @@ class TrieDictNode(object):
 
 
 class TrieDict(object):
-    __slots__ = ('__root')
+    __slots__ = "__root"
 
     def __init__(self):
         self.__root = TrieDictNode()
@@ -36,9 +36,7 @@ class TrieDict(object):
             if node.children is None:
                 child = TrieDictNode()
 
-                node.children = {
-                    token: child
-                }
+                node.children = {token: child}
 
                 visited_nodes.append(node)
                 node = child
@@ -187,9 +185,7 @@ class TrieDict(object):
             if node.children is None:
                 child = TrieDictNode()
 
-                node.children = {
-                    token: child
-                }
+                node.children = {token: child}
                 visited_nodes.append(node)
                 node = child
                 continue
@@ -210,7 +206,7 @@ class TrieDict(object):
         if node.children is not None:
             node.children = None
             for n in visited_nodes:
-                n.counter -= (node.counter - 1)
+                n.counter -= node.counter - 1
             node.counter = 0
 
         # We add a prefix with no longer prefixes in the Trie
