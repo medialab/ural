@@ -21,7 +21,7 @@ def ensure_lru_stems(lru):
 
 
 def clean_trailing_path(stems):
-    return [stem for stem in stems if stem != 'p:']
+    return [stem for stem in stems if stem != "p:"]
 
 
 class LRUTrie(object):
@@ -62,4 +62,6 @@ class LRUTrie(object):
 class NormalizedLRUTrie(LRUTrie):
     def __init__(self, tld_aware=False, **kwargs):
         self._trie = TrieDict()
-        self.lru_tokenizer = partial(normalized_lru_stems, tld_aware=tld_aware, **kwargs)
+        self.lru_tokenizer = partial(
+            normalized_lru_stems, tld_aware=tld_aware, **kwargs
+        )

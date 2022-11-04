@@ -9,7 +9,7 @@ import re
 from ural.patterns import PROTOCOL_RE
 
 
-def force_protocol(url, protocol='http'):
+def force_protocol(url, protocol="http"):
     """
     Function force-replacing the url protocol by the given one (and adding it if there is none).
 
@@ -21,13 +21,13 @@ def force_protocol(url, protocol='http'):
         string: The protocol-equipped url.
 
     """
-    protocol = protocol.rstrip(':/')
+    protocol = protocol.rstrip(":/")
 
     if not PROTOCOL_RE.match(url):
-        url = protocol + '://' + url
-    elif url[:2] == '//':
-        url = protocol + ':' + url
+        url = protocol + "://" + url
+    elif url[:2] == "//":
+        url = protocol + ":" + url
     else:
-        url = re.sub(PROTOCOL_RE, protocol + '://', url)
+        url = re.sub(PROTOCOL_RE, protocol + "://", url)
 
     return url

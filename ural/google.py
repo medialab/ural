@@ -8,27 +8,27 @@ import re
 from ural.utils import safe_urlsplit, unquote, urlpathsplit
 from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
 
-AMP_QUERY_RE = re.compile(r'amp(_.+)=?', re.I)
-AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
+AMP_QUERY_RE = re.compile(r"amp(_.+)=?", re.I)
+AMP_SUFFIXES_RE = re.compile(r"(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)", re.I)
 
-URL_EXTRACT_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r'url')
+URL_EXTRACT_RE = re.compile(QUERY_VALUE_IN_URL_TEMPLATE % r"url")
 
-DRIVE_TYPES = ['document', 'presentation', 'spreadsheets']
+DRIVE_TYPES = ["document", "presentation", "spreadsheets"]
 
 
 def is_amp_url(url):
     splitted = safe_urlsplit(url)
 
-    if splitted.hostname.endswith('.ampproject.org'):
+    if splitted.hostname.endswith(".ampproject.org"):
         return True
 
-    if splitted.hostname.startswith('amp-'):
+    if splitted.hostname.startswith("amp-"):
         return True
 
-    if splitted.hostname.startswith('amp.'):
+    if splitted.hostname.startswith("amp."):
         return True
 
-    if '/amp/' in splitted.path:
+    if "/amp/" in splitted.path:
         return True
 
     if AMP_SUFFIXES_RE.search(splitted.path):
@@ -43,10 +43,10 @@ def is_amp_url(url):
 def is_google_link(url):
     splitted = safe_urlsplit(url)
 
-    if not splitted.hostname or 'google.' not in splitted.hostname:
+    if not splitted.hostname or "google." not in splitted.hostname:
         return False
 
-    if splitted.path != '/url':
+    if splitted.path != "/url":
         return False
 
     return True
@@ -75,7 +75,7 @@ class GoogleDriveParsedItem(object):
     def __repr__(self):
         class_name = self.__class__.__name__
 
-        representation = '<' + class_name
+        representation = "<" + class_name
 
         for key in self.__slots__:
             value = getattr(self, key)
@@ -83,15 +83,15 @@ class GoogleDriveParsedItem(object):
             if value is None:
                 continue
 
-            representation += ' %s=%s' % (key, value)
+            representation += " %s=%s" % (key, value)
 
-        representation += '>'
+        representation += ">"
 
         return representation
 
 
 class GoogleDriveFile(GoogleDriveParsedItem):
-    __slots__ = ('type', 'id')
+    __slots__ = ("type", "id")
 
     def __init__(self, _type, _id):
         self.type = _type
@@ -99,18 +99,18 @@ class GoogleDriveFile(GoogleDriveParsedItem):
 
     @property
     def url(self):
-        return 'https://docs.google.com/%s/d/%s' % (self.type, self.id)
+        return "https://docs.google.com/%s/d/%s" % (self.type, self.id)
 
-    def get_export_url(self, format='csv'):
-        return 'https://docs.google.com/%s/d/%s/export?exportFormat=%s' % (
+    def get_export_url(self, format="csv"):
+        return "https://docs.google.com/%s/d/%s/export?exportFormat=%s" % (
             self.type,
             self.id,
-            format
+            format,
         )
 
 
 class GoogleDrivePublicLink(GoogleDriveParsedItem):
-    __slots__ = ('type', 'id')
+    __slots__ = ("type", "id")
 
     def __init__(self, _type, _id):
         self.type = _type
@@ -118,20 +118,20 @@ class GoogleDrivePublicLink(GoogleDriveParsedItem):
 
     @property
     def url(self):
-        return 'https://docs.google.com/%s/d/e/%s/pub' % (self.type, self.id)
+        return "https://docs.google.com/%s/d/e/%s/pub" % (self.type, self.id)
 
-    def get_export_url(self, format='csv'):
-        return 'https://docs.google.com/%s/d/e/%s/pub?output=%s' % (
+    def get_export_url(self, format="csv"):
+        return "https://docs.google.com/%s/d/e/%s/pub?output=%s" % (
             self.type,
             self.id,
-            format
+            format,
         )
 
 
 def parse_google_drive_url(url):
     splitted = safe_urlsplit(url)
 
-    if 'docs.google.com' not in splitted.netloc:
+    if "docs.google.com" not in splitted.netloc:
         return None
 
     path = urlpathsplit(splitted.path)
@@ -144,11 +144,11 @@ def parse_google_drive_url(url):
     if drive_type not in DRIVE_TYPES:
         return None
 
-    if path[1] != 'd':
+    if path[1] != "d":
         return None
 
-    if path[-1] == 'pub':
-        if path[2] != 'e':
+    if path[-1] == "pub":
+        if path[2] != "e":
             return None
 
         return GoogleDrivePublicLink(drive_type, path[3])

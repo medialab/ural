@@ -1,7 +1,8 @@
 from timeit import default_timer as timer
 
+
 class Timer(object):
-    def __init__(self, name='Timer'):
+    def __init__(self, name="Timer"):
         self.name = name
 
     def __enter__(self):
@@ -10,4 +11,4 @@ class Timer(object):
     def __exit__(self, *args):
         self.end = timer()
         self.duration = self.end - self.start
-        print('%s:' % self.name, self.duration)
+        print("%s:" % self.name, self.duration)

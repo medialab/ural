@@ -13,11 +13,15 @@ from ural.has_special_host import is_special_host
 def tokenize_hostname(hostname):
     if is_special_host(hostname):
         return [hostname]
-    return reversed(decode_punycode_hostname(hostname.strip().lower()).split('.'))
+
+    hostname = hostname.strip().lower()
+    hostname_parts = decode_punycode_hostname(hostname, as_parts=True)
+
+    return reversed(hostname_parts)
 
 
 def join_hostname(prefix):
-    return '.'.join(reversed(prefix))
+    return ".".join(reversed(prefix))
 
 
 # NOTE: this trie currently has undefined behavior with some special hosts

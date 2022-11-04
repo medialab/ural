@@ -26,44 +26,44 @@ def lru_to_url(lru):
     stems_index = {}
 
     for stem in stems:
-        tag, value = stem.split(':', 1)
+        tag, value = stem.split(":", 1)
 
-        if tag == 'h' and tag in stems_index:
-            stems_index[tag] = value + '.' + stems_index[tag]
-        elif tag == 'p' and tag in stems_index:
-            stems_index[tag] += '/' + value
+        if tag == "h" and tag in stems_index:
+            stems_index[tag] = value + "." + stems_index[tag]
+        elif tag == "p" and tag in stems_index:
+            stems_index[tag] += "/" + value
         else:
             stems_index[tag] = value
 
     # Building the url back
-    scheme = stems_index.get('s', '')
-    auth = stems_index.get('u', '')
+    scheme = stems_index.get("s", "")
+    auth = stems_index.get("u", "")
 
-    w = stems_index.get('w')
+    w = stems_index.get("w")
 
     if w is not None:
-        auth += ':' + w
+        auth += ":" + w
 
-    netloc = ''
+    netloc = ""
 
     if auth:
-        netloc = auth + '@'
+        netloc = auth + "@"
 
-    netloc += stems_index.get('h', '')
+    netloc += stems_index.get("h", "")
 
-    t = stems_index.get('t')
+    t = stems_index.get("t")
 
     if t is not None:
-        netloc += ':' + t
+        netloc += ":" + t
 
-    p = stems_index.get('p')
+    p = stems_index.get("p")
 
-    path = ''
+    path = ""
 
     if p is not None:
-        path = '/' + p
+        path = "/" + p
 
-    query = stems_index.get('q', '')
-    fragment = stems_index.get('f', '')
+    query = stems_index.get("q", "")
+    fragment = stems_index.get("f", "")
 
     return urlunsplit((scheme, netloc, path, query, fragment))

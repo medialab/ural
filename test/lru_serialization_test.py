@@ -7,9 +7,15 @@ from ural.lru import unserialize_lru
 
 
 SERIALIZE_TESTS = [
-    (['t:8000', 'h:fr', 'h:lemonde', 'p:article', 'p:1234', 'q:query=mobile'], 't:8000|h:fr|h:lemonde|p:article|p:1234|q:query=mobile|'),
-    (['h:com', 'h:example', 'p:wpstyle', 'p:', 'q:p=364&q=365'], 'h:com|h:example|p:wpstyle|p:|q:p=364&q=365|'),
-    (['h:bar', 'h:foo'], 'h:bar|h:foo|')
+    (
+        ["t:8000", "h:fr", "h:lemonde", "p:article", "p:1234", "q:query=mobile"],
+        "t:8000|h:fr|h:lemonde|p:article|p:1234|q:query=mobile|",
+    ),
+    (
+        ["h:com", "h:example", "p:wpstyle", "p:", "q:p=364&q=365"],
+        "h:com|h:example|p:wpstyle|p:|q:p=364&q=365|",
+    ),
+    (["h:bar", "h:foo"], "h:bar|h:foo|"),
 ]
 
 

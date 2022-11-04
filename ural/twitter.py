@@ -10,23 +10,23 @@ from collections import namedtuple
 from ural.patterns import DOMAIN_TEMPLATE
 from ural.utils import SplitResult, safe_urlsplit, urlpathsplit
 
-TWITTER_DOMAINS_RE = re.compile(r'twitter\.com', re.I)
-TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r'(?:[^.]+\.)*twitter\.com', re.I)
-TWITTER_FRAGMENT_ROUTING_RE = re.compile(r'^!/?')
+TWITTER_DOMAINS_RE = re.compile(r"twitter\.com", re.I)
+TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r"(?:[^.]+\.)*twitter\.com", re.I)
+TWITTER_FRAGMENT_ROUTING_RE = re.compile(r"^!/?")
 TWITTER_SCREEN_NAME_BLACKLIST = {
-    'explore',
-    'home',
-    'hashtag',
-    'i',
-    'messages',
-    'notifications',
-    'search',
-    'settings'
+    "explore",
+    "home",
+    "hashtag",
+    "i",
+    "messages",
+    "notifications",
+    "search",
+    "settings",
 }
 
-TwitterTweet = namedtuple('TwitterTweet', ['user_screen_name', 'id'])
-TwitterUser = namedtuple('TwitterUser', ['screen_name'])
-TwitterList = namedtuple('TwitterList', ['id'])
+TwitterTweet = namedtuple("TwitterTweet", ["user_screen_name", "id"])
+TwitterUser = namedtuple("TwitterUser", ["screen_name"])
+TwitterList = namedtuple("TwitterList", ["id"])
 
 
 def is_twitter_url(url):
@@ -50,7 +50,7 @@ def normalize_screen_name(username):
     if username in TWITTER_SCREEN_NAME_BLACKLIST:
         return None
 
-    if username.startswith('@'):
+    if username.startswith("@"):
         username = username[1:]
 
     return username.lower()
@@ -104,7 +104,7 @@ def parse_twitter_url(url):
         user_screen_name = normalize_screen_name(path[0])
 
         if user_screen_name is None:
-            if path[0] == 'i' and path[1] == 'lists' and len(path) == 3:
+            if path[0] == "i" and path[1] == "lists" and len(path) == 3:
                 return TwitterList(id=path[2])
             return None
 
@@ -113,9 +113,9 @@ def parse_twitter_url(url):
 
         return TwitterUser(screen_name=user_screen_name)
 
-    if parsed.fragment.startswith('!'):
-        path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, '', parsed.fragment)
+    if parsed.fragment.startswith("!"):
+        path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, "", parsed.fragment)
 
-        return parse_twitter_url('twitter.com/' + path)
+        return parse_twitter_url("twitter.com/" + path)
 
     return None

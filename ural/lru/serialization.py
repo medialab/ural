@@ -6,13 +6,13 @@
 #
 import re
 
-SERIALIZED_LRU_SPLITTER_RE = re.compile(r'\|(?=[shtpqfuw]:)')
+SERIALIZED_LRU_SPLITTER_RE = re.compile(r"\|(?=[shtpqfuw]:)")
 
 
 def serialize_lru(stems):
-    return '|'.join(stems) + '|'
+    return "|".join(stems) + "|"
 
 
 def unserialize_lru(lru):
-    lru = lru.rstrip('|')
+    lru = lru.rstrip("|")
     return SERIALIZED_LRU_SPLITTER_RE.split(lru)

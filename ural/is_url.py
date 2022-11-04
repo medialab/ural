@@ -15,8 +15,13 @@ from ural.patterns import (
 )
 
 
-def is_url(string, require_protocol=True, tld_aware=False,
-           allow_spaces_in_path=False, only_http_https=True):
+def is_url(
+    string,
+    require_protocol=True,
+    tld_aware=False,
+    allow_spaces_in_path=False,
+    only_http_https=True,
+):
     """
     Function returning True if its string argument is a url.
 
@@ -64,7 +69,7 @@ def is_url(string, require_protocol=True, tld_aware=False,
             fail_silently=True,
             fix_protocol=not require_protocol,
             search_public=True,
-            search_private=True
+            search_private=True,
         )
 
         if domain_parts is None:

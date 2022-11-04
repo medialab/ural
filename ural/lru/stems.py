@@ -12,7 +12,7 @@ from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
 from ural.has_special_host import is_special_host
 
-PORT_SPLITTER = re.compile(r':(?![\d:]+])')
+PORT_SPLITTER = re.compile(r":(?![\d:]+])")
 
 
 def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
@@ -20,17 +20,17 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
     lru = []
 
     if scheme:
-        lru.append('s:' + scheme)
+        lru.append("s:" + scheme)
 
     user = None
     password = None
 
     # Handling auth
-    if '@' in netloc:
-        auth, netloc = netloc.split('@', 1)
+    if "@" in netloc:
+        auth, netloc = netloc.split("@", 1)
 
-        if ':' in auth:
-            user, password = auth.split(':', 1)
+        if ":" in auth:
+            user, password = auth.split(":", 1)
         else:
             user = auth
 
@@ -39,7 +39,7 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
 
     if len(netloc) == 2:
         port = netloc[1]
-        lru.append('t:' + port)
+        lru.append("t:" + port)
 
     # Need to process TLD?
     should_process_normally = not tld_aware
@@ -50,45 +50,45 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
             fail_silently=True,
             fix_protocol=False,
             search_public=True,
-            search_private=True
+            search_private=True,
         )
 
         if domain_parts is None:
             should_process_normally = True
 
         else:
-            tld = '.'.join(domain_parts[non_zero_i:])
-            lru.append('h:' + tld)
+            tld = ".".join(domain_parts[non_zero_i:])
+            lru.append("h:" + tld)
 
             for element in reversed(domain_parts[0:non_zero_i]):
-                lru.append('h:' + element)
+                lru.append("h:" + element)
 
     if should_process_normally:
         if is_special_host(netloc[0]):
-            lru.append('h:' + netloc[0])
+            lru.append("h:" + netloc[0])
         else:
-            for element in reversed(netloc[0].split('.')):
-                lru.append('h:' + element)
+            for element in reversed(netloc[0].split(".")):
+                lru.append("h:" + element)
 
     # Path
-    for element in path.split('/')[1:]:
-        lru.append('p:' + element)
+    for element in path.split("/")[1:]:
+        lru.append("p:" + element)
 
     # Query
     if query and query[0]:
-        lru.append('q:' + query)
+        lru.append("q:" + query)
 
     # Fragment
     if fragment and fragment[0]:
-        lru.append('f:' + fragment)
+        lru.append("f:" + fragment)
 
     # User
     if user:
-        lru.append('u:' + user)
+        lru.append("u:" + user)
 
     # Password
     if password:
-        lru.append('w:' + password)
+        lru.append("w:" + password)
     return lru
 
 

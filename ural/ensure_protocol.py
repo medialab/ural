@@ -7,7 +7,7 @@
 from ural.patterns import PROTOCOL_RE
 
 
-def ensure_protocol(url, protocol='http'):
+def ensure_protocol(url, protocol="http"):
     """
     Function checking if the url has a protocol, and adding the given one if there is none.
 
@@ -19,11 +19,11 @@ def ensure_protocol(url, protocol='http'):
         string: The protocol-equipped url.
 
     """
-    protocol = protocol.rstrip(':/')
+    protocol = protocol.rstrip(":/")
 
     if not PROTOCOL_RE.match(url):
-        url = protocol + '://' + url
-    elif url.startswith('//'):
-        url = protocol + ':' + url
+        url = protocol + "://" + url
+    elif url.startswith("//"):
+        url = protocol + ":" + url
 
     return url

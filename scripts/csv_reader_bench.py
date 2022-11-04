@@ -3,11 +3,11 @@ from scripts.utils import Timer
 
 
 class CSVLine(object):
-    __slots__  = ('line', 'pos')
+    __slots__ = ("line", "pos")
 
     def __init__(self, line):
         self.line = line
-        self.pos = {'youtube_url': 1}
+        self.pos = {"youtube_url": 1}
 
     def __getitem__(self, key):
         return self.line[1]
@@ -28,17 +28,17 @@ class SwiftCSVReader(object):
             raise
 
 
-with Timer('reader'):
-    with open('./scripts/data/youtube-urls.csv') as f:
+with Timer("reader"):
+    with open("./scripts/data/youtube-urls.csv") as f:
         for line in csv.reader(f):
             line[1]
 
-with Timer('DictReader'):
-    with open('./scripts/data/youtube-urls.csv') as f:
+with Timer("DictReader"):
+    with open("./scripts/data/youtube-urls.csv") as f:
         for line in csv.DictReader(f):
-            line['youtube_url']
+            line["youtube_url"]
 
-with Timer('SwiftCSVReader'):
-    with open('./scripts/data/youtube-urls.csv') as f:
+with Timer("SwiftCSVReader"):
+    with open("./scripts/data/youtube-urls.csv") as f:
         for line in SwiftCSVReader(csv.reader(f)):
-            line['youtube_url']
+            line["youtube_url"]

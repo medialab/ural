@@ -20,72 +20,77 @@ from ural.utils import (
     unquote,
     normpath,
     fix_common_query_mistakes,
-    SplitResult
+    SplitResult,
 )
 from ural.patterns import PROTOCOL_RE
 
-RESERVED_CHARACTERS = ';,/?:@&=+$'
-UNRESERVED_CHARACTERS = '-_.!~*\'()'
+RESERVED_CHARACTERS = ";,/?:@&=+$"
+UNRESERVED_CHARACTERS = "-_.!~*'()"
 SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
-IRRELEVANT_QUERY_PATTERN = r'^(?:__twitter_impression|_guc_consent_skip|guccounter|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|wpamp|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$'
-IRRELEVANT_SUBDOMAIN_PATTERN = r'\b(?:www\d?|mobile%s|m)\.'
+IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|wpamp|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$"
+IRRELEVANT_SUBDOMAIN_PATTERN = r"\b(?:www\d?|mobile%s|m)\."
 
-AMP_QUERY_PATTERN = r'|amp_.+|amp'
-AMP_SUBDOMAIN_PATTERN = r'|amp'
-AMP_SUFFIXES_RE = re.compile(r'(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)', re.I)
+AMP_QUERY_PATTERN = r"|amp_.+|amp"
+AMP_SUBDOMAIN_PATTERN = r"|amp"
+AMP_SUFFIXES_RE = re.compile(r"(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)", re.I)
 
-IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % r'', re.I)
-IRRELEVANT_SUBDOMAIN_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % r'', re.I)
+IRRELEVANT_QUERY_RE = re.compile(IRRELEVANT_QUERY_PATTERN % r"", re.I)
+IRRELEVANT_SUBDOMAIN_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % r"", re.I)
 
 IRRELEVANT_QUERY_AMP_RE = re.compile(IRRELEVANT_QUERY_PATTERN % AMP_QUERY_PATTERN, re.I)
-IRRELEVANT_SUBDOMAIN_AMP_RE = re.compile(IRRELEVANT_SUBDOMAIN_PATTERN % AMP_SUBDOMAIN_PATTERN, re.I)
+IRRELEVANT_SUBDOMAIN_AMP_RE = re.compile(
+    IRRELEVANT_SUBDOMAIN_PATTERN % AMP_SUBDOMAIN_PATTERN, re.I
+)
 
 IRRELEVANT_QUERY_COMBOS = {
-    'marfeeltn': ('amp', ),
-    'mode': ('amp', ),
-    'output': ('amp', ),
-    'platform': ('hootsuite', ),
-    'ref': set([
-        'bookmark',
-        'bookmarks',
-        'distributor_share',
-        'fb',
-        'fb_i',
-        'm_notif',
-        'nf',
-        'notif',
-        'shortener',
-        'ts',
-        'tw',
-        'tw_i',
-        'twhr',
-        'twhs',
-        'twitter',
-        'viral',
-        'feed'
-    ]),
-    'sns': ('tw', ),
-    'spref': ('fb', 'ts', 'tw', 'tw_i', 'twitter')
+    "marfeeltn": ("amp",),
+    "mode": ("amp",),
+    "output": ("amp",),
+    "platform": ("hootsuite",),
+    "ref": set(
+        [
+            "bookmark",
+            "bookmarks",
+            "distributor_share",
+            "fb",
+            "fb_i",
+            "m_notif",
+            "nf",
+            "notif",
+            "shortener",
+            "ts",
+            "tw",
+            "tw_i",
+            "twhr",
+            "twhs",
+            "twitter",
+            "viral",
+            "feed",
+        ]
+    ),
+    "sns": ("tw",),
+    "spref": ("fb", "ts", "tw", "tw_i", "twitter"),
 }
 
 PER_DOMAIN_QUERY_FILTERS = [
-    ('twitter.com', lambda k, v: k == 's'),
-    ('facebook.com', lambda k, v: k == '_rdc' or k == '_rdr')
+    ("twitter.com", lambda k, v: k == "s"),
+    ("facebook.com", lambda k, v: k == "_rdc" or k == "_rdr"),
 ]
 
-LANG_QUERY_KEYS = ('gl', 'hl')
+LANG_QUERY_KEYS = ("gl", "hl")
 
 
 def stringify_qs(item):
-    if item[1] == '':
+    if item[1] == "":
         return item[0]
 
-    return '%s=%s' % item
+    return "%s=%s" % item
 
 
-def should_strip_query_item(item, normalize_amp=True, strip_lang_query_items=False,
-                            domain_filter=None):
+def should_strip_query_item(
+    item, normalize_amp=True, strip_lang_query_items=False, domain_filter=None
+):
     key = item[0].lower()
 
     pattern = IRRELEVANT_QUERY_AMP_RE if normalize_amp else IRRELEVANT_QUERY_RE
@@ -108,22 +113,21 @@ def should_strip_query_item(item, normalize_amp=True, strip_lang_query_items=Fal
 
 
 def should_strip_fragment(fragment):
-    if fragment == '!/' or fragment == '/' or fragment == '!':
+    if fragment == "!/" or fragment == "/" or fragment == "!":
         return False
 
-    return (
-        fragment.startswith('/') or
-        fragment.startswith('!')
-    )
+    return fragment.startswith("/") or fragment.startswith("!")
 
 
 def strip_lang_subdomains_from_netloc(netloc):
-    if netloc.count('.') > 1:
-        subdomain, remaining_netloc = netloc.split('.', 1)
-        if len(subdomain) == 5 and '-' in subdomain:
-            lang, country = subdomain.split('-', 1)
+    if netloc.count(".") > 1:
+        subdomain, remaining_netloc = netloc.split(".", 1)
+        if len(subdomain) == 5 and "-" in subdomain:
+            lang, country = subdomain.split("-", 1)
             if len(lang) == 2 and len(country) == 2:
-                if pycountry.countries.get(alpha_2=lang.upper()) and pycountry.countries.get(alpha_2=country.upper()):
+                if pycountry.countries.get(
+                    alpha_2=lang.upper()
+                ) and pycountry.countries.get(alpha_2=country.upper()):
                     netloc = remaining_netloc
         elif len(subdomain) == 2:
             if pycountry.countries.get(alpha_2=subdomain.upper()):
@@ -132,11 +136,23 @@ def strip_lang_subdomains_from_netloc(netloc):
     return netloc
 
 
-def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
-                  strip_trailing_slash=True, strip_index=True, strip_protocol=True,
-                  strip_irrelevant_subdomains=True, strip_lang_subdomains=False, strip_lang_query_items=False,
-                  strip_fragment='except-routing', normalize_amp=True, fix_common_mistakes=True,
-                  infer_redirection=True, quoted=True):
+def normalize_url(
+    url,
+    unsplit=True,
+    sort_query=True,
+    strip_authentication=True,
+    strip_trailing_slash=True,
+    strip_index=True,
+    strip_protocol=True,
+    strip_irrelevant_subdomains=True,
+    strip_lang_subdomains=False,
+    strip_lang_query_items=False,
+    strip_fragment="except-routing",
+    normalize_amp=True,
+    fix_common_mistakes=True,
+    infer_redirection=True,
+    quoted=True,
+):
     """
     Function normalizing the given url by stripping it of usually
     non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -191,7 +207,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
 
         # Ensuring scheme so parsing works correctly
         if not has_protocol:
-            url = 'http://' + url
+            url = "http://" + url
 
         # Parsing
         try:
@@ -209,35 +225,35 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     netloc = decode_punycode_hostname(netloc)
 
     # Dropping :80 & :443
-    if netloc.endswith(':80'):
+    if netloc.endswith(":80"):
         netloc = netloc[:-3]
-    elif netloc.endswith(':443'):
+    elif netloc.endswith(":443"):
         netloc = netloc[:-4]
 
     # Normalizing the path
     if path:
         trailing_slash = False
-        if path.endswith('/') and len(path) > 1:
+        if path.endswith("/") and len(path) > 1:
             trailing_slash = True
         path = normpath(path)
         if trailing_slash and not strip_trailing_slash:
-            path = path + '/'
+            path = path + "/"
 
     # Handling Google AMP suffixes
     if normalize_amp:
-        path = AMP_SUFFIXES_RE.sub('', path)
+        path = AMP_SUFFIXES_RE.sub("", path)
 
     # Dropping index:
     if strip_index:
-        segments = path.rsplit('/', 1)
+        segments = path.rsplit("/", 1)
 
         if len(segments) != 0:
             last_segment = segments[-1]
             filename, ext = splitext(last_segment)
 
-            if filename == 'index':
+            if filename == "index":
                 segments.pop()
-                path = '/'.join(segments)
+                path = "/".join(segments)
 
     # Dropping irrelevant query items
     if query:
@@ -245,8 +261,12 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
 
         if splitted.hostname:
             domain_filter = next(
-                (f for d, f in PER_DOMAIN_QUERY_FILTERS if splitted.hostname.endswith(d)),
-                None
+                (
+                    f
+                    for d, f in PER_DOMAIN_QUERY_FILTERS
+                    if splitted.hostname.endswith(d)
+                ),
+                None,
             )
 
         qsl = parse_qsl(query, keep_blank_values=True)
@@ -257,30 +277,30 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
                 item,
                 normalize_amp=normalize_amp,
                 strip_lang_query_items=strip_lang_query_items,
-                domain_filter=domain_filter
+                domain_filter=domain_filter,
             )
         ]
 
         if sort_query:
             qsl = sorted(qsl)
 
-        query = '&'.join(qsl)
+        query = "&".join(qsl)
 
     # Dropping fragment if it's not routing
     if fragment and strip_fragment:
         if strip_fragment is True or not should_strip_fragment(fragment):
-            fragment = ''
+            fragment = ""
 
     # Always dropping trailing slash with empty query & fragment
-    if path == '/' and not fragment and not query:
-        path = ''
+    if path == "/" and not fragment and not query:
+        path = ""
 
     # Dropping irrelevant subdomains
     if strip_irrelevant_subdomains:
         netloc = re.sub(
             IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE,
-            '',
-            netloc
+            "",
+            netloc,
         )
 
     # Dropping language as subdomains
@@ -289,19 +309,19 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
 
     # Dropping scheme
     if strip_protocol or not has_protocol:
-        scheme = ''
+        scheme = ""
 
     # Dropping authentication
     if strip_authentication:
-        netloc = netloc.split('@', 1)[-1]
+        netloc = netloc.split("@", 1)[-1]
 
     # Normalizing AMP subdomains
-    if normalize_amp and netloc.startswith('amp-'):
+    if normalize_amp and netloc.startswith("amp-"):
         netloc = netloc[4:]
 
     # Dropping trailing slash
-    if strip_trailing_slash and path.endswith('/'):
-        path = path.rstrip('/')
+    if strip_trailing_slash and path.endswith("/"):
+        path = path.rstrip("/")
 
     # Quoting or not
     if quoted:
@@ -314,13 +334,7 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
         fragment = unquote(fragment)
 
     # Result
-    result = SplitResult(
-        scheme,
-        netloc.lower(),
-        path,
-        query,
-        fragment
-    )
+    result = SplitResult(scheme, netloc.lower(), path, query, fragment)
 
     if not unsplit:
         return result
@@ -334,8 +348,9 @@ def normalize_url(url, unsplit=True, sort_query=True, strip_authentication=True,
     return result
 
 
-def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False,
-                            infer_redirection=True):
+def get_normalized_hostname(
+    url, normalize_amp=True, strip_lang_subdomains=False, infer_redirection=True
+):
 
     if infer_redirection:
         url = resolve(url)
@@ -355,9 +370,9 @@ def get_normalized_hostname(url, normalize_amp=True, strip_lang_subdomains=False
 
     pattern = IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE
 
-    hostname = pattern.sub('', hostname)
+    hostname = pattern.sub("", hostname)
 
-    if normalize_amp and hostname.startswith('amp-'):
+    if normalize_amp and hostname.startswith("amp-"):
         hostname = hostname[4:]
 
     hostname = decode_punycode_hostname(hostname)

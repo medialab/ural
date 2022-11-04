@@ -17,196 +17,183 @@ from ural.facebook import (
     is_facebook_id,
     is_facebook_full_id,
     extract_url_from_facebook_link,
-    has_facebook_comments
+    has_facebook_comments,
 )
 
 MOBILE_TESTS = [
-    ('http://www.facebook.com', 'http://m.facebook.com'),
-    ('http://facebook.com', 'http://m.facebook.com'),
-    ('http://fr.facebook.com', 'http://m.facebook.com'),
-    ('http://fr-FR.facebook.com', 'http://m.facebook.com'),
-    ('http://www.facebook.com/whatever#ok', 'http://m.facebook.com/whatever#ok'),
-    ('https://www.facebook.co.uk', 'https://m.facebook.co.uk'),
-    ('facebook.com', 'm.facebook.com')
+    ("http://www.facebook.com", "http://m.facebook.com"),
+    ("http://facebook.com", "http://m.facebook.com"),
+    ("http://fr.facebook.com", "http://m.facebook.com"),
+    ("http://fr-FR.facebook.com", "http://m.facebook.com"),
+    ("http://www.facebook.com/whatever#ok", "http://m.facebook.com/whatever#ok"),
+    ("https://www.facebook.co.uk", "https://m.facebook.co.uk"),
+    ("facebook.com", "m.facebook.com"),
 ]
 
 PARSE_TESTS = [
+    ("/naat.ouhafs.92?rc=p&__tn__=R", FacebookHandle("naat.ouhafs.92")),
+    ("naat.ouhafs.92?rc=p&__tn__=R", FacebookHandle("naat.ouhafs.92")),
     (
-        '/naat.ouhafs.92?rc=p&__tn__=R',
-        FacebookHandle('naat.ouhafs.92')
+        "http://fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R",
+        FacebookHandle("naat.ouhafs.92"),
     ),
     (
-        'naat.ouhafs.92?rc=p&__tn__=R',
-        FacebookHandle('naat.ouhafs.92')
+        "fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R",
+        FacebookHandle("naat.ouhafs.92"),
+    ),
+    ("facebook.com/naat.ouhafs.92?rc=p&__tn__=R", FacebookHandle("naat.ouhafs.92")),
+    ("/profile.php?id=100012241140363&rc=p&__tn__=R", FacebookUser("100012241140363")),
+    ("profile.php?id=100012241140363&rc=p&__tn__=R", FacebookUser("100012241140363")),
+    (
+        "https://www.facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R",
+        FacebookUser("100012241140363"),
     ),
     (
-        'http://fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R',
-        FacebookHandle('naat.ouhafs.92')
+        "https://facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R",
+        FacebookUser("100012241140363"),
     ),
     (
-        'fr-fr.facebook.com/naat.ouhafs.92?rc=p&__tn__=R',
-        FacebookHandle('naat.ouhafs.92')
+        "facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R",
+        FacebookUser("100012241140363"),
     ),
     (
-        'facebook.com/naat.ouhafs.92?rc=p&__tn__=R',
-        FacebookHandle('naat.ouhafs.92')
+        "https://www.facebook.com/people/Clare-Roche/100020635422861",
+        FacebookUser("100020635422861"),
+    ),
+    ("https://www.facebook.com/astucerie/", FacebookHandle("astucerie")),
+    ("https://lemonde.fr/path", None),
+    (
+        "https://www.facebook.com/astucerie/posts/428202057564823",
+        FacebookPost("428202057564823", parent_handle="astucerie"),
     ),
     (
-        '/profile.php?id=100012241140363&rc=p&__tn__=R',
-        FacebookUser('100012241140363')
+        "https://www.facebook.com/permalink.php?story_fbid=1354978971282622&id=598338556946671",
+        FacebookPost("1354978971282622", parent_id="598338556946671"),
     ),
     (
-        'profile.php?id=100012241140363&rc=p&__tn__=R',
-        FacebookUser('100012241140363')
+        "https://www.facebook.com/groups/175634843342347/permalink/235340200705144",
+        FacebookPost("235340200705144", group_id="175634843342347"),
     ),
     (
-        'https://www.facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R',
-        FacebookUser('100012241140363')
+        "https://www.facebook.com/598338556946671/posts/1416659045114614",
+        FacebookPost("1416659045114614", parent_id="598338556946671"),
     ),
     (
-        'https://facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R',
-        FacebookUser('100012241140363')
+        "https://www.facebook.com/groups/159674260852951",
+        FacebookGroup(id="159674260852951"),
     ),
     (
-        'facebook.com/profile.php?id=100012241140363&rc=p&__tn__=R',
-        FacebookUser('100012241140363')
+        "https://www.facebook.com/groups/159674260852951/permalink/1786992671454427/",
+        FacebookPost("1786992671454427", group_id="159674260852951"),
     ),
     (
-        'https://www.facebook.com/people/Clare-Roche/100020635422861',
-        FacebookUser('100020635422861')
+        "https://www.facebook.com/groups/ps.avenches",
+        FacebookGroup(handle="ps.avenches"),
     ),
     (
-        'https://www.facebook.com/astucerie/',
-        FacebookHandle('astucerie')
+        "https://www.facebook.com/groups/ps.avenches/permalink/5477353885670191/",
+        FacebookPost("5477353885670191", group_handle="ps.avenches"),
     ),
     (
-        'https://lemonde.fr/path',
-        None
+        "https://www.facebook.com/2233377536730176/posts/3706618546072727",
+        FacebookPost("3706618546072727", parent_id="2233377536730176"),
     ),
     (
-        'https://www.facebook.com/astucerie/posts/428202057564823',
-        FacebookPost('428202057564823', parent_handle='astucerie')
+        "https://www.facebook.com/national.vaccine.information.center/posts/10157313353192931",
+        FacebookPost(
+            "10157313353192931", parent_handle="national.vaccine.information.center"
+        ),
     ),
     (
-        'https://www.facebook.com/permalink.php?story_fbid=1354978971282622&id=598338556946671',
-        FacebookPost('1354978971282622', parent_id='598338556946671')
+        "https://www.facebook.com/watch/?v=311658803718223",
+        FacebookVideo("311658803718223"),
     ),
     (
-        'https://www.facebook.com/groups/175634843342347/permalink/235340200705144',
-        FacebookPost('235340200705144', group_id='175634843342347')
+        "https://www.facebook.com/108824017345866/videos/311658803718223",
+        FacebookVideo("311658803718223", parent_id="108824017345866"),
     ),
     (
-        'https://www.facebook.com/598338556946671/posts/1416659045114614',
-        FacebookPost('1416659045114614', parent_id='598338556946671')
+        "https://www.facebook.com/photo.php?fbid=10222721681573727",
+        FacebookPhoto("10222721681573727"),
     ),
     (
-        'https://www.facebook.com/groups/159674260852951',
-        FacebookGroup(id='159674260852951')
+        "https://www.facebook.com/photo?fbid=4191267614222491&set=g.721653275253020",
+        FacebookPhoto("4191267614222491", group_id="721653275253020"),
     ),
     (
-        'https://www.facebook.com/groups/159674260852951/permalink/1786992671454427/',
-        FacebookPost('1786992671454427', group_id='159674260852951')
+        "https://www.facebook.com/photo.php?fbid=10222721681573727&set=gm.10157466403417407&type=3",
+        FacebookPhoto("10222721681573727"),
     ),
     (
-        'https://www.facebook.com/groups/ps.avenches',
-        FacebookGroup(handle='ps.avenches')
+        "https://www.facebook.com/santeplusmag/photos/a.309641465765319/4406607732735318",
+        FacebookPhoto(
+            "4406607732735318", album_id="309641465765319", parent_handle="santeplusmag"
+        ),
     ),
     (
-        'https://www.facebook.com/groups/ps.avenches/permalink/5477353885670191/',
-        FacebookPost('5477353885670191', group_handle='ps.avenches')
+        "https://www.facebook.com/260769680665568/photos/a.305266056215930/524959150913285",
+        FacebookPhoto(
+            "524959150913285", album_id="305266056215930", parent_id="260769680665568"
+        ),
     ),
     (
-        'https://www.facebook.com/2233377536730176/posts/3706618546072727',
-        FacebookPost('3706618546072727', parent_id='2233377536730176')
+        "https://www.facebook.com/marklevinshow/photos/a.473101028831/157864073831",
+        FacebookPhoto(
+            "157864073831", album_id="473101028831", parent_handle="marklevinshow"
+        ),
     ),
     (
-        'https://www.facebook.com/national.vaccine.information.center/posts/10157313353192931',
-        FacebookPost('10157313353192931', parent_handle='national.vaccine.information.center')
+        "https://www.facebook.com/photo.php?fbid=1454919154621936&id=598338556946671&set=a.600335226747004",
+        FacebookPhoto("1454919154621936", album_id="600335226747004"),
     ),
     (
-        'https://www.facebook.com/watch/?v=311658803718223',
-        FacebookVideo('311658803718223')
+        "https://m.facebook.com/story.php?story_fbid=1175066705875628&id=369911139724526",
+        FacebookPost("1175066705875628", parent_id="369911139724526"),
     ),
     (
-        'https://www.facebook.com/108824017345866/videos/311658803718223',
-        FacebookVideo('311658803718223', parent_id='108824017345866')
+        "https://www.facebook.com/groups/CPOpenForum",
+        FacebookGroup(handle="CPOpenForum"),
     ),
     (
-        'https://www.facebook.com/photo.php?fbid=10222721681573727',
-        FacebookPhoto('10222721681573727')
+        "https://www.facebook.com/groups/CPOpenForum/posts/2834682806759086/",
+        FacebookPost(group_handle="CPOpenForum", post_id="2834682806759086"),
     ),
     (
-        'https://www.facebook.com/photo?fbid=4191267614222491&set=g.721653275253020',
-        FacebookPhoto('4191267614222491', group_id='721653275253020')
+        "https://www.facebook.com/groups/2047323015495073/posts/2834682806759086/",
+        FacebookPost(group_id="2047323015495073", post_id="2834682806759086"),
     ),
     (
-        'https://www.facebook.com/photo.php?fbid=10222721681573727&set=gm.10157466403417407&type=3',
-        FacebookPhoto('10222721681573727')
+        "https://www.facebook.com/photo/?fbid=10219572212489943&amp;set=gm.1346655122189658",
+        FacebookPhoto("10219572212489943"),
     ),
     (
-        'https://www.facebook.com/santeplusmag/photos/a.309641465765319/4406607732735318',
-        FacebookPhoto('4406607732735318', album_id='309641465765319', parent_handle='santeplusmag')
+        "https://www.facebook.com/permalink.php?story_fbid=pfbid0soaW7kxMr4D3iAPFaqmN2c7ZFTFF8FiyarH67nX5CfgYeZWU9DqLX55C8bqFxhRwl&amp;id=106692535436432",
+        FacebookPost(
+            "pfbid0soaW7kxMr4D3iAPFaqmN2c7ZFTFF8FiyarH67nX5CfgYeZWU9DqLX55C8bqFxhRwl",
+            parent_id="106692535436432",
+        ),
     ),
-    (
-        'https://www.facebook.com/260769680665568/photos/a.305266056215930/524959150913285',
-        FacebookPhoto('524959150913285', album_id='305266056215930', parent_id='260769680665568')
-    ),
-    (
-        'https://www.facebook.com/marklevinshow/photos/a.473101028831/157864073831',
-        FacebookPhoto('157864073831', album_id='473101028831', parent_handle='marklevinshow')
-    ),
-    (
-        'https://www.facebook.com/photo.php?fbid=1454919154621936&id=598338556946671&set=a.600335226747004',
-        FacebookPhoto('1454919154621936', album_id='600335226747004')
-    ),
-    (
-        'https://m.facebook.com/story.php?story_fbid=1175066705875628&id=369911139724526',
-        FacebookPost('1175066705875628', parent_id='369911139724526')
-    ),
-    (
-        'https://www.facebook.com/groups/CPOpenForum',
-        FacebookGroup(handle='CPOpenForum')
-    ),
-    (
-        'https://www.facebook.com/groups/CPOpenForum/posts/2834682806759086/',
-        FacebookPost(group_handle='CPOpenForum', post_id='2834682806759086')
-    ),
-    (
-        'https://www.facebook.com/groups/2047323015495073/posts/2834682806759086/',
-        FacebookPost(group_id='2047323015495073', post_id='2834682806759086')
-    ),
-    (
-        'https://www.facebook.com/photo/?fbid=10219572212489943&amp;set=gm.1346655122189658',
-        FacebookPhoto('10219572212489943')
-    ),
-    (
-        'https://www.facebook.com/permalink.php?story_fbid=pfbid0soaW7kxMr4D3iAPFaqmN2c7ZFTFF8FiyarH67nX5CfgYeZWU9DqLX55C8bqFxhRwl&amp;id=106692535436432',
-        FacebookPost('pfbid0soaW7kxMr4D3iAPFaqmN2c7ZFTFF8FiyarH67nX5CfgYeZWU9DqLX55C8bqFxhRwl', parent_id='106692535436432')
-    )
 ]
 
 IS_FACEBOOK_URL_TESTS = [
-    ('http://www.facebook.com/profile.php?id=398633', True),
-    ('facebook.com', True),
-    ('http://lemonde.fr', False),
-    ('fr-FR.facebook.fr', True),
-    ('http://m.facebook.com', True),
-    ('https://fb.me/47574', True)
+    ("http://www.facebook.com/profile.php?id=398633", True),
+    ("facebook.com", True),
+    ("http://lemonde.fr", False),
+    ("fr-FR.facebook.fr", True),
+    ("http://m.facebook.com", True),
+    ("https://fb.me/47574", True),
 ]
 
 FACEBOOK_LINK_TESTS = [
     (
-        'https://l.facebook.com/l.php?u=http%3A%2F%2Fwww.chaos-controle.com%2Farchives%2F2013%2F10%2F14%2F28176300.html&amp;h=AT0iUqJpUTMzHAH8HAXwZ11p8P3Z-SrY90wIXZhcjMnxBTHMiau8Fv1hvz00ZezRegqmF86SczyUXx3Gzdt_MdFH-I4CwHIXKKU9L6w522xwOqkOvLAylxojGEwrp341uC-GlVyGE2N7XwTPK9cpP0mQ8PIrWh8Qj2gHIIR08Js0mUr7G8Qe9fx66uYcfnNfTTF1xi0Us8gTo4fOZxAgidGWXsdgtU_OdvQqyEm97oHzKbWfXjkhsrzbtb8ZNMDwCP5099IMcKRD8Hi5H7W3vwh9hd_JlRgm5Z074epD_mGAeoEATE_QUVNTxO0SHO4XNn2Z7LgBamvevu1ENBcuyuSOYA0BsY2cx8mPWJ9t44tQcnmyQhBlYm_YmszDaQx9IfVP26PRqhsTLz-kZzv0DGMiJFU78LVWVPc9QSw2f9mA5JYWr29w12xJJ5XGQ6DhJxDMWRnLdG8Tnd7gZKCaRdqDER1jkO72u75-o4YuV3CLh4j-_4u0fnHSzHdVD8mxr9pNEgu8rvJF1E2H3-XbzA6F2wMQtFCejH8MBakzYtTGNvHSexSiKphE04Ci1Z23nBjCZFsgNXwL3wbIXWfHjh2LCKyihQauYsnvxp6fyioStJSGgyA9GGEswizHa20lucQF0S0F8H9-',
-        'http://www.chaos-controle.com/archives/2013/10/14/28176300.html'
+        "https://l.facebook.com/l.php?u=http%3A%2F%2Fwww.chaos-controle.com%2Farchives%2F2013%2F10%2F14%2F28176300.html&amp;h=AT0iUqJpUTMzHAH8HAXwZ11p8P3Z-SrY90wIXZhcjMnxBTHMiau8Fv1hvz00ZezRegqmF86SczyUXx3Gzdt_MdFH-I4CwHIXKKU9L6w522xwOqkOvLAylxojGEwrp341uC-GlVyGE2N7XwTPK9cpP0mQ8PIrWh8Qj2gHIIR08Js0mUr7G8Qe9fx66uYcfnNfTTF1xi0Us8gTo4fOZxAgidGWXsdgtU_OdvQqyEm97oHzKbWfXjkhsrzbtb8ZNMDwCP5099IMcKRD8Hi5H7W3vwh9hd_JlRgm5Z074epD_mGAeoEATE_QUVNTxO0SHO4XNn2Z7LgBamvevu1ENBcuyuSOYA0BsY2cx8mPWJ9t44tQcnmyQhBlYm_YmszDaQx9IfVP26PRqhsTLz-kZzv0DGMiJFU78LVWVPc9QSw2f9mA5JYWr29w12xJJ5XGQ6DhJxDMWRnLdG8Tnd7gZKCaRdqDER1jkO72u75-o4YuV3CLh4j-_4u0fnHSzHdVD8mxr9pNEgu8rvJF1E2H3-XbzA6F2wMQtFCejH8MBakzYtTGNvHSexSiKphE04Ci1Z23nBjCZFsgNXwL3wbIXWfHjh2LCKyihQauYsnvxp6fyioStJSGgyA9GGEswizHa20lucQF0S0F8H9-",
+        "http://www.chaos-controle.com/archives/2013/10/14/28176300.html",
     ),
+    ("https://www.lemonde.fr", None),
     (
-        'https://www.lemonde.fr',
-        None
+        "https://lm.facebook.com/l.php?u=https%3A%2F%2Fwww.santeplusmag.com%2Fvoici-homme-ideal-selon-signe-zodiaque%2F%3Ffbclid%3DIwAR0y7QtbwjHkA5xGt-JpiINpi5sx9bBdqPgVZlLoY4QXGr7eyHum1wA1tgw&h=AT0JS8tV0L4V23RGMkKsnQNfkt2k9ncZ39JltGuSXqro1LpLQw-kUxgTo2QJprUxH9WS3HpZvb5XRsv3pKJyo6yRF5Zpw6qZRorVGSwiKlD8L5LOmUstIPrGrdboG-OMBDzrGQOU5yONWyjEGlNIZDEpcGSzz4ZZi8IRq6FU-fX385WrAbToCn8AahZXz1_fPFz7bzaDEiHhgM0PHd4iHtF5T-h0lqLlVoqVOMAKU9X2Of2Ief9xWBqlaszvlo816PgMDDhYBkM1TUfevQDa1seXKHdYHKLaHz1LQEIlUlbZnINwWHq9qdgO0KR6Zml2jSsts8ttdxwn8-YYmiRuGy14DWb_-h8WU-_j4O6dWo-9oEfXP_V4RS9ZCkB1aTiaTy1-d92EtVaii24vDuxF_k7VzjZmlA3IToH0weg269bRO_4adejJuYRlaCQFsEhtwom9BqWriXYfdYznFd0po5vHTE9h7ZDRN7jvYSiACSShPnD_xfDiIsQOkE11J4qft7J5ZsHhYk0i2e3WwOqUsK_-kb7aEdeLO3Na7tOfO1UkxlAkCcpANn3ZBBFfjTu4yBQDmuQ7eBMQHUmvRDp96p2EuYPGjsCYP_sXH5dwZ6wKB5GzunmtexIMwiVaIHdOeM42e435pSk0nD3XZhU15qday5GelcMfwHsbN8kzAdvJSRK5EmbVX0dPWsIk5GEVEhqNOOT0ANFz85bXB8nSbLkNk1NLkWd6cwGHVOmmW6Vgl15FzUJKwfoya-owBE9aQhItB_MANmkajA98vAuuAwe1Wfw1MGDuOKUzBNp6ercFpO1diFR-N9SvTxfKc-ZCu0lQKXOcgT3qpe5usMmxcXg6TUCC7ox0pu_j8ees4fF-JQIddh5DDQm5sXOajqKKDEj1-hDL15oW_z_NRuRkXAxhLXN1s5vWt_cDuxHuqwlKI3wst9fK31Z1ovRk0HJa_deZ47E81QxPGlcWFUp3If2tPqE5qiiX6yfRD3QriMMH04wDnSN-R8gYjQKydKQpF_B9tn1BfEvIiOK21kgtzvgnu6iJRTfrNS9qRD1HJcMkf_W5fWPPk1HMc6VtEgf-uU7xxZ1heqj52nVUoMJl3pWV2dlv44KOIPM9afoRddeRH3RDl7B8nbabEER0zsVjGgkre6qLRgKz5P2M8BJJJtCo",
+        "https://www.santeplusmag.com/voici-homme-ideal-selon-signe-zodiaque/?fbclid=IwAR0y7QtbwjHkA5xGt-JpiINpi5sx9bBdqPgVZlLoY4QXGr7eyHum1wA1tgw",
     ),
-    (
-        'https://lm.facebook.com/l.php?u=https%3A%2F%2Fwww.santeplusmag.com%2Fvoici-homme-ideal-selon-signe-zodiaque%2F%3Ffbclid%3DIwAR0y7QtbwjHkA5xGt-JpiINpi5sx9bBdqPgVZlLoY4QXGr7eyHum1wA1tgw&h=AT0JS8tV0L4V23RGMkKsnQNfkt2k9ncZ39JltGuSXqro1LpLQw-kUxgTo2QJprUxH9WS3HpZvb5XRsv3pKJyo6yRF5Zpw6qZRorVGSwiKlD8L5LOmUstIPrGrdboG-OMBDzrGQOU5yONWyjEGlNIZDEpcGSzz4ZZi8IRq6FU-fX385WrAbToCn8AahZXz1_fPFz7bzaDEiHhgM0PHd4iHtF5T-h0lqLlVoqVOMAKU9X2Of2Ief9xWBqlaszvlo816PgMDDhYBkM1TUfevQDa1seXKHdYHKLaHz1LQEIlUlbZnINwWHq9qdgO0KR6Zml2jSsts8ttdxwn8-YYmiRuGy14DWb_-h8WU-_j4O6dWo-9oEfXP_V4RS9ZCkB1aTiaTy1-d92EtVaii24vDuxF_k7VzjZmlA3IToH0weg269bRO_4adejJuYRlaCQFsEhtwom9BqWriXYfdYznFd0po5vHTE9h7ZDRN7jvYSiACSShPnD_xfDiIsQOkE11J4qft7J5ZsHhYk0i2e3WwOqUsK_-kb7aEdeLO3Na7tOfO1UkxlAkCcpANn3ZBBFfjTu4yBQDmuQ7eBMQHUmvRDp96p2EuYPGjsCYP_sXH5dwZ6wKB5GzunmtexIMwiVaIHdOeM42e435pSk0nD3XZhU15qday5GelcMfwHsbN8kzAdvJSRK5EmbVX0dPWsIk5GEVEhqNOOT0ANFz85bXB8nSbLkNk1NLkWd6cwGHVOmmW6Vgl15FzUJKwfoya-owBE9aQhItB_MANmkajA98vAuuAwe1Wfw1MGDuOKUzBNp6ercFpO1diFR-N9SvTxfKc-ZCu0lQKXOcgT3qpe5usMmxcXg6TUCC7ox0pu_j8ees4fF-JQIddh5DDQm5sXOajqKKDEj1-hDL15oW_z_NRuRkXAxhLXN1s5vWt_cDuxHuqwlKI3wst9fK31Z1ovRk0HJa_deZ47E81QxPGlcWFUp3If2tPqE5qiiX6yfRD3QriMMH04wDnSN-R8gYjQKydKQpF_B9tn1BfEvIiOK21kgtzvgnu6iJRTfrNS9qRD1HJcMkf_W5fWPPk1HMc6VtEgf-uU7xxZ1heqj52nVUoMJl3pWV2dlv44KOIPM9afoRddeRH3RDl7B8nbabEER0zsVjGgkre6qLRgKz5P2M8BJJJtCo',
-        'https://www.santeplusmag.com/voici-homme-ideal-selon-signe-zodiaque/?fbclid=IwAR0y7QtbwjHkA5xGt-JpiINpi5sx9bBdqPgVZlLoY4QXGr7eyHum1wA1tgw'
-    )
 ]
 
 
@@ -216,7 +203,7 @@ class TestFacebook(object):
             assert convert_facebook_url_to_mobile(url) == expected
 
         with pytest.raises(Exception):
-            convert_facebook_url_to_mobile('http://twitter.com')
+            convert_facebook_url_to_mobile("http://twitter.com")
 
     def test_parse_facebook_url(self):
         for url, target in PARSE_TESTS:
@@ -224,23 +211,33 @@ class TestFacebook(object):
 
             assert result == target
 
-        result = parse_facebook_url('https://www.facebook.com/groups/277506326438568/permalink/319815378874329')
+        result = parse_facebook_url(
+            "https://www.facebook.com/groups/277506326438568/permalink/319815378874329"
+        )
 
-        assert result.full_id == '277506326438568_319815378874329'
+        assert result.full_id == "277506326438568_319815378874329"
 
-        result = parse_facebook_url('https://www.facebook.com/permalink.php?story_fbid=1354978971282622&id=598338556946671')
+        result = parse_facebook_url(
+            "https://www.facebook.com/permalink.php?story_fbid=1354978971282622&id=598338556946671"
+        )
 
-        assert result.full_id == '598338556946671_1354978971282622'
+        assert result.full_id == "598338556946671_1354978971282622"
 
-        result = parse_facebook_url('https://www.facebook.com/meilleurdesmondesoff/posts/1810737099256795')
+        result = parse_facebook_url(
+            "https://www.facebook.com/meilleurdesmondesoff/posts/1810737099256795"
+        )
 
         assert result.full_id is None
 
-        result = parse_facebook_url('https://www.facebook.com/108082977404530/posts/195887261957434')
+        result = parse_facebook_url(
+            "https://www.facebook.com/108082977404530/posts/195887261957434"
+        )
 
-        assert result.full_id == '108082977404530_195887261957434'
+        assert result.full_id == "108082977404530_195887261957434"
 
-        result = parse_facebook_url('https://www.facebook.com/groups/US4MF/permalink/787216138752904/')
+        result = parse_facebook_url(
+            "https://www.facebook.com/groups/US4MF/permalink/787216138752904/"
+        )
 
         assert result.full_id is None
 
@@ -253,14 +250,14 @@ class TestFacebook(object):
             assert is_facebook_post_url(url) == (isinstance(target, FacebookPost))
 
     def test_is_facebook_id(self):
-        assert not is_facebook_id('test')
-        assert is_facebook_id('8745346')
+        assert not is_facebook_id("test")
+        assert is_facebook_id("8745346")
 
     def test_is_facebook_full_id(self):
-        assert not is_facebook_full_id('test')
-        assert not is_facebook_full_id('86868684')
-        assert is_facebook_full_id('974954_48758359854')
-        assert is_facebook_full_id('4_898683848643')
+        assert not is_facebook_full_id("test")
+        assert not is_facebook_full_id("86868684")
+        assert is_facebook_full_id("974954_48758359854")
+        assert is_facebook_full_id("4_898683848643")
 
     def test_extract_url_from_facebook_link(self):
         for link, url in FACEBOOK_LINK_TESTS:
@@ -272,8 +269,6 @@ class TestFacebook(object):
 
     def test_has_facebook_comments(self):
         for url, target in PARSE_TESTS:
-            assert has_facebook_comments(url) == isinstance(target, (
-                FacebookPost,
-                FacebookPhoto,
-                FacebookVideo
-            ))
+            assert has_facebook_comments(url) == isinstance(
+                target, (FacebookPost, FacebookPhoto, FacebookVideo)
+            )

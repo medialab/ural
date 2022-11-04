@@ -6,9 +6,7 @@
 from ural import should_resolve
 from test.is_shortened_test import TESTS
 
-FULL_TESTS = TESTS + [
-    ('https://doi.org/10.4000/vertigo.26405', True)
-]
+FULL_TESTS = TESTS + [("https://doi.org/10.4000/vertigo.26405", True)]
 
 
 class TestShouldResolve(object):
