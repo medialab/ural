@@ -69,13 +69,13 @@ class TestInstagram(object):
         assert is_instagram_post_shortcode("test")
         assert is_instagram_post_shortcode("8745346")
         assert is_instagram_post_shortcode("BxKRx_C-n5i")
-        assert not is_instagram_post_shortcode("BxKRx5CHn5i!")
+        assert not is_instagram_post_shortcode("BxKRx5ùHn5i")
 
     def test_is_instagram_username(self):
         assert is_instagram_username("test")
         assert is_instagram_username("8745346")
         assert is_instagram_username("BxKR.x_C-n5i")
-        assert not is_instagram_username("BxKRx5CHn5i!")
+        assert not is_instagram_username("BxKRxéCHn5i")
 
     def test_is_instagram_url(self):
         for url, result in IS_TESTS:

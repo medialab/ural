@@ -10,7 +10,7 @@ from collections import namedtuple
 from ural.utils import urlpathsplit, safe_urlsplit, SplitResult
 from ural.patterns import DOMAIN_TEMPLATE
 
-INSTAGRAM_POST_SHORTCODE_RE = re.compile(r"^[\d\w\-_]+$")
+INSTAGRAM_POST_SHORTCODE_RE = re.compile(r"^[a-zA-Z0-9_\-]+$")
 INSTAGRAM_USERNAME_RE = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 INSTAGRAM_DOMAIN_RE = re.compile(r"instagram.com$", re.I)
 INSTAGRAM_URL_RE = re.compile(
