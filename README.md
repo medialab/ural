@@ -77,6 +77,12 @@ pip install ural
   * [extract_url_from_google_link](#extract_url_from_google_link)
   * [extract_id_from_google_drive_url](#extract_id_from_google_drive_url)
   * [parse_google_drive_url](#parse_google_drive_url)
+* [instagram](#instagram)
+  * [is_instagram_post_shortcode](#is_instagram_post_shortcode)
+  * [is_instagram_username](#is_instagram_username)
+  * [is_instagram_url](#is_instagram_url)
+  * [extract_username_from_instagram_url](#extract_username_from_instagram_url)
+  * [parse_instagram_url](#parse_instagram_url)
 * [telegram](#telegram)
   * [is_telegram_message_id](#is_telegram_message_id)
   * [is_telegram_url](#is_telegram_url)
@@ -956,6 +962,97 @@ parse_google_drive_url('https://docs.google.com/spreadsheets/d/1Q9sJtAb1BZhUMjxC
 parse_google_drive_url('https://www.lemonde.fr')
 >>> None
 ```
+
+---
+
+### Instagram
+
+#### is_instagram_post_shortcode
+
+Function returning whether the given string is a valid Instagram post shortcode or not.
+
+```python
+from ural.instagram import is_instagram_post_shortcode
+
+is_instagram_post_shortcode('974583By-5_86343')
+>>> True
+
+is_instagram_post_shortcode('whatever!!')
+>>> False
+```
+
+#### is_instagram_username
+
+Function returning whether the given string is a valid Instagram username or not.
+
+```python
+from ural.instagram import is_instagram_username
+
+is_instagram_username('97458.3By-5_86343')
+>>> True
+
+is_instagram_username('whatever!!')
+>>> False
+```
+
+#### is_instagram_url
+
+Returns whether the given url is from Instagram.
+
+```python
+from ural.instagram import is_instagram_url
+
+is_instagram_url('https://lemonde.fr')
+>>> False
+
+is_instagram_url('https://www.instagram.com/guillaumelatorre')
+>>> True
+```
+
+#### extract_username_from_instagram_url
+
+Return a username from the given Instagram url or `None` if we could not find one.
+
+```python
+from ural.instagram import extract_username_from_instagram_url
+
+extract_username_from_instagram_url('https://www.instagram.com/martin_dupont/p/BxKRx5CHn5i/')
+>>> 'martin_dupont'
+
+extract_username_from_instagram_url('https://lemonde.fr')
+>>> None
+
+```
+
+#### parse_instagram_url
+
+Returns parsed information about the given Instagram url: either about the post or user. If the url is an invalid Instagram url or if not a Instagram url, the function returns `None`.
+
+```python
+from ural.instagram import (
+  parse_instagram_url,
+
+  # You can also import the named tuples if you need them
+  InstagramPost,
+  InstagramUser
+)
+
+parse_instagram_url('https://www.instagram.com/martin_dupont/p/BxKRx5CHn5i/')
+>>> InstagramPost(id='BxKRx5CHn5i', name='martin_dupont')
+
+parse_instagram_url('https://lemonde.fr')
+>>> None
+
+parse_instagram_url('https://www.instagram.com/p/BxKRx5-Hn5i/')
+>>> InstagramPost(id='BxKRx5-Hn5i', name=None)
+
+parse_instagram_url('https://www.instagram.com/martin_dupont')
+>>> InstagramUser(name='martin_dupont')
+```
+
+*Arguments*
+
+* **url** *str*: Instagram url to parse.
 
 ---
 
