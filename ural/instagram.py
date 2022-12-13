@@ -13,9 +13,7 @@ from ural.patterns import DOMAIN_TEMPLATE
 INSTAGRAM_POST_SHORTCODE_RE = re.compile(r"^[a-zA-Z0-9_\-]+$")
 INSTAGRAM_USERNAME_RE = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 INSTAGRAM_DOMAIN_RE = re.compile(r"instagram.com$", re.I)
-INSTAGRAM_URL_RE = re.compile(
-    DOMAIN_TEMPLATE % r"(?:[^.]+\.)*instagram.com", re.I
-)
+INSTAGRAM_URL_RE = re.compile(DOMAIN_TEMPLATE % r"(?:[^.]+\.)*instagram.com", re.I)
 
 InstagramUser = namedtuple("InstagramUser", ["name"])
 InstagramPost = namedtuple("InstagramPost", ["id", "name"])
@@ -69,10 +67,14 @@ def parse_instagram_url(url):
                 return InstagramPost(id=path[1], name=None)
 
             return
-        
+
         elif is_instagram_username(path[0]):
 
-            if len(path) >= 3 and path[1] == "p" and is_instagram_post_shortcode(path[2]):
+            if (
+                len(path) >= 3
+                and path[1] == "p"
+                and is_instagram_post_shortcode(path[2])
+            ):
                 return InstagramPost(id=path[2], name=path[0])
 
             return InstagramUser(name=path[0])

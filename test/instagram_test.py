@@ -1,3 +1,4 @@
+# coding: utf-8
 # =============================================================================
 # Ural Instagram Unit Tests
 # =============================================================================
@@ -15,12 +16,15 @@ IS_TESTS = [
     ("https://youtube.com", False),
     ("http://www.lemonde.fr", False),
     ("https://www.instagram.com/p/BxKRx5CHn5i/", True),
-    ("https://www.instagram.com/p/BxKRx5CHn5i/?utm_source=ig_share_sheet&igshid=znsinsart176", True),
+    (
+        "https://www.instagram.com/p/BxKRx5CHn5i/?utm_source=ig_share_sheet&igshid=znsinsart176",
+        True,
+    ),
     ("https://www.instagram.com/p/BxKRx5-Hn5i/", True),
     ("https://www.instagram.com/martin/p/BxKRx5C_n5i/", True),
     ("https://www.instagram.com/martin_dupont/p/BxKRx5CHn5i/", True),
     ("https://www.instagram.com/martin", True),
-    ("https://www.instagram.com/martin_dupont/", True)
+    ("https://www.instagram.com/martin_dupont/", True),
 ]
 
 PARSE_TESTS = [
@@ -87,10 +91,6 @@ class TestInstagram(object):
 
     def test_extract_username_from_instagram_url(self):
         for url, result, _ in PARSE_TESTS:
-            extract_result = (
-                None
-                if result is None
-                else result.name
-            )
+            extract_result = None if result is None else result.name
 
             assert extract_username_from_instagram_url(url) == extract_result
