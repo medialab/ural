@@ -179,6 +179,7 @@ NESTED_NEXT_V_RE = re.compile(r"next%3D%252Fwatch%253Fv%253D([^%&]+)", re.I)
 FRAGMENT_V_RE = re.compile(
     r"^(?:%2F|/)watch(?:%3F|\?)v(?:%3D|=)([a-zA-Z0-9_-]{11})", re.I
 )
+QUERY_LIST_RE = re.compile(QUERY_VALUE_TEMPLATE % r"list", re.I)
 
 YOUTUBE_VIDEO_URL_TEMPLATE = "https://www.youtube.com/watch?v=%s"
 YOUTUBE_USER_URL_TEMPLATE = "https://www.youtube.com/user/%s"
@@ -204,7 +205,7 @@ YOUTUBE_CHANNEL_NAME_BLACKLIST = {
     "t",
 }
 
-YoutubeVideo = namedtuple("YoutubeVideo", ["id"])
+YoutubeVideo = namedtuple("YoutubeVideo", ["id", "playlist"])
 YoutubeUser = namedtuple("YoutubeUser", ["id", "name"])
 YoutubeChannel = namedtuple("YoutubeChannel", ["id", "name"])
 
@@ -254,8 +255,11 @@ def parse_youtube_url(url, fix_common_mistakes=True):
     # Continuation urls
     m = NEXT_V_RE.search(url) or NESTED_NEXT_V_RE.search(url)
 
+    mlist_query = QUERY_LIST_RE.search(url)
+    list_query = mlist_query.group(1) if mlist_query else None
+
     if m:
-        return YoutubeVideo(id=m.group(1))
+        return YoutubeVideo(id=m.group(1), playlist=list_query)
 
     # Parsing
     parsed = safe_urlsplit(url)
@@ -277,7 +281,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if not is_youtube_video_id(v):
                 return
 
-            return YoutubeVideo(id=v)
+            return YoutubeVideo(id=v, playlist=list_query)
 
         return
 
@@ -291,7 +295,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if not is_youtube_video_id(v):
                 return
 
-            return YoutubeVideo(id=v)
+            return YoutubeVideo(id=v, playlist=list_query)
 
     # Typical video url
     if path == "/watch":
@@ -306,7 +310,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if not is_youtube_video_id(v):
                 return
 
-            return YoutubeVideo(id=v)
+            return YoutubeVideo(id=v, playlist=list_query)
 
     # Video file
     elif (
@@ -322,7 +326,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
         if not is_youtube_video_id(v):
             return
 
-        return YoutubeVideo(id=v)
+        return YoutubeVideo(id=v, playlist=list_query)
 
     # Typical user url
     elif path.startswith("/user/"):
@@ -389,7 +393,12 @@ def normalize_youtube_url(url):
         return url
 
     if isinstance(parsed, YoutubeVideo):
-        return YOUTUBE_VIDEO_URL_TEMPLATE % parsed.id
+        url = YOUTUBE_VIDEO_URL_TEMPLATE % parsed.id
+
+        if parsed.playlist:
+            return url + "&list=%s" % parsed.playlist
+
+        return url
 
     if isinstance(parsed, YoutubeUser):
         return YOUTUBE_USER_URL_TEMPLATE % parsed.name

@@ -165,6 +165,27 @@ TESTS = [
         "techcrunch.com/2021/03/03/1-3m-in-grants-go-towards-making-the-webs-open-source-infrastructure-more-equitable",
     ),
     ("http://sixteen.xn--ii", "sixteen.xn--ii"),
+    (
+        "https://youtube.com/c/28minutes?cbrd=1&ucbcb=1",
+        "youtube.com/c/28minutes"
+    ),
+    (
+        "https://youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg?cbrd=1&ucbcb=1",
+        "youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg"
+    ),
+    (
+        "https://youtube.com/watch?si=ELPmzJkLTLju2KnD5oyZMQ&v=Q5p-ZrwIC-0",
+        "youtube.com/watch?v=Q5p-ZrwIC-0"
+    ),
+    (
+        "https://youtube.com/watch?ab_channel=matthieu&v=irmd-7xeocA",
+        "youtube.com/watch?v=irmd-7xeocA",
+
+    ),
+    (
+        "https://youtube.com/watch?list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY&v=cTQjoHBhX4o",
+        "youtube.com/watch?list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY&v=cTQjoHBhX4o",
+    )
 ]
 
 

@@ -76,6 +76,7 @@ IRRELEVANT_QUERY_COMBOS = {
 PER_DOMAIN_QUERY_FILTERS = [
     ("twitter.com", lambda k, v: k == "s"),
     ("facebook.com", lambda k, v: k == "_rdc" or k == "_rdr"),
+    ("youtube.com", lambda k, v: k=="t" or k=="si" or k=="cbrd" or k=="ucbcb" or k=="ab_channel"),
 ]
 
 LANG_QUERY_KEYS = ("gl", "hl")
