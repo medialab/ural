@@ -188,7 +188,7 @@ YOUTUBE_CHANNEL_ID_URL_TEMPLATE = "https://www.youtube.com/channel/%s"
 # NOTE: it's possible this does not work with all channels...
 # Sometimes I think you need 'https://www.youtube.com/%s' instead
 # but there is no way to infer this...
-YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE = "https://www.youtube.com/c/%s"
+YOUTUBE_CHANNEL_NAME_URL_TEMPLATE = "https://www.youtube.com/%s"
 
 YOUTUBE_CHANNEL_NAME_BLACKLIST = {
     "about",
@@ -407,6 +407,6 @@ def normalize_youtube_url(url):
         if parsed.id is not None:
             return YOUTUBE_CHANNEL_ID_URL_TEMPLATE % parsed.id
 
-        return YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE % parsed.name
+        return YOUTUBE_CHANNEL_NAME_URL_TEMPLATE % parsed.name
 
     raise TypeError("normalize_youtube_url: impossible path reached")

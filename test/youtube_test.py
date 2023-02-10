@@ -45,7 +45,7 @@ PARSE_TESTS = [
     (
         "https://www.youtube.com/taranisnews",
         YoutubeChannel(id=None, name="taranisnews"),
-        "https://www.youtube.com/c/taranisnews",
+        "https://www.youtube.com/taranisnews",
     ),
     ("https://www.youtube.com/watch", None, "https://www.youtube.com/watch"),
     (
@@ -61,7 +61,7 @@ PARSE_TESTS = [
     (
         "http://www.youtube.com/c/NadineMoranoOfficiel",
         YoutubeChannel(id=None, name="NadineMoranoOfficiel"),
-        "https://www.youtube.com/c/NadineMoranoOfficiel",
+        "https://www.youtube.com/NadineMoranoOfficiel",
     ),
     (
         "http://www.youtube.com/embed/sC4l-LvAH_c?autoplay=1",
@@ -91,7 +91,7 @@ PARSE_TESTS = [
     (
         "https://www.youtube.com/PressecitronHD/",
         YoutubeChannel(id=None, name="PressecitronHD"),
-        "https://www.youtube.com/c/PressecitronHD",
+        "https://www.youtube.com/PressecitronHD",
     ),
     (
         "http://www.youtube.com/profile_redirector/102339060754169863014",
@@ -168,14 +168,14 @@ PARSE_TESTS = [
     (
         "https://youtube.com/c",
         YoutubeChannel(id=None, name="c"),
-        "https://www.youtube.com/c/c",
+        "https://www.youtube.com/c",
     ),
     ("https://youtube.com/c/", None, "https://youtube.com/c/"),
     ("https://youtube.com/user/", None, "https://youtube.com/user/"),
     (
         "https://youtube.com/c/28minutes?cbrd=1&ucbcb=1",
         YoutubeChannel(id=None, name="28minutes"),
-        "https://www.youtube.com/c/28minutes"
+        "https://www.youtube.com/28minutes"
     ),
     (
         "https://youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg?cbrd=1&ucbcb=1",
