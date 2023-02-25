@@ -7,7 +7,7 @@
 import re
 from collections import namedtuple
 
-from ural.hostname_trie_set import HostnameTrieSet
+from ural.classes.hostname_trie_set import HostnameTrieSet
 from ural.utils import urlpathsplit, safe_urlsplit
 from ural.infer_redirection import infer_redirection
 from ural.patterns import QUERY_VALUE_TEMPLATE

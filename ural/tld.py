@@ -37,14 +37,17 @@ except ImportError:
     from urllib2 import urlopen
 
 import ural.tld_data as tld_data
-from ural.classes.tld_trie import TLDTrie
+from ural.classes.suffix_trie import SuffixTrie
+from ural.classes.hostname_trie_set import HostnameTrieSet
 
 MOZILLA_PUBLIC_SUFFIX_LIST = "https://publicsuffix.org/list/public_suffix_list.dat"
+IANA_TLD_URL = "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
 
-TLD_TRIE = TLDTrie()
+SUFFIX_TRIE = SuffixTrie()
+TLD_TRIE = HostnameTrieSet()
 
 
-def download_suffix_list(url):
+def download(url):
     response = urlopen(url)
 
     try:
@@ -90,12 +93,56 @@ def get_suffix_lists(txt):
     return public_list, private_list
 
 
-def upgrade_suffix_list(url=MOZILLA_PUBLIC_SUFFIX_LIST):
-    txt = download_suffix_list(url)
+def parse_tlds(txt):
+    tlds = []
+
+    for line in txt.split("\n"):
+        line = line.strip()
+
+        if not line or line.startswith("#"):
+            continue
+
+        tlds.append(line.lower())
+
+    return tlds
+
+
+def refresh():
+    global SUFFIX_TRIE
+    global TLD_TRIE
+
+    SUFFIX_TRIE = SuffixTrie()
+
+    for suffix in tld_data.PUBLIC_SUFFIXES:
+        SUFFIX_TRIE.add(suffix, private=False)
+
+    for suffix in tld_data.PRIVATE_SUFFIXES:
+        SUFFIX_TRIE.add(suffix, private=True)
+
+    for tld in tld_data.TLDS:
+        TLD_TRIE.add(tld)
+
+
+refresh()
+
+
+def upgrade(transient=False):
+    mozilla_txt = download(MOZILLA_PUBLIC_SUFFIX_LIST)
+    iana_txt = download(IANA_TLD_URL)
 
     output_path = join(dirname(__file__), "tld_data.py")
 
-    public, private = get_suffix_lists(txt)
+    public, private = get_suffix_lists(mozilla_txt)
+    tlds = parse_tlds(iana_txt)
+
+    tld_data.PUBLIC_SUFFIXES = public
+    tld_data.PRIVATE_SUFFIXES = private
+    tld_data.TLDS = tlds
+
+    refresh()
+
+    if transient:
+        return
 
     with codecs.open(output_path, "w", encoding="utf-8") as f:
         f.write("# coding: utf-8\n")
@@ -107,19 +154,12 @@ def upgrade_suffix_list(url=MOZILLA_PUBLIC_SUFFIX_LIST):
         f.write("PRIVATE_SUFFIXES = [\n")
         for suffix in private:
             f.write('  "%s",\n' % suffix)
+        f.write("]\n\n")
+        f.write("TLDS = [\n")
+        for tld in tlds:
+            f.write('  "%s",\n' % tld)
         f.write("]\n")
 
-
-def hydrate_tld_trie():
-    global TLD_TRIE
-
-    TLD_TRIE = TLDTrie()
-
-    for private, tld in tld_data.SUFFIXES:
-        TLD_TRIE.add(tld, private=private)
-
-
-hydrate_tld_trie()
 
 # TODO: is_tld, get_tld, get_domain_name
 # TODO: exception, refresh_tld_trie, hostname tokenization

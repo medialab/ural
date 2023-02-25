@@ -1,2 +1,2 @@
-class TLDTrie(object):
+class SuffixTrie(object):
     def add(self, tld: str, private: bool = ...) -> None: ...

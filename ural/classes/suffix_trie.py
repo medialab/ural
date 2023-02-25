@@ -2,7 +2,7 @@ from ural.utils import safe_urlsplit
 from ural.has_special_host import is_special_host
 
 
-class TLDTrieNode(object):
+class SuffixTrieNode(object):
     __slots__ = ("children", "exception", "leaf", "private")
 
     def __init__(self):
@@ -12,9 +12,9 @@ class TLDTrieNode(object):
         self.private = False
 
 
-class TLDTrie(object):
+class SuffixTrie(object):
     def __init__(self):
-        self.__root = TLDTrieNode()
+        self.__root = SuffixTrieNode()
 
     def add(self, tld, private=False):
         node = self.__root
@@ -30,12 +30,12 @@ class TLDTrie(object):
             # when strictly necessary
             if node.children is None:
                 node.children = {}
-                child = TLDTrieNode()
+                child = SuffixTrieNode()
                 node.children[part] = child
             else:
                 child = node.children.get(part)
                 if child is None:
-                    child = TLDTrieNode()
+                    child = SuffixTrieNode()
                     node.children[part] = child
 
             node = child

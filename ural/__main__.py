@@ -12,6 +12,6 @@ _ = subparsers.add_parser(
 cli_args = parser.parse_args()
 
 if cli_args.action == "upgrade":
-    from ural.tld import upgrade_suffix_list
+    from ural.tld import upgrade
 
-    upgrade_suffix_list()
+    upgrade()

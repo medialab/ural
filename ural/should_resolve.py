@@ -5,7 +5,7 @@
 #
 # Function testing whether the given url looks like something we should resolve.
 #
-from ural.hostname_trie_set import HostnameTrieSet
+from ural.classes.hostname_trie_set import HostnameTrieSet
 from ural.is_shortened_url import SHORTENER_DOMAINS, is_l_shortened_domain
 from ural.is_homepage import is_homepage
 from ural.utils import safe_urlsplit

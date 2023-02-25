@@ -7,7 +7,7 @@
 #
 import re
 
-from ural.hostname_trie_set import HostnameTrieSet
+from ural.classes.hostname_trie_set import HostnameTrieSet
 from ural.is_homepage import is_homepage
 from ural.utils import safe_urlsplit
 
