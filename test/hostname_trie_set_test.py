@@ -48,16 +48,16 @@ class TestHostnameTrieSet(object):
 
         assert len(trie) == 5
 
-        assert trie.match('xn--tlrama-bvab.fr')
-        assert trie.match('télérama.fr')
-        assert trie.match('https://business.lemonde.fr/article1.html')
-        assert trie.match('https://lemonde.fr/article1.html')
-        assert trie.match('https://social.lemonde.fr/article1.html')
+        assert trie.match("xn--tlrama-bvab.fr")
+        assert trie.match("télérama.fr")
+        assert trie.match("https://business.lemonde.fr/article1.html")
+        assert trie.match("https://lemonde.fr/article1.html")
+        assert trie.match("https://social.lemonde.fr/article1.html")
 
         assert set(trie) == {
-            'lemonde.fr',
-            'feedproxy.google.com',
-            'lacamargue.net',
-            'télérama.fr',
-            '2001:4860:0:2001::68'
+            "lemonde.fr",
+            "feedproxy.google.com",
+            "lacamargue.net",
+            "télérama.fr",
+            "2001:4860:0:2001::68",
         }
