@@ -17,6 +17,6 @@ setup(
     python_requires=">=2.7",
     packages=find_packages(exclude=["scripts", "test"]),
     package_data={"docs": ["README.md"]},
-    install_requires=["pycountry>=18.12.8,<19", "tld>=0.12.1,<1"],
+    install_requires=["pycountry>=18.12.8,<23", "tld>=0.12.1,<1"],
     zip_safe=True,
 )

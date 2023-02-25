@@ -1,12 +1,13 @@
+# Dependencies
+pycountry>=18.12.8,<23
+tld==0.12.7
+
 # Dev Dependencies
 black==22.8.0; python_version >= '3.6'
 importchecker==2.0
 more-itertools<8.6
-pytest==3.5.1
+pytest
+tox
 tqdm==4.31.1
 twine==1.11.0
 wheel
-
-# Dependencies
-pycountry>=18.12.8,<19
-tld==0.12.1
