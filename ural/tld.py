@@ -182,7 +182,11 @@ def get_domain_name(url):
 
 
 def has_valid_suffix(url):
-    return SUFFIX_TRIE.extract_domain_name(url) is not None
+    return SUFFIX_TRIE.has_valid_domain_name(url)
+
+
+def split_suffix(url):
+    return SUFFIX_TRIE.split(url)
 
 
 # TODO: is_tld, get_tld

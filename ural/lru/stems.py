@@ -5,9 +5,9 @@
 # A function returning the url parts in hierarchical order.
 #
 import re
-from tld.utils import process_url
 
 from ural.utils import urlsplit
+from ural.tld import split_suffix
 from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
 from ural.has_special_host import is_special_host
@@ -45,23 +45,18 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
     should_process_normally = not tld_aware
 
     if tld_aware:
-        domain_parts, non_zero_i, _ = process_url(
-            url=parsed_url,
-            fail_silently=True,
-            fix_protocol=False,
-            search_public=True,
-            search_private=True,
-        )
+        split_result = split_suffix(parsed_url)
 
-        if domain_parts is None:
+        if split_result is None:
             should_process_normally = True
 
         else:
-            tld = ".".join(domain_parts[non_zero_i:])
-            lru.append("h:" + tld)
+            domain, suffix = split_result
+            lru.append("h:" + suffix)
 
-            for element in reversed(domain_parts[:non_zero_i]):
-                lru.append("h:" + element)
+            if domain:
+                for element in reversed(domain.split(".")):
+                    lru.append("h:" + element)
 
     if should_process_normally:
         if is_special_host(netloc[0]):

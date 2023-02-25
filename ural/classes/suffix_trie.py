@@ -116,7 +116,15 @@ class SuffixTrie(object):
         if offset < 0:
             return "", parts
 
-        return parts[:offset], parts[offset:]
+        return ".".join(parts[:offset]), ".".join(parts[offset:])
+
+    def has_valid_domain_name(self, url):
+        result = self.__walk(url)
+
+        if result is None:
+            return False
+
+        return True
 
     def extract_suffix(self, url):
         result = self.__walk(url)
