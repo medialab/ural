@@ -18,5 +18,6 @@ setup(
     packages=find_packages(exclude=["scripts", "test"]),
     package_data={"docs": ["README.md"]},
     install_requires=["pycountry>=18.12.8,<23", "tld>=0.12.1,<1"],
+    extras_require={":python_version<'3.8'": ["typing_extensions"]},
     zip_safe=True,
 )
