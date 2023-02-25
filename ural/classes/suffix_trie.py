@@ -16,11 +16,11 @@ class SuffixTrie(object):
     def __init__(self):
         self.__root = SuffixTrieNode()
 
-    def add(self, tld, private=False):
+    def add(self, suffix, private=False):
         node = self.__root
 
-        # Iterating over the tld parts in reverse order
-        for part in reversed(tld.split(".")):
+        # Iterating over the suffix parts in reverse order
+        for part in reversed(suffix.split(".")):
 
             if part.startswith("!"):
                 node.exception = part[1:]
@@ -45,7 +45,7 @@ class SuffixTrie(object):
         if private:
             node.private = True
 
-    def __match(self, url):
+    def __walk(self, url):
         parsed = safe_urlsplit(url)
 
         if is_special_host(parsed.hostname):
@@ -55,7 +55,7 @@ class SuffixTrie(object):
         parts = hostname.split(".")
 
         current_length = 0
-        tld_length = 0
+        suffix_length = 0
         match = None
         l = len(parts)
 
@@ -82,21 +82,68 @@ class SuffixTrie(object):
             if child is None:
                 break
 
-            # Else we move deeper and increment our tld offset
+            # Else we move deeper and increment our suffix offset
             current_length += 1
             node = child
 
             if node.leaf:
-                tld_length = current_length
+                suffix_length = current_length
                 match = node
 
         # Checking the node we finished on is a leaf and is one we allow
         if match is None or not match.leaf:
             return None
 
-        if l == tld_length:
-            non_zero_i = -1  # hostname = tld
+        # hostname = suffix ?
+        if l == suffix_length:
+            offset = -1
         else:
-            non_zero_i = max(1, l - tld_length)
+            offset = max(1, l - suffix_length)
 
-        return parts, non_zero_i, parsed
+        assert offset > 0
+
+        return match, parts, offset
+
+    def split(self, url):
+        result = self.__walk(url)
+
+        if result is None:
+            return None
+
+        _, parts, offset = result
+
+        # hostname = suffix
+        if offset < 0:
+            return "", parts
+
+        return parts[:offset], parts[offset:]
+
+    def extract_suffix(self, url):
+        result = self.__walk(url)
+
+        if result is None:
+            return None
+
+        # TODO: we can restrict to public or private here easily
+        _, parts, offset = result
+
+        # hostname = suffix
+        if offset < 0:
+            return ".".join(parts)
+
+        return ".".join(parts[offset:])
+
+    def extract_domain_name(self, url):
+        result = self.__walk(url)
+
+        if result is None:
+            return None
+
+        # TODO: we can restrict to public or private here easily
+        _, parts, offset = result
+
+        # hostname = suffix
+        if offset < 0:
+            return ".".join(parts)
+
+        return ".".join(parts[offset - 1 :])

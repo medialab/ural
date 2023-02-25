@@ -1,16 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # =============================================================================
-# Ural Domain Name Getter Unit Tests
+# Ural Hostname Name Getter Unit Tests
 # =============================================================================
-from ural import get_domain_name, get_hostname
-from ural.get_domain_name import get_hostname_prefixes
-
-DOMAIN_TESTS = [
-    ("http://facebook.com/whatever", "facebook.com"),
-    ("facebook.com/whatever", "facebook.com"),
-    ("notatld.blablablou", None),
-]
+from ural.get_hostname import get_hostname, get_hostname_prefixes
 
 SUBDOMAIN_TESTS = [
     ("http://www.facebook.com", "www.facebook.com"),
@@ -18,11 +11,7 @@ SUBDOMAIN_TESTS = [
 ]
 
 
-class TestGetDomainName(object):
-    def test_get_domain_name(self):
-        for url, domain in DOMAIN_TESTS:
-            assert get_domain_name(url) == domain
-
+class TestGetHostname(object):
     def test_get_hostname(self):
         for url, hostname in SUBDOMAIN_TESTS:
             assert get_hostname(url) == hostname

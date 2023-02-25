@@ -166,5 +166,24 @@ def upgrade(transient=False):
         raise TLDUpgradeError("Could not upgrade TLD lists", reason=reason)
 
 
-# TODO: is_tld, get_tld, get_domain_name
+def get_domain_name(url):
+    """
+    Function returning the given url's domain name as a string. This function
+    is of course TLD aware.
+
+    Args:
+        url (string): Target url.
+
+    Returns:
+        str: the url's domain name.
+
+    """
+    return SUFFIX_TRIE.extract_domain_name(url)
+
+
+def has_valid_suffix(url):
+    return SUFFIX_TRIE.extract_domain_name(url) is not None
+
+
+# TODO: is_tld, get_tld
 # TODO: hostname tokenization

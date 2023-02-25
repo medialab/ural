@@ -60,7 +60,7 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
             tld = ".".join(domain_parts[non_zero_i:])
             lru.append("h:" + tld)
 
-            for element in reversed(domain_parts[0:non_zero_i]):
+            for element in reversed(domain_parts[:non_zero_i]):
                 lru.append("h:" + element)
 
     if should_process_normally:
