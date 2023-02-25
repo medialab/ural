@@ -36,7 +36,7 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
-import ural.tld_list as tld_list
+import ural.tld_data as tld_data
 from ural.classes.tld_trie import TLDTrie
 
 MOZILLA_PUBLIC_SUFFIX_LIST = "https://publicsuffix.org/list/public_suffix_list.dat"
@@ -77,19 +77,36 @@ def suffix_list_iter(txt):
         yield in_private_section, line
 
 
+def get_suffix_lists(txt):
+    public_list = []
+    private_list = []
+
+    for private, suffix in suffix_list_iter(txt):
+        if private:
+            private_list.append(suffix)
+        else:
+            public_list.append(suffix)
+
+    return public_list, private_list
+
+
 def upgrade_suffix_list(url=MOZILLA_PUBLIC_SUFFIX_LIST):
     txt = download_suffix_list(url)
 
-    output_path = join(dirname(__file__), "tld_list.py")
+    output_path = join(dirname(__file__), "tld_data.py")
+
+    public, private = get_suffix_lists(txt)
 
     with codecs.open(output_path, "w", encoding="utf-8") as f:
         f.write("# coding: utf-8\n")
         f.write("from __future__ import unicode_literals\n\n")
-        f.write("SUFFIXES = [\n")
-
-        for private, tld in suffix_list_iter(txt):
-            f.write('  (%s, "%s"),\n' % (1 if private else 0, tld))
-
+        f.write("PUBLIC_SUFFIXES = [\n")
+        for suffix in public:
+            f.write('  "%s",\n' % suffix)
+        f.write("]\n\n")
+        f.write("PRIVATE_SUFFIXES = [\n")
+        for suffix in private:
+            f.write('  "%s",\n' % suffix)
         f.write("]\n")
 
 
@@ -98,7 +115,7 @@ def hydrate_tld_trie():
 
     TLD_TRIE = TLDTrie()
 
-    for private, tld in tld_list.SUFFIXES:
+    for private, tld in tld_data.SUFFIXES:
         TLD_TRIE.add(tld, private=private)
 
 
