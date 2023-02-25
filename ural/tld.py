@@ -39,6 +39,7 @@ except ImportError:
 import ural.tld_data as tld_data
 from ural.classes.suffix_trie import SuffixTrie
 from ural.classes.hostname_trie_set import HostnameTrieSet
+from ural.exceptions import TLDUpgradeError
 
 MOZILLA_PUBLIC_SUFFIX_LIST = "https://publicsuffix.org/list/public_suffix_list.dat"
 IANA_TLD_URL = "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
@@ -127,39 +128,43 @@ refresh()
 
 
 def upgrade(transient=False):
-    mozilla_txt = download(MOZILLA_PUBLIC_SUFFIX_LIST)
-    iana_txt = download(IANA_TLD_URL)
+    try:
+        mozilla_txt = download(MOZILLA_PUBLIC_SUFFIX_LIST)
+        iana_txt = download(IANA_TLD_URL)
 
-    output_path = join(dirname(__file__), "tld_data.py")
+        output_path = join(dirname(__file__), "tld_data.py")
 
-    public, private = get_suffix_lists(mozilla_txt)
-    tlds = parse_tlds(iana_txt)
+        public, private = get_suffix_lists(mozilla_txt)
+        tlds = parse_tlds(iana_txt)
 
-    tld_data.PUBLIC_SUFFIXES = public
-    tld_data.PRIVATE_SUFFIXES = private
-    tld_data.TLDS = tlds
+        tld_data.PUBLIC_SUFFIXES = public
+        tld_data.PRIVATE_SUFFIXES = private
+        tld_data.TLDS = tlds
 
-    refresh()
+        refresh()
 
-    if transient:
-        return
+        if transient:
+            return
 
-    with codecs.open(output_path, "w", encoding="utf-8") as f:
-        f.write("# coding: utf-8\n")
-        f.write("from __future__ import unicode_literals\n\n")
-        f.write("PUBLIC_SUFFIXES = [\n")
-        for suffix in public:
-            f.write('  "%s",\n' % suffix)
-        f.write("]\n\n")
-        f.write("PRIVATE_SUFFIXES = [\n")
-        for suffix in private:
-            f.write('  "%s",\n' % suffix)
-        f.write("]\n\n")
-        f.write("TLDS = [\n")
-        for tld in tlds:
-            f.write('  "%s",\n' % tld)
-        f.write("]\n")
+        with codecs.open(output_path, "w", encoding="utf-8") as f:
+            f.write("# coding: utf-8\n")
+            f.write("from __future__ import unicode_literals\n\n")
+            f.write("PUBLIC_SUFFIXES = [\n")
+            for suffix in public:
+                f.write('  "%s",\n' % suffix)
+            f.write("]\n\n")
+            f.write("PRIVATE_SUFFIXES = [\n")
+            for suffix in private:
+                f.write('  "%s",\n' % suffix)
+            f.write("]\n\n")
+            f.write("TLDS = [\n")
+            for tld in tlds:
+                f.write('  "%s",\n' % tld)
+            f.write("]\n")
+
+    except Exception as reason:
+        raise TLDUpgradeError("Could not upgrade TLD lists", reason=reason)
 
 
 # TODO: is_tld, get_tld, get_domain_name
-# TODO: exception, refresh_tld_trie, hostname tokenization
+# TODO: hostname tokenization
