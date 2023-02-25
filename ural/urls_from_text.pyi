@@ -1,0 +1,3 @@
+from typing import Iterator
+
+def urls_from_text(html: str) -> Iterator[str]: ...

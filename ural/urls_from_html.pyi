@@ -1,0 +1,3 @@
+from typing import Optional, Iterator
+
+def urls_from_html(html: str, base_url: Optional[str] = ...) -> Iterator[str]: ...
