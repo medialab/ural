@@ -56,29 +56,6 @@ def normalize_screen_name(username):
     return username.lower()
 
 
-def extract_screen_name_from_twitter_url(url):
-    """
-    Function returning the screen_name from a given Twitter url.
-
-    Args:
-        url (str) : Url from which we extract the screen_name if found.
-
-    Returns:
-        str : screen_name if the url is a valid twitter url, None otherwise.
-
-    """
-
-    parsed_twitter_url = parse_twitter_url(url)
-
-    if isinstance(parsed_twitter_url, TwitterUser):
-        return parsed_twitter_url.screen_name
-
-    if isinstance(parsed_twitter_url, TwitterTweet):
-        return parsed_twitter_url.user_screen_name
-
-    return None
-
-
 def parse_twitter_url(url):
     """
     Function returning a parsed result from a given Twitter url.
@@ -117,5 +94,28 @@ def parse_twitter_url(url):
         path = re.sub(TWITTER_FRAGMENT_ROUTING_RE, "", parsed.fragment)
 
         return parse_twitter_url("twitter.com/" + path)
+
+    return None
+
+
+def extract_screen_name_from_twitter_url(url):
+    """
+    Function returning the screen_name from a given Twitter url.
+
+    Args:
+        url (str) : Url from which we extract the screen_name if found.
+
+    Returns:
+        str : screen_name if the url is a valid twitter url, None otherwise.
+
+    """
+
+    parsed_twitter_url = parse_twitter_url(url)
+
+    if isinstance(parsed_twitter_url, TwitterUser):
+        return parsed_twitter_url.screen_name
+
+    if isinstance(parsed_twitter_url, TwitterTweet):
+        return parsed_twitter_url.user_screen_name
 
     return None
