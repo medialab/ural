@@ -1,6 +1,5 @@
 # Dependencies
-pycountry>=18.12.8,<23
-typing_extensions
+typing_extensions; python_version < '3.8'
 
 # Dev Dependencies
 black==22.8.0; python_version >= '3.6'

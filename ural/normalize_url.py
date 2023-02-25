@@ -6,9 +6,9 @@
 # non-discriminant parts of a URL.
 #
 import re
-import pycountry
 from os.path import splitext
 
+from ural.data import ISO_3166_1_COUNTRIES_ALPHA_2
 from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection as resolve
 from ural.utils import (
@@ -125,12 +125,13 @@ def strip_lang_subdomains_from_netloc(netloc):
         if len(subdomain) == 5 and "-" in subdomain:
             lang, country = subdomain.split("-", 1)
             if len(lang) == 2 and len(country) == 2:
-                if pycountry.countries.get(
-                    alpha_2=lang.upper()
-                ) and pycountry.countries.get(alpha_2=country.upper()):
+                if (
+                    lang.upper() in ISO_3166_1_COUNTRIES_ALPHA_2
+                    and country.upper() in ISO_3166_1_COUNTRIES_ALPHA_2
+                ):
                     netloc = remaining_netloc
         elif len(subdomain) == 2:
-            if pycountry.countries.get(alpha_2=subdomain.upper()):
+            if subdomain.upper() in ISO_3166_1_COUNTRIES_ALPHA_2:
                 netloc = remaining_netloc
 
     return netloc
