@@ -189,15 +189,21 @@ def split_suffix(url):
     return SUFFIX_TRIE.split(url)
 
 
+def is_valid_tld(tld):
+    tld = attempt_to_decode_idna(tld.lstrip(".").lower())
+
+    return tld in TLD_SET
+
+
 def has_valid_tld(url):
     parsed = safe_urlsplit(url)
 
     if not parsed.hostname:
         return False
 
-    last_part = attempt_to_decode_idna(parsed.hostname.rsplit(".", 1)[-1].lower())
+    last_part = parsed.hostname.rsplit(".", 1)[-1]
 
-    return last_part in TLD_SET
+    return is_valid_tld(last_part)
 
 
 # TODO: is_tld, get_tld
