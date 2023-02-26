@@ -514,7 +514,8 @@ url_to_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 *Arguments*
 
 * **url** *string*: url to convert.
-* **tld_aware** *?bool*: whether to acknowledge TLDs when converting.
+* **suffix_aware** *?bool*: whether to be mindful of suffixes when converting (e.g. considering "co.uk" as a single token).
+
 ---
 
 ### lru.lru_to_url
@@ -547,7 +548,7 @@ lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 *Arguments*
 
 * **url** *string*: URL to parse.
-* **tld_aware** *?bool*: whether to acknowledge TLDs when stemming.
+* **suffix_aware** *?bool*: whether to be mindful of suffixes when converting (e.g. considering "co.uk" as a single token).
 
 ---
 
@@ -605,8 +606,8 @@ from ural.lru import LRUTrie
 
 trie = LRUTrie()
 
-# To respect tlds
-trie = LRUTrie(tld_aware=True)
+# To respect suffixes
+trie = LRUTrie(suffix_aware=True)
 ```
 
 <h4 id="lrutrie-set">#.set</h4>

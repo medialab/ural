@@ -10,8 +10,8 @@ from ural.lru.stems import lru_stems, normalized_lru_stems
 from ural.lru.trie import LRUTrie, NormalizedLRUTrie
 
 
-def url_to_lru(url, tld_aware=False):
-    return serialize_lru(lru_stems(url, tld_aware=tld_aware))
+def url_to_lru(url, suffix_aware=False):
+    return serialize_lru(lru_stems(url, suffix_aware=suffix_aware))
 
 
 def lru_to_url(lru):

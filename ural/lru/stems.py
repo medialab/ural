@@ -15,7 +15,7 @@ from ural.has_special_host import is_special_host
 PORT_SPLITTER = re.compile(r":(?![\d:]+])")
 
 
-def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
+def lru_stems_from_parsed_url(parsed_url, suffix_aware=True):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
@@ -42,9 +42,9 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
         lru.append("t:" + port)
 
     # Need to process TLD?
-    should_process_normally = not tld_aware
+    should_process_normally = not suffix_aware
 
-    if tld_aware:
+    if suffix_aware:
         split_result = split_suffix(parsed_url)
 
         if split_result is None:
@@ -88,7 +88,7 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
 
 
 # TODO: ensure_protocol
-def lru_stems(url, tld_aware=False):
+def lru_stems(url, suffix_aware=False):
     """
     Function returning the parts of the given url in the hierarchical order (lru).
 
@@ -100,10 +100,10 @@ def lru_stems(url, tld_aware=False):
     """
 
     full_url = ensure_protocol(url)
-    return lru_stems_from_parsed_url(urlsplit(full_url), tld_aware=tld_aware)
+    return lru_stems_from_parsed_url(urlsplit(full_url), suffix_aware=suffix_aware)
 
 
-def normalized_lru_stems(url, tld_aware=False, **kwargs):
+def normalized_lru_stems(url, suffix_aware=False, **kwargs):
     full_url = ensure_protocol(url)
     parsed_url = normalize_url(full_url, unsplit=False, **kwargs)
-    return lru_stems_from_parsed_url(parsed_url, tld_aware=tld_aware)
+    return lru_stems_from_parsed_url(parsed_url, suffix_aware=suffix_aware)

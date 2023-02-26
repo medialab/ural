@@ -25,9 +25,9 @@ def clean_trailing_path(stems):
 
 
 class LRUTrie(object):
-    def __init__(self, tld_aware=False):
+    def __init__(self, suffix_aware=False):
         self._trie = TrieDict()
-        self.lru_tokenizer = partial(lru_stems, tld_aware=tld_aware)
+        self.lru_tokenizer = partial(lru_stems, suffix_aware=suffix_aware)
 
     def __len__(self):
         return len(self._trie)
@@ -60,8 +60,8 @@ class LRUTrie(object):
 
 
 class NormalizedLRUTrie(LRUTrie):
-    def __init__(self, tld_aware=False, **kwargs):
+    def __init__(self, suffix_aware=False, **kwargs):
         self._trie = TrieDict()
         self.lru_tokenizer = partial(
-            normalized_lru_stems, tld_aware=tld_aware, **kwargs
+            normalized_lru_stems, suffix_aware=suffix_aware, **kwargs
         )

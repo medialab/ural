@@ -53,7 +53,7 @@ DEFAULT_TESTS = [
     ),
 ]
 
-TLD_AWARE_TESTS = [
+SUFFIX_AWARE_TESTS = [
     ("http://theguardian.co.uk", ["s:http", "h:co.uk", "h:theguardian"]),
     (
         "http://user:mdp@lemonde.co.uk",
@@ -106,6 +106,6 @@ TLD_AWARE_TESTS = [
 class TestLruStems(object):
     def test_basics(self):
         for url, result in DEFAULT_TESTS:
-            assert lru_stems(url, tld_aware=False) == result
-        for url, result in TLD_AWARE_TESTS:
-            assert lru_stems(url, tld_aware=True) == result, url
+            assert lru_stems(url, suffix_aware=False) == result
+        for url, result in SUFFIX_AWARE_TESTS:
+            assert lru_stems(url, suffix_aware=True) == result, url
