@@ -1,3 +1,32 @@
+# Reference: https://html.spec.whatwg.org/multipage/system-state.html#safelisted-scheme
+SAFELISTED_SCHEMES = {
+    "bitcoin",
+    "ftp",
+    "ftps",
+    "geo",
+    "im",
+    "irc",
+    "ircs",
+    "magnet",
+    "mailto",
+    "matrix",
+    "mms",
+    "news",
+    "nntp",
+    "openpgp4fpr",
+    "sftp",
+    "sip",
+    "sms",
+    "smsto",
+    "ssh",
+    "tel",
+    "urn",
+    "webcal",
+    "wtai",
+    "xmpp",
+}
+
+# Reference: https://en.wikipedia.org/wiki/ISO_3166-1
 ISO_3166_1_COUNTRIES_ALPHA_2 = {
     "AW",
     "AF",
