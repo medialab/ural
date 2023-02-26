@@ -204,7 +204,3 @@ def has_valid_tld(url):
     last_part = parsed.hostname.rsplit(".", 1)[-1]
 
     return is_valid_tld(last_part)
-
-
-# TODO: is_tld, get_tld
-# TODO: hostname tokenization

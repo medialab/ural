@@ -100,8 +100,6 @@ class SuffixTrie(object):
         else:
             offset = max(1, l - suffix_length)
 
-        assert offset > 0
-
         return match, parts, offset
 
     def split(self, url):
@@ -114,7 +112,7 @@ class SuffixTrie(object):
 
         # hostname = suffix
         if offset < 0:
-            return "", parts
+            return "", ".".join(parts)
 
         return ".".join(parts[:offset]), ".".join(parts[offset:])
 
