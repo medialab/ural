@@ -22,14 +22,18 @@ pip install ural
 * [get_hostname](#get_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
 * [has_special_host](#has_special_host)
+* [has_valid_suffix](#has_valid_suffix)
+* [is_valid_tld](#is_valid_tld)
 * [infer_redirection](#infer_redirection)
 * [is_homepage](#is_homepage)
 * [is_shortened_url](#is_shortened_url)
 * [is_special_host](#is_special_host)
 * [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
+* [is_valid_tld](#is_valid_tld)
 * [normalize_url](#normalize_url)
 * [should_resolve](#should_resolve)
+* [split_suffix](#split_suffix)
 * [strip_protocol](#strip_protocol)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
@@ -203,6 +207,46 @@ has_special_host('http://youtube.com')
 
 ---
 
+### has_valid_suffix
+
+Function returning whether the given url has a valid suffix as per [Mozzila's Public Suffix List](https://wiki.mozilla.org/Public_Suffix_List).
+
+```python
+from ural import has_valid_suffix
+
+has_valid_suffix('http://lemonde.fr')
+>>> True
+
+has_valid_suffix('http://lemonde.doesnotexist')
+>>> False
+
+# Also works with hostnames
+has_valid_suffix('lemonde.fr')
+>>> True
+```
+
+---
+
+### has_valid_tld
+
+Function returning whether the given url has a valid Top Level Domain (TLD) as per [IANA's list](https://data.iana.org/TLD/tlds-alpha-by-domain.txt).
+
+```python
+from ural import has_valid_tld
+
+has_valid_tld('http://lemonde.fr')
+>>> True
+
+has_valid_tld('http://lemonde.doesnotexist')
+>>> False
+
+# Also works with hostnames
+has_valid_tld('lemonde.fr')
+>>> True
+```
+
+---
+
 ### infer_redirection
 
 Function attempting to find obvious clues in the given url that it is in fact a redirection and resolving the redirection automatically without firing any HTTP request. If nothing is found, the given url will be returned as-is.
@@ -321,6 +365,25 @@ is_url('lemonde.falsetld/whatever.html', tld_aware=True)
 
 ---
 
+### is_valid_tld
+
+Function returning whether the given Top Level Domain (TLD) is valid as per [IANA's list](https://data.iana.org/TLD/tlds-alpha-by-domain.txt).
+
+```python
+from ural import is_valid_tld
+
+is_valid_tld('.fr')
+>>> True
+
+is_valid_tld('com')
+>>> True
+
+is_valid_tld('.doesnotexist')
+>>> False
+```
+
+---
+
 ### normalize_url
 
 Function normalizing the given url by stripping it of usually non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -371,6 +434,25 @@ should_resolve('http://bit.ly/1sNZMwL')
 
 should_resolve('https://doi.org/10.4000/vertigo.26405')
 >>> True
+```
+
+---
+
+### split_suffix
+
+Function splitting a hostname or a url's hostname into the domain part and the suffix part (while respecting [Mozzila's Public Suffix List](https://wiki.mozilla.org/Public_Suffix_List)).
+
+```python
+from ural import split_suffix
+
+split_suffix('http://www.bbc.co.uk/article.html')
+>>> ('www.bbc', 'co.uk')
+
+split_suffix('http://www.bbc.idontexist')
+>>> None
+
+split_suffix('lemonde.fr')
+>>> ('lemonde', 'fr')
 ```
 
 ---
