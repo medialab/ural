@@ -204,6 +204,7 @@ def normalize_url(
         has_protocol = bool(url.scheme)
         splitted = url
     else:
+        url = url.strip()
         has_protocol = PROTOCOL_RE.match(url)
 
         # Ensuring scheme so parsing works correctly
@@ -359,6 +360,8 @@ def get_normalized_hostname(
     if isinstance(url, SplitResult):
         splitted = url
     else:
+        url = url.strip()
+
         try:
             splitted = urlsplit(ensure_protocol(url))
         except ValueError:

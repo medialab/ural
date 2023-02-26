@@ -165,6 +165,7 @@ TESTS = [
         "techcrunch.com/2021/03/03/1-3m-in-grants-go-towards-making-the-webs-open-source-infrastructure-more-equitable",
     ),
     ("http://sixteen.xn--ii", "sixteen.xn--ii"),
+    ("   http://lemonde.fr   ", "lemonde.fr"),
 ]
 
 
