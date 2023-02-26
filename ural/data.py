@@ -26,6 +26,14 @@ SAFELISTED_SCHEMES = {
     "xmpp",
 }
 
+SPECIAL_SCHEMES = {
+    "data",
+    "file",
+    "fb-messenger",
+    "javascript",
+    "whatsapp",
+}
+
 # Reference: https://en.wikipedia.org/wiki/ISO_3166-1
 ISO_3166_1_COUNTRIES_ALPHA_2 = {
     "AW",

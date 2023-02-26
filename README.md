@@ -34,6 +34,7 @@ pip install ural
 * [is_valid_tld](#is_valid_tld)
 * [normalize_hostname](#normalize_hostname)
 * [normalize_url](#normalize_url)
+* [should_follow_href](#should_follow_href)
 * [should_resolve](#should_resolve)
 * [split_suffix](#split_suffix)
 * [strip_protocol](#strip_protocol)
@@ -473,6 +474,25 @@ should_resolve('http://bit.ly/1sNZMwL')
 >>> True
 
 should_resolve('https://doi.org/10.4000/vertigo.26405')
+>>> True
+```
+
+---
+
+### should_follow_href
+
+Function returning whether the given href should be followed (usually from a crawler's context). This means it will filter out anchors, and url having a scheme which is not http/https.
+
+```python
+from ural import should_follow_href
+
+should_follow_href('#top')
+>>> False
+
+should_follow_href('http://lemonde.fr')
+>>> True
+
+should_follow_href('/article.html')
 >>> True
 ```
 

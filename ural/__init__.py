@@ -17,6 +17,7 @@ from ural.normalize_url import (
     get_normalized_hostname,
     normalize_hostname,
 )
+from ural.should_follow_href import should_follow_href
 from ural.should_resolve import should_resolve
 from ural.strip_protocol import strip_protocol
 from ural.tld import (
