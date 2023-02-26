@@ -38,6 +38,9 @@ def normalize_url(
     infer_redirection: bool = ...,
     quoted: bool = ...,
 ) -> SplitResult: ...
+def normalize_hostname(
+    hostname: str, normalize_amp: bool = True, strip_lang_subdomains: bool = False
+) -> str: ...
 def get_normalized_hostname(
     url: AnyUrlTarget,
     normalize_amp: bool = True,

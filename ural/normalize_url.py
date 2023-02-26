@@ -350,27 +350,8 @@ def normalize_url(
     return result
 
 
-def get_normalized_hostname(
-    url, normalize_amp=True, strip_lang_subdomains=False, infer_redirection=True
-):
-
-    if infer_redirection:
-        url = resolve(url)
-
-    if isinstance(url, SplitResult):
-        splitted = url
-    else:
-        url = url.strip()
-
-        try:
-            splitted = urlsplit(ensure_protocol(url))
-        except ValueError:
-            return None
-
-    if not splitted.hostname:
-        return None
-
-    hostname = splitted.hostname.lower()
+def normalize_hostname(hostname, normalize_amp=True, strip_lang_subdomains=False):
+    hostname = hostname.strip().lower()
 
     pattern = IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE
 
@@ -385,3 +366,27 @@ def get_normalized_hostname(
         hostname = strip_lang_subdomains_from_netloc(hostname)
 
     return hostname
+
+
+def get_normalized_hostname(
+    url, normalize_amp=True, strip_lang_subdomains=False, infer_redirection=True
+):
+    if infer_redirection:
+        url = resolve(url)
+
+    if isinstance(url, SplitResult):
+        splitted = url
+    else:
+        try:
+            splitted = urlsplit(ensure_protocol(url.strip()))
+        except ValueError:
+            return None
+
+    if not splitted.hostname:
+        return None
+
+    return normalize_hostname(
+        splitted.hostname,
+        normalize_amp=normalize_amp,
+        strip_lang_subdomains=strip_lang_subdomains,
+    )

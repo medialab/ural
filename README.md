@@ -32,6 +32,7 @@ pip install ural
 * [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
 * [is_valid_tld](#is_valid_tld)
+* [normalize_hostname](#normalize_hostname)
 * [normalize_url](#normalize_url)
 * [should_resolve](#should_resolve)
 * [split_suffix](#split_suffix)
@@ -403,6 +404,22 @@ is_valid_tld('com')
 
 is_valid_tld('.doesnotexist')
 >>> False
+```
+
+---
+
+### normalize_hostname
+
+Function normalizing the given hostname, i.e. without usually irrelevant subdomains etc. Works a lot like [normalize_url](#normalize_url).
+
+```python
+from ural import normalize_hostname
+
+normalize_hostname('www.facebook.com')
+>>> 'facebook.com'
+
+normalize_hostname('fr-FR.facebook.com', strip_lang_subdomains=True)
+>>> 'facebook.com'
 ```
 
 ---
