@@ -16,6 +16,7 @@ pip install ural
 
 *Generic functions*
 
+* [could_be_html](#could_be_html)
 * [ensure_protocol](#ensure_protocol)
 * [force_protocol](#force_protocol)
 * [get_domain_name](#get_domain_name)
@@ -103,6 +104,28 @@ pip install ural
   * [parse_youtube_url](#parse_youtube_url)
   * [extract_video_id_from_youtube_url](#extract_video_id_from_youtube_url)
   * [normalize_youtube_url](#normalize_youtube_url)
+
+---
+
+### could_be_html
+
+Function returning whether the url could return HTML.
+
+```python
+from ural import could_be_html
+
+could_be_html('https://www.lemonde.fr')
+>>> True
+
+could_be_html('https://www.lemonde.fr/articles/page.php')
+>>> True
+
+could_be_html('https://www.lemonde.fr/data.json')
+>>> False
+
+could_be_html('https://www.lemonde.fr/img/figure.jpg')
+>>> False
+```
 
 ---
 

@@ -4,6 +4,7 @@
 #
 from ural.classes.hostname_trie_set import HostnameTrieSet
 
+from ural.could_be_html import could_be_html
 from ural.ensure_protocol import ensure_protocol
 from ural.force_protocol import force_protocol
 from ural.get_hostname import get_hostname
