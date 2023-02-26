@@ -17,8 +17,11 @@ HTML_LIKE_EXTENSIONS = {
     ".aspx",
     ".jsp",
     ".jspx",
+    ".pl",
     ".php",
+    ".php5",
     ".cgi",
+    ".bin",
 }
 
 
