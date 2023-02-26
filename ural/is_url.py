@@ -6,7 +6,7 @@
 #
 from ural.utils import safe_urlsplit
 from ural.has_special_host import is_special_host
-from ural.tld import has_valid_suffix
+from ural.tld import has_valid_tld
 from ural.patterns import (
     URL_RE,
     URL_WITH_PROTOCOL_RE,
@@ -66,7 +66,7 @@ def is_url(
 
     if tld_aware:
         parsed = safe_urlsplit(string)
-        if not has_valid_suffix(parsed):
+        if not has_valid_tld(parsed):
             return is_special_host(parsed.hostname)
 
     return True

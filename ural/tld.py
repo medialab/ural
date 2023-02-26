@@ -38,14 +38,14 @@ except ImportError:
 
 import ural.tld_data as tld_data
 from ural.classes.suffix_trie import SuffixTrie
-from ural.classes.hostname_trie_set import HostnameTrieSet
 from ural.exceptions import TLDUpgradeError
+from ural.utils import attempt_to_decode_idna, safe_urlsplit
 
 MOZILLA_PUBLIC_SUFFIX_LIST = "https://publicsuffix.org/list/public_suffix_list.dat"
 IANA_TLD_URL = "https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
 
 SUFFIX_TRIE = SuffixTrie()
-TLD_TRIE = HostnameTrieSet()
+TLD_SET = set()
 
 
 def download(url):
@@ -103,7 +103,7 @@ def parse_tlds(txt):
         if not line or line.startswith("#"):
             continue
 
-        tlds.append(line.lower())
+        tlds.append(attempt_to_decode_idna(line.lower()))
 
     return tlds
 
@@ -121,7 +121,7 @@ def refresh():
         SUFFIX_TRIE.add(suffix, private=True)
 
     for tld in tld_data.TLDS:
-        TLD_TRIE.add(tld)
+        TLD_SET.add(tld)
 
 
 refresh()
@@ -187,6 +187,17 @@ def has_valid_suffix(url):
 
 def split_suffix(url):
     return SUFFIX_TRIE.split(url)
+
+
+def has_valid_tld(url):
+    parsed = safe_urlsplit(url)
+
+    if not parsed.hostname:
+        return False
+
+    last_part = attempt_to_decode_idna(parsed.hostname.rsplit(".", 1)[-1].lower())
+
+    return last_part in TLD_SET
 
 
 # TODO: is_tld, get_tld
