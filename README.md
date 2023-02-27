@@ -41,6 +41,10 @@ pip install ural
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
 
+*Utilities*
+
+* [Upgrading suffixes and TLDs](#upgrading-suffixes-and-tlds)
+
 *Classes*
 
 * [HostnameTrieSet](#hostnametrieset)
@@ -573,6 +577,28 @@ for url in urls_from_text(text):
 *Arguments*
 
 * **string** *string*: source string.
+
+---
+
+### Upgrading suffixes and TLDs
+
+If you want to upgrade the package's data wrt Mozilla suffixes and IANA TLDs, you can do so either by running the following command:
+
+```bash
+python -m ural upgrade
+```
+
+or directly in your python code:
+
+```python
+from ural.tld import upgrade
+
+upgrade()
+
+# Or if you want to patch runtime only this time, or regularly
+# (for long running programs or to avoid rights issues etc.):
+upgrade(transient=True)
+```
 
 ---
 
