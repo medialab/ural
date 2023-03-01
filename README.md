@@ -1195,7 +1195,7 @@ extract_username_from_instagram_url('https://lemonde.fr')
 
 #### parse_instagram_url
 
-Returns parsed information about the given Instagram url: either about the post or user. If the url is an invalid Instagram url or if not a Instagram url, the function returns `None`.
+Returns parsed information about the given Instagram url: either about the post, the user or the reel. If the url is an invalid Instagram url or if not an Instagram url, the function returns `None`.
 
 ```python
 from ural.instagram import (
@@ -1203,7 +1203,8 @@ from ural.instagram import (
 
   # You can also import the named tuples if you need them
   InstagramPost,
-  InstagramUser
+  InstagramUser,
+  InstagramReel
 )
 
 parse_instagram_url('https://www.instagram.com/martin_dupont/p/BxKRx5CHn5i/')
@@ -1217,6 +1218,9 @@ parse_instagram_url('https://www.instagram.com/p/BxKRx5-Hn5i/')
 
 parse_instagram_url('https://www.instagram.com/martin_dupont')
 >>> InstagramUser(name='martin_dupont')
+
+parse_instagram_url('https://www.instagram.com/reels/BxKRx5-Hn5i')
+>>> InstagramReel(id='BxKRx5-Hn5i')
 ```
 
 *Arguments*

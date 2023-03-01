@@ -14,17 +14,19 @@ INSTAGRAM_POST_SHORTCODE_RE = re.compile(r"^[a-zA-Z0-9_\-]+$")
 INSTAGRAM_USERNAME_RE = re.compile(r"^[a-zA-Z0-9_\-\.]+$")
 INSTAGRAM_DOMAIN_RE = re.compile(r"instagram.com$", re.I)
 INSTAGRAM_URL_RE = re.compile(DOMAIN_TEMPLATE % r"(?:[^.]+\.)*instagram.com", re.I)
+INSTAGRAM_NOT_A_USER_LIST = ["accounts", "ads", "direct", "emails", "explore", "push", "reels", "session", "settings", "stories", "your_activity"]
 
 InstagramUser = namedtuple("InstagramUser", ["name"])
 InstagramPost = namedtuple("InstagramPost", ["id", "name"])
+InstagramReel = namedtuple("InstagramReel", ["id"])
 
 
 def is_instagram_post_shortcode(value):
-    return bool(re.search(INSTAGRAM_POST_SHORTCODE_RE, value))
+    return bool(re.search(INSTAGRAM_POST_SHORTCODE_RE, value)) and value != "videos"
 
 
 def is_instagram_username(value):
-    return bool(re.search(INSTAGRAM_USERNAME_RE, value))
+    return bool(re.search(INSTAGRAM_USERNAME_RE, value)) and value not in INSTAGRAM_NOT_A_USER_LIST
 
 
 def is_instagram_url(url):
@@ -59,25 +61,47 @@ def parse_instagram_url(url):
     parsed = safe_urlsplit(url)
     path = urlpathsplit(parsed.path)
 
-    if path:
+    if not path:
+        return None
 
-        if path[0] == "p":
+    if path[0] == "p" and len(path) >= 2:
 
-            if is_instagram_post_shortcode(path[1]):
-                return InstagramPost(id=path[1], name=None)
+        if is_instagram_post_shortcode(path[1]):
+            return InstagramPost(id=path[1], name=None)
 
-            return
+        return None
 
-        elif is_instagram_username(path[0]):
+    elif path[0] == "reel" and len(path) >= 2:
 
-            if (
-                len(path) >= 3
-                and path[1] == "p"
-                and is_instagram_post_shortcode(path[2])
-            ):
-                return InstagramPost(id=path[2], name=path[0])
+        if is_instagram_post_shortcode(path[1]):
+            return InstagramReel(id=path[1])
 
-            return InstagramUser(name=path[0])
+        return None
+
+    elif path[0] == "reels" and len(path) >= 2:
+
+        if is_instagram_post_shortcode(path[1]):
+            return InstagramReel(id=path[1])
+
+        elif (
+            len(path) >= 3
+            and path[1] == "videos"
+            and is_instagram_post_shortcode(path[2])
+        ):
+            return InstagramReel(id=path[2])
+
+        return None
+
+    elif is_instagram_username(path[0]):
+
+        if (
+            len(path) >= 3
+            and path[1] == "p"
+            and is_instagram_post_shortcode(path[2])
+        ):
+            return InstagramPost(id=path[2], name=path[0])
+
+        return InstagramUser(name=path[0])
 
     return None
 
@@ -85,7 +109,7 @@ def parse_instagram_url(url):
 def extract_username_from_instagram_url(url):
     parsed = parse_instagram_url(url)
 
-    if parsed is None:
+    if not isinstance(parsed, (InstagramPost, InstagramUser)):
         return
 
     return parsed.name
