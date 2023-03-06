@@ -42,7 +42,9 @@ def infer_redirection(url, recursive=True):
     target = None
 
     if len(redirection_split) > 1:
-        target = "https://" + redirection_split[1]
+        # NOTE: avoiding empty AMP redirects etc.
+        if len(redirection_split[1]):
+            target = "https://" + redirection_split[1]
 
     else:
         obvious_redirect_match = re.search(OBVIOUS_REDIRECTS_RE, url)
@@ -50,9 +52,10 @@ def infer_redirection(url, recursive=True):
         if obvious_redirect_match is not None:
             potential_target = unquote(obvious_redirect_match.group(1))
 
-            if potential_target.startswith("http://") or potential_target.startswith(
-                "https://"
-            ):
+            # NOTE: the len check is here to fend of empty redirects
+            if potential_target.startswith("https://") and len(potential_target) > 8:
+                target = potential_target
+            elif potential_target.startswith("http://") and len(potential_target) > 7:
                 target = potential_target
 
             if potential_target.startswith("/"):
