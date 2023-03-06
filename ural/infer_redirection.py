@@ -52,7 +52,7 @@ def infer_redirection(url, recursive=True):
         if obvious_redirect_match is not None:
             potential_target = unquote(obvious_redirect_match.group(1))
 
-            # NOTE: the len check is here to fend of empty redirects
+            # NOTE: the len check is here to fend off empty redirects
             if potential_target.startswith("https://") and len(potential_target) > 8:
                 target = potential_target
             elif potential_target.startswith("http://") and len(potential_target) > 7:
