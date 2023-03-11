@@ -8,7 +8,7 @@ import re
 from collections import namedtuple
 
 from ural.patterns import DOMAIN_TEMPLATE
-from ural.utils import SplitResult, safe_urlsplit, urlpathsplit
+from ural.utils import SplitResult, safe_urlsplit, pathsplit
 
 TWITTER_DOMAINS_RE = re.compile(r"twitter\.com", re.I)
 TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r"(?:[^.]+\.)*twitter\.com", re.I)
@@ -75,7 +75,7 @@ def parse_twitter_url(url):
         return None
 
     parsed = safe_urlsplit(url)
-    path = urlpathsplit(parsed.path)
+    path = pathsplit(parsed.path)
 
     if path:
         user_screen_name = normalize_screen_name(path[0])

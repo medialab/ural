@@ -5,9 +5,9 @@
 # =============================================================================
 from __future__ import unicode_literals
 
-from ural.utils import urlpathsplit, decode_punycode_hostname
+from ural.utils import pathsplit, urlpathsplit, decode_punycode_hostname, safe_urlsplit
 
-URLPATHSPLIT_TESTS = [
+PATHSPLIT_TESTS = [
     ("", []),
     ("/", []),
     ("/path", ["path"]),
@@ -17,9 +17,14 @@ URLPATHSPLIT_TESTS = [
 
 
 class TestUtils(object):
+    def test_pathsplit(self):
+        for path, result in PATHSPLIT_TESTS:
+            assert pathsplit(path) == result
+
     def test_urlpathsplit(self):
-        for path, result in URLPATHSPLIT_TESTS:
-            assert urlpathsplit(path) == result
+        assert urlpathsplit("http://lemonde.fr/article.html") == ["article.html"]
+        assert urlpathsplit("http://lemonde.fr") == []
+        assert urlpathsplit(safe_urlsplit("http://lemonde.fr/")) == []
 
     def test_decode_punycode_hostname(self):
         assert decode_punycode_hostname("xn--tlrama-bvab.fr") == "télérama.fr"

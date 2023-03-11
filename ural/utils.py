@@ -65,7 +65,7 @@ def safe_urlsplit(url, scheme="http"):
     return splitted
 
 
-def urlpathsplit(urlpath):
+def pathsplit(urlpath):
     urlpath = urlpath.strip()
 
     if not urlpath or urlpath == "/":
@@ -74,6 +74,11 @@ def urlpathsplit(urlpath):
     urlpath = urlpath.strip("/")
 
     return urlpath.split("/")
+
+
+def urlpathsplit(url):
+    parsed = safe_urlsplit(url)
+    return pathsplit(parsed.path)
 
 
 SLASH_SQUEEZE_RE = re.compile(r"\/{2,}")

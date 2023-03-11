@@ -38,6 +38,7 @@ pip install ural
 * [should_resolve](#should_resolve)
 * [split_suffix](#split_suffix)
 * [strip_protocol](#strip_protocol)
+* [urlpathsplit](#urlpathsplit)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
 
@@ -535,6 +536,28 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 *Arguments*
 
 * **url** *string*: URL to format.
+
+---
+
+### urlpathsplit
+
+Function taking a url and returning its path, tokenized as a list.
+
+```python
+from ural import urlpathsplit
+
+urlpathsplit('http://lemonde.fr/section/article.html')
+>>> ['section', 'article.html']
+
+urlpathsplit('http://lemonde.fr/')
+>>> []
+
+# If you want to split a path directly
+from ural import pathsplit
+
+pathsplit('/section/articles/')
+>>> ['section', 'articles']
+```
 
 ---
 

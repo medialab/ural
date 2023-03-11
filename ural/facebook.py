@@ -13,7 +13,7 @@ from ural.utils import (
     safe_parse_qs,
     unquote,
     urljoin,
-    urlpathsplit,
+    pathsplit,
     urlsplit,
     urlunsplit,
     safe_urlsplit,
@@ -325,7 +325,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
         return FacebookVideo(video_id)
 
     if "/videos/" in splitted.path:
-        parts = urlpathsplit(splitted.path)
+        parts = pathsplit(splitted.path)
 
         return FacebookVideo(parts[2], parent_id=parts[0])
 
@@ -358,7 +358,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
         return FacebookPhoto(query["fbid"][0], group_id=group_id, album_id=album_id)
 
     if "/photos/" in splitted.path:
-        parts = urlpathsplit(splitted.path)
+        parts = pathsplit(splitted.path)
 
         parent_id_or_handle = parts[0]
         album_id = parts[2].replace("a.", "")
@@ -375,7 +375,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # Obvious post path
     if "/posts/" in splitted.path:
-        parts = urlpathsplit(splitted.path)
+        parts = pathsplit(splitted.path)
 
         if parts[0] == "groups":
             group_id_or_handle = parts[1]
@@ -405,7 +405,7 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # Group permalink path
     if "/groups/" in splitted.path:
-        parts = urlpathsplit(splitted.path)
+        parts = pathsplit(splitted.path)
 
         if "/permalink/" in splitted.path:
             if is_facebook_id(parts[1]):
@@ -426,13 +426,13 @@ def parse_facebook_url(url, allow_relative_urls=False):
 
     # People path
     if splitted.path.startswith("/people"):
-        parts = urlpathsplit(splitted.path)
+        parts = pathsplit(splitted.path)
         user_id = parts[2]
         return FacebookUser(user_id)
 
     # Handle path
     if splitted.path:
-        parts = urlpathsplit(splitted.path)
+        parts = pathsplit(splitted.path)
 
         if not parts[0].endswith(".php"):
             return FacebookHandle(parts[0])

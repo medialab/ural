@@ -8,7 +8,7 @@ import re
 from collections import namedtuple
 
 from ural.classes.hostname_trie_set import HostnameTrieSet
-from ural.utils import urlpathsplit, safe_urlsplit
+from ural.utils import pathsplit, safe_urlsplit
 from ural.infer_redirection import infer_redirection
 from ural.patterns import QUERY_VALUE_TEMPLATE
 
@@ -269,7 +269,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
     if parsed.hostname.endswith("youtu.be"):
 
         if path.count("/") > 0:
-            v = urlpathsplit(path)[0]
+            v = pathsplit(path)[0]
 
             if fix_common_mistakes:
                 v = v[:11]
@@ -314,7 +314,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
         or path.startswith("/video/")
         or path.startswith("/embed/")
     ):
-        v = urlpathsplit(path)[-1]
+        v = pathsplit(path)[-1]
 
         if fix_common_mistakes:
             v = v[:11]
@@ -326,7 +326,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 
     # Typical user url
     elif path.startswith("/user/"):
-        splitted_path = urlpathsplit(path)
+        splitted_path = pathsplit(path)
 
         if len(splitted_path) < 2:
             return None
@@ -341,7 +341,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
         # which means /c will parse as a channel, but /c/ will not but I don't
         # want to spend too much time on this weirdness.
 
-        splitted_path = urlpathsplit(path)
+        splitted_path = pathsplit(path)
 
         if len(splitted_path) < 2:
             return None
@@ -351,7 +351,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
         return YoutubeChannel(id=None, name=name)
 
     elif path.startswith("/channel/"):
-        splitted_path = urlpathsplit(path)
+        splitted_path = pathsplit(path)
 
         if len(splitted_path) < 2:
             return None

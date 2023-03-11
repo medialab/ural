@@ -7,7 +7,7 @@
 import re
 from collections import namedtuple
 
-from ural.utils import urlpathsplit, safe_urlsplit, SplitResult
+from ural.utils import pathsplit, safe_urlsplit, SplitResult
 from ural.patterns import DOMAIN_TEMPLATE
 
 INSTAGRAM_POST_SHORTCODE_RE = re.compile(r"^[a-zA-Z0-9_\-]+$")
@@ -27,7 +27,7 @@ INSTAGRAM_NOT_A_USER_SET = {
     "settings",
     "stories",
     "web",
-    "your_activity"
+    "your_activity",
 }
 
 InstagramUser = namedtuple("InstagramUser", ["name"])
@@ -40,7 +40,10 @@ def is_instagram_post_shortcode(value):
 
 
 def is_instagram_username(value):
-    return bool(re.search(INSTAGRAM_USERNAME_RE, value)) and value not in INSTAGRAM_NOT_A_USER_SET
+    return (
+        bool(re.search(INSTAGRAM_USERNAME_RE, value))
+        and value not in INSTAGRAM_NOT_A_USER_SET
+    )
 
 
 def is_instagram_url(url):
@@ -73,7 +76,7 @@ def parse_instagram_url(url):
         return None
 
     parsed = safe_urlsplit(url)
-    path = urlpathsplit(parsed.path)
+    path = pathsplit(parsed.path)
 
     if not path:
         return None
@@ -94,10 +97,7 @@ def parse_instagram_url(url):
 
     elif path[0] == "reels" and len(path) >= 2:
 
-        if (
-            is_instagram_post_shortcode(path[1])
-            and path[1] != "videos"
-        ):
+        if is_instagram_post_shortcode(path[1]) and path[1] != "videos":
             return InstagramReel(id=path[1])
 
         elif (
@@ -112,11 +112,7 @@ def parse_instagram_url(url):
 
     elif is_instagram_username(path[0]):
 
-        if (
-            len(path) >= 3
-            and path[1] == "p"
-            and is_instagram_post_shortcode(path[2])
-        ):
+        if len(path) >= 3 and path[1] == "p" and is_instagram_post_shortcode(path[2]):
             return InstagramPost(id=path[2], name=path[0])
 
         return InstagramUser(name=path[0])
