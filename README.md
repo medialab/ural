@@ -24,7 +24,7 @@ pip install ural
 * [get_normalized_hostname](#get_normalized_hostname)
 * [has_special_host](#has_special_host)
 * [has_valid_suffix](#has_valid_suffix)
-* [is_valid_tld](#is_valid_tld)
+* [has_valid_tld](#has_valid_tld)
 * [infer_redirection](#infer_redirection)
 * [is_homepage](#is_homepage)
 * [is_shortened_url](#is_shortened_url)
@@ -463,6 +463,25 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
+### should_follow_href
+
+Function returning whether the given href should be followed (usually from a crawler's context). This means it will filter out anchors, and url having a scheme which is not http/https.
+
+```python
+from ural import should_follow_href
+
+should_follow_href('#top')
+>>> False
+
+should_follow_href('http://lemonde.fr')
+>>> True
+
+should_follow_href('/article.html')
+>>> True
+```
+
+---
+
 ### should_resolve
 
 Function returning whether the given function looks like something you would want to resolve because the url will *probably* lead to some redirection.
@@ -479,25 +498,6 @@ should_resolve('http://bit.ly/1sNZMwL')
 >>> True
 
 should_resolve('https://doi.org/10.4000/vertigo.26405')
->>> True
-```
-
----
-
-### should_follow_href
-
-Function returning whether the given href should be followed (usually from a crawler's context). This means it will filter out anchors, and url having a scheme which is not http/https.
-
-```python
-from ural import should_follow_href
-
-should_follow_href('#top')
->>> False
-
-should_follow_href('http://lemonde.fr')
->>> True
-
-should_follow_href('/article.html')
 >>> True
 ```
 
