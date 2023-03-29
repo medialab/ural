@@ -584,7 +584,9 @@ for url in urls_from_html(html):
 
 ### urls_from_text
 
-Function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
+Function returning an iterator over the urls present in the string argument. Extracts only urls having a protocol.
+
+Note that this function is somewhat markdown-aware, and punctuation-aware.
 
 ```python
 from ural import urls_from_text
@@ -593,6 +595,7 @@ text = "Hey! Check this site: https://medialab.sciencespo.fr/, it looks really c
 
 for url in urls_from_text(text):
     print(url)
+
 >>> 'https://medialab.sciencespo.fr/'
 >>> 'https://github.com/'
 ```
