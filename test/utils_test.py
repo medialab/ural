@@ -42,7 +42,9 @@ class TestUtils(object):
         assert decode_punycode_hostname("xN--tlrama-bvab.fr") == "télérama.fr"
 
     def test_add_query_argument(self):
-        assert add_query_argument("http://lemonde.fr", "test") == "http://lemonde.fr?test"
+        assert (
+            add_query_argument("http://lemonde.fr", "test") == "http://lemonde.fr?test"
+        )
         assert (
             add_query_argument("http://lemonde.fr", "test", "val")
             == "http://lemonde.fr?test=val"
