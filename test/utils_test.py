@@ -10,7 +10,7 @@ from ural.utils import (
     urlpathsplit,
     decode_punycode_hostname,
     safe_urlsplit,
-    add_get_param,
+    add_query_argument,
 )
 
 PATHSPLIT_TESTS = [
@@ -41,31 +41,31 @@ class TestUtils(object):
         )
         assert decode_punycode_hostname("xN--tlrama-bvab.fr") == "télérama.fr"
 
-    def test_add_get_param(self):
-        assert add_get_param("http://lemonde.fr", "test") == "http://lemonde.fr?test"
+    def test_add_query_argument(self):
+        assert add_query_argument("http://lemonde.fr", "test") == "http://lemonde.fr?test"
         assert (
-            add_get_param("http://lemonde.fr", "test", "val")
+            add_query_argument("http://lemonde.fr", "test", "val")
             == "http://lemonde.fr?test=val"
         )
         assert (
-            add_get_param("http://lemonde.fr#anchor", "test", "val")
+            add_query_argument("http://lemonde.fr#anchor", "test", "val")
             == "http://lemonde.fr?test=val#anchor"
         )
         assert (
-            add_get_param("http://lemonde.fr?hello=world#anchor", "test", "val")
+            add_query_argument("http://lemonde.fr?hello=world#anchor", "test", "val")
             == "http://lemonde.fr?hello=world&test=val#anchor"
         )
         assert (
-            add_get_param("http://lemonde.fr?hello=world", "test", "val")
+            add_query_argument("http://lemonde.fr?hello=world", "test", "val")
             == "http://lemonde.fr?hello=world&test=val"
         )
         assert (
-            add_get_param("http://lemonde.fr?hello=world&one=two", "test", "val")
+            add_query_argument("http://lemonde.fr?hello=world&one=two", "test", "val")
             == "http://lemonde.fr?hello=world&one=two&test=val"
         )
         assert (
-            add_get_param("http://lemonde.fr?hello&one=two", "test", "val")
+            add_query_argument("http://lemonde.fr?hello&one=two", "test", "val")
             == "http://lemonde.fr?hello&one=two&test=val"
         )
-        assert add_get_param("lemonde.fr", "test", "val") == "lemonde.fr?test=val"
-        assert add_get_param("lemonde.fr", "test", 45) == "lemonde.fr?test=45"
+        assert add_query_argument("lemonde.fr", "test", "val") == "lemonde.fr?test=val"
+        assert add_query_argument("lemonde.fr", "test", 45) == "lemonde.fr?test=45"

@@ -134,8 +134,8 @@ def safe_parse_qs(query):
     return parse_qs(fix_common_query_mistakes(query))
 
 
-def add_get_param(url, name, value=None):
-    param = name if value is None else "{}={}".format(name, value)
+def add_query_argument(url, name, value=None):
+    arg = name if value is None else "{}={}".format(name, value)
 
     query = None
     fragment = None
@@ -151,9 +151,9 @@ def add_get_param(url, name, value=None):
         url, query = s
 
     if query:
-        query += "&" + param
+        query += "&" + arg
     else:
-        query = param
+        query = arg
 
     url += "?" + query
 
