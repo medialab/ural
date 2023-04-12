@@ -132,3 +132,32 @@ def fix_common_query_mistakes(query):
 
 def safe_parse_qs(query):
     return parse_qs(fix_common_query_mistakes(query))
+
+
+def add_get_param(url, name, value=None):
+    param = name if value is None else "{}={}".format(name, value)
+
+    query = None
+    fragment = None
+
+    s = url.rsplit("#", 1)
+
+    if len(s) > 1:
+        url, fragment = s
+
+    s = url.rsplit("?", 1)
+
+    if len(s) > 1:
+        url, query = s
+
+    if query:
+        query += "&" + param
+    else:
+        query = param
+
+    url += "?" + query
+
+    if fragment is not None:
+        url += "#" + fragment
+
+    return url

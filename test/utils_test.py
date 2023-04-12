@@ -5,7 +5,13 @@
 # =============================================================================
 from __future__ import unicode_literals
 
-from ural.utils import pathsplit, urlpathsplit, decode_punycode_hostname, safe_urlsplit
+from ural.utils import (
+    pathsplit,
+    urlpathsplit,
+    decode_punycode_hostname,
+    safe_urlsplit,
+    add_get_param,
+)
 
 PATHSPLIT_TESTS = [
     ("", []),
@@ -34,3 +40,32 @@ class TestUtils(object):
             == "business.télérama.fr"
         )
         assert decode_punycode_hostname("xN--tlrama-bvab.fr") == "télérama.fr"
+
+    def test_add_get_param(self):
+        assert add_get_param("http://lemonde.fr", "test") == "http://lemonde.fr?test"
+        assert (
+            add_get_param("http://lemonde.fr", "test", "val")
+            == "http://lemonde.fr?test=val"
+        )
+        assert (
+            add_get_param("http://lemonde.fr#anchor", "test", "val")
+            == "http://lemonde.fr?test=val#anchor"
+        )
+        assert (
+            add_get_param("http://lemonde.fr?hello=world#anchor", "test", "val")
+            == "http://lemonde.fr?hello=world&test=val#anchor"
+        )
+        assert (
+            add_get_param("http://lemonde.fr?hello=world", "test", "val")
+            == "http://lemonde.fr?hello=world&test=val"
+        )
+        assert (
+            add_get_param("http://lemonde.fr?hello=world&one=two", "test", "val")
+            == "http://lemonde.fr?hello=world&one=two&test=val"
+        )
+        assert (
+            add_get_param("http://lemonde.fr?hello&one=two", "test", "val")
+            == "http://lemonde.fr?hello&one=two&test=val"
+        )
+        assert add_get_param("lemonde.fr", "test", "val") == "lemonde.fr?test=val"
+        assert add_get_param("lemonde.fr", "test", 45) == "lemonde.fr?test=45"

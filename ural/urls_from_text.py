@@ -27,9 +27,9 @@ def urls_from_text(string):
         url = match.group(0)
         s = match.start()
 
-        if s > 0 and string[s - 1] == '[':
-            if '](' in url:
-                remainder, url = url.split('](', 1)
+        if s > 0 and string[s - 1] == "[":
+            if "](" in url:
+                remainder, url = url.split("](", 1)
                 yield remainder.strip()
 
         last_punct = None
