@@ -3,6 +3,7 @@ typing_extensions; python_version < '3.8'
 
 # Dev Dependencies
 black==22.8.0; python_version >= '3.6'
+ebbe==1.11.1
 importchecker==2.0
 more-itertools<8.6
 pytest
