@@ -19,6 +19,7 @@ pip install ural
 * [could_be_html](#could_be_html)
 * [ensure_protocol](#ensure_protocol)
 * [force_protocol](#force_protocol)
+* [format_url](#format_url)
 * [get_domain_name](#get_domain_name)
 * [get_hostname](#get_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
@@ -169,6 +170,99 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
+
+---
+
+### format_url
+
+Function formatting a url given some typical parameters.
+
+```python
+from ural import format_url
+
+format_url(
+  'https://lemonde.fr',
+  path='/article.html',
+  args={'id': '48675'},
+  fragment='title-2'
+)
+>>> 'https://lemonde.fr/article.html?id=48675#title-2'
+
+# Path can be given as an iterable
+format_url('https://lemonde.fr', path=['articles', 'one.html'])
+>>> 'https://lemonde.fr/articles/one.html'
+
+# Extension
+format_url('https://lemonde.fr', path=['article'], ext='html')
+>>> 'https://lemonde.fr/articles/article.html'
+
+# Query args are formatted/quoted and/or skipped if None/False
+format_url(
+  "http://lemonde.fr",
+  path=["business", "articles"],
+  args={
+    "hello": "world",
+    "number": 14,
+    "boolean": True,
+    "skipped": None,
+    "also-skipped": False,
+    "quoted": "test=ok",
+  },
+  fragment="#test",
+)
+>>> 'http://lemonde.fr/business/articles?boolean&hello=world&number=14&quoted=test%3Dok#test'
+
+# Custom argument value formatting
+def format_arg_value(key, value):
+  if key == 'ids':
+    return ','.join(value)
+
+  return key
+
+format_url(
+  'https://lemonde.fr',
+  args={'ids': [1, 2]},
+  format_arg_value=format_arg_value
+)
+>>> 'https://lemonde.fr?ids=1%2C2'
+
+# Formatter class
+from ural import URLFormatter
+
+formatter = URLFormatter('https://lemonde.fr', args={'id': 'one'})
+
+formatter(path='/article.html')
+>>> 'https://lemonde.fr/article.html?id=one'
+
+# same as:
+formatter.format(path='/article.html')
+>>> 'https://lemonde.fr/article.html?id=one'
+
+# Query arguments are merged
+formatter(path='/article.html', args={"user_id": "two"})
+>>> 'https://lemonde.fr/article.html?id=one&user_id=two'
+
+# Easy subclassing
+class MyCustomFormatter(URLFormatter):
+  BASE_URL = 'https://lemonde.fr/api'
+
+  def format_api_call(self, token):
+    return self.format(args={'token': token})
+
+formatter = MyCustomFormatter()
+
+formatter.format_api_call('2764753')
+>>> 'https://lemonde.fr/api?token=2764753'
+```
+
+*Arguments*
+
+* **base_url** *str*: Base url.
+* **path** *?str|list*: the url's path.
+* **args** *?dict*: query arguments as a dictionary.
+* **format_arg_value** *?callable*: function taking a query argument key and value and returning the formatted value.
+* **fragment** *?str*: the url's fragment.
+* **ext** *?str*: path extension such as `.html`.
 
 ---
 

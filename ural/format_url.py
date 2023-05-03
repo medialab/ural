@@ -23,7 +23,9 @@ def format_query_argument(key, value, format_value=None):
     return quote(key) + "=" + quote(str(value))
 
 
-def format_url(base_url, path=None, args=None, format_arg_value=None, fragment=None):
+def format_url(
+    base_url, path=None, args=None, format_arg_value=None, fragment=None, ext=None
+):
     url = base_url
 
     # Path
@@ -33,6 +35,11 @@ def format_url(base_url, path=None, args=None, format_arg_value=None, fragment=N
         url = urljoin(base_url, "/".join(path))
     elif path is not None:
         raise TypeError("path should be a string or an iterable of path items")
+
+    # Extension
+    # NOTE: this can cause issues in some configurations, beware
+    if ext is not None:
+        url += "." + ext.lstrip(".")
 
     # Arguments
     if args is not None:
@@ -58,16 +65,29 @@ class URLFormatter(object):
     BASE_URL = None
 
     def __init__(
-        self, base_url=None, path=None, args=None, format_arg_value=None, fragment=None
+        self,
+        base_url=None,
+        path=None,
+        args=None,
+        format_arg_value=None,
+        fragment=None,
+        ext=None,
     ):
         self.base_url = self.BASE_URL if base_url is None else base_url
         self.path = path
         self.args = args
         self.format_arg_value = format_arg_value
         self.fragment = fragment
+        self.ext = ext
 
     def format(
-        self, base_url=None, path=None, args=None, format_arg_value=None, fragment=None
+        self,
+        base_url=None,
+        path=None,
+        args=None,
+        format_arg_value=None,
+        fragment=None,
+        ext=None,
     ):
         base_url = self.base_url if base_url is None else base_url
         path = self.path if path is None else path
@@ -91,10 +111,17 @@ class URLFormatter(object):
             args=args,
             format_arg_value=format_arg_value,
             fragment=fragment,
+            ext=ext,
         )
 
     def __call__(
-        self, base_url=None, path=None, args=None, format_arg_value=None, fragment=None
+        self,
+        base_url=None,
+        path=None,
+        args=None,
+        format_arg_value=None,
+        fragment=None,
+        ext=None,
     ):
         return self.format(
             base_url=base_url,
@@ -102,4 +129,5 @@ class URLFormatter(object):
             args=args,
             format_arg_value=format_arg_value,
             fragment=fragment,
+            ext=ext,
         )

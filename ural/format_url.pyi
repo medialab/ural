@@ -9,6 +9,7 @@ def format_url(
     args: Optional[Dict[str, ArgValue]] = ...,
     format_arg_value: Optional[FormatArgCallable] = ...,
     fragment: Optional[str] = ...,
+    ext: Optional[str] = ...,
 ) -> str: ...
 
 class URLFormatter(object):
@@ -20,6 +21,7 @@ class URLFormatter(object):
         args: Optional[Dict[str, ArgValue]] = ...,
         format_arg_value: Optional[FormatArgCallable] = ...,
         fragment: Optional[str] = ...,
+        ext: Optional[str] = ...,
     ): ...
     def __call__(
         self,
@@ -28,6 +30,7 @@ class URLFormatter(object):
         args: Optional[Dict[str, ArgValue]] = ...,
         format_arg_value: Optional[FormatArgCallable] = ...,
         fragment: Optional[str] = ...,
+        ext: Optional[str] = ...,
     ) -> str: ...
     def format(
         self,
@@ -36,4 +39,5 @@ class URLFormatter(object):
         args: Optional[Dict[str, ArgValue]] = ...,
         format_arg_value: Optional[FormatArgCallable] = ...,
         fragment: Optional[str] = ...,
+        ext: Optional[str] = ...,
     ) -> str: ...
