@@ -6,7 +6,11 @@
 # Function used to format urls conveniently.
 #
 from __future__ import unicode_literals
-from collections.abc import Iterable
+
+try:
+    from collections.abc import Iterable
+except ImportError:
+    Iterable = (tuple, list, set, frozenset)
 
 from ural.utils import string_type, urljoin, quote
 
