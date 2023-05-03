@@ -7,6 +7,7 @@ from ural.classes.hostname_trie_set import HostnameTrieSet
 from ural.could_be_html import could_be_html
 from ural.ensure_protocol import ensure_protocol
 from ural.force_protocol import force_protocol
+from ural.format_url import format_url
 from ural.get_hostname import get_hostname
 from ural.has_special_host import has_special_host, is_special_host
 from ural.infer_redirection import infer_redirection
