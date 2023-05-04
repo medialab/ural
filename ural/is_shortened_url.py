@@ -163,7 +163,6 @@ SHORTENER_DOMAINS = [
     "bc.vc",
     "bcool.bz",
     "bddy.me",
-    "beaulieusurmer.fr",
     "bee4.biz",
     "beth.games",
     "bigaston.link",
