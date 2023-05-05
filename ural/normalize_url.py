@@ -84,6 +84,7 @@ IRRELEVANT_QUERY_COMBOS = {
     "_ss": ("r",),
 }
 
+# NOTE: if this list becomes too long, switch to HostnameTrieMap
 PER_DOMAIN_QUERY_FILTERS = [
     ("facebook.com", lambda k, v: k == "_rdc" or k == "_rdr"),
 ]
@@ -110,14 +111,14 @@ def should_strip_query_item(
 
     value = item[1]
 
-    # NOTE
-    # elif possible only because there's no common
-    # key between IRRELEVANT_QUERY_COMBOS and AMP_QUERY_COMBOS
     if key in IRRELEVANT_QUERY_COMBOS:
         result = IRRELEVANT_QUERY_COMBOS[key]
         if callable(result):
             return result(value)
         return value in IRRELEVANT_QUERY_COMBOS[key]
+
+    # NOTE: only keep elif because query combos and amp query combos
+    # are mutually exclusive.
     elif normalize_amp and key in AMP_QUERY_COMBOS:
         return value in AMP_QUERY_COMBOS[key]
 
