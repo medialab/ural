@@ -45,6 +45,8 @@ class TestUtils(object):
         assert (
             add_query_argument("http://lemonde.fr", "test") == "http://lemonde.fr?test"
         )
+        assert add_query_argument('http://lemonde.fr', 'test', True) == 'http://lemonde.fr?test'
+        assert add_query_argument('http://lemonde.fr', 'test', '') == 'http://lemonde.fr?test='
         assert (
             add_query_argument("http://lemonde.fr", "test", "val")
             == "http://lemonde.fr?test=val"
@@ -71,3 +73,8 @@ class TestUtils(object):
         )
         assert add_query_argument("lemonde.fr", "test", "val") == "lemonde.fr?test=val"
         assert add_query_argument("lemonde.fr", "test", 45) == "lemonde.fr?test=45"
+
+        assert add_query_argument('lemonde.fr', 'test test') == 'lemonde.fr?test%20test'
+        assert add_query_argument('lemonde.fr', 'test test', quote=False) == 'lemonde.fr?test test'
+        assert add_query_argument('lemonde.fr', 'test', 'ok ok') == 'lemonde.fr?test=ok%20ok'
+        assert add_query_argument('lemonde.fr', 'test', 'ok ok', quote=False) == 'lemonde.fr?test=ok ok'

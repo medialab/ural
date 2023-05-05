@@ -52,6 +52,8 @@ except ImportError:
 
 MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 
+unshadowed_quote = quote
+
 
 def safe_urlsplit(url, scheme="http"):
     if isinstance(url, SplitResult):
@@ -134,8 +136,17 @@ def safe_parse_qs(query):
     return parse_qs(fix_common_query_mistakes(query))
 
 
-def add_query_argument(url, name, value=None):
-    arg = name if value is None else "{}={}".format(name, value)
+def add_query_argument(url, name, value=None, quote=True):
+    if quote:
+        name = unshadowed_quote(name)
+
+    if value == True or value is None:
+        arg = name
+    else:
+        if quote:
+            value = unshadowed_quote(str(value))
+
+        arg = name + '=' + value
 
     query = None
     fragment = None
