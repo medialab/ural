@@ -12,7 +12,9 @@ try:
 except ImportError:
     Iterable = (tuple, list, set, frozenset)
 
-from ural.utils import string_type, urljoin, quote
+from os.path import join
+
+from ural.utils import string_type, quote
 
 
 def format_query_argument(key, value, format_value=None):
@@ -32,9 +34,9 @@ def format_url(
 
     # Path
     if isinstance(path, string_type):
-        url = urljoin(base_url, path)
+        url = join(base_url, path.lstrip('/'))
     elif isinstance(path, Iterable):
-        url = urljoin(base_url, "/".join(path))
+        url = join(base_url, "/".join(path).lstrip('/'))
     elif path is not None:
         raise TypeError("path should be a string or an iterable of path items")
 

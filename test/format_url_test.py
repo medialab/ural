@@ -17,6 +17,10 @@ class TestFormatUrl(object):
         assert (
             format_url("http://lemonde.fr", fragment="test") == "http://lemonde.fr#test"
         )
+        assert format_url('http://lemonde.fr/test', path='second') == "http://lemonde.fr/test/second"
+        assert format_url('http://lemonde.fr/test/', path='second') == "http://lemonde.fr/test/second"
+        assert format_url('http://lemonde.fr/test', path='/second') == "http://lemonde.fr/test/second"
+        assert format_url('http://lemonde.fr/test/', path='/second') == "http://lemonde.fr/test/second"
         assert (
             format_url("http://lemonde.fr", fragment="#test")
             == "http://lemonde.fr#test"
