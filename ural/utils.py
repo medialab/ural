@@ -146,7 +146,7 @@ def add_query_argument(url, name, value=None, quote=True):
         if quote:
             value = unshadowed_quote(str(value))
 
-        arg = name + '=' + value
+        arg = name + "=" + value
 
     query = None
     fragment = None

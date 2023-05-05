@@ -17,10 +17,22 @@ class TestFormatUrl(object):
         assert (
             format_url("http://lemonde.fr", fragment="test") == "http://lemonde.fr#test"
         )
-        assert format_url('http://lemonde.fr/test', path='second') == "http://lemonde.fr/test/second"
-        assert format_url('http://lemonde.fr/test/', path='second') == "http://lemonde.fr/test/second"
-        assert format_url('http://lemonde.fr/test', path='/second') == "http://lemonde.fr/test/second"
-        assert format_url('http://lemonde.fr/test/', path='/second') == "http://lemonde.fr/test/second"
+        assert (
+            format_url("http://lemonde.fr/test", path="second")
+            == "http://lemonde.fr/test/second"
+        )
+        assert (
+            format_url("http://lemonde.fr/test/", path="second")
+            == "http://lemonde.fr/test/second"
+        )
+        assert (
+            format_url("http://lemonde.fr/test", path="/second")
+            == "http://lemonde.fr/test/second"
+        )
+        assert (
+            format_url("http://lemonde.fr/test/", path="/second")
+            == "http://lemonde.fr/test/second"
+        )
         assert (
             format_url("http://lemonde.fr", fragment="#test")
             == "http://lemonde.fr#test"
@@ -46,7 +58,7 @@ class TestFormatUrl(object):
                         "skipped": None,
                         "also-skipped": False,
                         "quoted": "test=ok",
-                        "k quoted": True
+                        "k quoted": True,
                     },
                     fragment="#test",
                 )

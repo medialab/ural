@@ -34,9 +34,9 @@ def format_url(
 
     # Path
     if isinstance(path, string_type):
-        url = join(base_url, path.lstrip('/'))
+        url = join(base_url, path.lstrip("/"))
     elif isinstance(path, Iterable):
-        url = join(base_url, "/".join(path).lstrip('/'))
+        url = join(base_url, "/".join(path).lstrip("/"))
     elif path is not None:
         raise TypeError("path should be a string or an iterable of path items")
 
