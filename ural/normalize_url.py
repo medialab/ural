@@ -28,10 +28,13 @@ RESERVED_CHARACTERS = ";,/?:@&=+$"
 UNRESERVED_CHARACTERS = "-_.!~*'()"
 SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
-IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|wpamp|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$"
+IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|echobox|feature|refid|__tn__|fbclid|fb_source|fb_action_ids|fb_action_types|_ft_|recruiter|fref|igshid|wpamp|ncid|mtm_.+|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s)|_unique_id|twclid|mibextid|gclid|mc_cid|mc_eid|dclid|_ga|campaignid|adgroupid|cn-reloaded|ao_noptimize|usqp|mkt_tok|at_.+)$"
 IRRELEVANT_SUBDOMAIN_PATTERN = r"\b(?:www\d?|mobile%s|m)\."
 
 AMP_QUERY_PATTERN = r"|amp_.+|amp"
+AMP_QUERY_COMBOS = {
+    "outputtype": ("amp",)
+}
 AMP_SUBDOMAIN_PATTERN = r"|amp"
 AMP_SUFFIXES_RE = re.compile(r"(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)", re.I)
 
@@ -48,6 +51,8 @@ IRRELEVANT_QUERY_COMBOS = {
     "mode": ("amp",),
     "output": ("amp",),
     "platform": ("hootsuite",),
+    "fromref": ("twitter",),
+    "m": ("0", "1",),
     "ref": set(
         [
             "bookmark",
@@ -67,14 +72,17 @@ IRRELEVANT_QUERY_COMBOS = {
             "twitter",
             "viral",
             "feed",
+            "twtrec"
         ]
     ),
+    "s": lambda v: bool(re.match(r"^[0-9]{1,2}$", v)) or v == "cl",
+    "source": ("twitter",),
     "sns": ("tw",),
     "spref": ("fb", "ts", "tw", "tw_i", "twitter"),
+    "_ss": ("r",),
 }
 
 PER_DOMAIN_QUERY_FILTERS = [
-    ("twitter.com", lambda k, v: k == "s"),
     ("facebook.com", lambda k, v: k == "_rdc" or k == "_rdr"),
 ]
 
@@ -101,7 +109,12 @@ def should_strip_query_item(
     value = item[1]
 
     if key in IRRELEVANT_QUERY_COMBOS:
+        result = IRRELEVANT_QUERY_COMBOS[key]
+        if callable(result): return result(value)
         return value in IRRELEVANT_QUERY_COMBOS[key]
+    
+    if normalize_amp and key in AMP_QUERY_COMBOS:
+        return value in AMP_QUERY_COMBOS[key]
 
     if strip_lang_query_items and key in LANG_QUERY_KEYS:
         return True
