@@ -12,8 +12,6 @@ try:
 except ImportError:
     Iterable = (tuple, list, set, frozenset)
 
-from os.path import join
-
 from ural.utils import string_type, quote
 
 
@@ -34,9 +32,9 @@ def format_url(
 
     # Path
     if isinstance(path, string_type):
-        url = join(base_url, path.lstrip("/"))
+        url = base_url.rstrip("/") + "/" + path.lstrip("/")
     elif isinstance(path, Iterable):
-        url = join(base_url, "/".join(path).lstrip("/"))
+        url = base_url.rstrip("/") + "/" + "/".join(path).lstrip("/")
     elif path is not None:
         raise TypeError("path should be a string or an iterable of path items")
 
