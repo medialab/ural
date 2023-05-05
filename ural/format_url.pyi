@@ -1,13 +1,14 @@
 from typing import Optional, List, Union, Dict, Callable
 
-ArgValue = Optional[Union[str, int, float, bool]]
-FormatArgCallable = Callable[[str, ArgValue], ArgValue]
+from ural.types import QueryArgValue
+
+FormatArgValueCallable = Callable[[str, QueryArgValue], QueryArgValue]
 
 def format_url(
     base_url: str,
     path: Optional[Union[List[str], str]] = ...,
-    args: Optional[Dict[str, ArgValue]] = ...,
-    format_arg_value: Optional[FormatArgCallable] = ...,
+    args: Optional[Dict[str, QueryArgValue]] = ...,
+    format_arg_value: Optional[FormatArgValueCallable] = ...,
     fragment: Optional[str] = ...,
     ext: Optional[str] = ...,
 ) -> str: ...
@@ -18,8 +19,8 @@ class URLFormatter(object):
         self,
         base_url: Optional[str],
         path: Optional[Union[List[str], str]] = ...,
-        args: Optional[Dict[str, ArgValue]] = ...,
-        format_arg_value: Optional[FormatArgCallable] = ...,
+        args: Optional[Dict[str, QueryArgValue]] = ...,
+        format_arg_value: Optional[FormatArgValueCallable] = ...,
         fragment: Optional[str] = ...,
         ext: Optional[str] = ...,
     ): ...
@@ -27,8 +28,8 @@ class URLFormatter(object):
         self,
         base_url: Optional[str],
         path: Optional[Union[List[str], str]] = ...,
-        args: Optional[Dict[str, ArgValue]] = ...,
-        format_arg_value: Optional[FormatArgCallable] = ...,
+        args: Optional[Dict[str, QueryArgValue]] = ...,
+        format_arg_value: Optional[FormatArgValueCallable] = ...,
         fragment: Optional[str] = ...,
         ext: Optional[str] = ...,
     ) -> str: ...
@@ -36,8 +37,8 @@ class URLFormatter(object):
         self,
         base_url: Optional[str],
         path: Optional[Union[List[str], str]] = ...,
-        args: Optional[Dict[str, ArgValue]] = ...,
-        format_arg_value: Optional[FormatArgCallable] = ...,
+        args: Optional[Dict[str, QueryArgValue]] = ...,
+        format_arg_value: Optional[FormatArgValueCallable] = ...,
         fragment: Optional[str] = ...,
         ext: Optional[str] = ...,
     ) -> str: ...
