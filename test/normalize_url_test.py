@@ -174,6 +174,10 @@ TESTS = [
         "https://medialab.sciencespo.fr/page.html?s=08&ref=twtrec&m=0&m=1&fromRef=twitter&outputType=amp&_ss=r&source=twitter&outputType=amp",
         "medialab.sciencespo.fr/page.html",
     ),
+    (
+        "https://medialab.sciencespo.fr/page.html?s=090",
+        "medialab.sciencespo.fr/page.html?s=090"
+    )
 ]
 
 

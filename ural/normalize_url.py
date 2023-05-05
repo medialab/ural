@@ -28,7 +28,7 @@ RESERVED_CHARACTERS = ";,/?:@&=+$"
 UNRESERVED_CHARACTERS = "-_.!~*'()"
 SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
-IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|fb_action_types|fb_action_ids|fb_source|echobox|feature|recruiter|_unique_id|twclid|mibextid|campaignid|adgroupid|cn-reloaded|ao_noptimize|mkt_tok|fbclid|igshid|refid|gclid|mc_cid|mc_eid|__tn__|_ft_|dclid|wpamp|fref|usqp|ncid|mtm_.+|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s)|at_.+)|_ga$"
+IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|fb_action_types|fb_action_ids|fb_source|echobox|feature|recruiter|_unique_id|twclid|mibextid|campaignid|adgroupid|cn-reloaded|ao_noptimize|mkt_tok|fbclid|igshid|refid|gclid|mc_cid|mc_eid|__tn__|_ft_|dclid|wpamp|fref|usqp|ncid|mtm_.+|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s)|at_.+|_ga)$"
 
 IRRELEVANT_SUBDOMAIN_PATTERN = r"\b(?:www\d?|mobile%s|m)\."
 
@@ -77,9 +77,7 @@ IRRELEVANT_QUERY_COMBOS = {
             "twtrec",
         ]
     ),
-    "s": lambda v: (len(v) == 1 and v[0] >= "0" and v[0] <= "9")
-    or (len(v) == 2 and "0" <= v[0] <= "9" and "0" <= v[1] <= "9")
-    or v == "cl",
+    "s" : lambda v: len(v) <= 2 and all(["0" <= x <= "9" for x in v]),
     "source": ("twitter",),
     "sns": ("tw",),
     "spref": ("fb", "ts", "tw", "tw_i", "twitter"),
