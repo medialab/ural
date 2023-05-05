@@ -28,7 +28,8 @@ RESERVED_CHARACTERS = ";,/?:@&=+$"
 UNRESERVED_CHARACTERS = "-_.!~*'()"
 SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
-IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|echobox|feature|refid|__tn__|fbclid|fb_source|fb_action_ids|fb_action_types|_ft_|recruiter|fref|igshid|wpamp|ncid|mtm_.+|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s)|_unique_id|twclid|mibextid|gclid|mc_cid|mc_eid|dclid|_ga|campaignid|adgroupid|cn-reloaded|ao_noptimize|usqp|mkt_tok|at_.+)$"
+IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|fb_action_types|fb_action_ids|fb_source|echobox|feature|recruiter|_unique_id|twclid|mibextid|campaignid|adgroupid|cn-reloaded|ao_noptimize|mkt_tok|fbclid|igshid|refid|gclid|mc_cid|mc_eid|__tn__|_ft_|dclid|wpamp|fref|usqp|ncid|mtm_.+|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s)|at_.+)|_ga$"
+
 IRRELEVANT_SUBDOMAIN_PATTERN = r"\b(?:www\d?|mobile%s|m)\."
 
 AMP_QUERY_PATTERN = r"|amp_.+|amp"
@@ -76,7 +77,9 @@ IRRELEVANT_QUERY_COMBOS = {
             "twtrec",
         ]
     ),
-    "s": lambda v: bool(re.match(r"^[0-9]{1,2}$", v)) or v == "cl",
+    "s": lambda v: (len(v) == 1 and v[0] >= "0" and v[0] <= "9")
+    or (len(v) == 2 and "0" <= v[0] <= "9" and "0" <= v[1] <= "9")
+    or v == "cl",
     "source": ("twitter",),
     "sns": ("tw",),
     "spref": ("fb", "ts", "tw", "tw_i", "twitter"),
@@ -109,13 +112,15 @@ def should_strip_query_item(
 
     value = item[1]
 
+    # NOTE
+    # elif possible only because there's no common
+    # key between IRRELEVANT_QUERY_COMBOS and AMP_QUERY_COMBOS
     if key in IRRELEVANT_QUERY_COMBOS:
         result = IRRELEVANT_QUERY_COMBOS[key]
         if callable(result):
             return result(value)
         return value in IRRELEVANT_QUERY_COMBOS[key]
-
-    if normalize_amp and key in AMP_QUERY_COMBOS:
+    elif normalize_amp and key in AMP_QUERY_COMBOS:
         return value in AMP_QUERY_COMBOS[key]
 
     if strip_lang_query_items and key in LANG_QUERY_KEYS:
