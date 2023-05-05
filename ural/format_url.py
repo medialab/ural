@@ -16,8 +16,6 @@ from ural.utils import string_type, urljoin, quote
 
 
 def format_query_argument(key, value, format_value=None):
-    key = str(key)
-
     if format_value is not None:
         value = format_value(key, value)
 

@@ -42,11 +42,12 @@ class TestFormatUrl(object):
                         "skipped": None,
                         "also-skipped": False,
                         "quoted": "test=ok",
+                        "k quoted": True
                     },
                     fragment="#test",
                 )
             )
-            == "http://lemonde.fr/business/articles?boolean&hello=world&number=14&quoted=test%3Dok#test"
+            == "http://lemonde.fr/business/articles?boolean&hello=world&k%20quoted&number=14&quoted=test%3Dok#test"
         )
 
         def format_arg_value(k, v):
