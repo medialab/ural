@@ -176,8 +176,8 @@ TESTS = [
     ),
     (
         "https://medialab.sciencespo.fr/page.html?s=090",
-        "medialab.sciencespo.fr/page.html?s=090"
-    )
+        "medialab.sciencespo.fr/page.html?s=090",
+    ),
 ]
 
 
