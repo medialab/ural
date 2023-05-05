@@ -167,13 +167,13 @@ TESTS = [
     ("http://sixteen.xn--ii", "sixteen.xn--ii"),
     ("   http://lemonde.fr   ", "lemonde.fr"),
     (
-        "https://medialab.sciencespo.fr/quelquechose.html?fb_action_ids=27e74&fb_action_types=7z9z&mtm_machin=helloworld&_unique_id=89e88&twclid=1e7h&mibextid=0i8r&gclid=2h4h1&mc_cid=90j87&mc_eid=89z32&dclid=899z33&_ga=jjsjsju&campaignid=009heh44&adgroupid=heheheh&cn-reloaded=1&ao_noptimize=true&usqp=JFJDJ&mkt_tok=tiktok&at_machin=great", 
-        "medialab.sciencespo.fr/quelquechose.html"
+        "https://medialab.sciencespo.fr/quelquechose.html?fb_action_ids=27e74&fb_action_types=7z9z&mtm_machin=helloworld&_unique_id=89e88&twclid=1e7h&mibextid=0i8r&gclid=2h4h1&mc_cid=90j87&mc_eid=89z32&dclid=899z33&_ga=jjsjsju&campaignid=009heh44&adgroupid=heheheh&cn-reloaded=1&ao_noptimize=true&usqp=JFJDJ&mkt_tok=tiktok&at_machin=great",
+        "medialab.sciencespo.fr/quelquechose.html",
     ),
     (
         "https://medialab.sciencespo.fr/page.html?s=08&ref=twtrec&m=0&m=1&fromRef=twitter&outputType=amp&_ss=r&source=twitter&outputType=amp",
-        "medialab.sciencespo.fr/page.html"
-    )
+        "medialab.sciencespo.fr/page.html",
+    ),
 ]
 
 
@@ -245,9 +245,10 @@ TESTS_ADVANCED = [
     ),
     ("lemonde.fr/article/", "lemonde.fr/article/", {"strip_trailing_slash": False}),
     (
-        "https://medialab.sciencespo.fr/page.html?outputType=amp", 
+        "https://medialab.sciencespo.fr/page.html?outputType=amp",
         "medialab.sciencespo.fr/page.html?outputType=amp",
-        {"normalize_amp": False})
+        {"normalize_amp": False},
+    ),
 ]
 
 if PY2:

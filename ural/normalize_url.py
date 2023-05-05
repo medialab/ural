@@ -32,9 +32,7 @@ IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccount
 IRRELEVANT_SUBDOMAIN_PATTERN = r"\b(?:www\d?|mobile%s|m)\."
 
 AMP_QUERY_PATTERN = r"|amp_.+|amp"
-AMP_QUERY_COMBOS = {
-    "outputtype": ("amp",)
-}
+AMP_QUERY_COMBOS = {"outputtype": ("amp",)}
 AMP_SUBDOMAIN_PATTERN = r"|amp"
 AMP_SUFFIXES_RE = re.compile(r"(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)", re.I)
 
@@ -52,7 +50,10 @@ IRRELEVANT_QUERY_COMBOS = {
     "output": ("amp",),
     "platform": ("hootsuite",),
     "fromref": ("twitter",),
-    "m": ("0", "1",),
+    "m": (
+        "0",
+        "1",
+    ),
     "ref": set(
         [
             "bookmark",
@@ -72,7 +73,7 @@ IRRELEVANT_QUERY_COMBOS = {
             "twitter",
             "viral",
             "feed",
-            "twtrec"
+            "twtrec",
         ]
     ),
     "s": lambda v: bool(re.match(r"^[0-9]{1,2}$", v)) or v == "cl",
@@ -110,9 +111,10 @@ def should_strip_query_item(
 
     if key in IRRELEVANT_QUERY_COMBOS:
         result = IRRELEVANT_QUERY_COMBOS[key]
-        if callable(result): return result(value)
+        if callable(result):
+            return result(value)
         return value in IRRELEVANT_QUERY_COMBOS[key]
-    
+
     if normalize_amp and key in AMP_QUERY_COMBOS:
         return value in AMP_QUERY_COMBOS[key]
 
