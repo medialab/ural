@@ -78,9 +78,12 @@ class URLFormatter(object):
         self.base_url = self.BASE_URL if base_url is None else base_url
         self.path = path
         self.args = args
-        self.format_arg_value = format_arg_value
+        self._format_arg_value = format_arg_value
         self.fragment = fragment
         self.ext = ext
+
+    def format_arg_value(self, k, v):
+        return v
 
     def format(
         self,
@@ -93,9 +96,13 @@ class URLFormatter(object):
     ):
         base_url = self.base_url if base_url is None else base_url
         path = self.path if path is None else path
-        format_arg_value = (
-            self.format_arg_value if format_arg_value is None else format_arg_value
-        )
+
+        if format_arg_value is None:
+            format_arg_value = self._format_arg_value
+
+        if format_arg_value is None:
+            format_arg_value = self.format_arg_value
+
         fragment = self.fragment if fragment is None else fragment
 
         # Args are merged

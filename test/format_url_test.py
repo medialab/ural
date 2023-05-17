@@ -98,9 +98,23 @@ class TestFormatUrl(object):
         class LeMondeURLFormatter(URLFormatter):
             BASE_URL = "http://lemonde.fr"
 
+            def format_arg_value(self, k, v):
+                if k == "ids":
+                    return ",".join(str(i) for i in v)
+
+                return v
+
             def format_api_call(self, token):
                 return self.format(args={"token": token})
+
+            def format_with_list(self, ids):
+                return self.format(args={"ids": ids})
+
+            def format_with_list_overriden(self):
+                return self.format(args={"ids": 45}, format_arg_value=lambda k, v: "no")
 
         formatter = LeMondeURLFormatter()
 
         assert formatter.format_api_call("yoyo") == "http://lemonde.fr?token=yoyo"
+        assert formatter.format_with_list([1, 2]) == "http://lemonde.fr?ids=1%2C2"
+        assert formatter.format_with_list_overriden() == "http://lemonde.fr?ids=no"

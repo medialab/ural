@@ -33,6 +33,7 @@ class URLFormatter(object):
         fragment: Optional[str] = ...,
         ext: Optional[str] = ...,
     ) -> str: ...
+    def format_arg_value(self, key: str, value: QueryArgValue) -> QueryArgValue: ...
     def format(
         self,
         base_url: Optional[str],
