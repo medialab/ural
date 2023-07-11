@@ -33,3 +33,4 @@ from ural.tld import (
 from ural.urls_from_text import urls_from_text
 from ural.urls_from_html import urls_from_html
 from ural.utils import safe_urlsplit, urlpathsplit, pathsplit, add_query_argument
+from ural.could_be_rss import could_be_rss

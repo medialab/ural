@@ -1,3 +1,0 @@
-def should_be_rss_url(
-    url: str,
-) -> bool: ...

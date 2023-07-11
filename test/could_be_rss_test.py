@@ -1,4 +1,4 @@
-from ural.should_be_rss_url import should_be_rss_url
+from ural.could_be_rss import could_be_rss
 
 TESTS = [
     (
@@ -45,4 +45,4 @@ TESTS = [
 class TestShouldBeRss(object):
     def test_basics(self):
         for url, test in TESTS:
-            assert should_be_rss_url(url) == test
+            assert could_be_rss(url) == test
