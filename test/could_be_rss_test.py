@@ -42,7 +42,7 @@ TESTS = [
 ]
 
 
-class TestShouldBeRss(object):
+class TestCouldBeRss(object):
     def test_basics(self):
         for url, test in TESTS:
             assert could_be_rss(url) == test
