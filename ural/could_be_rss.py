@@ -16,7 +16,9 @@ HOSTNAMES_GOOD = [
     ("feeds2.feedburner.com", ""),
     ("news.google.com", "rss/topics"),
 ]
-QUERY_RE = re.compile(r"((page\=backend)|(?:feed|format|type)\=(?:xml|feed|atom|rss))", re.I)
+QUERY_RE = re.compile(
+    r"((page\=backend)|(?:feed|format|type)\=(?:xml|feed|atom|rss))", re.I
+)
 OBVIOUS_EXT_RE = re.compile(
     r"((^$)|(\/[^\.]*$)|(.+\.(?:xml|php|json|atom|rss)$))", re.I
 )
