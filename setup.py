@@ -5,7 +5,7 @@ with open("./README.md", "r") as f:
 
 setup(
     name="ural",
-    version="0.42.0",
+    version="0.43.0",
     description="A helper library full of URL-related heuristics.",
     long_description=long_description,
     long_description_content_type="text/markdown",
