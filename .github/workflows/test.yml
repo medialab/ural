@@ -8,8 +8,9 @@ jobs:
       matrix:
         include:
           # Current ubuntu
-          - os: ubuntu-20.04
-            python-version: "2.7"
+          # NOTE: py27 support was dropped by GitHub Actions...
+          # - os: ubuntu-20.04
+          #   python-version: "2.7"
           - os: ubuntu-20.04
             python-version: "3.5"
           - os: ubuntu-20.04

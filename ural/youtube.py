@@ -179,6 +179,7 @@ NESTED_NEXT_V_RE = re.compile(r"next%3D%252Fwatch%253Fv%253D([^%&]+)", re.I)
 FRAGMENT_V_RE = re.compile(
     r"^(?:%2F|/)watch(?:%3F|\?)v(?:%3D|=)([a-zA-Z0-9_-]{11})", re.I
 )
+QUERY_LIST_RE = re.compile(QUERY_VALUE_TEMPLATE % r"list", re.I)
 
 YOUTUBE_VIDEO_URL_TEMPLATE = "https://www.youtube.com/watch?v=%s"
 YOUTUBE_USER_URL_TEMPLATE = "https://www.youtube.com/user/%s"
@@ -187,7 +188,7 @@ YOUTUBE_CHANNEL_ID_URL_TEMPLATE = "https://www.youtube.com/channel/%s"
 # NOTE: it's possible this does not work with all channels...
 # Sometimes I think you need 'https://www.youtube.com/%s' instead
 # but there is no way to infer this...
-YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE = "https://www.youtube.com/c/%s"
+YOUTUBE_CHANNEL_NAME_URL_TEMPLATE = "https://www.youtube.com/%s"
 
 YOUTUBE_CHANNEL_NAME_BLACKLIST = {
     "about",
@@ -204,7 +205,7 @@ YOUTUBE_CHANNEL_NAME_BLACKLIST = {
     "t",
 }
 
-YoutubeVideo = namedtuple("YoutubeVideo", ["id"])
+YoutubeVideo = namedtuple("YoutubeVideo", ["id", "playlist"])
 YoutubeUser = namedtuple("YoutubeUser", ["id", "name"])
 YoutubeChannel = namedtuple("YoutubeChannel", ["id", "name"])
 
@@ -254,8 +255,11 @@ def parse_youtube_url(url, fix_common_mistakes=True):
     # Continuation urls
     m = NEXT_V_RE.search(url) or NESTED_NEXT_V_RE.search(url)
 
+    mlist_query = QUERY_LIST_RE.search(url)
+    list_query = mlist_query.group(1) if mlist_query else None
+
     if m:
-        return YoutubeVideo(id=m.group(1))
+        return YoutubeVideo(id=m.group(1), playlist=list_query)
 
     # Parsing
     parsed = safe_urlsplit(url)
@@ -277,7 +281,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if not is_youtube_video_id(v):
                 return
 
-            return YoutubeVideo(id=v)
+            return YoutubeVideo(id=v, playlist=list_query)
 
         return
 
@@ -291,7 +295,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if not is_youtube_video_id(v):
                 return
 
-            return YoutubeVideo(id=v)
+            return YoutubeVideo(id=v, playlist=list_query)
 
     # Typical video url
     if path == "/watch":
@@ -306,7 +310,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if not is_youtube_video_id(v):
                 return
 
-            return YoutubeVideo(id=v)
+            return YoutubeVideo(id=v, playlist=list_query)
 
     # Video file
     elif (
@@ -322,7 +326,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
         if not is_youtube_video_id(v):
             return
 
-        return YoutubeVideo(id=v)
+        return YoutubeVideo(id=v, playlist=list_query)
 
     # Typical user url
     elif path.startswith("/user/"):
@@ -348,7 +352,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 
         name = splitted_path[1]
 
-        return YoutubeChannel(id=None, name=name)
+        return YoutubeChannel(id=None, name=name.lstrip("@"))
 
     elif path.startswith("/channel/"):
         splitted_path = pathsplit(path)
@@ -368,7 +372,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if name in YOUTUBE_CHANNEL_NAME_BLACKLIST:
                 return
 
-            return YoutubeChannel(id=None, name=name)
+            return YoutubeChannel(id=None, name=name.lstrip("@"))
 
 
 def extract_video_id_from_youtube_url(url):
@@ -389,7 +393,12 @@ def normalize_youtube_url(url):
         return url
 
     if isinstance(parsed, YoutubeVideo):
-        return YOUTUBE_VIDEO_URL_TEMPLATE % parsed.id
+        url = YOUTUBE_VIDEO_URL_TEMPLATE % parsed.id
+
+        if parsed.playlist:
+            return url + "&list=%s" % parsed.playlist
+
+        return url
 
     if isinstance(parsed, YoutubeUser):
         return YOUTUBE_USER_URL_TEMPLATE % parsed.name
@@ -398,6 +407,6 @@ def normalize_youtube_url(url):
         if parsed.id is not None:
             return YOUTUBE_CHANNEL_ID_URL_TEMPLATE % parsed.id
 
-        return YOUTUBE_CHANNEL_NAME_URL_TEMPLAYE % parsed.name
+        return YOUTUBE_CHANNEL_NAME_URL_TEMPLATE % parsed.name
 
     raise TypeError("normalize_youtube_url: impossible path reached")
