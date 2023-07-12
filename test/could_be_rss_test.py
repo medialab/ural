@@ -29,6 +29,7 @@ TESTS = [
         False,
     ),
     ("https://legifrance.gouv.fr/jorf/texte_jo/JORFTEXT000046652536", False),
+    #
     ("https://www.htmhell.dev/feed.xml", True),
     ("http://feeds.feedburner.com/2ality?format=xml", True),
     ("http://webkit.org/blog/feed/", True),
@@ -39,6 +40,13 @@ TESTS = [
     ("https://www.debugbear.com/blog/feed/rss", True),
     ("https://marcysutton.com/rss.xml", True),
     ("http://feeds.feedburner.com/kizuruen", True),
+    #
+    ("https://feeds.feedburner.com/TechCrunch/", True),
+    ("https://feeds2.feedburner.com/TechCrunch/", True),
+    ("https://linkedin.com/feed/update/urn%253Ali%253Aactivity%253A7013073227979608064", False),
+    ("https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en", True),
+    ("https://news.google.com/__i/rss/rd/articles/CBMilwFodHRwczovL3d3dy", False)
+
 ]
 
 
