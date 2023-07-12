@@ -7,6 +7,7 @@ define clean
 	find . -name "*.pyc" | xargs rm -f
 	find . -name __pycache__ | xargs rm -rf
 	rm -f *.spec
+	rm -rf .tox
 endef
 
 # Commands
@@ -24,7 +25,7 @@ deps:
 
 format:
 	@echo Formatting source code using black
-	black $(SOURCE) *.py scripts test
+	black $(SOURCE) scripts test setup.py -t py33
 	@echo
 
 lint:

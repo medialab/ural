@@ -16,23 +16,36 @@ pip install ural
 
 *Generic functions*
 
+* [could_be_html](#could_be_html)
 * [ensure_protocol](#ensure_protocol)
 * [force_protocol](#force_protocol)
+* [format_url](#format_url)
 * [get_domain_name](#get_domain_name)
 * [get_hostname](#get_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
 * [has_special_host](#has_special_host)
+* [has_valid_suffix](#has_valid_suffix)
+* [has_valid_tld](#has_valid_tld)
 * [infer_redirection](#infer_redirection)
 * [is_homepage](#is_homepage)
 * [is_shortened_url](#is_shortened_url)
 * [is_special_host](#is_special_host)
 * [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
+* [is_valid_tld](#is_valid_tld)
+* [normalize_hostname](#normalize_hostname)
 * [normalize_url](#normalize_url)
+* [should_follow_href](#should_follow_href)
 * [should_resolve](#should_resolve)
+* [split_suffix](#split_suffix)
 * [strip_protocol](#strip_protocol)
+* [urlpathsplit](#urlpathsplit)
 * [urls_from_html](#urls_from_html)
 * [urls_from_text](#urls_from_text)
+
+*Utilities*
+
+* [Upgrading suffixes and TLDs](#upgrading-suffixes-and-tlds)
 
 *Classes*
 
@@ -102,6 +115,28 @@ pip install ural
 
 ---
 
+### could_be_html
+
+Function returning whether the url could return HTML.
+
+```python
+from ural import could_be_html
+
+could_be_html('https://www.lemonde.fr')
+>>> True
+
+could_be_html('https://www.lemonde.fr/articles/page.php')
+>>> True
+
+could_be_html('https://www.lemonde.fr/data.json')
+>>> False
+
+could_be_html('https://www.lemonde.fr/img/figure.jpg')
+>>> False
+```
+
+---
+
 ### ensure_protocol
 
 Function checking if the url has a protocol, and adding the given one if there is none.
@@ -135,6 +170,99 @@ force_protocol('https://www2.lemonde.fr', protocol='ftp')
 
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol wanted in the output url. Is `'http'` by default.
+
+---
+
+### format_url
+
+Function formatting a url given some typical parameters.
+
+```python
+from ural import format_url
+
+format_url(
+  'https://lemonde.fr',
+  path='/article.html',
+  args={'id': '48675'},
+  fragment='title-2'
+)
+>>> 'https://lemonde.fr/article.html?id=48675#title-2'
+
+# Path can be given as an iterable
+format_url('https://lemonde.fr', path=['articles', 'one.html'])
+>>> 'https://lemonde.fr/articles/one.html'
+
+# Extension
+format_url('https://lemonde.fr', path=['article'], ext='html')
+>>> 'https://lemonde.fr/articles/article.html'
+
+# Query args are formatted/quoted and/or skipped if None/False
+format_url(
+  "http://lemonde.fr",
+  path=["business", "articles"],
+  args={
+    "hello": "world",
+    "number": 14,
+    "boolean": True,
+    "skipped": None,
+    "also-skipped": False,
+    "quoted": "test=ok",
+  },
+  fragment="#test",
+)
+>>> 'http://lemonde.fr/business/articles?boolean&hello=world&number=14&quoted=test%3Dok#test'
+
+# Custom argument value formatting
+def format_arg_value(key, value):
+  if key == 'ids':
+    return ','.join(value)
+
+  return key
+
+format_url(
+  'https://lemonde.fr',
+  args={'ids': [1, 2]},
+  format_arg_value=format_arg_value
+)
+>>> 'https://lemonde.fr?ids=1%2C2'
+
+# Formatter class
+from ural import URLFormatter
+
+formatter = URLFormatter('https://lemonde.fr', args={'id': 'one'})
+
+formatter(path='/article.html')
+>>> 'https://lemonde.fr/article.html?id=one'
+
+# same as:
+formatter.format(path='/article.html')
+>>> 'https://lemonde.fr/article.html?id=one'
+
+# Query arguments are merged
+formatter(path='/article.html', args={"user_id": "two"})
+>>> 'https://lemonde.fr/article.html?id=one&user_id=two'
+
+# Easy subclassing
+class MyCustomFormatter(URLFormatter):
+  BASE_URL = 'https://lemonde.fr/api'
+
+  def format_api_call(self, token):
+    return self.format(args={'token': token})
+
+formatter = MyCustomFormatter()
+
+formatter.format_api_call('2764753')
+>>> 'https://lemonde.fr/api?token=2764753'
+```
+
+*Arguments*
+
+* **base_url** *str*: Base url.
+* **path** *?str|list*: the url's path.
+* **args** *?dict*: query arguments as a dictionary.
+* **format_arg_value** *?callable*: function taking a query argument key and value and returning the formatted value.
+* **fragment** *?str*: the url's fragment.
+* **ext** *?str*: path extension such as `.html`.
 
 ---
 
@@ -199,6 +327,46 @@ has_special_host('http://104.19.154.83')
 
 has_special_host('http://youtube.com')
 >>> False
+```
+
+---
+
+### has_valid_suffix
+
+Function returning whether the given url has a valid suffix as per [Mozzila's Public Suffix List](https://wiki.mozilla.org/Public_Suffix_List).
+
+```python
+from ural import has_valid_suffix
+
+has_valid_suffix('http://lemonde.fr')
+>>> True
+
+has_valid_suffix('http://lemonde.doesnotexist')
+>>> False
+
+# Also works with hostnames
+has_valid_suffix('lemonde.fr')
+>>> True
+```
+
+---
+
+### has_valid_tld
+
+Function returning whether the given url has a valid Top Level Domain (TLD) as per [IANA's list](https://data.iana.org/TLD/tlds-alpha-by-domain.txt).
+
+```python
+from ural import has_valid_tld
+
+has_valid_tld('http://lemonde.fr')
+>>> True
+
+has_valid_tld('http://lemonde.doesnotexist')
+>>> False
+
+# Also works with hostnames
+has_valid_tld('lemonde.fr')
+>>> True
 ```
 
 ---
@@ -321,6 +489,41 @@ is_url('lemonde.falsetld/whatever.html', tld_aware=True)
 
 ---
 
+### is_valid_tld
+
+Function returning whether the given Top Level Domain (TLD) is valid as per [IANA's list](https://data.iana.org/TLD/tlds-alpha-by-domain.txt).
+
+```python
+from ural import is_valid_tld
+
+is_valid_tld('.fr')
+>>> True
+
+is_valid_tld('com')
+>>> True
+
+is_valid_tld('.doesnotexist')
+>>> False
+```
+
+---
+
+### normalize_hostname
+
+Function normalizing the given hostname, i.e. without usually irrelevant subdomains etc. Works a lot like [normalize_url](#normalize_url).
+
+```python
+from ural import normalize_hostname
+
+normalize_hostname('www.facebook.com')
+>>> 'facebook.com'
+
+normalize_hostname('fr-FR.facebook.com', strip_lang_subdomains=True)
+>>> 'facebook.com'
+```
+
+---
+
 ### normalize_url
 
 Function normalizing the given url by stripping it of usually non-discriminant parts such as irrelevant query items or sub-domains etc.
@@ -354,6 +557,25 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 
 ---
 
+### should_follow_href
+
+Function returning whether the given href should be followed (usually from a crawler's context). This means it will filter out anchors, and url having a scheme which is not http/https.
+
+```python
+from ural import should_follow_href
+
+should_follow_href('#top')
+>>> False
+
+should_follow_href('http://lemonde.fr')
+>>> True
+
+should_follow_href('/article.html')
+>>> True
+```
+
+---
+
 ### should_resolve
 
 Function returning whether the given function looks like something you would want to resolve because the url will *probably* lead to some redirection.
@@ -375,6 +597,25 @@ should_resolve('https://doi.org/10.4000/vertigo.26405')
 
 ---
 
+### split_suffix
+
+Function splitting a hostname or a url's hostname into the domain part and the suffix part (while respecting [Mozzila's Public Suffix List](https://wiki.mozilla.org/Public_Suffix_List)).
+
+```python
+from ural import split_suffix
+
+split_suffix('http://www.bbc.co.uk/article.html')
+>>> ('www.bbc', 'co.uk')
+
+split_suffix('http://www.bbc.idontexist')
+>>> None
+
+split_suffix('lemonde.fr')
+>>> ('lemonde', 'fr')
+```
+
+---
+
 ### strip_protocol
 
 Function removing the protocol from the url.
@@ -389,6 +630,28 @@ strip_protocol('https://www2.lemonde.fr/index.php')
 *Arguments*
 
 * **url** *string*: URL to format.
+
+---
+
+### urlpathsplit
+
+Function taking a url and returning its path, tokenized as a list.
+
+```python
+from ural import urlpathsplit
+
+urlpathsplit('http://lemonde.fr/section/article.html')
+>>> ['section', 'article.html']
+
+urlpathsplit('http://lemonde.fr/')
+>>> []
+
+# If you want to split a path directly
+from ural import pathsplit
+
+pathsplit('/section/articles/')
+>>> ['section', 'articles']
+```
 
 ---
 
@@ -415,7 +678,9 @@ for url in urls_from_html(html):
 
 ### urls_from_text
 
-Function returning an iterator over the urls present in the string argument. Extracts only the urls with a protocol.
+Function returning an iterator over the urls present in the string argument. Extracts only urls having a protocol.
+
+Note that this function is somewhat markdown-aware, and punctuation-aware.
 
 ```python
 from ural import urls_from_text
@@ -424,6 +689,7 @@ text = "Hey! Check this site: https://medialab.sciencespo.fr/, it looks really c
 
 for url in urls_from_text(text):
     print(url)
+
 >>> 'https://medialab.sciencespo.fr/'
 >>> 'https://github.com/'
 ```
@@ -431,6 +697,28 @@ for url in urls_from_text(text):
 *Arguments*
 
 * **string** *string*: source string.
+
+---
+
+### Upgrading suffixes and TLDs
+
+If you want to upgrade the package's data wrt Mozilla suffixes and IANA TLDs, you can do so either by running the following command:
+
+```bash
+python -m ural upgrade
+```
+
+or directly in your python code:
+
+```python
+from ural.tld import upgrade
+
+upgrade()
+
+# Or if you want to patch runtime only this time, or regularly
+# (for long running programs or to avoid rights issues etc.):
+upgrade(transient=True)
+```
 
 ---
 
@@ -514,7 +802,8 @@ url_to_lru('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 *Arguments*
 
 * **url** *string*: url to convert.
-* **tld_aware** *?bool*: whether to acknowledge TLDs when converting.
+* **suffix_aware** *?bool*: whether to be mindful of suffixes when converting (e.g. considering "co.uk" as a single token).
+
 ---
 
 ### lru.lru_to_url
@@ -547,7 +836,7 @@ lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 *Arguments*
 
 * **url** *string*: URL to parse.
-* **tld_aware** *?bool*: whether to acknowledge TLDs when stemming.
+* **suffix_aware** *?bool*: whether to be mindful of suffixes when converting (e.g. considering "co.uk" as a single token).
 
 ---
 
@@ -605,8 +894,8 @@ from ural.lru import LRUTrie
 
 trie = LRUTrie()
 
-# To respect tlds
-trie = LRUTrie(tld_aware=True)
+# To respect suffixes
+trie = LRUTrie(suffix_aware=True)
 ```
 
 <h4 id="lrutrie-set">#.set</h4>
@@ -1026,7 +1315,7 @@ extract_username_from_instagram_url('https://lemonde.fr')
 
 #### parse_instagram_url
 
-Returns parsed information about the given Instagram url: either about the post or user. If the url is an invalid Instagram url or if not a Instagram url, the function returns `None`.
+Returns parsed information about the given Instagram url: either about the post, the user or the reel. If the url is an invalid Instagram url or if not an Instagram url, the function returns `None`.
 
 ```python
 from ural.instagram import (
@@ -1034,7 +1323,8 @@ from ural.instagram import (
 
   # You can also import the named tuples if you need them
   InstagramPost,
-  InstagramUser
+  InstagramUser,
+  InstagramReel
 )
 
 parse_instagram_url('https://www.instagram.com/martin_dupont/p/BxKRx5CHn5i/')
@@ -1048,6 +1338,9 @@ parse_instagram_url('https://www.instagram.com/p/BxKRx5-Hn5i/')
 
 parse_instagram_url('https://www.instagram.com/martin_dupont')
 >>> InstagramUser(name='martin_dupont')
+
+parse_instagram_url('https://www.instagram.com/reels/BxKRx5-Hn5i')
+>>> InstagramReel(id='BxKRx5-Hn5i')
 ```
 
 *Arguments*

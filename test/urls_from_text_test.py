@@ -51,6 +51,13 @@ TESTS = [
     ),
     ("This is a [markdown]( https://lefigaro.fr) link.", ["https://lefigaro.fr"]),
     ("[http://www.lemonde.fr]", ["http://www.lemonde.fr"]),
+    (
+        "This is a link: [https://youtu.be/rLZ2ZzoD-W0](https://youtu.be/rLZ2ZzoD-W0?fbclid=IwAR3RdUNf4_yyYxIBbAspDj-86ckbpS9gjv3tn2rhYspmFJuSl_dlkD7AgyU)",
+        [
+            "https://youtu.be/rLZ2ZzoD-W0",
+            "https://youtu.be/rLZ2ZzoD-W0?fbclid=IwAR3RdUNf4_yyYxIBbAspDj-86ckbpS9gjv3tn2rhYspmFJuSl_dlkD7AgyU",
+        ],
+    ),
 ]
 
 

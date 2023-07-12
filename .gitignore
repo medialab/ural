@@ -3,6 +3,7 @@ __pycache__
 .ipynb_checkpoints
 .pytest_cache
 .python-version
+.tox
 .vscode
 *.pyx
 *.pyc

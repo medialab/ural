@@ -52,6 +52,8 @@ except ImportError:
 
 MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 
+unshadowed_quote = quote
+
 
 def safe_urlsplit(url, scheme="http"):
     if isinstance(url, SplitResult):
@@ -65,7 +67,7 @@ def safe_urlsplit(url, scheme="http"):
     return splitted
 
 
-def urlpathsplit(urlpath):
+def pathsplit(urlpath):
     urlpath = urlpath.strip()
 
     if not urlpath or urlpath == "/":
@@ -74,6 +76,11 @@ def urlpathsplit(urlpath):
     urlpath = urlpath.strip("/")
 
     return urlpath.split("/")
+
+
+def urlpathsplit(url):
+    parsed = safe_urlsplit(url)
+    return pathsplit(parsed.path)
 
 
 SLASH_SQUEEZE_RE = re.compile(r"\/{2,}")
@@ -127,3 +134,41 @@ def fix_common_query_mistakes(query):
 
 def safe_parse_qs(query):
     return parse_qs(fix_common_query_mistakes(query))
+
+
+def add_query_argument(url, name, value=None, quote=True):
+    if quote:
+        name = unshadowed_quote(name)
+
+    if value == True or value is None:
+        arg = name
+    else:
+        if quote:
+            value = unshadowed_quote(str(value))
+
+        arg = name + "=" + value
+
+    query = None
+    fragment = None
+
+    s = url.rsplit("#", 1)
+
+    if len(s) > 1:
+        url, fragment = s
+
+    s = url.rsplit("?", 1)
+
+    if len(s) > 1:
+        url, query = s
+
+    if query:
+        query += "&" + arg
+    else:
+        query = arg
+
+    url += "?" + query
+
+    if fragment is not None:
+        url += "#" + fragment
+
+    return url

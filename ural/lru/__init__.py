@@ -10,8 +10,8 @@ from ural.lru.stems import lru_stems, normalized_lru_stems
 from ural.lru.trie import LRUTrie, NormalizedLRUTrie
 
 
-def url_to_lru(url, tld_aware=False):
-    return serialize_lru(lru_stems(url, tld_aware=tld_aware))
+def url_to_lru(url, suffix_aware=False):
+    return serialize_lru(lru_stems(url, suffix_aware=suffix_aware))
 
 
 def lru_to_url(lru):
@@ -67,3 +67,15 @@ def lru_to_url(lru):
     fragment = stems_index.get("f", "")
 
     return urlunsplit((scheme, netloc, path, query, fragment))
+
+
+__all__ = [
+    "serialize_lru",
+    "unserialize_lru",
+    "lru_stems",
+    "normalized_lru_stems",
+    "LRUTrie",
+    "NormalizedLRUTrie",
+    "url_to_lru",
+    "lru_to_url",
+]

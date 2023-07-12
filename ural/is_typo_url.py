@@ -5,6 +5,7 @@
 #
 # A function returning True if its argument is detected as typo.
 #
+from __future__ import unicode_literals
 from ural.strip_protocol import strip_protocol
 from ural.utils import safe_urlsplit
 

@@ -90,6 +90,19 @@ TESTS = [
         "https://www.google.es/url?q=https://www.lavanguardia.com/politica/elecciones-catalanas/20121024/54353836096/elecciones-catalanas-53-catalanes-a-favor-independencia-referendum.html%253ffacet=amp",
         "https://www.lavanguardia.com/politica/elecciones-catalanas/20121024/54353836096/elecciones-catalanas-53-catalanes-a-favor-independencia-referendum.html%3ffacet=amp",
     ),
+    # Empty redirections
+    (
+        "https://www-lesechos-fr.cdn.ampproject.org/v/",
+        "https://www-lesechos-fr.cdn.ampproject.org/v/",
+    ),
+    (
+        "https://www-bbc-com.cdn.ampproject.org/v/s/",
+        "https://www-bbc-com.cdn.ampproject.org/v/s/",
+    ),
+    (
+        "https://www.dpbolvw.net/click-8187505-15219391?url=https://",
+        "https://www.dpbolvw.net/click-8187505-15219391?url=https://",
+    ),
 ]
 
 

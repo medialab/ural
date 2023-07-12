@@ -5,9 +5,9 @@
 # A function returning the url parts in hierarchical order.
 #
 import re
-from tld.utils import process_url
 
 from ural.utils import urlsplit
+from ural.tld import split_suffix
 from ural.ensure_protocol import ensure_protocol
 from ural.normalize_url import normalize_url
 from ural.has_special_host import is_special_host
@@ -15,7 +15,7 @@ from ural.has_special_host import is_special_host
 PORT_SPLITTER = re.compile(r":(?![\d:]+])")
 
 
-def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
+def lru_stems_from_parsed_url(parsed_url, suffix_aware=True):
     scheme, netloc, path, query, fragment = parsed_url
     lru = []
 
@@ -42,26 +42,21 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
         lru.append("t:" + port)
 
     # Need to process TLD?
-    should_process_normally = not tld_aware
+    should_process_normally = not suffix_aware
 
-    if tld_aware:
-        domain_parts, non_zero_i, _ = process_url(
-            url=parsed_url,
-            fail_silently=True,
-            fix_protocol=False,
-            search_public=True,
-            search_private=True,
-        )
+    if suffix_aware:
+        split_result = split_suffix(parsed_url)
 
-        if domain_parts is None:
+        if split_result is None:
             should_process_normally = True
 
         else:
-            tld = ".".join(domain_parts[non_zero_i:])
-            lru.append("h:" + tld)
+            domain, suffix = split_result
+            lru.append("h:" + suffix)
 
-            for element in reversed(domain_parts[0:non_zero_i]):
-                lru.append("h:" + element)
+            if domain:
+                for element in reversed(domain.split(".")):
+                    lru.append("h:" + element)
 
     if should_process_normally:
         if is_special_host(netloc[0]):
@@ -93,7 +88,7 @@ def lru_stems_from_parsed_url(parsed_url, tld_aware=True):
 
 
 # TODO: ensure_protocol
-def lru_stems(url, tld_aware=False):
+def lru_stems(url, suffix_aware=False):
     """
     Function returning the parts of the given url in the hierarchical order (lru).
 
@@ -105,10 +100,10 @@ def lru_stems(url, tld_aware=False):
     """
 
     full_url = ensure_protocol(url)
-    return lru_stems_from_parsed_url(urlsplit(full_url), tld_aware=tld_aware)
+    return lru_stems_from_parsed_url(urlsplit(full_url), suffix_aware=suffix_aware)
 
 
-def normalized_lru_stems(url, tld_aware=False, **kwargs):
+def normalized_lru_stems(url, suffix_aware=False, **kwargs):
     full_url = ensure_protocol(url)
     parsed_url = normalize_url(full_url, unsplit=False, **kwargs)
-    return lru_stems_from_parsed_url(parsed_url, tld_aware=tld_aware)
+    return lru_stems_from_parsed_url(parsed_url, suffix_aware=suffix_aware)

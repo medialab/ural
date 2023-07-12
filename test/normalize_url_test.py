@@ -3,14 +3,14 @@
 # Ural URL Normalization Unit Tests
 # =============================================================================
 from __future__ import unicode_literals
+from platform import python_version_tuple
 
-PY2 = False
+PY2 = python_version_tuple()[0] == "2"
 
-try:
-    basestring
-    PY2 = True
-except NameError:
-    pass
+
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)
+
 
 from ural import normalize_url, get_normalized_hostname, get_hostname
 
@@ -165,27 +165,36 @@ TESTS = [
         "techcrunch.com/2021/03/03/1-3m-in-grants-go-towards-making-the-webs-open-source-infrastructure-more-equitable",
     ),
     ("http://sixteen.xn--ii", "sixteen.xn--ii"),
-    (
-        "https://youtube.com/c/28minutes?cbrd=1&ucbcb=1",
-        "youtube.com/c/28minutes"
-    ),
+    ("https://youtube.com/c/28minutes?cbrd=1&ucbcb=1", "youtube.com/c/28minutes"),
     (
         "https://youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg?cbrd=1&ucbcb=1",
-        "youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg"
+        "youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg",
     ),
     (
         "https://youtube.com/watch?si=ELPmzJkLTLju2KnD5oyZMQ&v=Q5p-ZrwIC-0",
-        "youtube.com/watch?v=Q5p-ZrwIC-0"
+        "youtube.com/watch?v=Q5p-ZrwIC-0",
     ),
     (
         "https://youtube.com/watch?ab_channel=matthieu&v=irmd-7xeocA",
         "youtube.com/watch?v=irmd-7xeocA",
-
     ),
     (
         "https://youtube.com/watch?list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY&v=cTQjoHBhX4o",
         "youtube.com/watch?list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY&v=cTQjoHBhX4o",
-    )
+    ),
+    ("   http://lemonde.fr   ", "lemonde.fr"),
+    (
+        "https://medialab.sciencespo.fr/quelquechose.html?fb_action_ids=27e74&fb_action_types=7z9z&mtm_machin=helloworld&_unique_id=89e88&twclid=1e7h&mibextid=0i8r&gclid=2h4h1&mc_cid=90j87&mc_eid=89z32&dclid=899z33&_ga=jjsjsju&campaignid=009heh44&adgroupid=heheheh&cn-reloaded=1&ao_noptimize=true&usqp=JFJDJ&mkt_tok=tiktok&at_machin=great",
+        "medialab.sciencespo.fr/quelquechose.html",
+    ),
+    (
+        "https://medialab.sciencespo.fr/page.html?s=08&ref=twtrec&m=0&m=1&fromRef=twitter&outputType=amp&_ss=r&source=twitter&outputType=amp",
+        "medialab.sciencespo.fr/page.html",
+    ),
+    (
+        "https://medialab.sciencespo.fr/page.html?s=090",
+        "medialab.sciencespo.fr/page.html?s=090",
+    ),
 ]
 
 
@@ -256,7 +265,16 @@ TESTS_ADVANCED = [
         {"strip_trailing_slash": False},
     ),
     ("lemonde.fr/article/", "lemonde.fr/article/", {"strip_trailing_slash": False}),
+    (
+        "https://medialab.sciencespo.fr/page.html?outputType=amp",
+        "medialab.sciencespo.fr/page.html?outputType=amp",
+        {"normalize_amp": False},
+    ),
 ]
+
+if PY2:
+    TESTS = [t for t in TESTS if is_ascii(t[0]) and is_ascii(t[1])]
+    TESTS_ADVANCED = [t for t in TESTS_ADVANCED if is_ascii(t[0]) and is_ascii(t[1])]
 
 
 class TestNormalizeUrl(object):

@@ -2,6 +2,7 @@
 # =============================================================================
 # Ural Is Typo URL Unit Tests
 # =============================================================================
+from __future__ import unicode_literals
 from ural import is_typo_url
 
 TESTS = [

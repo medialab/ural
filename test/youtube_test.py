@@ -85,7 +85,9 @@ PARSE_TESTS = [
     ),
     (
         "https://accounts.youtube.com/accounts/SetSID?list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY&ssdc=1&sidt=ALWU2ctpK5UgBHaSlYgNAS6kKr5K2ViktmHTEQ46AaVcyfB9Ae5jfhUmnJ5XuJTojZDXSFe3pvpYgPf2bpZ58EWKSst0QSJN20EyKnRRoHx9TF4k3xJ14%2F1VNso2ULDtZP1UwAtvqQ2gIYFo%2Bb6SGlmlnZBeBx1rJEDlJKmXbE5j1NiZfQp%2BLYGunuhjot9yZXOrzB2jq6O2CXEkEOw%2Bv23hWOXuUsUaXam2bZ4iRtEFt0EPkMK5rNysv%2FsVs%2F0LJtXTXIOaFGkaTJMbn28zC4VOO2dODGdm8UdGDrDHaI%2FHsiOrasfhK9O182PSjpLmYcLQObLVm9Ai&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Fapp%3Ddesktop%26action_handle_signin%3Dtrue%26hl%3Dfr%26next%3D%252Fwatch%253Fv%253DyEtmZKE5jhw%26pli%3D1%26auth%3DawfzdXEmX9BuMCCEWwI2MBuBdDBNxbe9_9ApWQnC_LyUJrVN06XI3J4TSMOYXwSrdMjoOw",
-        YoutubeVideo(id="yEtmZKE5jhw", playlist="OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY"),
+        YoutubeVideo(
+            id="yEtmZKE5jhw", playlist="OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY"
+        ),
         "https://www.youtube.com/watch?v=yEtmZKE5jhw&list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY",
     ),
     (
@@ -175,29 +177,30 @@ PARSE_TESTS = [
     (
         "https://youtube.com/c/28minutes?cbrd=1&ucbcb=1",
         YoutubeChannel(id=None, name="28minutes"),
-        "https://www.youtube.com/28minutes"
+        "https://www.youtube.com/28minutes",
     ),
     (
         "https://youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg?cbrd=1&ucbcb=1",
         YoutubeChannel(id="UCLIK2q7Y59uB_TXFjn2XdNg", name=None),
-        "https://www.youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg"
+        "https://www.youtube.com/channel/UCLIK2q7Y59uB_TXFjn2XdNg",
     ),
     (
         "https://youtube.com/watch?si=ELPmzJkLTLju2KnD5oyZMQ&v=Q5p-ZrwIC-0",
         YoutubeVideo(id="Q5p-ZrwIC-0", playlist=None),
-        "https://www.youtube.com/watch?v=Q5p-ZrwIC-0"
+        "https://www.youtube.com/watch?v=Q5p-ZrwIC-0",
     ),
     (
         "https://youtube.com/watch?ab_channel=matthieu&v=irmd-7xeocA",
         YoutubeVideo(id="irmd-7xeocA", playlist=None),
         "https://www.youtube.com/watch?v=irmd-7xeocA",
-
     ),
     (
         "https://youtube.com/watch?list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY&v=cTQjoHBhX4o",
-        YoutubeVideo(id="cTQjoHBhX4o", playlist="OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY"),
+        YoutubeVideo(
+            id="cTQjoHBhX4o", playlist="OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY"
+        ),
         "https://www.youtube.com/watch?v=cTQjoHBhX4o&list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY",
-    )
+    ),
 ]
 
 

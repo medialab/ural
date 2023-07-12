@@ -10,6 +10,7 @@ from ural.instagram import (
     extract_username_from_instagram_url,
     InstagramPost,
     InstagramUser,
+    InstagramReel,
 )
 
 IS_TESTS = [
@@ -25,6 +26,7 @@ IS_TESTS = [
     ("https://www.instagram.com/martin_dupont/p/BxKRx5CHn5i/", True),
     ("https://www.instagram.com/martin", True),
     ("https://www.instagram.com/martin_dupont/", True),
+    ("https://www.instagram.com/reel/Co-r5ZyTuZ--/", True),
 ]
 
 PARSE_TESTS = [
@@ -65,6 +67,43 @@ PARSE_TESTS = [
         InstagramUser(name="martin_dupont"),
         "https://www.instagram.com/martin_dupont/",
     ),
+    (
+        "https://www.instagram.com/reel/",
+        InstagramUser(name="reel"),
+        "https://www.instagram.com/reel/",
+    ),
+    (
+        "https://www.instagram.com/reel/Co-r5ZyTuZ--/",
+        InstagramReel(id="Co-r5ZyTuZ--"),
+        "https://www.instagram.com/reel/Co-r5ZyTuZ--/",
+    ),
+    (
+        "https://www.instagram.com/reels/Co2ZFRrAgHy/",
+        InstagramReel(id="Co2ZFRrAgHy"),
+        "https://www.instagram.com/reels/Co2ZFRrAgHy/",
+    ),
+    (
+        "https://www.instagram.com/reels/videos/Co2ZFRrAgHy/",
+        InstagramReel(id="Co2ZFRrAgHy"),
+        "https://www.instagram.com/reels/videos/Co2ZFRrAgHy/",
+    ),
+    ("https://www.instagram.com/reels/", None, "https://www.instagram.com/reels/"),
+    (
+        "https://www.instagram.com/reels/videos",
+        None,
+        "https://www.instagram.com/reels/videos",
+    ),
+    (
+        "https://www.instagram.com/reels/videos/videos",
+        None,
+        "https://www.instagram.com/reels/videos/videos",
+    ),
+    ("https://www.instagram.com/direct/", None, "https://www.instagram.com/direct/"),
+    (
+        "https://www.instagram.com/your_activity/interactions/likes/",
+        None,
+        "https://www.instagram.com/your_activity/interactions/likes/",
+    ),
 ]
 
 
@@ -91,6 +130,10 @@ class TestInstagram(object):
 
     def test_extract_username_from_instagram_url(self):
         for url, result, _ in PARSE_TESTS:
-            extract_result = None if result is None else result.name
+            extract_result = (
+                result.name
+                if isinstance(result, (InstagramPost, InstagramUser))
+                else None
+            )
 
             assert extract_username_from_instagram_url(url) == extract_result

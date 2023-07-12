@@ -3,7 +3,6 @@
 # Ural Hostname Trie Set Unit Tests
 # =============================================================================
 from __future__ import unicode_literals
-
 from ural import HostnameTrieSet
 
 

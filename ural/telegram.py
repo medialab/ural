@@ -8,7 +8,7 @@ import re
 from collections import namedtuple
 
 from ural.ensure_protocol import ensure_protocol
-from ural.utils import urlpathsplit, urlsplit, urlunsplit, safe_urlsplit, SplitResult
+from ural.utils import pathsplit, urlsplit, urlunsplit, safe_urlsplit, SplitResult
 from ural.patterns import DOMAIN_TEMPLATE
 
 TELEGRAM_MESSAGE_ID_RE = re.compile(r"^\d+$")
@@ -89,7 +89,7 @@ def parse_telegram_url(url):
         return None
 
     parsed = safe_urlsplit(url)
-    path = urlpathsplit(parsed.path)
+    path = pathsplit(parsed.path)
 
     if path:
 

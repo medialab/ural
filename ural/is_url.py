@@ -4,8 +4,9 @@
 #
 # A function returning True if its argument is a url.
 #
-from tld.utils import process_url
+from ural.utils import safe_urlsplit
 from ural.has_special_host import is_special_host
+from ural.tld import has_valid_tld
 from ural.patterns import (
     URL_RE,
     URL_WITH_PROTOCOL_RE,
@@ -64,18 +65,8 @@ def is_url(
         return False
 
     if tld_aware:
-        domain_parts, non_zero_i, parsed_url = process_url(
-            url=string,
-            fail_silently=True,
-            fix_protocol=not require_protocol,
-            search_public=True,
-            search_private=True,
-        )
-
-        if domain_parts is None:
-            if not parsed_url:
-                return False
-
-            return is_special_host(parsed_url.hostname)
+        parsed = safe_urlsplit(string)
+        if not has_valid_tld(parsed):
+            return is_special_host(parsed.hostname)
 
     return True

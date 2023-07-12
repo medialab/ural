@@ -5,7 +5,7 @@
 # Collection of functions related to Google urls.
 #
 import re
-from ural.utils import safe_urlsplit, unquote, urlpathsplit
+from ural.utils import safe_urlsplit, unquote, pathsplit
 from ural.patterns import QUERY_VALUE_IN_URL_TEMPLATE
 
 AMP_QUERY_RE = re.compile(r"amp(_.+)=?", re.I)
@@ -134,7 +134,7 @@ def parse_google_drive_url(url):
     if "docs.google.com" not in splitted.netloc:
         return None
 
-    path = urlpathsplit(splitted.path)
+    path = pathsplit(splitted.path)
 
     if len(path) < 3:
         return None

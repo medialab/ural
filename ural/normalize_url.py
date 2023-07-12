@@ -6,9 +6,9 @@
 # non-discriminant parts of a URL.
 #
 import re
-import pycountry
 from os.path import splitext
 
+from ural.data import ISO_3166_1_COUNTRIES_ALPHA_2
 from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection as resolve
 from ural.utils import (
@@ -28,10 +28,12 @@ RESERVED_CHARACTERS = ";,/?:@&=+$"
 UNRESERVED_CHARACTERS = "-_.!~*'()"
 SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
-IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|echobox|fbclid|feature|refid|__tn__|fb_source|_ft_|recruiter|fref|igshid|wpamp|ncid|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s))$"
+IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|fb_action_types|fb_action_ids|fb_source|echobox|feature|recruiter|_unique_id|twclid|mibextid|campaignid|adgroupid|cn-reloaded|ao_noptimize|mkt_tok|fbclid|igshid|refid|gclid|mc_cid|mc_eid|__tn__|_ft_|dclid|wpamp|fref|usqp|ncid|mtm_.+|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s)|at_.+|_ga)$"
+
 IRRELEVANT_SUBDOMAIN_PATTERN = r"\b(?:www\d?|mobile%s|m)\."
 
 AMP_QUERY_PATTERN = r"|amp_.+|amp"
+AMP_QUERY_COMBOS = {"outputtype": ("amp",)}
 AMP_SUBDOMAIN_PATTERN = r"|amp"
 AMP_SUFFIXES_RE = re.compile(r"(?:\.amp(?=\.html$)|\.amp/?$|(?<=/)amp/?$)", re.I)
 
@@ -48,6 +50,11 @@ IRRELEVANT_QUERY_COMBOS = {
     "mode": ("amp",),
     "output": ("amp",),
     "platform": ("hootsuite",),
+    "fromref": ("twitter",),
+    "m": (
+        "0",
+        "1",
+    ),
     "ref": set(
         [
             "bookmark",
@@ -67,16 +74,27 @@ IRRELEVANT_QUERY_COMBOS = {
             "twitter",
             "viral",
             "feed",
+            "twtrec",
         ]
     ),
+    "s": lambda v: len(v) <= 2 and all("0" <= x <= "9" for x in v),
+    "source": ("twitter",),
     "sns": ("tw",),
     "spref": ("fb", "ts", "tw", "tw_i", "twitter"),
+    "_ss": ("r",),
 }
 
+# NOTE: if this list becomes too long, switch to HostnameTrieMap
 PER_DOMAIN_QUERY_FILTERS = [
-    ("twitter.com", lambda k, v: k == "s"),
     ("facebook.com", lambda k, v: k == "_rdc" or k == "_rdr"),
-    ("youtube.com", lambda k, v: k=="t" or k=="si" or k=="cbrd" or k=="ucbcb" or k=="ab_channel"),
+    (
+        "youtube.com",
+        lambda k, v: k == "t"
+        or k == "si"
+        or k == "cbrd"
+        or k == "ucbcb"
+        or k == "ab_channel",
+    ),
 ]
 
 LANG_QUERY_KEYS = ("gl", "hl")
@@ -102,7 +120,15 @@ def should_strip_query_item(
     value = item[1]
 
     if key in IRRELEVANT_QUERY_COMBOS:
+        result = IRRELEVANT_QUERY_COMBOS[key]
+        if callable(result):
+            return result(value)
         return value in IRRELEVANT_QUERY_COMBOS[key]
+
+    # NOTE: only keep elif because query combos and amp query combos
+    # are mutually exclusive.
+    elif normalize_amp and key in AMP_QUERY_COMBOS:
+        return value in AMP_QUERY_COMBOS[key]
 
     if strip_lang_query_items and key in LANG_QUERY_KEYS:
         return True
@@ -126,12 +152,13 @@ def strip_lang_subdomains_from_netloc(netloc):
         if len(subdomain) == 5 and "-" in subdomain:
             lang, country = subdomain.split("-", 1)
             if len(lang) == 2 and len(country) == 2:
-                if pycountry.countries.get(
-                    alpha_2=lang.upper()
-                ) and pycountry.countries.get(alpha_2=country.upper()):
+                if (
+                    lang.upper() in ISO_3166_1_COUNTRIES_ALPHA_2
+                    and country.upper() in ISO_3166_1_COUNTRIES_ALPHA_2
+                ):
                     netloc = remaining_netloc
         elif len(subdomain) == 2:
-            if pycountry.countries.get(alpha_2=subdomain.upper()):
+            if subdomain.upper() in ISO_3166_1_COUNTRIES_ALPHA_2:
                 netloc = remaining_netloc
 
     return netloc
@@ -204,6 +231,7 @@ def normalize_url(
         has_protocol = bool(url.scheme)
         splitted = url
     else:
+        url = url.strip()
         has_protocol = PROTOCOL_RE.match(url)
 
         # Ensuring scheme so parsing works correctly
@@ -349,25 +377,8 @@ def normalize_url(
     return result
 
 
-def get_normalized_hostname(
-    url, normalize_amp=True, strip_lang_subdomains=False, infer_redirection=True
-):
-
-    if infer_redirection:
-        url = resolve(url)
-
-    if isinstance(url, SplitResult):
-        splitted = url
-    else:
-        try:
-            splitted = urlsplit(ensure_protocol(url))
-        except ValueError:
-            return None
-
-    if not splitted.hostname:
-        return None
-
-    hostname = splitted.hostname.lower()
+def normalize_hostname(hostname, normalize_amp=True, strip_lang_subdomains=False):
+    hostname = hostname.strip().lower()
 
     pattern = IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE
 
@@ -382,3 +393,27 @@ def get_normalized_hostname(
         hostname = strip_lang_subdomains_from_netloc(hostname)
 
     return hostname
+
+
+def get_normalized_hostname(
+    url, normalize_amp=True, strip_lang_subdomains=False, infer_redirection=True
+):
+    if infer_redirection:
+        url = resolve(url)
+
+    if isinstance(url, SplitResult):
+        splitted = url
+    else:
+        try:
+            splitted = urlsplit(ensure_protocol(url.strip()))
+        except ValueError:
+            return None
+
+    if not splitted.hostname:
+        return None
+
+    return normalize_hostname(
+        splitted.hostname,
+        normalize_amp=normalize_amp,
+        strip_lang_subdomains=strip_lang_subdomains,
+    )

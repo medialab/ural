@@ -1,5 +1,5 @@
 from ural.is_shortened_url import SHORTENER_DOMAINS
-from ural.hostname_trie_set import HostnameTrieSet
+from ural.classes.hostname_trie_set import HostnameTrieSet
 
 old_domains = set(SHORTENER_DOMAINS)
 

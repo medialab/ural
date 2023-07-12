@@ -1,0 +1,3 @@
+from ural.types import AnyUrlTarget
+
+def should_resolve(url: AnyUrlTarget) -> bool: ...

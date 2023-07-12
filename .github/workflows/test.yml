@@ -7,10 +7,6 @@ jobs:
     strategy:
       matrix:
         include:
-          # Old ubuntu
-          - os: ubuntu-18.04
-            python-version: "3.6"
-
           # Current ubuntu
           - os: ubuntu-20.04
             python-version: "2.7"
@@ -26,7 +22,7 @@ jobs:
             python-version: "3.9"
 
           # Mac
-          - os: macos-10.15
+          - os: macos-latest
             python-version: "3.6"
 
           # Windows

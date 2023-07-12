@@ -5,9 +5,15 @@
 # =============================================================================
 from __future__ import unicode_literals
 
-from ural.utils import urlpathsplit, decode_punycode_hostname
+from ural.utils import (
+    pathsplit,
+    urlpathsplit,
+    decode_punycode_hostname,
+    safe_urlsplit,
+    add_query_argument,
+)
 
-URLPATHSPLIT_TESTS = [
+PATHSPLIT_TESTS = [
     ("", []),
     ("/", []),
     ("/path", ["path"]),
@@ -17,9 +23,14 @@ URLPATHSPLIT_TESTS = [
 
 
 class TestUtils(object):
+    def test_pathsplit(self):
+        for path, result in PATHSPLIT_TESTS:
+            assert pathsplit(path) == result
+
     def test_urlpathsplit(self):
-        for path, result in URLPATHSPLIT_TESTS:
-            assert urlpathsplit(path) == result
+        assert urlpathsplit("http://lemonde.fr/article.html") == ["article.html"]
+        assert urlpathsplit("http://lemonde.fr") == []
+        assert urlpathsplit(safe_urlsplit("http://lemonde.fr/")) == []
 
     def test_decode_punycode_hostname(self):
         assert decode_punycode_hostname("xn--tlrama-bvab.fr") == "télérama.fr"
@@ -29,3 +40,56 @@ class TestUtils(object):
             == "business.télérama.fr"
         )
         assert decode_punycode_hostname("xN--tlrama-bvab.fr") == "télérama.fr"
+
+    def test_add_query_argument(self):
+        assert (
+            add_query_argument("http://lemonde.fr", "test") == "http://lemonde.fr?test"
+        )
+        assert (
+            add_query_argument("http://lemonde.fr", "test", True)
+            == "http://lemonde.fr?test"
+        )
+        assert (
+            add_query_argument("http://lemonde.fr", "test", "")
+            == "http://lemonde.fr?test="
+        )
+        assert (
+            add_query_argument("http://lemonde.fr", "test", "val")
+            == "http://lemonde.fr?test=val"
+        )
+        assert (
+            add_query_argument("http://lemonde.fr#anchor", "test", "val")
+            == "http://lemonde.fr?test=val#anchor"
+        )
+        assert (
+            add_query_argument("http://lemonde.fr?hello=world#anchor", "test", "val")
+            == "http://lemonde.fr?hello=world&test=val#anchor"
+        )
+        assert (
+            add_query_argument("http://lemonde.fr?hello=world", "test", "val")
+            == "http://lemonde.fr?hello=world&test=val"
+        )
+        assert (
+            add_query_argument("http://lemonde.fr?hello=world&one=two", "test", "val")
+            == "http://lemonde.fr?hello=world&one=two&test=val"
+        )
+        assert (
+            add_query_argument("http://lemonde.fr?hello&one=two", "test", "val")
+            == "http://lemonde.fr?hello&one=two&test=val"
+        )
+        assert add_query_argument("lemonde.fr", "test", "val") == "lemonde.fr?test=val"
+        assert add_query_argument("lemonde.fr", "test", 45) == "lemonde.fr?test=45"
+
+        assert add_query_argument("lemonde.fr", "test test") == "lemonde.fr?test%20test"
+        assert (
+            add_query_argument("lemonde.fr", "test test", quote=False)
+            == "lemonde.fr?test test"
+        )
+        assert (
+            add_query_argument("lemonde.fr", "test", "ok ok")
+            == "lemonde.fr?test=ok%20ok"
+        )
+        assert (
+            add_query_argument("lemonde.fr", "test", "ok ok", quote=False)
+            == "lemonde.fr?test=ok ok"
+        )
