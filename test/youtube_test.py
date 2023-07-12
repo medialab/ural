@@ -201,6 +201,26 @@ PARSE_TESTS = [
         ),
         "https://www.youtube.com/watch?v=cTQjoHBhX4o&list=OLAK5uy_k5D3LRPPwM7nIha78jFVoRU9RadBRsuPY",
     ),
+    (
+        "https://www.youtube.com/c/28minutesARTE",
+        YoutubeChannel(id=None, name="28minutesARTE"),
+        "https://www.youtube.com/28minutesARTE",
+    ),
+    (
+        "https://www.youtube.com/28minutesARTE",
+        YoutubeChannel(id=None, name="28minutesARTE"),
+        "https://www.youtube.com/28minutesARTE",
+    ),
+    (
+        "https://www.youtube.com/@28minutesARTE",
+        YoutubeChannel(id=None, name="28minutesARTE"),
+        "https://www.youtube.com/28minutesARTE",
+    ),
+    (
+        "https://www.youtube.com/c/@28minutesARTE",
+        YoutubeChannel(id=None, name="28minutesARTE"),
+        "https://www.youtube.com/28minutesARTE",
+    ),
 ]
 
 

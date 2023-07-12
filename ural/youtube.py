@@ -352,7 +352,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 
         name = splitted_path[1]
 
-        return YoutubeChannel(id=None, name=name)
+        return YoutubeChannel(id=None, name=name.lstrip("@"))
 
     elif path.startswith("/channel/"):
         splitted_path = pathsplit(path)
@@ -372,7 +372,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
             if name in YOUTUBE_CHANNEL_NAME_BLACKLIST:
                 return
 
-            return YoutubeChannel(id=None, name=name)
+            return YoutubeChannel(id=None, name=name.lstrip("@"))
 
 
 def extract_video_id_from_youtube_url(url):
