@@ -43,10 +43,17 @@ TESTS = [
     #
     ("https://feeds.feedburner.com/TechCrunch/", True),
     ("https://feeds2.feedburner.com/TechCrunch/", True),
-    ("https://linkedin.com/feed/update/urn%253Ali%253Aactivity%253A7013073227979608064", False),
-    ("https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en", True),
-    ("https://news.google.com/__i/rss/rd/articles/CBMilwFodHRwczovL3d3dy", False)
-
+    (
+        "https://linkedin.com/feed/update/urn%253Ali%253Aactivity%253A7013073227979608064",
+        False,
+    ),
+    (
+        "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en",
+        True,
+    ),
+    ("https://news.google.com/__i/rss/rd/articles/CBMilwFodHRwczovL3d3dy", False),
+    ("https://machin.com/feed/rss.html", False),
+    ("https://machin.com/feed/", True),
 ]
 
 
