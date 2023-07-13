@@ -16,7 +16,7 @@ setup(
     keywords="url",
     python_requires=">=2.7",
     packages=find_packages(exclude=["scripts", "test"]),
-    package_data={"docs": ["README.md"]},
+    package_data={"docs": ["README.md"], "ural": ["*.pyi", "**/*.pyi"]},
     install_requires=[],
     extras_require={":python_version<'3.8'": ["typing_extensions"]},
     zip_safe=True,
