@@ -10,12 +10,14 @@ import re
 from ural.utils import safe_urlsplit
 from ural.get_hostname import get_hostname
 
-HOSTNAMES_BAD = [("linkedin.com", ""), ("news.google.com", "__i/rss")]
-HOSTNAMES_GOOD = [
-    ("feeds.feedburner.com", ""),
-    ("feeds2.feedburner.com", ""),
-    ("news.google.com", "rss/topics"),
+HOSTNAME_RULES = [
+    ("linkedin.com", "", False),
+    ("news.google.com", "__i/rss", False),
+    ("feeds.feedburner.com", "", True),
+    ("feeds2.feedburner.com", "", True),
+    ("news.google.com", "rss/topics", True),
 ]
+
 QUERY_RE = re.compile(
     r"((page\=backend)|(?:feed|format|type)\=(?:xml|feed|atom|rss))", re.I
 )
@@ -34,16 +36,21 @@ def could_be_rss(url):
 
     if not hostname:
         return False
-    for h, p in HOSTNAMES_GOOD:
-        if hostname == h and p in split.path:
-            return True
-    for h, p in HOSTNAMES_BAD:
-        if hostname == h and p in split.path:
-            return False
+
+    for h, p, r in HOSTNAME_RULES:
+        if hostname == h:
+            if p in split.path:
+                return r
+
+            break
+
     if split.query and QUERY_RE.search(split.query):
         return True
+
     if split.path and not OBVIOUS_EXT_RE.match(split.path):
         return False
+
     if split.path and FILE_RE.search(split.path):
         return True
+
     return False

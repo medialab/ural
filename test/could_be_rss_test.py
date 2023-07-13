@@ -54,6 +54,8 @@ TESTS = [
     ("https://news.google.com/__i/rss/rd/articles/CBMilwFodHRwczovL3d3dy", False),
     ("https://machin.com/feed/rss.html", False),
     ("https://machin.com/feed/", True),
+    ("machin.com/feed/", True),
+    ("http://127.0.0.1/feed/", True),
 ]
 
 
