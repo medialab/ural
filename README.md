@@ -17,6 +17,7 @@ pip install ural
 *Generic functions*
 
 * [could_be_html](#could_be_html)
+* [could_be_rss](#could_be_rss)
 * [ensure_protocol](#ensure_protocol)
 * [force_protocol](#force_protocol)
 * [format_url](#format_url)
@@ -133,6 +134,28 @@ could_be_html('https://www.lemonde.fr/data.json')
 
 could_be_html('https://www.lemonde.fr/img/figure.jpg')
 >>> False
+```
+
+---
+
+### could_be_rss
+
+Function returning whether the given url could be a rss feed url.
+
+```python
+from ural import could_be_rss
+
+could_be_rss('https://www.lemonde.fr/cyclisme/rss_full.xml')
+>>> True
+
+could_be_rss('https://www.lemonde.fr/cyclisme/')
+>>> False
+
+could_be_rss('https://www.ecorce.org/spip.php?page=backend')
+>>> True
+
+could_be_rss('https://feeds.feedburner.com/helloworld')
+>>> True
 ```
 
 ---
