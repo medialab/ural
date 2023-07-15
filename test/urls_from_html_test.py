@@ -42,6 +42,9 @@ class TestUrlsFromHtml(object):
             "http://lemonde.fr"
         ]
 
+    def test_binary(self):
+        assert set(urls_from_html(HTML.encode())) == REF_SET
+
     def test_base_url(self):
         assert set(
             urls_from_html(
