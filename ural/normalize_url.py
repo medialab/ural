@@ -13,20 +13,15 @@ from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection as resolve
 from ural.utils import (
     parse_qsl,
-    quote,
     urlsplit,
     urlunsplit,
     decode_punycode_hostname,
-    unquote,
+    space_aware_unquote,
     normpath,
     fix_common_query_mistakes,
     SplitResult,
 )
 from ural.patterns import PROTOCOL_RE, CONTROL_CHARS_RE
-
-RESERVED_CHARACTERS = ";,/?:@&=+$"
-UNRESERVED_CHARACTERS = "-_.!~*'()"
-SAFE_CHARACTERS = RESERVED_CHARACTERS + UNRESERVED_CHARACTERS
 
 IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|fb_action_types|fb_action_ids|fb_source|echobox|feature|recruiter|_unique_id|twclid|mibextid|campaignid|adgroupid|cn-reloaded|ao_noptimize|mkt_tok|fbclid|igshid|refid|gclid|mc_cid|mc_eid|__tn__|_ft_|dclid|wpamp|fref|usqp|ncid|mtm_.+|utm_.+%s|s?een|xt(?:loc|ref|cr|np|or|s)|at_.+|_ga)$"
 
@@ -166,6 +161,9 @@ def strip_lang_subdomains_from_netloc(netloc):
 
 # NOTE: normalize_url is not suited to be able to process already splitted urls,
 # because of mutliple string preprocessing tricks and redirection inferrence
+# NOTE: we force an unquoted version of the url because unquoting multiple times
+# is safe, while the contrary is not. We still keep whitespace as %20 like most
+# web browsers.
 def normalize_url(
     url,
     unsplit=True,
@@ -181,7 +179,6 @@ def normalize_url(
     normalize_amp=True,
     fix_common_mistakes=True,
     infer_redirection=True,
-    quoted=True,
 ):
     """
     Function normalizing the given url by stripping it of usually
@@ -217,8 +214,6 @@ def normalize_url(
             Defaults to True.
         infer_redirection (bool, optional): Whether to attempt resolving common
             redirects by leveraging well-known GET parameters. Defaults to `False`.
-        quoted (bool, optional): Normalizing to quoted or unquoted.
-            Defaults to True.
 
     Returns:
         string: The normalized url.
@@ -351,15 +346,10 @@ def normalize_url(
     if strip_trailing_slash and path.endswith("/"):
         path = path.rstrip("/")
 
-    # Quoting or not
-    if quoted:
-        path = quote(path)
-        query = quote(query, RESERVED_CHARACTERS)
-        fragment = quote(fragment, SAFE_CHARACTERS)
-    else:
-        path = unquote(path)
-        query = unquote(query)
-        fragment = unquote(fragment)
+    # Unquoting
+    path = space_aware_unquote(path)
+    query = space_aware_unquote(query)
+    fragment = space_aware_unquote(fragment)
 
     # Result
     result = SplitResult(scheme, netloc.lower(), path, query, fragment)

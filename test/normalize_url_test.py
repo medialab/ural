@@ -59,6 +59,8 @@ TESTS = [
     ("http://lemonde.fr:80", "lemonde.fr"),
     ("https://lemonde.fr:443", "lemonde.fr"),
     ("https://lemonde.fr?ref=ts&fref=ts", "lemonde.fr"),
+    ("http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B", "mozilla.org?x=шеллы"),
+    ("http://mozilla.org?x=шеллы", "mozilla.org?x=шеллы"),
     ("https://lemonde.fr?utm_source&utm_medium&utm_campaign", "lemonde.fr"),
     (
         "http://www.europe1.fr/sante/les-onze-vaccins-obligatoires-pour-les-enfants-a-partir-du-1er-janvier-3423641.amp",
@@ -125,7 +127,6 @@ TESTS = [
         "http://bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?utm_campaign=transit&amp;utm_source=main&amp;utm_medium=page_0&amp;domain=mirtesen.ru&amp;paid=1&amp;pad=1",
         "bazaistoria.ru/blog/43285809262/Britanskaya-diplomatiya.-CHto-za-zver?domain=mirtesen.ru&pad=1&paid=1",
     ),
-    ("http://mozilla.org?x=шеллы", "mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B"),
     ("https://facebook.com/kaliwakatee?refid=52&__tn__=R", "facebook.com/kaliwakatee"),
     (
         "http://www.wired.co.uk/magazine/archive/2012/11/features/open-university?fb_source=feed&ref=feed&refid=28&_ft_=qid.5811242880099719698:mf_story_key.371116929646636",
@@ -135,11 +136,11 @@ TESTS = [
     ("http://lemonde.fr?mode=amp&output=amp", "lemonde.fr"),
     (
         "https://www.jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html",
-        "jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-au%C3%9Ferparlamentarisch-f%C3%BChren.html",
+        "jungewelt.de/loginFailed.php?ref=/artikel/312583.kampf-gegen-macron-außerparlamentarisch-führen.html",
     ),
     (
         "http://www.milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad",
-        "milletpress.com/Detail_EN.aspx?Jiamre=2038&T=%E2%80%8BTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad",
+        "milletpress.com/Detail_EN.aspx?Jiamre=2038&T=\u200bTurkey%20Plan%20Assassination%20of%20Kurdish%20Activists%20Abroad",
     ),
     (
         "https://facebook.com/photo.php?fbid=1454919154621936&amp;id=598338556946671&amp;set=a.600335226747004&amp;__ccr=ARalImU2qhrrHFuCIUFpLdb30fXaDuEj2KsKk_ikE_-8ww&amp;__tn__=%2B%3E",
@@ -248,12 +249,6 @@ TESTS_ADVANCED = [
         "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB&url=http%3A%2F%2Fwww.mon-ip.com%2F&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes",
         "google.com/url?cad=rja&cd=4&esrc=s&q&rct=j&sa=t&source=web&uact=8&url=http://www.mon-ip.com/&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB",
         {"infer_redirection": False},
-    ),
-    ("http://mozilla.org?x=шеллы", "mozilla.org?x=шеллы", {"quoted": False}),
-    (
-        "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
-        "mozilla.org?x=шеллы",
-        {"quoted": False},
     ),
     (
         "https://www.lemonde.fr/path?gl=pt_BR&hl=fr",

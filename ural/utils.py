@@ -55,6 +55,10 @@ MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 unshadowed_quote = quote
 
 
+def space_aware_unquote(string, replacement="%20"):
+    return unquote(string).replace(" ", replacement)
+
+
 def safe_urlsplit(url, scheme="http"):
     if isinstance(url, SplitResult):
         return url
