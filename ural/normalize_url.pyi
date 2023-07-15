@@ -1,4 +1,4 @@
-from typing import Union, overload
+from typing import Union, Optional, Callable, overload
 from ural.types import AnyUrlTarget, Literal
 from urllib.parse import SplitResult
 
@@ -12,9 +12,8 @@ def normalize_url(
     strip_index: bool = ...,
     strip_protocol: bool = ...,
     strip_irrelevant_subdomains: bool = ...,
-    strip_lang_subdomains: bool = ...,
-    strip_lang_query_items: bool = ...,
     strip_fragment: Union[bool, Literal["except-routing"]] = ...,
+    query_item_filter: Optional[Callable[[str, str], bool]] = ...,
     normalize_amp: bool = ...,
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
@@ -30,20 +29,16 @@ def normalize_url(
     strip_index: bool = ...,
     strip_protocol: bool = ...,
     strip_irrelevant_subdomains: bool = ...,
-    strip_lang_subdomains: bool = ...,
-    strip_lang_query_items: bool = ...,
     strip_fragment: Union[bool, Literal["except-routing"]] = ...,
+    query_item_filter: Optional[Callable[[str, str], bool]] = ...,
     normalize_amp: bool = ...,
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
     quoted: bool = ...,
 ) -> SplitResult: ...
-def normalize_hostname(
-    hostname: str, normalize_amp: bool = True, strip_lang_subdomains: bool = False
-) -> str: ...
+def normalize_hostname(hostname: str, normalize_amp: bool = True) -> str: ...
 def get_normalized_hostname(
     url: AnyUrlTarget,
     normalize_amp: bool = True,
-    strip_lang_subdomains: bool = False,
     infer_redirection: bool = True,
 ) -> str: ...

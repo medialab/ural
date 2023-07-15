@@ -7,6 +7,11 @@ from ural.classes.hostname_trie_set import HostnameTrieSet
 from ural.could_be_html import could_be_html
 from ural.could_be_rss import could_be_rss
 from ural.ensure_protocol import ensure_protocol
+from ural.fingerprint_url import (
+    fingerprint_url,
+    get_fingerprinted_hostname,
+    fingerprint_hostname,
+)
 from ural.force_protocol import force_protocol
 from ural.format_url import format_url, URLFormatter
 from ural.get_hostname import get_hostname

@@ -8,7 +8,6 @@
 import re
 from os.path import splitext
 
-from ural.data import ISO_3166_1_COUNTRIES_ALPHA_2
 from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection as resolve
 from ural.utils import (
@@ -92,8 +91,6 @@ PER_DOMAIN_QUERY_FILTERS = [
     ),
 ]
 
-LANG_QUERY_KEYS = ("gl", "hl")
-
 
 def stringify_qs(item):
     if item[1] == "":
@@ -103,7 +100,7 @@ def stringify_qs(item):
 
 
 def should_strip_query_item(
-    item, normalize_amp=True, strip_lang_query_items=False, domain_filter=None
+    item, normalize_amp=True, query_item_filter=None, domain_filter=None
 ):
     key = item[0].lower()
 
@@ -125,11 +122,11 @@ def should_strip_query_item(
     elif normalize_amp and key in AMP_QUERY_COMBOS:
         return value in AMP_QUERY_COMBOS[key]
 
-    if strip_lang_query_items and key in LANG_QUERY_KEYS:
-        return True
-
     if domain_filter is not None:
         return domain_filter(key, value)
+
+    if query_item_filter is not None:
+        return query_item_filter(key, value)
 
     return False
 
@@ -141,29 +138,47 @@ def should_strip_fragment(fragment):
     return fragment.startswith("/") or fragment.startswith("!")
 
 
-def strip_lang_subdomains_from_netloc(netloc):
-    if netloc.count(".") > 1:
-        subdomain, remaining_netloc = netloc.split(".", 1)
-        if len(subdomain) == 5 and "-" in subdomain:
-            lang, country = subdomain.split("-", 1)
-            if len(lang) == 2 and len(country) == 2:
-                if (
-                    lang.upper() in ISO_3166_1_COUNTRIES_ALPHA_2
-                    and country.upper() in ISO_3166_1_COUNTRIES_ALPHA_2
-                ):
-                    netloc = remaining_netloc
-        elif len(subdomain) == 2:
-            if subdomain.upper() in ISO_3166_1_COUNTRIES_ALPHA_2:
-                netloc = remaining_netloc
+def normalize_hostname(hostname, normalize_amp=True):
+    hostname = hostname.strip().lower()
+    hostname = CONTROL_CHARS_RE.sub("", hostname)
 
-    return netloc
+    pattern = IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE
+
+    hostname = pattern.sub("", hostname)
+
+    if normalize_amp and hostname.startswith("amp-"):
+        hostname = hostname[4:]
+
+    hostname = decode_punycode_hostname(hostname)
+
+    return hostname
+
+
+def get_normalized_hostname(url, normalize_amp=True, infer_redirection=True):
+    if infer_redirection:
+        url = resolve(url)
+
+    if isinstance(url, SplitResult):
+        splitted = url
+    else:
+        try:
+            splitted = urlsplit(ensure_protocol(url.strip()))
+        except ValueError:
+            return None
+
+    if not splitted.hostname:
+        return None
+
+    return normalize_hostname(splitted.hostname, normalize_amp=normalize_amp)
 
 
 # NOTE: normalize_url is not suited to be able to process already splitted urls,
 # because of mutliple string preprocessing tricks and redirection inferrence
 # NOTE: we force an unquoted version of the url because unquoting multiple times
-# is safe, while the contrary is not. We still keep whitespace as %20 like most
-# web browsers.
+# is safe, while the contrary is not. Also, unquoted urls are more readable to
+# humans. Note that We still keep whitespace as %20 like most web browsers. Also,
+# we unquote only once, like browsers do. We could do it recursively but it
+# feels somewhat dangerous.
 def normalize_url(
     url,
     unsplit=True,
@@ -173,9 +188,8 @@ def normalize_url(
     strip_index=True,
     strip_protocol=True,
     strip_irrelevant_subdomains=True,
-    strip_lang_subdomains=False,
-    strip_lang_query_items=False,
     strip_fragment="except-routing",
+    query_item_filter=None,
     normalize_amp=True,
     fix_common_mistakes=True,
     infer_redirection=True,
@@ -199,9 +213,6 @@ def normalize_url(
             of the url. Defaults to `True`.
         strip_irrelevant_subdomains (bool, optional): Whether to strip irrelevant subdomains such as www etc.
             Default to True.
-        strip_lang_subdomains (bool, optional): Whether to drop language subdomains
-            (ex: 'fr-FR.lemonde.fr' to only 'lemonde.fr' because 'fr-FR' isn't a relevant subdomain, it indicates the language and the country).
-            Defaults to `False`.
         strip_protocol (bool, optional): Whether to strip the url's protocol.
             Defaults to `True`.
         strip_fragment (bool|str, optional): Whether to drop non-routing fragment from the url?
@@ -299,7 +310,7 @@ def normalize_url(
             if not should_strip_query_item(
                 item,
                 normalize_amp=normalize_amp,
-                strip_lang_query_items=strip_lang_query_items,
+                query_item_filter=query_item_filter,
                 domain_filter=domain_filter,
             )
         ]
@@ -325,10 +336,6 @@ def normalize_url(
             "",
             netloc,
         )
-
-    # Dropping language as subdomains
-    if strip_lang_subdomains:
-        netloc = strip_lang_subdomains_from_netloc(netloc)
 
     # Dropping scheme
     if strip_protocol or not has_protocol:
@@ -364,46 +371,3 @@ def normalize_url(
         result = urlunsplit(result)
 
     return result
-
-
-def normalize_hostname(hostname, normalize_amp=True, strip_lang_subdomains=False):
-    hostname = hostname.strip().lower()
-    hostname = CONTROL_CHARS_RE.sub("", hostname)
-
-    pattern = IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE
-
-    hostname = pattern.sub("", hostname)
-
-    if normalize_amp and hostname.startswith("amp-"):
-        hostname = hostname[4:]
-
-    hostname = decode_punycode_hostname(hostname)
-
-    if strip_lang_subdomains:
-        hostname = strip_lang_subdomains_from_netloc(hostname)
-
-    return hostname
-
-
-def get_normalized_hostname(
-    url, normalize_amp=True, strip_lang_subdomains=False, infer_redirection=True
-):
-    if infer_redirection:
-        url = resolve(url)
-
-    if isinstance(url, SplitResult):
-        splitted = url
-    else:
-        try:
-            splitted = urlsplit(ensure_protocol(url.strip()))
-        except ValueError:
-            return None
-
-    if not splitted.hostname:
-        return None
-
-    return normalize_hostname(
-        splitted.hostname,
-        normalize_amp=normalize_amp,
-        strip_lang_subdomains=strip_lang_subdomains,
-    )

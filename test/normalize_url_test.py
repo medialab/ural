@@ -17,6 +17,7 @@ from ural import normalize_url, get_normalized_hostname, get_hostname
 TESTS = [
     ("http://lemonde.fr///a/./b/..", "lemonde.fr/a"),
     ("lemonde.fr/index.html", "lemonde.fr"),
+    ("LEMONDE.FR/INDEX.HTML", "lemonde.fr/INDEX.HTML"),
     ("lemonde.fr/index.php", "lemonde.fr"),
     ("lemonde.fr/index/", "lemonde.fr"),
     ("lemonde.fr/index.php?utm_content=whatever&test=toto", "lemonde.fr?test=toto"),
@@ -212,24 +213,6 @@ TESTS_ADVANCED = [
         "www.lemonde.fr",
         {"strip_protocol": False, "strip_irrelevant_subdomains": False},
     ),
-    ("https://www.fr.lemonde.fr", "lemonde.fr", {"strip_lang_subdomains": True}),
-    ("https://www.fu.lemonde.fr", "fu.lemonde.fr", {"strip_lang_subdomains": True}),
-    (
-        "https://www.fr-fu.lemonde.fr",
-        "fr-fu.lemonde.fr",
-        {"strip_lang_subdomains": True},
-    ),
-    (
-        "https://www.french.lemonde.fr",
-        "french.lemonde.fr",
-        {"strip_lang_subdomains": True},
-    ),
-    (
-        "https://www.french-fu.lemonde.fr",
-        "french-fu.lemonde.fr",
-        {"strip_lang_subdomains": True},
-    ),
-    ("https://www.fr-FR.lemonde.fr", "lemonde.fr", {"strip_lang_subdomains": True}),
     ("https://www.lemonde.fr#test", "lemonde.fr#test", {"strip_fragment": False}),
     ("https://www.lemonde.fr#/path", "lemonde.fr#/path", {"strip_fragment": False}),
     ("https://www.lemonde.fr#test", "lemonde.fr", {"strip_fragment": True}),
@@ -249,11 +232,6 @@ TESTS_ADVANCED = [
         "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB&url=http%3A%2F%2Fwww.mon-ip.com%2F&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes",
         "google.com/url?cad=rja&cd=4&esrc=s&q&rct=j&sa=t&source=web&uact=8&url=http://www.mon-ip.com/&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB",
         {"infer_redirection": False},
-    ),
-    (
-        "https://www.lemonde.fr/path?gl=pt_BR&hl=fr",
-        "lemonde.fr/path",
-        {"strip_lang_query_items": True},
     ),
     (
         "https://lemonde.fr/#/path/is/here",
