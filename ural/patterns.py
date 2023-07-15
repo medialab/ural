@@ -83,10 +83,11 @@ URL_IN_TEXT_RE = re.compile(
 
 # NOTE: we allow the a tag not to be closed because some browsers do and
 # also for performance reasons.
-URL_IN_HTML_RE = re.compile(
-    r"""<a\s[^>]*href=(?:"([^"]+)"|'([^']+)'|([^\s>]+))[^>]*>""",
-    re.I,
-)
+URL_IN_HTML = r"""<a\s[^>]*href=(?:"([^"]+)"|'([^']+)'|([^\s>]+))[^>]*>"""
+URL_IN_HTML_BINARY = URL_IN_HTML.encode()
+
+URL_IN_HTML_RE = re.compile(URL_IN_HTML, re.I)
+URL_IN_HTML_BINARY_RE = re.compile(URL_IN_HTML_BINARY, re.I)
 
 QUERY_VALUE_IN_URL_TEMPLATE = r"(?:^|[?&])%s=([^&]+)"
 QUERY_VALUE_TEMPLATE = r"%s=([^&]+)"
