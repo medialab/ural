@@ -325,7 +325,7 @@ from ural import get_normalized_hostname
 get_normalized_hostname('http://www.facebook.com/path')
 >>> 'facebook.com'
 
-get_normalized_hostname('http://fr-FR.facebook.com/path', strip_lang_subdomains=True)
+get_normalized_hostname('http://fr-FR.facebook.com/path')
 >>> 'facebook.com'
 ```
 
@@ -334,7 +334,6 @@ get_normalized_hostname('http://fr-FR.facebook.com/path', strip_lang_subdomains=
 * **url** *str*: Target url.
 * **infer_redirection** *bool* [`True`]: whether to attempt resolving common redirects by leveraging well-known GET parameters.
 * **normalize_amp** *?bool* [`True`]: Whether to attempt to normalize Google AMP subdomains.
-* **strip_lang_subdomains** *?bool* [`False`]: Whether to drop language-specific subdomains.
 
 ---
 
@@ -541,7 +540,7 @@ from ural import normalize_hostname
 normalize_hostname('www.facebook.com')
 >>> 'facebook.com'
 
-normalize_hostname('fr-FR.facebook.com', strip_lang_subdomains=True)
+normalize_hostname('fr-FR.facebook.com')
 >>> 'facebook.com'
 ```
 
@@ -571,8 +570,6 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_fragment** *?bool|str* [`'except-routing'`]: whether to strip the url's fragment. If set to `except-routing`, will only strip the fragment if the fragment is not deemed to be js routing (i.e. if it contains a `/`).
 * **strip_index** *?bool* [`True`]: whether to strip trailing index.
 * **strip_irrelevant_subdomains** *?bool* [`False`]: whether to strip irrelevant subdomains such as `www` etc.
-* **strip_lang_query_items** *?bool* [`False`]: whether to strip language query items (ex: `gl=pt_BR`).
-* **strip_lang_subdomains** *?bool* [`False`]: whether to strip language subdomains (ex: `fr-FR.lemonde.fr` to only `lemonde.fr` because `fr-FR` isn't a relevant subdomain, it indicates the language and the country).
 * **strip_protocol** *?bool* [`True`]: whether to strip the url's protocol.
 * **strip_trailing_slash** *?bool* [`True`]: whether to strip trailing slash.
 * **unsplit** *?bool* [`True`]: whether to return a stringified version of the normalized url or directly the `SplitResult` instance worked on by the normalization process.
