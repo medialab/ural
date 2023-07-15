@@ -95,6 +95,14 @@ RELAXED_TESTS = [
         "http://www.jura.gouv.fr/content/download/17618/129500/file/agenda public pr%C3%A9visionnel du pr%C3%A9fet du Jura- semaine 31.pdf",
         True,
     ),
+    (
+        "https://maire-info.com/securite/14-juillet-un-dispositif-de-securite-inedit-pour-eviter-la-resurgence-des-violences- -article-27717",
+        True,
+    ),
+    (
+        "https://maire-info.com/securite/14-juillet-un-dispositif-de-securite-inedit-pour-eviter-la-resurgence-des-violences-\xa0-article-27717",
+        True,
+    ),
 ]
 
 ONLY_HTTP_HTTPS_TESTS = [
