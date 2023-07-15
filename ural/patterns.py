@@ -69,7 +69,7 @@ URL_WITH_PROTOCOL_RE = re.compile(
     r"^%s%s$" % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE
 )
 
-RELAXED_URL = re.compile(
+RELAXED_URL_RE= re.compile(
     r"^(?:%s)?%s$" % (PROTOCOL, URL + RELAXED_RESOURCE_PATH), re.I | re.UNICODE
 )
 

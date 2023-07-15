@@ -10,7 +10,7 @@ from ural.tld import has_valid_tld
 from ural.patterns import (
     URL_RE,
     URL_WITH_PROTOCOL_RE,
-    RELAXED_URL,
+    RELAXED_URL_RE,
     RELAXED_URL_WITH_PROTOCOL_RE,
     HTTP_PROTOCOL_RE,
 )
@@ -57,7 +57,7 @@ def is_url(
             pattern = URL_WITH_PROTOCOL_RE
     else:
         if allow_spaces_in_path:
-            pattern = RELAXED_URL
+            pattern = RELAXED_URL_RE
         else:
             pattern = URL_RE
 
