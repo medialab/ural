@@ -7,7 +7,6 @@
 #
 from __future__ import unicode_literals
 from ural.patterns import URL_IN_HTML_RE, URL_IN_HTML_BINARY_RE
-from ural.utils import urljoin
 
 
 def __urls_finditer(string):
