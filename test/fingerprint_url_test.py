@@ -24,5 +24,11 @@ class TestFingerprintUrl(object):
         for url, result in TESTS:
             assert fingerprint_url(url) == result
 
+        assert (
+            fingerprint_url("lemonde.co.uk/test.html", strip_suffix=True)
+            == "lemonde/test.html"
+        )
+
     def test_fingerprint_hostname(self):
         assert fingerprint_hostname("fr.lemonde.fr") == "lemonde.fr"
+        assert fingerprint_hostname("lemonde.co.uk", strip_suffix=True) == "lemonde"

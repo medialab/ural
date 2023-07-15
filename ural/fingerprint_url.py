@@ -3,6 +3,7 @@ from ural.normalize_url import normalize_url, normalize_hostname
 from ural.utils import SplitResult, urlunsplit, urlsplit, unsplit_netloc
 from ural.infer_redirection import infer_redirection as resolve
 from ural.ensure_protocol import ensure_protocol
+from ural.tld import split_suffix
 
 LANG_QUERY_KEYS = ("gl", "hl")
 
@@ -31,13 +32,20 @@ def strip_lang_subdomains_from_hostname(hostname):
     return hostname
 
 
-def fingerprint_hostname(hostname):
+def fingerprint_hostname(hostname, strip_suffix=False):
     hostname = normalize_hostname(hostname)
+
+    if strip_suffix:
+        # TODO: this is not performant because the code path reparses again
+        r = split_suffix(hostname)
+
+        if r is not None:
+            hostname, _ = r
 
     return strip_lang_subdomains_from_hostname(hostname)
 
 
-def get_fingerprinted_hostname(url, infer_redirection=True):
+def get_fingerprinted_hostname(url, infer_redirection=True, strip_suffix=False):
     if infer_redirection:
         url = resolve(url)
 
@@ -52,10 +60,10 @@ def get_fingerprinted_hostname(url, infer_redirection=True):
     if not splitted.hostname:
         return None
 
-    return fingerprint_hostname(splitted.hostname)
+    return fingerprint_hostname(splitted.hostname, strip_suffix=strip_suffix)
 
 
-def fingerprint_url(url, unsplit=True):
+def fingerprint_url(url, unsplit=True, strip_suffix=False):
     url = url.lower()
 
     splitted = normalize_url(
@@ -72,6 +80,13 @@ def fingerprint_url(url, unsplit=True):
 
     if hostname:
         hostname = strip_lang_subdomains_from_hostname(hostname)
+
+        if strip_suffix:
+            # TODO: this is not performant because the code path reparses again
+            r = split_suffix(hostname)
+
+            if r is not None:
+                hostname, _ = r
 
     # Dropping port
     port = None
