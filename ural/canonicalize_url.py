@@ -2,7 +2,6 @@ from ural.utils import (
     urlsplit,
     urlunsplit,
     SplitResult,
-    split_netloc,
     unsplit_netloc,
     space_aware_unquote,
     decode_punycode_hostname,
@@ -20,18 +19,25 @@ def canonicalize_url(url, default_protocol="https", unsplit=True):
     url = ensure_protocol(url, default_protocol)
 
     # Parsing
-    scheme, netloc, path, query, fragment = urlsplit(url)
-    auth, hostname, port = split_netloc(netloc)
+    splitted = urlsplit(url)
+    scheme, netloc, path, query, fragment = splitted
+    user, password, hostname, port = (
+        splitted.username,
+        splitted.password,
+        splitted.hostname,
+        splitted.port,
+    )
 
     # Decoding and normalizing hostname
-    hostname = decode_punycode_hostname(hostname)
-    hostname = hostname.lower()
+    if hostname:
+        hostname = decode_punycode_hostname(hostname)
+        hostname = hostname.lower()
 
     # Dropping HTTP/HTTPS ports
     if port == "80" or port == "443":
         port = ""
 
-    netloc = unsplit_netloc(auth, hostname, port)
+    netloc = unsplit_netloc(user, password, hostname, port)
 
     # Unquoting
     path = space_aware_unquote(path)

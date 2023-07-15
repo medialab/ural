@@ -18,7 +18,7 @@ def normalize_url(
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
     quoted: bool = ...,
-) -> str: ...
+) -> SplitResult: ...
 @overload
 def normalize_url(
     url: str,
@@ -35,7 +35,7 @@ def normalize_url(
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
     quoted: bool = ...,
-) -> SplitResult: ...
+) -> str: ...
 def normalize_hostname(hostname: str, normalize_amp: bool = True) -> str: ...
 def get_normalized_hostname(
     url: AnyUrlTarget,

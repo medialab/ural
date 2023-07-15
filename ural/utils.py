@@ -178,25 +178,17 @@ def add_query_argument(url, name, value=None, quote=True):
     return url
 
 
-def split_netloc(netloc):
-    if "@" in netloc:
-        auth, hostname = netloc.split("@", 1)
+def unsplit_netloc(username, password, hostname, port):
+    if username and password:
+        auth = username + ":" + password
+    elif username:
+        auth = username
     else:
-        auth = ""
-        hostname = netloc
+        auth = None
 
-    if "]:" in hostname or hostname.count(":") == 1:
-        hostname, port = hostname.split(":", 1)
-    else:
-        port = ""
-
-    return auth, hostname, port
-
-
-def unsplit_netloc(auth, hostname, port):
     if auth:
         hostname = auth + "@" + hostname
     if port:
-        hostname += ":" + port
+        hostname += ":" + str(port)
 
-    return unsplit_netloc
+    return hostname

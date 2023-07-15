@@ -15,6 +15,7 @@ TESTS = [
     ("https://www.fr-FR.lemonde.fr", "lemonde.fr"),
     ("https://www.lemonde.fr/path?gl=pt_BR&hl=fr", "lemonde.fr/path"),
     ("LEMONDE.FR/INDEX.HTML", "lemonde.fr"),
+    ("lemonde.fr:6754", "lemonde.fr"),
 ]
 
 
