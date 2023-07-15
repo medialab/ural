@@ -44,16 +44,3 @@ class TestUrlsFromHtml(object):
 
     def test_binary(self):
         assert set(urls_from_html(HTML.encode())) == REF_SET
-
-    def test_base_url(self):
-        assert set(
-            urls_from_html(
-                '<a href="?q=TYya"> Test</a> <a href="https://www.britannica.com/place/Aral-Sea"> Hello </a>',
-                base_url="https://www.lemonde.fr",
-            )
-        ) == set(
-            [
-                "https://www.lemonde.fr?q=TYya",
-                "https://www.britannica.com/place/Aral-Sea",
-            ]
-        )

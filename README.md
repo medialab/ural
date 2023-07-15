@@ -682,6 +682,8 @@ pathsplit('/section/articles/')
 
 Function returning an iterator over the urls present in the links of given HTML text.
 
+Note this function is able to work both on string and bytes seamlessly.
+
 ```python
 from ural import urls_from_html
 
@@ -695,7 +697,8 @@ for url in urls_from_html(html):
 *Arguments*
 
 * **string** *string*: html string.
-* **base_url** *?string*: base url to join with relative urls.
+* **encoding** *?string* [`utf-8`]: if given binary, this encoding will be used to decode the found urls.
+* **errors** *?string* [`strict`]: policy on decode errors.
 
 ---
 
