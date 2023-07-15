@@ -16,13 +16,17 @@ pip install ural
 
 *Generic functions*
 
+* [canonicalize_url](#canonicalize_url)
 * [could_be_html](#could_be_html)
 * [could_be_rss](#could_be_rss)
 * [ensure_protocol](#ensure_protocol)
+* [fingerprint_hostname](#fingerprint_hostname)
+* [fingerprint_url](#fingerprint_url)
 * [force_protocol](#force_protocol)
 * [format_url](#format_url)
 * [get_domain_name](#get_domain_name)
 * [get_hostname](#get_hostname)
+* [get_fingerprinted_hostname](#get_fingerprinted_hostname)
 * [get_normalized_hostname](#get_normalized_hostname)
 * [has_special_host](#has_special_host)
 * [has_valid_suffix](#has_valid_suffix)
@@ -116,6 +120,19 @@ pip install ural
 
 ---
 
+### canonicalize_url
+
+Function returning a clean and safe version of the url by performing the same kind of preprocessing as web browsers.
+
+```python
+from ural import canonicalize_url
+
+canonicalize_url('www.LEMONDE.fr')
+>>> 'https://lemonde.fr'
+```
+
+---
+
 ### could_be_html
 
 Function returning whether the url could return HTML.
@@ -175,6 +192,54 @@ ensure_protocol('www.lemonde.fr', protocol='https')
 
 * **url** *string*: URL to format.
 * **protocol** *string*: protocol to use if there is none in **url**. Is 'http' by default.
+
+---
+
+### fingerprint_hostname
+
+Function returning a "fingerprinted" version of the given hostname by stripping subdomains irrelevant for statistical aggregation. Be warned that this function is even more aggressive than [normalize_hostname](#normalize_hostname) and that the resulting hostname might not be valid anymore.
+
+```python
+from ural import fingerprint_hostname
+
+fingerprint_hostname('www.lemonde.fr')
+>>> 'lemonde.fr'
+
+fingerprint_hostname('fr-FR.facebook.com')
+>>> 'facebook.com'
+
+fingerprint_hostname('fr-FR.facebook.com', strip_suffix=True)
+>>> 'facebook'
+```
+
+*Arguments*
+
+* **hostname** *string*: target hostname.
+* **strip_suffix** *?bool* [`False`]: whether to strip the hostname suffix such as `.com` or `.co.uk`. This can be useful to aggegate different domains of the same platform.
+
+---
+
+### fingerprint_url
+
+Function returning a "fingerprinted" version of the given url that can be useful for statistical aggregation. Be warned that this function is even more aggressive than [normalize_url](#normalize_url) and that the resulting url might not be valid anymore.
+
+```python
+from ural import fingerprint_hostname
+
+fingerprint_url('www.lemonde.fr/article.html')
+>>> 'lemonde.fr/article.html'
+
+fingerprint_url('fr-FR.facebook.com/article.html')
+>>> 'facebook.com/article.html'
+
+fingerprint_url('fr-FR.facebook.com/article.html', strip_suffix=True)
+>>> 'facebook/article.html'
+```
+
+*Arguments*
+
+* **url** *string*: target url.
+* **strip_suffix** *?bool* [`False`]: whether to strip the hostname suffix such as `.com` or `.co.uk`. This can be useful to aggegate different domains of the same platform.
 
 ---
 
@@ -312,6 +377,30 @@ from ural import get_hostname
 get_hostname('http://www.facebook.com/path')
 >>> 'www.facebook.com'
 ```
+
+---
+
+### get_fingerprinted_hostname
+
+Function returning the "fingerprinted" hostname of the given url by stripping subdomains irrelevant for statistical aggregation. Be warned that this function is even more aggressive than [get_normalized_hostname](#get_normalized_hostname) and that the resulting hostname might not be valid anymore.
+
+```python
+from ural import get_normalized_hostname
+
+get_normalized_hostname('https://www.lemonde.fr/article.html')
+>>> 'lemonde.fr'
+
+get_normalized_hostname('https://fr-FR.facebook.com/article.html')
+>>> 'facebook.com'
+
+get_normalized_hostname('https://fr-FR.facebook.com/article.html', strip_suffix=True)
+>>> 'facebook'
+```
+
+*Arguments*
+
+* **url** *string*: target url.
+* **strip_suffix** *?bool* [`False`]: whether to strip the hostname suffix such as `.com` or `.co.uk`. This can be useful to aggegate different domains of the same platform.
 
 ---
 
