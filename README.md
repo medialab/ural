@@ -120,9 +120,48 @@ pip install ural
 
 ---
 
+### Differences between canonicalize_url, normalize_url & fingerprint_url
+
+`ural` comes with three different url deduplication schemes, targeted to different use-cases and ordered hereafter by aggressiveness:
+
+1. [canonicalize_url](#canonicalize_url): we clean the url by performing some light preprocessing usually done by web browsers before hitting them, e.g. lowercasing the hostname, decoding punycode, ensuring we have a protocol, dropping leading and trailing whitespace etc. The clean url is guaranteed to still lead to the same place.
+2. [normalize_url](#normalize_url): we apply more advanced preprocessing that will drop some parts of the url that are irrelevant to where the url leads, such as technical artifacts and SEO tricks. For instance, we will drop typical query items used by marketing campaigns, reorder the query items, infer some redirections, strip trailing slash or fragment when possible etc. At that point, the url should be clean enough that one can perform meaningful statistical aggregation when counting them, all while ensuring with some good probability that the url still works and still lead to the same place, at least if target server follows most common conventions.
+3. [fingerprint_url](#fingerprint_url): we go a step further and we perform destructive preprocessing that cannot guarantee that the resulting url will still be valid. But the result might be even more useful for statistical aggregation, especially when counting urls from large platforms having multiple domains (e.g. `facebook.com`, `facebook.fr` etc.)
+
+| Function         | Use-cases                            | Url validity           | Deduplication strength |
+|------------------|--------------------------------------|------------------------|------------------------|
+| canonicalize_url | web crawler                          | Technically the same   | +                      |
+| normalize_url    | web crawler, statistical aggregation | Probably the same | ++                     |
+| fingerprint_url  | statistical aggregation              | Potentially invalid    | +++                    |
+
+*Example*
+
+```python
+from ural import canonicalize_url, normalize_url, fingerprint_url
+
+url = 'https://www.FACEBOOK.COM:80/index.html?utc_campaign=3&id=34'
+
+canonicalize_url(url)
+>>> 'https://www.facebook.com/index.html?utc_campaign=3&id=34'
+# The same url, cleaned up a little
+
+normalize_url(url)
+>>> 'facebook.com?id=34'
+# Still a valid url, with implicit protocol, where all the cruft has been discarded
+
+fingerprint_url(url, strip_suffix=True)
+>>> 'facebook?id=34'
+# Not a valid url anymore, but useful to match more potential
+# candidates such as: http://facebook.co.uk/index.html?id=34
+```
+
+---
+
 ### canonicalize_url
 
 Function returning a clean and safe version of the url by performing the same kind of preprocessing as web browsers.
+
+For more details about this be sure to read [this](#differences-between-canonicalize_url-normalize_url--fingerprint_url) section of the docs.
 
 ```python
 from ural import canonicalize_url
@@ -199,6 +238,8 @@ ensure_protocol('www.lemonde.fr', protocol='https')
 
 Function returning a "fingerprinted" version of the given hostname by stripping subdomains irrelevant for statistical aggregation. Be warned that this function is even more aggressive than [normalize_hostname](#normalize_hostname) and that the resulting hostname might not be valid anymore.
 
+For more details about this be sure to read [this](#differences-between-canonicalize_url-normalize_url--fingerprint_url) section of the docs.
+
 ```python
 from ural import fingerprint_hostname
 
@@ -222,6 +263,8 @@ fingerprint_hostname('fr-FR.facebook.com', strip_suffix=True)
 ### fingerprint_url
 
 Function returning a "fingerprinted" version of the given url that can be useful for statistical aggregation. Be warned that this function is even more aggressive than [normalize_url](#normalize_url) and that the resulting url might not be valid anymore.
+
+For more details about this be sure to read [this](#differences-between-canonicalize_url-normalize_url--fingerprint_url) section of the docs.
 
 ```python
 from ural import fingerprint_hostname
@@ -384,6 +427,8 @@ get_hostname('http://www.facebook.com/path')
 
 Function returning the "fingerprinted" hostname of the given url by stripping subdomains irrelevant for statistical aggregation. Be warned that this function is even more aggressive than [get_normalized_hostname](#get_normalized_hostname) and that the resulting hostname might not be valid anymore.
 
+For more details about this be sure to read [this](#differences-between-canonicalize_url-normalize_url--fingerprint_url) section of the docs.
+
 ```python
 from ural import get_normalized_hostname
 
@@ -407,6 +452,8 @@ get_normalized_hostname('https://fr-FR.facebook.com/article.html', strip_suffix=
 ### get_normalized_hostname
 
 Function returning the given url's normalized hostname, i.e. without usually irrelevant subdomains etc. Works a lot like [normalize_url](#normalize_url).
+
+For more details about this be sure to read [this](#differences-between-canonicalize_url-normalize_url--fingerprint_url) section of the docs.
 
 ```python
 from ural import get_normalized_hostname
@@ -623,6 +670,8 @@ is_valid_tld('.doesnotexist')
 
 Function normalizing the given hostname, i.e. without usually irrelevant subdomains etc. Works a lot like [normalize_url](#normalize_url).
 
+For more details about this be sure to read [this](#differences-between-canonicalize_url-normalize_url--fingerprint_url) section of the docs.
+
 ```python
 from ural import normalize_hostname
 
@@ -640,6 +689,8 @@ normalize_hostname('fr-FR.facebook.com')
 Function normalizing the given url by stripping it of usually non-discriminant parts such as irrelevant query items or sub-domains etc.
 
 This is a very useful utility when attempting to match similar urls written slightly differently when shared on social media etc.
+
+For more details about this be sure to read [this](#differences-between-canonicalize_url-normalize_url--fingerprint_url) section of the docs.
 
 ```python
 from ural import normalize_url
