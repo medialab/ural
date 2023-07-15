@@ -4,7 +4,7 @@ from urllib.parse import SplitResult
 
 @overload
 def normalize_url(
-    url: AnyUrlTarget,
+    url: str,
     unsplit: Literal[False] = ...,
     sort_query: bool = ...,
     strip_authentication: bool = ...,
@@ -22,7 +22,7 @@ def normalize_url(
 ) -> str: ...
 @overload
 def normalize_url(
-    url: AnyUrlTarget,
+    url: str,
     unsplit: Literal[True] = ...,
     sort_query: bool = ...,
     strip_authentication: bool = ...,

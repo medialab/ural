@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 import re
 
+CONTROL_CHARS_RE = re.compile(r"[\x00-\x1f\x7f-\x9f]")
+
 PROTOCOL = r"[a-zA-Z]{0,64}:?//"
 WEB_PROTOCOL = r"(?:(?:(?:https?|ftp|wss?):)?//)"
 HTTP_PROTOCOL = r"https?://"

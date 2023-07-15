@@ -22,7 +22,7 @@ from ural.utils import (
     fix_common_query_mistakes,
     SplitResult,
 )
-from ural.patterns import PROTOCOL_RE
+from ural.patterns import PROTOCOL_RE, CONTROL_CHARS_RE
 
 RESERVED_CHARACTERS = ";,/?:@&=+$"
 UNRESERVED_CHARACTERS = "-_.!~*'()"
@@ -164,6 +164,8 @@ def strip_lang_subdomains_from_netloc(netloc):
     return netloc
 
 
+# NOTE: normalize_url is not suited to be able to process already splitted urls,
+# because of mutliple string preprocessing tricks and redirection inferrence
 def normalize_url(
     url,
     unsplit=True,
@@ -227,22 +229,19 @@ def normalize_url(
     if infer_redirection:
         url = resolve(url)
 
-    if isinstance(url, SplitResult):
-        has_protocol = bool(url.scheme)
-        splitted = url
-    else:
-        url = url.strip()
-        has_protocol = PROTOCOL_RE.match(url)
+    url = CONTROL_CHARS_RE.sub("", url)
+    url = url.strip()
+    has_protocol = PROTOCOL_RE.match(url)
 
-        # Ensuring scheme so parsing works correctly
-        if not has_protocol:
-            url = "http://" + url
+    # Ensuring scheme so parsing works correctly
+    if not has_protocol:
+        url = "http://" + url
 
-        # Parsing
-        try:
-            splitted = urlsplit(url)
-        except ValueError:
-            return original_url_arg
+    # Parsing
+    try:
+        splitted = urlsplit(url)
+    except ValueError:
+        return original_url_arg
 
     scheme, netloc, path, query, fragment = splitted
 
@@ -379,6 +378,7 @@ def normalize_url(
 
 def normalize_hostname(hostname, normalize_amp=True, strip_lang_subdomains=False):
     hostname = hostname.strip().lower()
+    hostname = CONTROL_CHARS_RE.sub("", hostname)
 
     pattern = IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE
 

@@ -22,6 +22,7 @@ TESTS = [
     ("lemonde.fr/index.php?utm_content=whatever&test=toto", "lemonde.fr?test=toto"),
     ("lemonde.fr/index.php?utm_content=whatever", "lemonde.fr"),
     ("https://lemonde.fr?", "lemonde.fr"),
+    ("https://lemonde\x00.fr?", "lemonde.fr"),
     ("https://lemonde.fr#anchor", "lemonde.fr"),
     ("https://lemonde.fr/#anchor", "lemonde.fr"),
     ("https://lemonde.fr/#/path/is/here", "lemonde.fr#/path/is/here"),
