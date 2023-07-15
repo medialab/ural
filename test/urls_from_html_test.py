@@ -29,6 +29,18 @@ class TestUrlsFromHtml(object):
     def test_edge_cases(self):
         assert list(urls_from_html('<a href="#">(415) 735-4488</a>')) == ["#"]
         assert list(urls_from_html('<a href="./test">(415) 735-4488</a>')) == ["./test"]
+        assert list(urls_from_html("<a href=http://lemonde.fr></a>")) == [
+            "http://lemonde.fr"
+        ]
+        assert list(urls_from_html("<a href=http://lemonde.fr>")) == [
+            "http://lemonde.fr"
+        ]
+        assert list(urls_from_html("<a href='http://lemonde.fr'></a>")) == [
+            "http://lemonde.fr"
+        ]
+        assert list(urls_from_html("<a \nhref='http://lemonde.fr'></a>")) == [
+            "http://lemonde.fr"
+        ]
 
     def test_base_url(self):
         assert set(

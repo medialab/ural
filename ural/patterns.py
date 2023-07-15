@@ -81,8 +81,11 @@ URL_IN_TEXT_RE = re.compile(
     r"(%s)%s" % (PROTOCOL, URL + RESOURCE_PATH), re.I | re.UNICODE
 )
 
+# NOTE: we allow the a tag not to be closed because some browsers do and
+# also for performance reasons.
 URL_IN_HTML_RE = re.compile(
-    r"<a\s.*?href=(\S+?)(?:>|\s.*?>)(?:.*?)<[/ ]?a>", re.DOTALL | re.IGNORECASE
+    r"""<a\s[^>]*href=(?:"([^"]+)"|'([^']+)'|([^\s>]+))[^>]*>""",
+    re.I,
 )
 
 QUERY_VALUE_IN_URL_TEMPLATE = r"(?:^|[?&])%s=([^&]+)"

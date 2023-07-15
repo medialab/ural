@@ -11,11 +11,6 @@ from ural.patterns import URL_IN_HTML_RE
 from ural.utils import urljoin
 
 
-def clean_link(link):
-    """Removes leading and trailing whitespace and punctuation"""
-    return link.strip("\t\r\n '\"\x0c")
-
-
 def urls_from_html(string, base_url=None):
     """
     Function returning an iterator over the urls present in the HTML string argument.
@@ -30,7 +25,19 @@ def urls_from_html(string, base_url=None):
 
     """
     for match in re.finditer(URL_IN_HTML_RE, string):
-        url = clean_link(match.group(1))
+        url = match.group(1)
+
+        if url is not None:
+            url = url.strip('"')
+        else:
+            url = match.group(2)
+
+            if url is not None:
+                url = url.strip("'")
+            else:
+                url = match.group(3)
+
+        assert url is not None
 
         if base_url is not None:
             url = urljoin(base_url, url)
