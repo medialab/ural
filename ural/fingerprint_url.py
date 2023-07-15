@@ -10,7 +10,7 @@ LANG_QUERY_KEYS = ("gl", "hl")
 
 
 def lang_query_item_filter(key, _):
-    return key in LANG_QUERY_KEYS
+    return key not in LANG_QUERY_KEYS
 
 
 def strip_lang_subdomains_from_netloc(netloc):

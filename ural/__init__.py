@@ -4,6 +4,7 @@
 #
 from ural.classes.hostname_trie_set import HostnameTrieSet
 
+from ural.canonicalize_url import canonicalize_url
 from ural.could_be_html import could_be_html
 from ural.could_be_rss import could_be_rss
 from ural.ensure_protocol import ensure_protocol

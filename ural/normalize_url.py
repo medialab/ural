@@ -126,7 +126,7 @@ def should_strip_query_item(
         return domain_filter(key, value)
 
     if query_item_filter is not None:
-        return query_item_filter(key, value)
+        return not query_item_filter(key, value)
 
     return False
 
