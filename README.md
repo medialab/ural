@@ -122,10 +122,10 @@ pip install ural
 
 ### Differences between canonicalize_url, normalize_url & fingerprint_url
 
-`ural` comes with three different url deduplication schemes, targeted to different use-cases and ordered hereafter by aggressiveness:
+`ural` comes with three different url deduplication schemes, targeted to different use-cases and ordered hereafter by ascending aggressiveness:
 
 1. [canonicalize_url](#canonicalize_url): we clean the url by performing some light preprocessing usually done by web browsers before hitting them, e.g. lowercasing the hostname, decoding punycode, ensuring we have a protocol, dropping leading and trailing whitespace etc. The clean url is guaranteed to still lead to the same place.
-2. [normalize_url](#normalize_url): we apply more advanced preprocessing that will drop some parts of the url that are irrelevant to where the url leads, such as technical artifacts and SEO tricks. For instance, we will drop typical query items used by marketing campaigns, reorder the query items, infer some redirections, strip trailing slash or fragment when possible etc. At that point, the url should be clean enough that one can perform meaningful statistical aggregation when counting them, all while ensuring with some good probability that the url still works and still lead to the same place, at least if target server follows most common conventions.
+2. [normalize_url](#normalize_url): we apply more advanced preprocessing that will drop some parts of the url that are irrelevant to where the url leads, such as technical artifacts and SEO tricks. For instance, we will drop typical query items used by marketing campaigns, reorder the query items, infer some redirections, strip trailing slash or fragment when advisable etc. At that point, the url should be clean enough that one can perform meaningful statistical aggregation when counting them, all while ensuring with some good probability that the url still works and still lead to the same place, at least if target server follows most common conventions.
 3. [fingerprint_url](#fingerprint_url): we go a step further and we perform destructive preprocessing that cannot guarantee that the resulting url will still be valid. But the result might be even more useful for statistical aggregation, especially when counting urls from large platforms having multiple domains (e.g. `facebook.com`, `facebook.fr` etc.)
 
 | Function         | Use-cases                            | Url validity           | Deduplication strength |
