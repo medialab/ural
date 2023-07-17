@@ -155,6 +155,15 @@ fingerprint_url(url, strip_suffix=True)
 # candidates such as: http://facebook.co.uk/index.html?id=34
 ```
 
+*Design choices about unquoting*
+
+In `ural`, canonicalization schemes unquote the url for multiple reasons:
+
+1. unquoting multiple times won't alter the url (except if it was quoted multiple times, but let's avoid the topic for now), while quoting multiple times is not safe and knowing when to quote or not to quote can be risky business. We could of course try and be clever and/or unquote then requote to force a normalized version of the url as quoted but this can take a hit on performance and because of reason n°2:
+2. unquoted urls are easier for humans to read
+3. Unicode is basically supported everywhere nowadays
+4. Web browsers actually do unquote urls in the url bar for the reader (even if they quote the url before hitting the server usually, but this is the responsibility of the code actually making the call I would say)
+
 ---
 
 ### canonicalize_url
