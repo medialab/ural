@@ -12,3 +12,6 @@ class TestUnquote(object):
         assert unquote("test") == "test"
         assert unquote("t%C3%A9st") == "tést"
         assert unquote("%3T") == "%3T"
+
+        assert unquote("%00") == "\x00"
+        assert unquote("%00", only_printable=True) == "%00"

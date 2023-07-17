@@ -15,6 +15,15 @@ else:
 
 ASCII_RE = re.compile("([\x00-\x7f]+)")
 
+if PY2:
+
+    # NOTE: py2 version is not unicode-aware of course...
+    def isprintable(string):
+        return all(c >= " " for c in string)
+
+else:
+    isprintable = str.isprintable
+
 
 def _unquote_impl(string):
     string = string.encode("utf-8")
@@ -34,22 +43,30 @@ def _unquote_impl(string):
     return res
 
 
-def _generate_unquoted_parts(string):
+def _generate_unquoted_parts(string, only_printable=False):
     previous_match_end = 0
     for ascii_match in ASCII_RE.finditer(string):
         start, end = ascii_match.span()
         yield string[previous_match_end:start]  # Non-ASCII
         # The ascii_match[1] group == string[start:end].
-        yield _unquote_impl(ascii_match.group(1)).decode("utf-8", "replae")
+
+        m = ascii_match.group(1)
+        c = _unquote_impl(m).decode("utf-8", "replae")
+
+        if only_printable and not isprintable(c):
+            yield m
+        else:
+            yield c
+
         previous_match_end = end
     yield string[previous_match_end:]  # Non-ASCII tail
 
 
-def unquote(string):
+def unquote(string, only_printable=False):
     if "%" not in string:
         return string
 
-    return "".join(_generate_unquoted_parts(string))
+    return "".join(_generate_unquoted_parts(string, only_printable=only_printable))
 
 
 __all__ = ["unquote"]
