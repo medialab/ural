@@ -244,6 +244,16 @@ TESTS_ADVANCED = [
         "medialab.sciencespo.fr/page.html?outputType=amp",
         {"normalize_amp": False},
     ),
+    # (
+    #     "mozilla.org?x=шеллы",
+    #     "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
+    #     {"quote": True},
+    # ),
+    # (
+    #     "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
+    #     "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
+    #     {"quote": True},
+    # ),
 ]
 
 if PY2:

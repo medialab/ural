@@ -59,6 +59,10 @@ def space_aware_unquote(string, replacement="%20"):
     return unquote(string).replace(" ", replacement)
 
 
+def safe_requote(string):
+    return quote(unquote(string))
+
+
 def safe_urlsplit(url, scheme="http"):
     if isinstance(url, SplitResult):
         return url

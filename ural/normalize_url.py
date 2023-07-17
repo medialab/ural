@@ -17,6 +17,7 @@ from ural.utils import (
     unsplit_netloc,
     decode_punycode_hostname,
     space_aware_unquote,
+    safe_requote,
     normpath,
     fix_common_query_mistakes,
     SplitResult,
@@ -182,7 +183,6 @@ def get_normalized_hostname(url, normalize_amp=True, infer_redirection=True):
 # feels somewhat dangerous.
 def normalize_url(
     url,
-    unsplit=True,
     sort_query=True,
     strip_authentication=True,
     strip_trailing_slash=True,
@@ -190,10 +190,13 @@ def normalize_url(
     strip_protocol=True,
     strip_irrelevant_subdomains=True,
     strip_fragment="except-routing",
-    query_item_filter=None,
     normalize_amp=True,
     fix_common_mistakes=True,
     infer_redirection=True,
+    # NOTE: following arguments currently undocumented
+    unsplit=True,
+    quote=False,
+    query_item_filter=None,
 ):
     """
     Function normalizing the given url by stripping it of usually
@@ -360,10 +363,12 @@ def normalize_url(
     if strip_trailing_slash and path.endswith("/"):
         path = path.rstrip("/")
 
-    # Unquoting
-    path = space_aware_unquote(path)
-    query = space_aware_unquote(query)
-    fragment = space_aware_unquote(fragment)
+    # Quoting/unquoting
+    quoting_function = space_aware_unquote if not quote else safe_requote
+
+    path = quoting_function(path)
+    query = quoting_function(query)
+    fragment = quoting_function(fragment)
 
     # Result
     netloc = unsplit_netloc(user, password, hostname, port)

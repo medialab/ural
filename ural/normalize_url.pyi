@@ -5,7 +5,6 @@ from urllib.parse import SplitResult
 @overload
 def normalize_url(
     url: str,
-    unsplit: Literal[False] = ...,
     sort_query: bool = ...,
     strip_authentication: bool = ...,
     strip_trailing_slash: bool = ...,
@@ -13,16 +12,17 @@ def normalize_url(
     strip_protocol: bool = ...,
     strip_irrelevant_subdomains: bool = ...,
     strip_fragment: Union[bool, Literal["except-routing"]] = ...,
-    query_item_filter: Optional[Callable[[str, str], bool]] = ...,
     normalize_amp: bool = ...,
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
-    quoted: bool = ...,
-) -> SplitResult: ...
+    #
+    unsplit: Literal[True] = ...,
+    query_item_filter: Optional[Callable[[str, str], bool]] = ...,
+    quote: bool = ...,
+) -> str: ...
 @overload
 def normalize_url(
     url: str,
-    unsplit: Literal[True] = ...,
     sort_query: bool = ...,
     strip_authentication: bool = ...,
     strip_trailing_slash: bool = ...,
@@ -30,12 +30,14 @@ def normalize_url(
     strip_protocol: bool = ...,
     strip_irrelevant_subdomains: bool = ...,
     strip_fragment: Union[bool, Literal["except-routing"]] = ...,
-    query_item_filter: Optional[Callable[[str, str], bool]] = ...,
     normalize_amp: bool = ...,
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
-    quoted: bool = ...,
-) -> str: ...
+    #
+    unsplit: Literal[False] = ...,
+    query_item_filter: Optional[Callable[[str, str], bool]] = ...,
+    quote: bool = ...,
+) -> SplitResult: ...
 def normalize_hostname(hostname: str, normalize_amp: bool = True) -> str: ...
 def get_normalized_hostname(
     url: AnyUrlTarget,
