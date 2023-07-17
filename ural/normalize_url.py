@@ -14,6 +14,7 @@ from ural.utils import (
     parse_qsl,
     urlsplit,
     urlunsplit,
+    unsplit_netloc,
     decode_punycode_hostname,
     space_aware_unquote,
     normpath,
@@ -250,19 +251,24 @@ def normalize_url(
         return original_url_arg
 
     scheme, netloc, path, query, fragment = splitted
+    user, password, hostname, port = (
+        splitted.username,
+        splitted.password,
+        splitted.hostname,
+        splitted.port,
+    )
 
     # Fixing common mistakes
     if fix_common_mistakes and query:
         query = fix_common_query_mistakes(query)
 
     # Handling punycode
-    netloc = decode_punycode_hostname(netloc)
+    if hostname:
+        hostname = decode_punycode_hostname(hostname)
 
     # Dropping :80 & :443
-    if netloc.endswith(":80"):
-        netloc = netloc[:-3]
-    elif netloc.endswith(":443"):
-        netloc = netloc[:-4]
+    if port == 80 or port == 443:
+        port = None
 
     # Normalizing the path
     if path:
@@ -330,11 +336,11 @@ def normalize_url(
         path = ""
 
     # Dropping irrelevant subdomains
-    if strip_irrelevant_subdomains:
-        netloc = re.sub(
+    if hostname and strip_irrelevant_subdomains:
+        hostname = re.sub(
             IRRELEVANT_SUBDOMAIN_AMP_RE if normalize_amp else IRRELEVANT_SUBDOMAIN_RE,
             "",
-            netloc,
+            hostname,
         )
 
     # Dropping scheme
@@ -343,11 +349,12 @@ def normalize_url(
 
     # Dropping authentication
     if strip_authentication:
-        netloc = netloc.split("@", 1)[-1]
+        user = None
+        password = None
 
     # Normalizing AMP subdomains
-    if normalize_amp and netloc.startswith("amp-"):
-        netloc = netloc[4:]
+    if normalize_amp and hostname and hostname.startswith("amp-"):
+        hostname = hostname[4:]
 
     # Dropping trailing slash
     if strip_trailing_slash and path.endswith("/"):
@@ -359,6 +366,7 @@ def normalize_url(
     fragment = space_aware_unquote(fragment)
 
     # Result
+    netloc = unsplit_netloc(user, password, hostname, port)
     result = SplitResult(scheme, netloc.lower(), path, query, fragment)
 
     if not unsplit:
