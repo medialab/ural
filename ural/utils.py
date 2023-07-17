@@ -29,29 +29,19 @@ try:
         SplitResult,
     )
 except ImportError:
-    from urllib import unquote, quote as original_quote
-
-    ALWAYS_SAFE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-~"
-
-    def quote(string, safe="/"):
-        if isinstance(string, unicode):
-            safe_set = set(ord(c) for c in ALWAYS_SAFE)
-
-            for c in safe:
-                safe_set.add(ord(c))
-
-            chars = [
-                c if ord(c) in safe_set else "%{:02X}".format(ord(c)) for c in string
-            ]
-
-            return "".join(chars)
-
-        return original_quote(string, safe)
-
-    from urlparse import parse_qs, parse_qsl, urljoin, urlsplit, urlunsplit, SplitResult
+    from urllib import unquote, quote
+    from urlparse import (
+        parse_qs,
+        parse_qsl,
+        urljoin,
+        urlsplit,
+        urlunsplit,
+        SplitResult,
+    )
 
 MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 
+# NOTE: one of the kwargs below is not so aptly named quote...
 unshadowed_quote = quote
 
 
