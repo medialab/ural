@@ -1,0 +1,62 @@
+{
+  "language": "eng",
+  "license": "GPL-3.0",
+  "title": "Ural, a python helper library full of URL-related heuristics.",
+  "upload_type": "software",
+  "keywords": [
+    "webmining",
+    "url",
+    "heuristics"
+  ],
+  "creators": [
+    {
+      "orcid": "0000-0003-4916-8472",
+      "affiliation": "médialab - Sciences Po",
+      "name": "Guillaume Plique"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "Jules Farjas"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "Oubine Perrin"
+    },
+    {
+      "orcid": "0000-0001-7698-3507",
+      "affiliation": "médialab - Sciences Po",
+      "name": "Benjamin Ooghe-Tabanou"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "Martin Delabre"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "Pauline Breteau"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "Jean Descamps"
+    },
+    {
+      "orcid": "0000-0003-4074-2976",
+      "affiliation": "médialab - Sciences Po",
+      "name": "Béatrice Mazoyer"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "Amélie Pellé"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "Laura Miguel"
+    },
+    {
+      "affiliation": "médialab - Sciences Po",
+      "name": "César Pichon"
+    }
+  ],
+  "access_right": "open",
+  "description": "<p>A python helper library full of URL-related heuristics.</p>"
+}

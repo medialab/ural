@@ -6,7 +6,7 @@ from ural.utils import (
     safe_qsl_iter,
     safe_serialize_qsl,
     decode_punycode_hostname,
-    normpath
+    normpath,
 )
 from ural.quote import (
     safely_unquote_auth_item,
@@ -50,11 +50,11 @@ def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=False):
         port = None
 
     # Empty path etc.
-    if not path or path == '/':
+    if not path or path == "/":
         if not query and not fragment:
-            path = ''
+            path = ""
         else:
-            path = '/'
+            path = "/"
 
     # Path normalization
     else:
