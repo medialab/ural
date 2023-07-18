@@ -200,6 +200,7 @@ TESTS = [
     ),
     ("http://lemonde.fr?%3d=value", "lemonde.fr?%3D=value"),
     ("http://lemonde.fr/default.asp", "lemonde.fr"),
+    ('http://lemonde.fr/?test&test=&test=value', 'lemonde.fr?test&test=&test=value')
 ]
 
 
@@ -232,7 +233,7 @@ TESTS_ADVANCED = [
     ),
     (
         "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB&url=http%3A%2F%2Fwww.mon-ip.com%2F&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes",
-        "google.com/url?cad=rja&cd=4&esrc=s&q&rct=j&sa=t&source=web&uact=8&url=http://www.mon-ip.com/&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB",
+        "google.com/url?cad=rja&cd=4&esrc=s&q=&rct=j&sa=t&source=web&uact=8&url=http://www.mon-ip.com/&usg=AOvVaw0sfeZJyVtUS2smoyMlJmes&ved=2ahUKEwjp8Lih_LnmAhWQlxQKHVTmCJYQFjADegQIARAB",
         {"infer_redirection": False},
     ),
     (

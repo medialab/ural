@@ -102,11 +102,8 @@ PER_DOMAIN_QUERY_FILTERS = [
 ]
 
 
-def coerce_empty_query_item(item):
-    if item[1].strip() == "":
-        return item[0], None
-
-    return item
+def qsl_sort_key(item):
+    return item[0], item[1] or '', 0 if item[1] is None else 1
 
 
 def should_strip_query_item(
@@ -321,8 +318,10 @@ def normalize_url(
                 None,
             )
 
+        # TODO: what to do of empty query items vs. no valued
+        # TODO: should be dedupe query items?
         qsl = [
-            coerce_empty_query_item(item)
+            item
             for item in safe_qsl_iter(query)
             if not should_strip_query_item(
                 item,
@@ -333,7 +332,7 @@ def normalize_url(
         ]
 
         if sort_query:
-            qsl = sorted(qsl)
+            qsl = sorted(qsl, key=qsl_sort_key)
 
     # Dropping fragment if it's not routing
     if fragment and strip_fragment:

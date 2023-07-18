@@ -41,6 +41,7 @@ TESTS = [
     ("http://example.com?test", "http://example.com/?test"),
     ("http://example.com#test", "http://example.com/#test"),
     ("http://example.com?test#test", "http://example.com/?test#test"),
+    ('http://lemonde.fr/?test&test=&test=value', 'http://lemonde.fr/?test&test=&test=value')
 ]
 
 TESTS_ADVANCED = [
