@@ -1,8 +1,8 @@
-[![Build Status](https://github.com/medialab/ural/workflows/Tests/badge.svg)](https://github.com/medialab/ural/actions)
+[![Build Status](https://github.com/medialab/ural/workflows/Tests/badge.svg)](https://github.com/medialab/ural/actions) [![DOI](https://zenodo.org/badge/133951636.svg)](https://zenodo.org/badge/latestdoi/133951636)
 
 # Ural
 
-A helper library full of URL-related heuristics.
+A python helper library full of URL-related heuristics.
 
 ## Installation
 
@@ -11,6 +11,14 @@ You can install `ural` with pip with the following command:
 ```
 pip install ural
 ```
+
+## How to cite?
+
+`ural` is published on [Zenodo](https://zenodo.org/) as [![DOI](https://zenodo.org/badge/133951636.svg)](https://zenodo.org/badge/latestdoi/133951636)
+
+You can cite it thusly:
+
+> Guillaume Plique, Jules Farjas, Oubine Perrin, Benjamin Ooghe-Tabanou, Martin Delabre, Pauline Breteau, Jean Descamps, Béatrice Mazoyer, Amélie Pellé, Laura Miguel, & César Pichon. Ural, a python helper library full of URL-related heuristics. (2018). Zenodo. https://doi.org/10.5281/zenodo.8160139
 
 ## Usage
 
