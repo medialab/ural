@@ -20,7 +20,6 @@ except NameError:
 try:
     from urllib.parse import (
         parse_qs,
-        parse_qsl,
         quote,
         unquote,
         urljoin,
@@ -39,7 +38,6 @@ except ImportError:
 
     from urlparse import (
         parse_qs,
-        parse_qsl,
         urljoin,
         urlsplit,
         urlunsplit,
@@ -50,14 +48,6 @@ MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 
 # NOTE: one of the kwargs below is not so aptly named quote...
 unshadowed_quote = quote
-
-
-def space_aware_unquote(string, replacement="%20"):
-    return unquote(string).replace(" ", replacement)
-
-
-def safe_requote(string):
-    return quote(unquote(string))
 
 
 def safe_urlsplit(url, scheme="http"):
@@ -193,3 +183,22 @@ def unsplit_netloc(username, password, hostname, port):
         hostname += ":" + str(port)
 
     return hostname
+
+
+def safe_qsl_iter(query):
+    for item in query.split("&"):
+        if "=" not in item:
+            yield item, None
+        else:
+            yield tuple(item.split("=", 1))
+
+
+def safe_serialize_query_item(item):
+    if item[1] is None:
+        return item[0]
+
+    return "%s=%s" % item
+
+
+def safe_serialize_qsl(qsl):
+    return "&".join(safe_serialize_query_item(item) for item in qsl)

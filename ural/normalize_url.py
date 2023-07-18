@@ -11,16 +11,22 @@ from os.path import splitext
 from ural.ensure_protocol import ensure_protocol
 from ural.infer_redirection import infer_redirection as resolve
 from ural.utils import (
-    parse_qsl,
+    safe_qsl_iter,
+    safe_serialize_qsl,
     urlsplit,
     urlunsplit,
     unsplit_netloc,
     decode_punycode_hostname,
-    space_aware_unquote,
-    safe_requote,
     normpath,
     fix_common_query_mistakes,
     SplitResult,
+)
+from ural.quote import (
+    safely_unquote_auth_item,
+    safely_unquote_path,
+    safely_unquote_qsl,
+    safely_unquote_fragment,
+    safely_quote,
 )
 from ural.patterns import PROTOCOL_RE, CONTROL_CHARS_RE
 
@@ -94,12 +100,11 @@ PER_DOMAIN_QUERY_FILTERS = [
 ]
 
 
-def stringify_qs(item):
-    if item[1] == "":
-        return item[0]
+def coerce_empty_query_item(item):
+    if item[1].strip() == '':
+        return item[0], None
 
-    return "%s=%s" % item
-
+    return item
 
 def should_strip_query_item(
     item, normalize_amp=True, query_item_filter=None, domain_filter=None
@@ -299,6 +304,8 @@ def normalize_url(
                 path = "/".join(segments)
 
     # Dropping irrelevant query items
+    qsl = []
+
     if query:
         domain_filter = None
 
@@ -312,10 +319,9 @@ def normalize_url(
                 None,
             )
 
-        qsl = parse_qsl(query, keep_blank_values=True)
         qsl = [
-            stringify_qs(item)
-            for item in qsl
+            coerce_empty_query_item(item)
+            for item in safe_qsl_iter(query)
             if not should_strip_query_item(
                 item,
                 normalize_amp=normalize_amp,
@@ -326,8 +332,6 @@ def normalize_url(
 
         if sort_query:
             qsl = sorted(qsl)
-
-        query = "&".join(qsl)
 
     # Dropping fragment if it's not routing
     if fragment and strip_fragment:
@@ -363,12 +367,15 @@ def normalize_url(
     if strip_trailing_slash and path.endswith("/"):
         path = path.rstrip("/")
 
-    # Quoting/unquoting
-    quoting_function = space_aware_unquote if not quote else safe_requote
+    # Quoting
+    if user:
+        safely_unquote_auth_item(user)
+    if password:
+        safely_unquote_auth_item(password)
 
-    path = quoting_function(path)
-    query = quoting_function(query)
-    fragment = quoting_function(fragment)
+    path = safely_unquote_path(path)
+    query = safe_serialize_qsl(safely_unquote_qsl(qsl))
+    fragment = safely_unquote_fragment(fragment)
 
     # Result
     netloc = unsplit_netloc(user, password, hostname, port)

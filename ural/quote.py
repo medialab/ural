@@ -107,13 +107,14 @@ safely_unquote_fragment = partial(
 
 def safely_unquote_qsl(qsl):
     return [
-        (safely_unquote_query_item(key), safely_unquote_query_item(value))
+        (safely_unquote_query_item(key), safely_unquote_query_item(value) if value is not None else None)
         for key, value in qsl
     ]
 
 
 QUOTED_SPLIT_RE = re.compile(r"(%[0-9A-Fa-f]{2})")
 QUOTED_RE = re.compile(r"^%[0-9A-Fa-f]{2}$")
+
 
 def safely_quote_iter(string):
     for piece in QUOTED_SPLIT_RE.split(string):
