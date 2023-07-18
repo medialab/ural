@@ -198,6 +198,14 @@ TESTS = [
         "https://medialab.sciencespo.fr/page.html?s=090",
         "medialab.sciencespo.fr/page.html?s=090",
     ),
+    (
+        "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
+        "lemonde.fr/té%3F?%26té=%26té",
+    ),
+    (
+        "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        "lemonde.fr/té%3F?%26té=%26té",
+    ),
 ]
 
 
@@ -244,16 +252,16 @@ TESTS_ADVANCED = [
         "medialab.sciencespo.fr/page.html?outputType=amp",
         {"normalize_amp": False},
     ),
-    # (
-    #     "mozilla.org?x=шеллы",
-    #     "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
-    #     {"quote": True},
-    # ),
-    # (
-    #     "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
-    #     "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
-    #     {"quote": True},
-    # ),
+    (
+        "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
+        "lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        {"quoted": True},
+    ),
+    (
+        "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        "lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        {"quoted": True},
+    ),
 ]
 
 if PY2:

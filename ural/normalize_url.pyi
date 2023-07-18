@@ -15,10 +15,10 @@ def normalize_url(
     normalize_amp: bool = ...,
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
+    quoted: bool = ...,
     #
     unsplit: Literal[True] = ...,
     query_item_filter: Optional[Callable[[str, str], bool]] = ...,
-    quote: bool = ...,
 ) -> str: ...
 @overload
 def normalize_url(
@@ -33,10 +33,10 @@ def normalize_url(
     normalize_amp: bool = ...,
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
+    quoted: bool = ...,
     #
     unsplit: Literal[False] = ...,
     query_item_filter: Optional[Callable[[str, str], bool]] = ...,
-    quote: bool = ...,
 ) -> SplitResult: ...
 def normalize_hostname(hostname: str, normalize_amp: bool = True) -> str: ...
 def get_normalized_hostname(

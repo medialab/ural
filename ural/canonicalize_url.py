@@ -13,12 +13,13 @@ from ural.quote import (
     safely_unquote_qsl,
     safely_unquote_fragment,
     safely_quote,
+    safely_quote_qsl,
 )
 from ural.ensure_protocol import ensure_protocol
 from ural.patterns import CONTROL_CHARS_RE
 
 
-def canonicalize_url(url, default_protocol="https", unsplit=True):
+def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=True):
     # Cleaning
     url = url.strip()
     url = CONTROL_CHARS_RE.sub("", url)
@@ -47,17 +48,35 @@ def canonicalize_url(url, default_protocol="https", unsplit=True):
 
     # Quotes
     if user:
-        user = safely_unquote_auth_item(user)
+        if quoted:
+            user = safely_quote(user)
+        else:
+            user = safely_unquote_auth_item(user)
 
     if password:
-        password = safely_unquote_auth_item(password)
+        if quoted:
+            password = safely_quote(password)
+        else:
+            password = safely_unquote_auth_item(password)
 
-    path = safely_unquote_path(path)
+    if quoted:
+        path = safely_quote(path)
+    else:
+        path = safely_unquote_path(path)
 
-    qsl = safely_unquote_qsl(safe_qsl_iter(query))
+    qsl = safe_qsl_iter(query)
+
+    if quoted:
+        qsl = safely_quote_qsl(qsl)
+    else:
+        qsl = safely_unquote_qsl(qsl)
+
     query = safe_serialize_qsl(qsl)
 
-    fragment = safely_unquote_fragment(fragment)
+    if quoted:
+        fragment = safely_quote(fragment)
+    else:
+        fragment = safely_unquote_fragment(fragment)
 
     # Repacking
     netloc = unsplit_netloc(user, password, hostname, port)

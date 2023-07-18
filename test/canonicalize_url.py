@@ -18,6 +18,27 @@ TESTS = [
         "http://mozilla.org?x=шеллы",
     ),
     ("http://mozilla.org?x=шеллы", "http://mozilla.org?x=шеллы"),
+    (
+        "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
+        "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
+    ),
+    (
+        "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
+    ),
+]
+
+TESTS_ADVANCED = [
+    (
+        "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
+        "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        {"quoted": True},
+    ),
+    (
+        "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
+        {"quoted": True},
+    ),
 ]
 
 
@@ -25,3 +46,6 @@ class TestFingerprintUrl(object):
     def test_canonicalize_url(self):
         for url, result in TESTS:
             assert canonicalize_url(url) == result
+
+        for url, result, kwargs in TESTS_ADVANCED:
+            assert canonicalize_url(url, **kwargs) == result

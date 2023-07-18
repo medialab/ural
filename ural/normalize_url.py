@@ -27,6 +27,7 @@ from ural.quote import (
     safely_unquote_qsl,
     safely_unquote_fragment,
     safely_quote,
+    safely_quote_qsl,
 )
 from ural.patterns import PROTOCOL_RE, CONTROL_CHARS_RE
 
@@ -182,11 +183,8 @@ def get_normalized_hostname(url, normalize_amp=True, infer_redirection=True):
 
 # NOTE: normalize_url is not suited to be able to process already splitted urls,
 # because of mutliple string preprocessing tricks and redirection inferrence
-# NOTE: we force an unquoted version of the url because unquoting multiple times
-# is safe, while the contrary is not. Also, unquoted urls are more readable to
-# humans. Note that We still keep whitespace as %20 like most web browsers. Also,
-# we unquote only once, like browsers do. We could do it recursively but it
-# feels somewhat dangerous.
+# NOTE: query filter run before quoting shenanigans because targeted pattern
+# are not subject to escaping, usually
 def normalize_url(
     url,
     sort_query=True,
@@ -201,7 +199,7 @@ def normalize_url(
     infer_redirection=True,
     # NOTE: following arguments currently undocumented
     unsplit=True,
-    quote=False,
+    quoted=False,
     query_item_filter=None,
 ):
     """
@@ -370,13 +368,33 @@ def normalize_url(
 
     # Quoting
     if user:
-        safely_unquote_auth_item(user)
-    if password:
-        safely_unquote_auth_item(password)
+        if quoted:
+            user = safely_quote(user)
+        else:
+            user = safely_unquote_auth_item(user)
 
-    path = safely_unquote_path(path)
-    query = safe_serialize_qsl(safely_unquote_qsl(qsl))
-    fragment = safely_unquote_fragment(fragment)
+    if password:
+        if quoted:
+            password = safely_quote(password)
+        else:
+            password = safely_unquote_auth_item(password)
+
+    if quoted:
+        path = safely_quote(path)
+    else:
+        path = safely_unquote_path(path)
+
+    if quoted:
+        qsl = safely_quote_qsl(qsl)
+    else:
+        qsl = safely_unquote_qsl(qsl)
+
+    query = safe_serialize_qsl(qsl)
+
+    if quoted:
+        fragment = safely_quote(fragment)
+    else:
+        fragment = safely_unquote_fragment(fragment)
 
     # Result
     netloc = unsplit_netloc(user, password, hostname, port)
