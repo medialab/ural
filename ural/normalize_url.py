@@ -101,10 +101,11 @@ PER_DOMAIN_QUERY_FILTERS = [
 
 
 def coerce_empty_query_item(item):
-    if item[1].strip() == '':
+    if item[1].strip() == "":
         return item[0], None
 
     return item
+
 
 def should_strip_query_item(
     item, normalize_amp=True, query_item_filter=None, domain_filter=None

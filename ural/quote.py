@@ -107,7 +107,10 @@ safely_unquote_fragment = partial(
 
 def safely_unquote_qsl(qsl):
     return [
-        (safely_unquote_query_item(key), safely_unquote_query_item(value) if value is not None else None)
+        (
+            safely_unquote_query_item(key),
+            safely_unquote_query_item(value) if value is not None else None,
+        )
         for key, value in qsl
     ]
 
@@ -128,6 +131,13 @@ def safely_quote(string):
     return "".join(safely_quote_iter(string))
 
 
+def safely_quote_qsl(qsl):
+    return [
+        (safely_quote(key), safely_quote(value) if value is not None else None)
+        for key, value in qsl
+    ]
+
+
 __all__ = [
     "unquote",
     "safely_unquote_auth",
@@ -136,4 +146,5 @@ __all__ = [
     "safely_unquote_fragment",
     "safely_unquote_qsl",
     "safely_quote",
+    "safely_quote_qsl",
 ]
