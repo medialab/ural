@@ -51,7 +51,7 @@ def _generate_unquoted_parts(string, only_printable=False):
         # The ascii_match[1] group == string[start:end].
 
         m = ascii_match.group(1)
-        c = _unquote_impl(m).decode("utf-8", "replae")
+        c = _unquote_impl(m).decode("utf-8", "replace")
 
         if only_printable and not isprintable(c):
             yield m
