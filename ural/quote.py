@@ -21,15 +21,6 @@ else:
 
 ASCII_RE = re.compile("([\x00-\x7f]+)")
 
-if PY2:
-
-    # NOTE: py2 version is not unicode-aware of course...
-    def isprintable(string):
-        return all(c >= " " for c in string)
-
-else:
-    isprintable = str.isprintable
-
 
 def _unquote_impl(string, only_printable=False, unsafe=None):
     string = string.encode("utf-8")
