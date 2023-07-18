@@ -26,3 +26,4 @@ class TestUnquote(object):
         assert safely_unquote_auth('t%C3%A9%40%3A%20') == "té%40%3A%20"
         assert safely_unquote_path('%C3%A9%3F%20') == 'é%3F%20'
         assert safely_unquote_query_item('%C3%A9%3F%26%3D%20') == "é%3F%26%3D%20"
+        assert safely_unquote_query_item('%C3%A9%3F%26%3D%20 ') == "é%3F%26%3D%20%20"

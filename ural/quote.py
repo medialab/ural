@@ -67,29 +67,35 @@ def _generate_unquoted_parts(string, only_printable=False, unsafe=None):
 
 
 # NOTE: here, unsafe must be a container of bytes
-def unquote(string, only_printable=False, unsafe=None):
+def unquote(string, only_printable=False, unsafe=None, normalize_space=False):
     if "%" not in string:
         return string
 
-    return "".join(
+    q = "".join(
         _generate_unquoted_parts(string, only_printable=only_printable, unsafe=unsafe)
     )
 
+    if normalize_space:
+        q = q.replace(' ', '%20')
+
+    return q
+
 # NOTE: to safely unquote we don't need to replace invalid character because it would
-# imply that the parsed url was invalid from the start
+# imply that the parsed url was invalid from the start (except for spaces)
 
 UNSAFE_FOR_AUTH = b" @:"
 UNSAFE_FOR_PATH = b" ?#"
 UNSAFE_FOR_QUERY_ITEM = b" ?&=#"
 UNSAFE_FOR_FRAGMENT = b" ?#"
 
-safely_unquote_auth = partial(unquote, only_printable=True, unsafe=UNSAFE_FOR_AUTH)
-safely_unquote_path = partial(unquote, only_printable=True, unsafe=UNSAFE_FOR_PATH)
+# NOTE: those method should only be used on parsed urls to canonicalize/normalize.
+safely_unquote_auth = partial(unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_AUTH)
+safely_unquote_path = partial(unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_PATH)
 safely_unquote_query_item = partial(
-    unquote, only_printable=True, unsafe=UNSAFE_FOR_QUERY_ITEM
+    unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_QUERY_ITEM
 )
 safely_unquote_fragment = partial(
-    unquote, only_printable=True, unsafe=UNSAFE_FOR_FRAGMENT
+    unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_FRAGMENT
 )
 
 
