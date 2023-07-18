@@ -3,7 +3,13 @@ from platform import python_version_tuple
 
 PY2 = python_version_tuple()[0] == "2"
 
+# try:
+#     from urllib.parse import quote
+# except ImportError:
+#     from urlparse import quote
+
 import re
+from functools import partial
 
 # NOTE: the following code for `unquote` is adapted from cpython:
 # https://github.com/python/cpython/blob/main/Lib/urllib/parse.py
@@ -34,16 +40,19 @@ def _unquote_impl(string):
     append = res.extend
 
     for item in bits[1:]:
-        try:
-            append(HEX_TO_BYTE[item[:2]])  # type: ignore
+        b = HEX_TO_BYTE.get(item[:2])
+
+        if b is not None:
+            append(b)
             append(item[2:])
-        except KeyError:
+        else:
             append(b"%")
             append(item)
+
     return res
 
 
-def _generate_unquoted_parts(string, only_printable=False):
+def _generate_unquoted_parts(string, only_printable=False, unsafe=None):
     previous_match_end = 0
     for ascii_match in ASCII_RE.finditer(string):
         start, end = ascii_match.span()
@@ -55,6 +64,8 @@ def _generate_unquoted_parts(string, only_printable=False):
 
         if only_printable and not isprintable(c):
             yield m
+        elif unsafe is not None and c in unsafe:
+            yield m
         else:
             yield c
 
@@ -62,11 +73,43 @@ def _generate_unquoted_parts(string, only_printable=False):
     yield string[previous_match_end:]  # Non-ASCII tail
 
 
-def unquote(string, only_printable=False):
+# NOTE: here, unsafe must be a container
+def unquote(string, only_printable=False, unsafe=None):
     if "%" not in string:
         return string
 
-    return "".join(_generate_unquoted_parts(string, only_printable=only_printable))
+    return "".join(
+        _generate_unquoted_parts(string, only_printable=only_printable, unsafe=unsafe)
+    )
 
 
-__all__ = ["unquote"]
+UNSAFE_FOR_AUTH = " @:"
+UNSAFE_FOR_PATH = " ?#"
+UNSAFE_FOR_QUERY_ITEM = " ?&=#"
+UNSAFE_FOR_FRAGMENT = " ?#"
+
+safely_unquote_auth = partial(unquote, only_printable=True, unsafe=UNSAFE_FOR_AUTH)
+safely_unquote_path = partial(unquote, only_printable=True, unsafe=UNSAFE_FOR_PATH)
+safely_unquote_query_item = partial(
+    unquote, only_printable=True, unsafe=UNSAFE_FOR_QUERY_ITEM
+)
+safely_unquote_fragment = partial(
+    unquote, only_printable=True, unsafe=UNSAFE_FOR_FRAGMENT
+)
+
+
+def safely_unquote_qsl(qsl):
+    return [
+        (safely_unquote_query_item(key), safely_unquote_query_item(value))
+        for key, value in qsl
+    ]
+
+
+__all__ = [
+    "unquote",
+    "safely_unquote_auth",
+    "safely_unquote_path",
+    "safely_unquote_query_item",
+    "safely_unquote_fragment",
+    "safely_unquote_qsl",
+]

@@ -4,7 +4,7 @@
 # =============================================================================
 from __future__ import unicode_literals
 
-from ural.quote import unquote
+from ural.quote import unquote, safely_unquote_auth
 
 
 class TestUnquote(object):
@@ -17,3 +17,10 @@ class TestUnquote(object):
 
         assert unquote("%00") == "\x00"
         assert unquote("%00", only_printable=True) == "%00"
+
+        assert unquote("%20") == " "
+        assert unquote("%20", unsafe=(" ",)) == "%20"
+
+        # assert unquote("%C3%A9%20", unsafe=(" ")) == "é%20"
+
+        # assert safely_unquote_auth('t%C3%A9%40%3A') == "té%40%3A"
