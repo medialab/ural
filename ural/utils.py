@@ -48,18 +48,6 @@ except ImportError:
 
 MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 
-HEX_SET = "0123456789ABCDEFabcdef"
-PATH_SET = "#?%"
-QUERY_SET = "#?%&="
-USERINFO_SET = "@:[]"
-
-# SIMPLE_QUOTING
-# DEFAULT_QUOTING 	space, <,>,`,?,{,}
-# QUERY_QUOTING 	space, ",#,<,>
-# PATH_SEGMENT_QUOTING 	space, ",#,<,>,`,?,%,/
-# USERINFO_QUOTING 	space, ",#,<,>,`,?,{,},/,:,;,=,@,\,[,],^,|
-# PYTHON_3_7_QUOTING 	space, ",#,<,>,`,?,{,},$,%,&,\,(,),,,=,;,:,!,@,[,],^,|,+,*
-
 # NOTE: one of the kwargs below is not so aptly named quote...
 unshadowed_quote = quote
 

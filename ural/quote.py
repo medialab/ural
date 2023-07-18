@@ -1,3 +1,5 @@
+# NOTE: it would be nice to handle quoting recursivity
+
 from __future__ import unicode_literals
 from platform import python_version_tuple
 
@@ -83,14 +85,14 @@ def unquote(string, only_printable=False, unsafe=None, normalize_space=False):
 # NOTE: to safely unquote we don't need to replace invalid character because it would
 # imply that the parsed url was invalid from the start (except for spaces)
 
-UNSAFE_FOR_AUTH = b" @:"
+UNSAFE_FOR_AUTH_ITEM = b" @:"
 UNSAFE_FOR_PATH = b" ?#"
-UNSAFE_FOR_QUERY_ITEM = b" ?&=#"
-UNSAFE_FOR_FRAGMENT = b" ?#"
+UNSAFE_FOR_QUERY_ITEM = b" &=#"
+UNSAFE_FOR_FRAGMENT = b" "
 
 # NOTE: those method should only be used on parsed urls to canonicalize/normalize.
-safely_unquote_auth = partial(
-    unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_AUTH
+safely_unquote_auth_item = partial(
+    unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_AUTH_ITEM
 )
 safely_unquote_path = partial(
     unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_PATH
@@ -112,7 +114,6 @@ def safely_unquote_qsl(qsl):
 
 QUOTED_SPLIT_RE = re.compile(r"(%[0-9A-Fa-f]{2})")
 QUOTED_RE = re.compile(r"^%[0-9A-Fa-f]{2}$")
-
 
 def safely_quote_iter(string):
     for piece in QUOTED_SPLIT_RE.split(string):
