@@ -31,7 +31,7 @@ else:
     isprintable = str.isprintable
 
 
-def _unquote_impl(string):
+def _unquote_impl(string, only_printable=False, unsafe=None):
     string = string.encode("utf-8")
     bits = string.split(b"%")
     if len(bits) == 1:
@@ -43,8 +43,15 @@ def _unquote_impl(string):
         b = HEX_TO_BYTE.get(item[:2])
 
         if b is not None:
-            append(b)
-            append(item[2:])
+            if only_printable and b < b" ":
+                append(b"%")
+                append(item)
+            elif unsafe is not None and b in unsafe:
+                append(b"%")
+                append(item)
+            else:
+                append(b)
+                append(item[2:])
         else:
             append(b"%")
             append(item)
@@ -60,20 +67,15 @@ def _generate_unquoted_parts(string, only_printable=False, unsafe=None):
         # The ascii_match[1] group == string[start:end].
 
         m = ascii_match.group(1)
-        c = _unquote_impl(m).decode("utf-8", "replace")
+        c = _unquote_impl(m, only_printable=only_printable, unsafe=unsafe).decode("utf-8", "replace")
 
-        if only_printable and not isprintable(c):
-            yield m
-        elif unsafe is not None and c in unsafe:
-            yield m
-        else:
-            yield c
+        yield c
 
         previous_match_end = end
     yield string[previous_match_end:]  # Non-ASCII tail
 
 
-# NOTE: here, unsafe must be a container
+# NOTE: here, unsafe must be a container of bytes
 def unquote(string, only_printable=False, unsafe=None):
     if "%" not in string:
         return string
@@ -82,11 +84,13 @@ def unquote(string, only_printable=False, unsafe=None):
         _generate_unquoted_parts(string, only_printable=only_printable, unsafe=unsafe)
     )
 
+# NOTE: to safely unquote we don't need to replace invalid character because it would
+# imply that the parsed url was invalid from the start
 
-UNSAFE_FOR_AUTH = " @:"
-UNSAFE_FOR_PATH = " ?#"
-UNSAFE_FOR_QUERY_ITEM = " ?&=#"
-UNSAFE_FOR_FRAGMENT = " ?#"
+UNSAFE_FOR_AUTH = b" @:"
+UNSAFE_FOR_PATH = b" ?#"
+UNSAFE_FOR_QUERY_ITEM = b" ?&=#"
+UNSAFE_FOR_FRAGMENT = b" ?#"
 
 safely_unquote_auth = partial(unquote, only_printable=True, unsafe=UNSAFE_FOR_AUTH)
 safely_unquote_path = partial(unquote, only_printable=True, unsafe=UNSAFE_FOR_PATH)
