@@ -15,9 +15,9 @@ TESTS = [
     ("http://xn--tlrama-bvab.fr", "http://télérama.fr"),
     (
         "http://mozilla.org?x=%D1%88%D0%B5%D0%BB%D0%BB%D1%8B",
-        "http://mozilla.org?x=шеллы",
+        "http://mozilla.org/?x=шеллы",
     ),
-    ("http://mozilla.org?x=шеллы", "http://mozilla.org?x=шеллы"),
+    ("http://mozilla.org?x=шеллы", "http://mozilla.org/?x=шеллы"),
     (
         "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
         "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
@@ -27,6 +27,20 @@ TESTS = [
         "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
     ),
     ("http://lemonde.fr/?%3d=value", "http://lemonde.fr/?%3D=value"),
+    # NOTE: urllib.parse.urlsplit lowercase the scheme
+    ("HTTP://lemonde.fr", "http://lemonde.fr"),
+    ("http://example.com/%7Efoo", "http://example.com/~foo"),
+    ("http://example.com/", "http://example.com"),
+    ("http://example.com", "http://example.com"),
+    ("http://example.com?", "http://example.com"),
+    ("http://example.com#", "http://example.com"),
+    ("http://example.com?#", "http://example.com"),
+    ("http://example.com/?", "http://example.com"),
+    ("http://example.com/#", "http://example.com"),
+    ("http://example.com/?#", "http://example.com"),
+    ("http://example.com?test", "http://example.com/?test"),
+    ("http://example.com#test", "http://example.com/#test"),
+    ("http://example.com?test#test", "http://example.com/?test#test"),
 ]
 
 TESTS_ADVANCED = [
@@ -40,11 +54,7 @@ TESTS_ADVANCED = [
         "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
         {"quoted": True},
     ),
-    (
-        "http://lemonde.fr/t%c3%a9",
-        "http://lemonde.fr/t%C3%A9",
-        {"quoted": True}
-    )
+    ("http://lemonde.fr/t%c3%a9", "http://lemonde.fr/t%C3%A9", {"quoted": True}),
 ]
 
 

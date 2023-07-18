@@ -199,6 +199,7 @@ TESTS = [
         "lemonde.fr/té%3F?%26té=%26té",
     ),
     ("http://lemonde.fr?%3d=value", "lemonde.fr?%3D=value"),
+    ('http://lemonde.fr/default.asp', 'lemonde.fr'),
 ]
 
 
@@ -255,11 +256,8 @@ TESTS_ADVANCED = [
         "lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
         {"quoted": True},
     ),
-    (
-        "http://lemonde.fr/t%c3%a9",
-        "lemonde.fr/t%C3%A9",
-        {"quoted": True}
-    )
+    ("http://lemonde.fr/t%c3%a9", "lemonde.fr/t%C3%A9", {"quoted": True}),
+    ("HTTP://lemonde.fr", "http://lemonde.fr", {"strip_protocol": False}),
 ]
 
 

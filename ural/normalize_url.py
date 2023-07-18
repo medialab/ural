@@ -301,7 +301,7 @@ def normalize_url(
             last_segment = segments[-1]
             filename, _ = splitext(last_segment)
 
-            if filename == "index":
+            if filename == "index" or filename == 'default':
                 segments.pop()
                 path = "/".join(segments)
 
