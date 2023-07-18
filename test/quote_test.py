@@ -39,3 +39,9 @@ class TestUnquote(object):
 class TestQuote(object):
     def test_safe(self):
         assert safely_quote("té%20 ") == "t%C3%A9%20%20"
+
+    def test_multiple_applications(self):
+        assert safely_unquote_query_item(safely_unquote_query_item('t%C3%A9%20%20')) == 'té%20%20'
+        assert safely_quote(safely_quote('té%20 ')) == 't%C3%A9%20%20'
+        assert safely_quote(safely_unquote_query_item('t%C3%A9%20%20')) == "t%C3%A9%20%20"
+        assert safely_unquote_query_item(safely_quote('té%20 ')) == 'té%20%20'
