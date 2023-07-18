@@ -29,7 +29,14 @@ try:
         SplitResult,
     )
 except ImportError:
-    from urllib import unquote, quote
+    from urllib import unquote, quote as original_quote
+
+    def quote(string, safe="/"):
+        if isinstance(string, unicode):
+            return original_quote(string.encode("utf-8"), safe)
+
+        return original_quote(string, safe)
+
     from urlparse import (
         parse_qs,
         parse_qsl,

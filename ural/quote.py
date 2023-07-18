@@ -3,13 +3,10 @@ from platform import python_version_tuple
 
 PY2 = python_version_tuple()[0] == "2"
 
-# try:
-#     from urllib.parse import quote
-# except ImportError:
-#     from urlparse import quote
-
 import re
 from functools import partial
+
+from ural.utils import quote
 
 # NOTE: the following code for `unquote` is adapted from cpython:
 # https://github.com/python/cpython/blob/main/Lib/urllib/parse.py
@@ -58,7 +55,9 @@ def _generate_unquoted_parts(string, only_printable=False, unsafe=None):
         # The ascii_match[1] group == string[start:end].
 
         m = ascii_match.group(1)
-        c = _unquote_impl(m, only_printable=only_printable, unsafe=unsafe).decode("utf-8", "replace")
+        c = _unquote_impl(m, only_printable=only_printable, unsafe=unsafe).decode(
+            "utf-8", "replace"
+        )
 
         yield c
 
@@ -76,9 +75,10 @@ def unquote(string, only_printable=False, unsafe=None, normalize_space=False):
     )
 
     if normalize_space:
-        q = q.replace(' ', '%20')
+        q = q.replace(" ", "%20")
 
     return q
+
 
 # NOTE: to safely unquote we don't need to replace invalid character because it would
 # imply that the parsed url was invalid from the start (except for spaces)
@@ -89,8 +89,12 @@ UNSAFE_FOR_QUERY_ITEM = b" ?&=#"
 UNSAFE_FOR_FRAGMENT = b" ?#"
 
 # NOTE: those method should only be used on parsed urls to canonicalize/normalize.
-safely_unquote_auth = partial(unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_AUTH)
-safely_unquote_path = partial(unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_PATH)
+safely_unquote_auth = partial(
+    unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_AUTH
+)
+safely_unquote_path = partial(
+    unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_PATH
+)
 safely_unquote_query_item = partial(
     unquote, only_printable=True, normalize_space=True, unsafe=UNSAFE_FOR_QUERY_ITEM
 )
@@ -106,6 +110,22 @@ def safely_unquote_qsl(qsl):
     ]
 
 
+QUOTED_SPLIT_RE = re.compile(r"(%[0-9A-Fa-f]{2})")
+QUOTED_RE = re.compile(r"^%[0-9A-Fa-f]{2}$")
+
+
+def safely_quote_iter(string):
+    for piece in QUOTED_SPLIT_RE.split(string):
+        if QUOTED_RE.match(piece):
+            yield piece
+        else:
+            yield quote(piece)
+
+
+def safely_quote(string):
+    return "".join(safely_quote_iter(string))
+
+
 __all__ = [
     "unquote",
     "safely_unquote_auth",
@@ -113,4 +133,5 @@ __all__ = [
     "safely_unquote_query_item",
     "safely_unquote_fragment",
     "safely_unquote_qsl",
+    "safely_quote",
 ]

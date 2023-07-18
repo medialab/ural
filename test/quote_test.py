@@ -4,7 +4,13 @@
 # =============================================================================
 from __future__ import unicode_literals
 
-from ural.quote import unquote, safely_unquote_auth, safely_unquote_path, safely_unquote_query_item
+from ural.quote import (
+    unquote,
+    safely_unquote_auth,
+    safely_unquote_path,
+    safely_unquote_query_item,
+    safely_quote,
+)
 
 
 class TestUnquote(object):
@@ -23,7 +29,13 @@ class TestUnquote(object):
 
         assert unquote("%C3%A9%20", unsafe=(b" ")) == "é%20"
 
-        assert safely_unquote_auth('t%C3%A9%40%3A%20') == "té%40%3A%20"
-        assert safely_unquote_path('%C3%A9%3F%20') == 'é%3F%20'
-        assert safely_unquote_query_item('%C3%A9%3F%26%3D%20') == "é%3F%26%3D%20"
-        assert safely_unquote_query_item('%C3%A9%3F%26%3D%20 ') == "é%3F%26%3D%20%20"
+    def test_safe(self):
+        assert safely_unquote_auth("t%C3%A9%40%3A%20") == "té%40%3A%20"
+        assert safely_unquote_path("%C3%A9%3F%20") == "é%3F%20"
+        assert safely_unquote_query_item("%C3%A9%3F%26%3D%20") == "é%3F%26%3D%20"
+        assert safely_unquote_query_item("%C3%A9%3F%26%3D%20 ") == "é%3F%26%3D%20%20"
+
+
+class TestQuote(object):
+    def test_safe(self):
+        assert safely_quote("té%20 ") == "t%C3%A9%20%20"
