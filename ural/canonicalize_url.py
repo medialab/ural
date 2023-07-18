@@ -14,15 +14,17 @@ from ural.quote import (
     safely_unquote_fragment,
     safely_quote,
     safely_quote_qsl,
+    upper_quoted,
 )
 from ural.ensure_protocol import ensure_protocol
 from ural.patterns import CONTROL_CHARS_RE
 
 
-def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=True):
+def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=False):
     # Cleaning
-    url = url.strip()
     url = CONTROL_CHARS_RE.sub("", url)
+    url = url.strip()
+    url = upper_quoted(url)
 
     # Ensuring a protocol
     url = ensure_protocol(url, default_protocol)
@@ -43,8 +45,8 @@ def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=True):
         hostname = hostname.lower()
 
     # Dropping HTTP/HTTPS ports
-    if port == "80" or port == "443":
-        port = ""
+    if port == 80 or port == 443:
+        port = None
 
     # Quotes
     if user:

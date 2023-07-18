@@ -3,14 +3,6 @@
 # Ural URL Normalization Unit Tests
 # =============================================================================
 from __future__ import unicode_literals
-from platform import python_version_tuple
-
-PY2 = python_version_tuple()[0] == "2"
-
-
-def is_ascii(s):
-    return all(ord(c) < 128 for c in s)
-
 
 from ural import normalize_url, get_normalized_hostname, get_hostname
 
@@ -206,6 +198,7 @@ TESTS = [
         "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
         "lemonde.fr/té%3F?%26té=%26té",
     ),
+    ("http://lemonde.fr?%3d=value", "lemonde.fr?%3D=value"),
 ]
 
 
@@ -262,18 +255,16 @@ TESTS_ADVANCED = [
         "lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
         {"quoted": True},
     ),
+    (
+        "http://lemonde.fr/t%c3%a9",
+        "lemonde.fr/t%C3%A9",
+        {"quoted": True}
+    )
 ]
-
-if PY2:
-    TESTS = [t for t in TESTS if is_ascii(t[0]) and is_ascii(t[1])]
-    TESTS_ADVANCED = [t for t in TESTS_ADVANCED if is_ascii(t[0]) and is_ascii(t[1])]
 
 
 class TestNormalizeUrl(object):
     def test_normalize_url(self):
-        if PY2:
-            return
-
         for url, normalized in TESTS:
             assert normalize_url(url) == normalized, url
 
@@ -281,9 +272,6 @@ class TestNormalizeUrl(object):
             assert normalize_url(url, **kwargs) == normalized, "*kwargs %s" % url
 
     def test_get_normalized_hostname(self):
-        if PY2:
-            return
-
         for url, normalized in TESTS:
             assert get_normalized_hostname(url) == get_hostname(normalized)
 

@@ -26,6 +26,7 @@ TESTS = [
         "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
         "http://té%40%3A:té%40%3A@lemonde.fr/té%3F?%26té=%26té",
     ),
+    ("http://lemonde.fr/?%3d=value", "http://lemonde.fr/?%3D=value"),
 ]
 
 TESTS_ADVANCED = [
@@ -39,11 +40,16 @@ TESTS_ADVANCED = [
         "http://t%C3%A9%40%3A:t%C3%A9%40%3A@lemonde.fr/t%C3%A9%3F?%26t%C3%A9=%26t%C3%A9",
         {"quoted": True},
     ),
+    (
+        "http://lemonde.fr/t%c3%a9",
+        "http://lemonde.fr/t%C3%A9",
+        {"quoted": True}
+    )
 ]
 
 
-class TestFingerprintUrl(object):
-    def test_canonicalize_url(self):
+class TestCanonicalizeUrl(object):
+    def test_basics(self):
         for url, result in TESTS:
             assert canonicalize_url(url) == result
 

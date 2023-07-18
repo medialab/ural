@@ -28,6 +28,7 @@ from ural.quote import (
     safely_unquote_fragment,
     safely_quote,
     safely_quote_qsl,
+    upper_quoted,
 )
 from ural.patterns import PROTOCOL_RE, CONTROL_CHARS_RE
 
@@ -245,6 +246,8 @@ def normalize_url(
 
     url = CONTROL_CHARS_RE.sub("", url)
     url = url.strip()
+    url = upper_quoted(url)
+
     has_protocol = PROTOCOL_RE.match(url)
 
     # Ensuring scheme so parsing works correctly
@@ -296,7 +299,7 @@ def normalize_url(
 
         if len(segments) != 0:
             last_segment = segments[-1]
-            filename, ext = splitext(last_segment)
+            filename, _ = splitext(last_segment)
 
             if filename == "index":
                 segments.pop()

@@ -116,7 +116,7 @@ def safely_unquote_qsl(qsl):
 
 
 QUOTED_SPLIT_RE = re.compile(r"(%[0-9A-Fa-f]{2})")
-QUOTED_RE = re.compile(r"^%[0-9A-Fa-f]{2}$")
+QUOTED_RE = re.compile(r"%[0-9A-Fa-f]{2}")
 
 
 def safely_quote_iter(string):
@@ -138,6 +138,14 @@ def safely_quote_qsl(qsl):
     ]
 
 
+def upper_match(match):
+    return match.group(0).upper()
+
+
+def upper_quoted(string):
+    return QUOTED_RE.sub(upper_match, string)
+
+
 __all__ = [
     "unquote",
     "safely_unquote_auth",
@@ -147,4 +155,5 @@ __all__ = [
     "safely_unquote_qsl",
     "safely_quote",
     "safely_quote_qsl",
+    "upper_quoted",
 ]
