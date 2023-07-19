@@ -23,6 +23,13 @@ HTML_WITH_SCRIPT_TAGS = """
     console.log('<a href="http://bad.fr"></a>')</script>
 """
 
+HTML_WITH_PREFIXED_HREF = """
+<a href="http://lemonde.fr"></a>
+<a v-href="favori.getPoi().path">
+<a class="favori-link" v-href="favori.getPoi().path">
+<a class="favori-link" :href="favori.getPoi().path">
+"""
+
 REF_SET = set(
     [
         "https://www.britannica.com/place/Russia",
@@ -56,6 +63,7 @@ class TestUrlsFromHtml(object):
             "http://lemonde.fr"
         ]
         assert list(urls_from_html(HTML_WITH_SCRIPT_TAGS)) == ["http://lemonde.fr"]
+        assert list(urls_from_html(HTML_WITH_PREFIXED_HREF)) == ["http://lemonde.fr"]
 
     def test_binary(self):
         assert set(urls_from_html(HTML.encode())) == REF_SET
