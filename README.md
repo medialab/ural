@@ -46,6 +46,7 @@ You can cite it thusly:
 * [is_typo_url](#is_typo_url)
 * [is_url](#is_url)
 * [is_valid_tld](#is_valid_tld)
+* [links_from_html](#links_from_html)
 * [normalize_hostname](#normalize_hostname)
 * [normalize_url](#normalize_url)
 * [should_follow_href](#should_follow_href)
@@ -681,6 +682,45 @@ is_valid_tld('.doesnotexist')
 
 ---
 
+### links_from_html
+
+Function returning an iterator over the valid outgoing links present in given HTML text.
+
+This is a variant of [urls_from_html](#urls_from_html) suited to web crawlers. It can deduplicate the urls, canonicalize them, join them with a base url and filter out things that should not be followed such as `mailto:` or `javascript:` href links etc. It will also skip any url equivalent to the given base url.
+
+Note this function is able to work both on string and bytes seamlessly.
+
+```python
+from ural import links_from_html
+
+html = b"""
+<p>
+  Hey! Check this site:
+  <a href="https://medialab.sciencespo.fr/">médialab</a>
+  And also this page:
+  <a href="article.html">article</a>
+  Or click on this:
+  <a href="javascript:alert('hello');">link</a>
+</p>
+"""
+
+for link in links_from_html('http://lemonde.fr', html):
+    print(link)
+>>> 'https://medialab.sciencespo.fr/'
+>>> 'http://lemonde.fr/article.html'
+```
+
+*Arguments*
+
+* **base_url** *string*: the HTML's url.
+* **string** *string|bytes*: html string or bytes.
+* **encoding** *?string* [`utf-8`]: if given binary, this encoding will be used to decode the found urls.
+* **canonicalize** *?bool* [`False`]: whether to canonicalize the urls using [canonicalize_url](#canonicalize_url).
+* **strip_fragment** *?bool* [`False`]: whether to strip the url fragments when using `canonicalize`.
+* **unique** *?bool* [`False`]: whether to deduplicate the urls.
+
+---
+
 ### normalize_hostname
 
 Function normalizing the given hostname, i.e. without usually irrelevant subdomains etc. Works a lot like [normalize_url](#normalize_url).
@@ -847,7 +887,7 @@ for url in urls_from_html(html):
 
 *Arguments*
 
-* **string** *string*: html string.
+* **string** *string|bytes*: html string or bytes.
 * **encoding** *?string* [`utf-8`]: if given binary, this encoding will be used to decode the found urls.
 * **errors** *?string* [`strict`]: policy on decode errors.
 

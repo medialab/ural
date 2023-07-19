@@ -22,6 +22,7 @@ from ural.is_homepage import is_homepage
 from ural.is_shortened_url import is_shortened_url
 from ural.is_typo_url import is_typo_url
 from ural.is_url import is_url
+from ural.links_from_html import links_from_html
 from ural.normalize_url import (
     normalize_url,
     get_normalized_hostname,

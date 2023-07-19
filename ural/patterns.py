@@ -8,8 +8,8 @@ WEB_PROTOCOL = r"(?:(?:(?:https?|ftp|wss?):)?//)"
 HTTP_PROTOCOL = r"https?://"
 
 PROTOCOL_RE = re.compile(r"^%s" % PROTOCOL)
-WEB_PROTOCOL_RE = re.compile(r"^%s" % WEB_PROTOCOL)
-HTTP_PROTOCOL_RE = re.compile(r"^%s" % HTTP_PROTOCOL)
+WEB_PROTOCOL_RE = re.compile(r"^%s" % WEB_PROTOCOL, re.I)
+HTTP_PROTOCOL_RE = re.compile(r"^%s" % HTTP_PROTOCOL, re.I)
 
 # Adapted from:
 #  - https://gist.github.com/dperini/729294
