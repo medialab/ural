@@ -103,7 +103,7 @@ PER_DOMAIN_QUERY_FILTERS = [
 
 
 def qsl_sort_key(item):
-    return item[0], item[1] or '', 0 if item[1] is None else 1
+    return item[0], item[1] or "", 0 if item[1] is None else 1
 
 
 def should_strip_query_item(

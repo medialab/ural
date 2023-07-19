@@ -10,6 +10,7 @@ TESTS = [
     ("   http://lemonde.fr/test.html   ", "http://lemonde.fr/test.html"),
     ("http://lemonde.fr/test\x00.html", "http://lemonde.fr/test.html"),
     ("lemonde.fr", "https://lemonde.fr"),
+    ("lemonde.fr#ok", "https://lemonde.fr/#ok"),
     ("http://LEMONDE.FR/TEST", "http://lemonde.fr/TEST"),
     ("http://lemonde.fr:80/test", "http://lemonde.fr/test"),
     ("http://xn--tlrama-bvab.fr", "http://télérama.fr"),
@@ -41,7 +42,10 @@ TESTS = [
     ("http://example.com?test", "http://example.com/?test"),
     ("http://example.com#test", "http://example.com/#test"),
     ("http://example.com?test#test", "http://example.com/?test#test"),
-    ('http://lemonde.fr/?test&test=&test=value', 'http://lemonde.fr/?test&test=&test=value')
+    (
+        "http://lemonde.fr/?test&test=&test=value",
+        "http://lemonde.fr/?test&test=&test=value",
+    ),
 ]
 
 TESTS_ADVANCED = [
@@ -56,6 +60,7 @@ TESTS_ADVANCED = [
         {"quoted": True},
     ),
     ("http://lemonde.fr/t%c3%a9", "http://lemonde.fr/t%C3%A9", {"quoted": True}),
+    ("http://lemonde.fr#ok", "http://lemonde.fr", {"strip_fragment": True}),
 ]
 
 

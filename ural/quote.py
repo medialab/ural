@@ -141,7 +141,9 @@ def safely_quote_qsl(qsl):
 def upper_match(match):
     return match.group(0).upper()
 
+
 LOWERCASE_QUOTED_RE = re.compile(r"%(?:[0-9A-F][a-f]|[a-f][0-9A-F]|[a-f]{2})")
+
 
 def upper_quoted(string):
     return LOWERCASE_QUOTED_RE.sub(upper_match, string)

@@ -21,7 +21,9 @@ from ural.ensure_protocol import ensure_protocol
 from ural.patterns import CONTROL_CHARS_RE
 
 
-def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=False):
+def canonicalize_url(
+    url, default_protocol="https", unsplit=True, quoted=False, strip_fragment=False
+):
     # Cleaning
     url = CONTROL_CHARS_RE.sub("", url)
     url = url.strip()
@@ -48,6 +50,9 @@ def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=False):
     # Dropping HTTP/HTTPS ports
     if port == 80 or port == 443:
         port = None
+
+    if strip_fragment:
+        fragment = None
 
     # Empty path etc.
     if not path or path == "/":
@@ -87,10 +92,11 @@ def canonicalize_url(url, default_protocol="https", unsplit=True, quoted=False):
 
     query = safe_serialize_qsl(qsl)
 
-    if quoted:
-        fragment = safely_quote(fragment)
-    else:
-        fragment = safely_unquote_fragment(fragment)
+    if fragment:
+        if quoted:
+            fragment = safely_quote(fragment)
+        else:
+            fragment = safely_unquote_fragment(fragment)
 
     # Repacking
     netloc = unsplit_netloc(user, password, hostname, port)

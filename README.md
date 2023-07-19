@@ -182,6 +182,8 @@ canonicalize_url('www.LEMONDE.fr')
 
 * **url** *string*: url to canonicalize.
 * **quoted** *?bool* [`False`]: by default the function will unquote the url as much as possible all while keeping the url safe. If this kwarg is set to `True`, the function will instead quote the url as much as possible all while ensuring nothing will be double-quoted.
+* **default_protocol** *?str* [`https`]: default protocol to add when the url has none.
+* **strip_fragment** *?str* [`False`]: whether to strip the url's fragment.
 
 ---
 

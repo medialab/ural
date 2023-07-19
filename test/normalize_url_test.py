@@ -200,7 +200,7 @@ TESTS = [
     ),
     ("http://lemonde.fr?%3d=value", "lemonde.fr?%3D=value"),
     ("http://lemonde.fr/default.asp", "lemonde.fr"),
-    ('http://lemonde.fr/?test&test=&test=value', 'lemonde.fr?test&test=&test=value')
+    ("http://lemonde.fr/?test&test=&test=value", "lemonde.fr?test&test=&test=value"),
 ]
 
 
