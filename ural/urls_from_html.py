@@ -6,10 +6,17 @@
 # argument.
 #
 from __future__ import unicode_literals
-from ural.patterns import URL_IN_HTML_RE, URL_IN_HTML_BINARY_RE
+from ural.patterns import (
+    URL_IN_HTML_RE,
+    URL_IN_HTML_BINARY_RE,
+    SCRIPT_TAG_RE,
+    SCRIPT_TAG_BINARY_RE,
+)
 
 
 def __urls_finditer(string):
+    string = SCRIPT_TAG_RE.sub("", string)
+
     for match in URL_IN_HTML_RE.finditer(string):
         url = match.group(1)
 
@@ -29,6 +36,8 @@ def __urls_finditer(string):
 
 
 def __urls_finditer_binary(string, encoding="utf-8", errors="strict"):
+    string = SCRIPT_TAG_BINARY_RE.sub(b"", string)
+
     for match in URL_IN_HTML_BINARY_RE.finditer(string):
         url = match.group(1)
 

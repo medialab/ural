@@ -7,7 +7,7 @@
 #
 import re
 
-HTTP_PROTOCOL_RE = re.compile(r'^https?://', re.I)
+HTTP_PROTOCOL_RE = re.compile(r"^https?://", re.I)
 
 # NOTE: one should also compare the joined url to the current one usually
 def should_follow_href(href):

@@ -95,3 +95,9 @@ QUERY_VALUE_IN_URL_TEMPLATE = r"(?:^|[?&])%s=([^&]+)"
 QUERY_VALUE_TEMPLATE = r"%s=([^&]+)"
 
 DOMAIN_TEMPLATE = r"^(?:https?:)?(?://)?(?:\S+(?::\S*)?@)?%s(?:[:/#]|\s*$)"
+
+SCRIPT_TAG = r"<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>"
+SCRIPT_TAG_BINARY = SCRIPT_TAG.encode()
+
+SCRIPT_TAG_RE = re.compile(SCRIPT_TAG, re.I)
+SCRIPT_TAG_BINARY_RE = re.compile(SCRIPT_TAG_BINARY, re.I)

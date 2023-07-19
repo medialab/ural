@@ -34,6 +34,12 @@ lint:
 	importchecker test | grep -v __init__ || true
 	@echo
 
+tld:
+	@echo Upgrading internals...
+	python -m ural upgrade
+	black ural/tld_data.py -t py33
+	@echo
+
 unit:
 	@echo Running unit tests...
 	pytest -svvv
