@@ -3,6 +3,7 @@
 # =============================================================================
 # Ural URL Extraction From HTML Unit Tests
 # =============================================================================
+from __future__ import unicode_literals
 from ural import urls_from_html
 
 HTML = """
@@ -74,6 +75,13 @@ class TestUrlsFromHtml(object):
         ) == ["http://lemonde.fr", "http://lemonde.fr", "http://lemonde.fr"]
         assert list(urls_from_html(HTML_WITH_SCRIPT_TAGS)) == ["http://lemonde.fr"]
         assert list(urls_from_html(HTML_WITH_PREFIXED_HREF)) == ["http://lemonde.fr"]
+        assert list(
+            urls_from_html(
+                '<a href="https://www.magazines.fr/nos-magazines/feminin/magazine-cosmopolitan.html?utm_medium=Site_&eacute;ditorial&amp;utm_source=editorial&amp;utm_campaign=conquete-COSMO&amp;utm_term=cta-haut&amp;utm_content=CTA"></a>'
+            )
+        ) == [
+            "https://www.magazines.fr/nos-magazines/feminin/magazine-cosmopolitan.html?utm_medium=Site_éditorial&utm_source=editorial&utm_campaign=conquete-COSMO&utm_term=cta-haut&utm_content=CTA"
+        ]
 
     def test_binary(self):
         assert set(urls_from_html(HTML.encode())) == REF_SET

@@ -13,6 +13,16 @@ from ural.patterns import (
     SCRIPT_TAG_BINARY_RE,
 )
 
+try:
+    from html import unescape
+except ImportError:
+    from HTMLParser import HTMLParser
+
+    _html_parser = HTMLParser()
+
+    def unescape(string):
+        return _html_parser.unescape(string)
+
 
 def __urls_finditer(string):
     string = SCRIPT_TAG_RE.sub("", string)
@@ -64,5 +74,6 @@ def urls_from_html(string, encoding="utf-8", errors="strict"):
 
     for url in iterator:
         url = url.strip()
+        url = unescape(url)
 
         yield url
