@@ -62,6 +62,11 @@ class TestUrlsFromHtml(object):
         assert list(urls_from_html("<a \nhref='http://lemonde.fr'></a>")) == [
             "http://lemonde.fr"
         ]
+        assert list(
+            urls_from_html(
+                '<a href="" target="_blank">charte</a><a href=\'\' target="_blank">charte</a><a href= target="_blank">charte</a>'
+            )
+        ) == ["", "", ""]
         assert list(urls_from_html(HTML_WITH_SCRIPT_TAGS)) == ["http://lemonde.fr"]
         assert list(urls_from_html(HTML_WITH_PREFIXED_HREF)) == ["http://lemonde.fr"]
 
