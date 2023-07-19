@@ -17,6 +17,8 @@ TESTS = [
     ("lemonde.fr/article.xml", False),
     ("lemonde.fr/article", True),
     ("https://www.lemonde.fr/img/figure.jpg", False),
+    ("https://www.cosmopolitan.fr/inspirations-mode,2511387.asp1", True),
+    ("https://www.cosmopolitan.fr/mode,2002.asp2", True),
 ]
 
 

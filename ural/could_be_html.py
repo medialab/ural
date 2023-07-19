@@ -14,6 +14,8 @@ HTML_LIKE_EXTENSIONS = {
     ".shtml",
     ".xhtml",
     ".asp",
+    ".asp1",
+    ".asp2",
     ".aspx",
     ".jsp",
     ".jspx",
