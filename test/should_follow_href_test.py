@@ -13,6 +13,8 @@ TESTS = [
     ("/home.html", True),
     ("./home.html", True),
     ("https://www.lemonde.fr", True),
+    ('HTTP://www.lemonde.fr', True),
+    ('http:www.lemonde', False),
     ("mailto:whatever@gmail.com", False),
     ("tel:053775175743", False),
     ('javascript:alert("hello")', False),
