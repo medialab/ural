@@ -58,6 +58,11 @@ def __urls_finditer_binary(string, encoding="utf-8", errors="strict"):
 
 def urls_from_html(string, encoding="utf-8", errors="strict"):
     if isinstance(string, bytes):
-        return __urls_finditer_binary(string, encoding=encoding, errors=errors)
+        iterator = __urls_finditer_binary(string, encoding=encoding, errors=errors)
+    else:
+        iterator = __urls_finditer(string)
 
-    return __urls_finditer(string)
+    for url in iterator:
+        url = url.strip()
+
+        yield url
