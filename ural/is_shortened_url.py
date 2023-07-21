@@ -14,6 +14,7 @@ from ural.utils import safe_urlsplit
 DOMAIN_STARTS_L_RE = re.compile(r"^/[0-9a-zA-Z]{3,}/?$")
 
 # Some domains taken from: https://github.com/timleland/url-shorteners
+# NOTE: t.me is not a shortener, they return a 200 HTTP status
 SHORTENER_DOMAINS = [
     "0rz.tw",
     "1-url.net",
@@ -1031,7 +1032,6 @@ SHORTENER_DOMAINS = [
     "t.co",
     "t.lh.com",
     "t.ly",
-    "t.me",
     "t1p.de",
     "t2m.io",
     "ta.gd",
