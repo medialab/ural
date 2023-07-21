@@ -31,6 +31,8 @@ from ural.quote import (
     upper_quoted,
 )
 from ural.patterns import PROTOCOL_RE, CONTROL_CHARS_RE
+from ural.facebook import is_facebook_url, parse_facebook_url
+from ural.youtube import is_youtube_url, normalize_youtube_url
 
 IRRELEVANT_QUERY_PATTERN = r"^(?:__twitter_impression|_guc_consent_skip|guccounter|fb_action_types|(?:php|asp|j)?sessionid|fb_action_ids|fb_source|echobox|feature|recruiter|_unique_id|twclid|mibextid|campaignid|adgroupid|cn-reloaded|ao_noptimize|mkt_tok|fbclid|igshid|refid|gclid|mc_cid|mc_eid|__tn__|_ft_|dclid|wpamp|fref|usqp|ncid|mtm_.+|utm_.+%s|s?een|cftoken|cfid|sid|xt(?:loc|ref|cr|np|or|s)|at_.+|_ga)$"
 
@@ -195,6 +197,7 @@ def normalize_url(
     normalize_amp=True,
     fix_common_mistakes=True,
     infer_redirection=True,
+    platform_aware=False,
     # NOTE: following arguments currently undocumented
     unsplit=True,
     quoted=False,
@@ -250,6 +253,17 @@ def normalize_url(
     # Ensuring scheme so parsing works correctly
     if not has_protocol:
         url = "http://" + url
+
+    # Platform-specific magic
+    if platform_aware:
+        if is_facebook_url(url):
+            p = parse_facebook_url(url)
+
+            if p is not None:
+                url = p.url
+
+        elif is_youtube_url(url):
+            url = normalize_youtube_url(url)
 
     # Parsing
     try:

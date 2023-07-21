@@ -16,6 +16,7 @@ def normalize_url(
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
     quoted: bool = ...,
+    platform_aware: bool = ...,
     #
     unsplit: Literal[True] = ...,
     query_item_filter: Optional[Callable[[str, str], bool]] = ...,
@@ -34,6 +35,7 @@ def normalize_url(
     fix_common_mistakes: bool = ...,
     infer_redirection: bool = ...,
     quoted: bool = ...,
+    platform_aware: bool = ...,
     #
     unsplit: Literal[False] = ...,
     query_item_filter: Optional[Callable[[str, str], bool]] = ...,

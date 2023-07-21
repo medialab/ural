@@ -99,7 +99,7 @@ def parse_telegram_url(url):
                 if len(path) == 3:
                     return TelegramGroup(id=path[2])
                 else:
-                    None
+                    return None
 
             elif len(path) == 3 and is_telegram_message_id(path[2]):
                 return TelegramMessage(name=path[1], id=path[2])
@@ -120,7 +120,7 @@ def parse_telegram_url(url):
                     return TelegramGroup(id=path[1])
 
                 else:
-                    None
+                    return None
 
             elif len(path) == 2 and is_telegram_message_id(path[1]):
                 return TelegramMessage(name=path[0], id=path[1])

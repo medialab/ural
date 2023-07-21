@@ -63,11 +63,14 @@ def get_fingerprinted_hostname(url, infer_redirection=True, strip_suffix=False):
     return fingerprint_hostname(splitted.hostname, strip_suffix=strip_suffix)
 
 
-def fingerprint_url(url, unsplit=True, strip_suffix=False):
+def fingerprint_url(url, unsplit=True, strip_suffix=False, platform_aware=False):
     url = url.lower()
 
     splitted = normalize_url(
-        url, unsplit=False, query_item_filter=lang_query_item_filter
+        url,
+        unsplit=False,
+        query_item_filter=lang_query_item_filter,
+        platform_aware=platform_aware,
     )
     _, netloc, path, query, fragment = splitted
 

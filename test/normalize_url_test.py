@@ -201,6 +201,7 @@ TESTS = [
     ("http://lemonde.fr?%3d=value", "lemonde.fr?%3D=value"),
     ("http://lemonde.fr/default.asp", "lemonde.fr"),
     ("http://lemonde.fr/?test&test=&test=value", "lemonde.fr?test&test=&test=value"),
+    ("http://youtu.be/4SpnqbXd8A8%5B/video", "youtu.be/4SpnqbXd8A8[/video"),
 ]
 
 
@@ -259,6 +260,16 @@ TESTS_ADVANCED = [
     ),
     ("http://lemonde.fr/t%c3%a9", "lemonde.fr/t%C3%A9", {"quoted": True}),
     ("HTTP://lemonde.fr", "http://lemonde.fr", {"strip_protocol": False}),
+    (
+        "https://www.facebook.com/photo/?fbid=10219572212489943&amp;set=gm.1346655122189658",
+        "facebook.com/photo.php?fbid=10219572212489943",
+        {"platform_aware": True},
+    ),
+    (
+        "http://youtu.be/4SpnqbXd8A8%5B/video",
+        "youtube.com/watch?v=4SpnqbXd8A8",
+        {"platform_aware": True},
+    ),
 ]
 
 

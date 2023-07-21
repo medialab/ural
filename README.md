@@ -299,6 +299,7 @@ fingerprint_url('fr-FR.facebook.com/article.html', strip_suffix=True)
 
 * **url** *string*: target url.
 * **strip_suffix** *?bool* [`False`]: whether to strip the hostname suffix such as `.com` or `.co.uk`. This can be useful to aggegate different domains of the same platform.
+* **platform_aware** *?bool* [`False`]: whether to take some well-known platforms supported by `ural` such as facebook, youtube etc. into account when normalizing the url.
 
 ---
 
@@ -768,6 +769,7 @@ normalize_url('https://www2.lemonde.fr/index.php?utm_source=google')
 * **strip_protocol** *?bool* [`True`]: whether to strip the url's protocol.
 * **strip_trailing_slash** *?bool* [`True`]: whether to strip trailing slash.
 * **quoted** *?bool* [`False`]: by default the function will unquote the url as much as possible all while keeping the url safe. If this kwarg is set to `True`, the function will instead quote the url as much as possible all while ensuring nothing will be double-quoted.
+* **platform_aware** *?bool* [`False`]: whether to take some well-known platforms supported by `ural` such as facebook, youtube etc. into account when normalizing the url.
 
 ---
 
