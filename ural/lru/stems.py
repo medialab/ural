@@ -9,7 +9,9 @@ import re
 from ural.utils import urlsplit
 from ural.tld import split_suffix
 from ural.ensure_protocol import ensure_protocol
+from ural.canonicalize_url import canonicalize_url
 from ural.normalize_url import normalize_url
+from ural.fingerprint_url import fingerprint_url
 from ural.has_special_host import is_special_host
 
 PORT_SPLITTER = re.compile(r":(?![\d:]+])")
@@ -103,7 +105,16 @@ def lru_stems(url, suffix_aware=False):
     return lru_stems_from_parsed_url(urlsplit(full_url), suffix_aware=suffix_aware)
 
 
+def canonicalized_lru_stems(url, suffix_aware=False, **kwargs):
+    parsed_url = canonicalize_url(url, unsplit=False, **kwargs)
+    return lru_stems_from_parsed_url(parsed_url, suffix_aware=suffix_aware)
+
+
 def normalized_lru_stems(url, suffix_aware=False, **kwargs):
-    full_url = ensure_protocol(url)
-    parsed_url = normalize_url(full_url, unsplit=False, **kwargs)
+    parsed_url = normalize_url(url, unsplit=False, **kwargs)
+    return lru_stems_from_parsed_url(parsed_url, suffix_aware=suffix_aware)
+
+
+def fingerprinted_lru_stems(url, suffix_aware=False, **kwargs):
+    parsed_url = fingerprint_url(url, unsplit=False, **kwargs)
     return lru_stems_from_parsed_url(parsed_url, suffix_aware=suffix_aware)

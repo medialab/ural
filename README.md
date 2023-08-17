@@ -72,7 +72,9 @@ You can cite it thusly:
 * [lru.url_to_lru](#lruurl_to_lru)
 * [lru.lru_to_url](#lrulru_to_url)
 * [lru.lru_stems](#lrulru_stems)
+* [lru.canonicalized_lru_stems](#lrucanonicalized_lru_stems)
 * [lru.normalized_lru_stems](#lrunormalized_lru_stems)
+* [lru.fingerprinted_lru_stems](#lrufingerprinted_lru_stems)
 * [lru.serialize_lru](#lruserialize_lru)
 * [lru.unserialize_lru](#lruunserialize_lru)
 
@@ -1059,9 +1061,26 @@ lru_stems('http://www.lemonde.fr:8000/article/1234/index.html?field=value#2')
 
 ---
 
+### lru.canonicalized_lru_stems
+
+Function canonicalizing the url and returning its parts in hierarchical order.
+
+```python
+from ural.lru import canonicalized_lru_stems
+
+canonicalized_lru_stems('http://www.lemonde.fr/article/1234/index.html?field=value#2')
+>>> ['s:http', 'h:fr', 'h:lemonde', 'p:article', 'p:1234', 'q:field=value', 'f:2']
+```
+
+*Arguments*
+
+This function accepts the same arguments as [canonicalize_url](#canonicalize_url).
+
+---
+
 ### lru.normalized_lru_stems
 
-Function normalizing url and returning its parts in hierarchical order.
+Function normalizing the url and returning its parts in hierarchical order.
 
 ```python
 from ural.lru import normalized_lru_stems
@@ -1073,6 +1092,23 @@ normalized_lru_stems('http://www.lemonde.fr/article/1234/index.html?field=value#
 *Arguments*
 
 This function accepts the same arguments as [normalize_url](#normalize_url).
+
+---
+
+### lru.fingerprinted_lru_stems
+
+Function fingerprinting the url and returning its parts in hierarchical order.
+
+```python
+from ural.lru import fingerprinted_lru_stems
+
+fingerprinted_lru_stems('http://www.lemonde.fr/article/1234/index.html?field=value#2', strip_suffix=True)
+>>> ['h:lemonde', 'p:article', 'p:1234', 'q:field=value']
+```
+
+*Arguments*
+
+This function accepts the same arguments as [fingerprint_url](#fingerprint_url).
 
 ---
 
