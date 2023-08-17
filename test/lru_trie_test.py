@@ -3,7 +3,7 @@
 # =============================================================================
 # Ural LRUTrie Unit Tests
 # =============================================================================
-from ural.lru import LRUTrie, NormalizedLRUTrie
+from ural.lru import LRUTrie, CanonicalizedLRUTrie, NormalizedLRUTrie
 
 
 class TestNormalizedLRUTrie(object):
@@ -28,6 +28,19 @@ class TestNormalizedLRUTrie(object):
 
         assert trie.match_lru(["s:http", "h:fr", "h:lefigaro", "p:test"]) == 3
         assert trie.match_lru("s:http|h:fr|h:lefigaro|p:articles|p:whatever.html|") == 4
+
+    def test_canonicalized_lru_trie(self):
+        sentinel = object()
+
+        trie = CanonicalizedLRUTrie(strip_fragment=False)
+        trie.set("http://www.lemonde.fr#ok", sentinel)
+
+        assert trie.match("http://www.lemonde.fr#not-ok") is None
+
+        trie = CanonicalizedLRUTrie(strip_fragment=True)
+        trie.set("http://www.lemonde.fr#ok", sentinel)
+
+        assert trie.match("http://www.lemonde.fr#not-ok") is sentinel
 
     def test_normalized_lru_trie(self):
         trie = NormalizedLRUTrie()
@@ -74,3 +87,16 @@ class TestNormalizedLRUTrie(object):
             trie.match("http://www.zejournal.mobi/id/news/show_detail/14853")
             == "Ze Journal mobi"
         )
+
+    def test_punycode(self):
+        sentinel = object()
+
+        trie = LRUTrie()
+        trie.set('http://françai.se', sentinel)
+
+        assert trie.match('http://xn--franai-zua.se') is None
+
+        trie = CanonicalizedLRUTrie()
+        trie.set('http://françai.se', sentinel)
+
+        assert trie.match('http://xn--franai-zua.se') is sentinel

@@ -80,13 +80,15 @@ You can cite it thusly:
 
 *LRU-related classes*
 
-* [LRUTrie](#LRUTrie)
+* [LRUTrie](#lrutrie)
   * [#.set](#lrutrie-set)
   * [#.set_lru](#lrutrie-set_lru)
   * [#.match](#lrutrie-match)
   * [#.match_lru](#lrutrie-match_lru)
 
-* [NormalizedLRUTrie](#NormalizedLRUTrie)
+* [CanonicalizedLRUTrie](#canonicalizedlrutrie)
+* [NormalizedLRUTrie](#normalizedlrutrie)
+* [FingerprintedLRUTrie](#fingerprintedlrutrie)
 
 *Platform-specific functions*
 
@@ -1241,11 +1243,25 @@ trie.match(['s:http', 'h:fr', 'h:lefigaro', 'h:www'])
 
 ---
 
+### CanonicalizedLRUTrie
+
+The `CanonicalizedLRUTrie` is nearly identical to the standard [`LRUTrie`](#LRUTrie) except that it canonicalizes given urls before attempting any operation using the [`canonicalize_url`](#canonicalize_url) function.
+
+Its constructor therefore takes the same arguments as the beforementioned function.
+
+```python
+from ural.lru import CanonicalizedLRUTrie
+
+trie = CanonicalizedLRUTrie(strip_fragment=False)
+```
+
+---
+
 ### NormalizedLRUTrie
 
-The `NormalizedLRUTrie` is nearly identical to the standard [`LRUTrie`](#LRUTrie) except that it normalized urls given to it before attempting any operation. It is a good choice if you want to avoid prefix queries issues related to `http` vs `https` or `www` shenanigans, for instance.
+The `NormalizedLRUTrie` is nearly identical to the standard [`LRUTrie`](#LRUTrie) except that it normalizes given urls before attempting any operation using the [`normalize_url`](#normalize_url) function.
 
-To tweak its normalization, you can give to `NormalizedLRUTrie` the same options you would give to [`normalize_url`](#normalize_url):
+Its constructor therefore takes the same arguments as the beforementioned function.
 
 ```python
 from ural.lru import NormalizedLRUTrie
@@ -1253,10 +1269,19 @@ from ural.lru import NormalizedLRUTrie
 trie = NormalizedLRUTrie(normalize_amp=False)
 ```
 
-Note that there are still some differences between the `LRUTrie` and the `NormalizedLRUTrie`:
+---
 
-1. The `NormalizedLRUTrie` cannot be TLD aware.
-2. The `NormalizedLRUTrie` does not have the `#.set_lru` and `#.match_lru`  methods.
+### FingerprintedLRUTrie
+
+The `FingerprintedLRUTrie` is nearly identical to the standard [`LRUTrie`](#LRUTrie) except that it fingerprints given urls before attempting any operation using the [`fingerprint_url`](#fingerprint_url) function.
+
+Its constructor therefore takes the same arguments as the beforementioned function.
+
+```python
+from ural.lru import FingerprintedLRUTrie
+
+trie = FingerprintedLRUTrie(strip_suffix=False)
+```
 
 ---
 

@@ -12,7 +12,12 @@ from ural.lru.stems import (
     normalized_lru_stems,
     fingerprinted_lru_stems,
 )
-from ural.lru.trie import LRUTrie, NormalizedLRUTrie
+from ural.lru.trie import (
+    LRUTrie,
+    CanonicalizedLRUTrie,
+    NormalizedLRUTrie,
+    FingerprintedLRUTrie,
+)
 
 __all__ = [
     "serialize_lru",
@@ -22,7 +27,9 @@ __all__ = [
     "normalized_lru_stems",
     "fingerprinted_lru_stems",
     "LRUTrie",
+    "CanonicalizedLRUTrie",
     "NormalizedLRUTrie",
+    "FingerprintedLRUTrie",
     "url_to_lru",
     "lru_to_url",
 ]
