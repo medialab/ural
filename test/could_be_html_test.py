@@ -19,6 +19,10 @@ TESTS = [
     ("https://www.lemonde.fr/img/figure.jpg", False),
     ("https://www.cosmopolitan.fr/inspirations-mode,2511387.asp1", True),
     ("https://www.cosmopolitan.fr/mode,2002.asp2", True),
+    (
+        "https://www.closermag.fr/people/photos.-les-vacances-des-bleus-adil-rami-assailli-par-les-fans-hugo-lloris-se-detend-en-famille-en-croisiere-851976",
+        True,
+    ),
 ]
 
 

@@ -92,11 +92,11 @@ class TestNormalizedLRUTrie(object):
         sentinel = object()
 
         trie = LRUTrie()
-        trie.set('http://françai.se', sentinel)
+        trie.set("http://françai.se", sentinel)
 
-        assert trie.match('http://xn--franai-zua.se') is None
+        assert trie.match("http://xn--franai-zua.se") is None
 
         trie = CanonicalizedLRUTrie()
-        trie.set('http://françai.se', sentinel)
+        trie.set("http://françai.se", sentinel)
 
-        assert trie.match('http://xn--franai-zua.se') is sentinel
+        assert trie.match("http://xn--franai-zua.se") is sentinel

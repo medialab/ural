@@ -32,7 +32,7 @@ def could_be_html(url):
 
     _, ext = splitext(path)
 
-    if not ext:
+    if not ext or len(ext) > 16:
         return True
 
     return ext in HTML_LIKE_EXTENSIONS
