@@ -202,6 +202,7 @@ TESTS = [
     ("http://lemonde.fr/default.asp", "lemonde.fr"),
     ("http://lemonde.fr/?test&test=&test=value", "lemonde.fr?test&test=&test=value"),
     ("http://youtu.be/4SpnqbXd8A8%5B/video", "youtu.be/4SpnqbXd8A8[/video"),
+    ("http://twitter.com?s", "twitter.com?s"),
 ]
 
 

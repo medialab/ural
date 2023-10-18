@@ -83,7 +83,7 @@ IRRELEVANT_QUERY_COMBOS = {
             "twtrec",
         ]
     ),
-    "s": lambda v: len(v) <= 2 and all("0" <= x <= "9" for x in v),
+    "s": lambda v: v and len(v) <= 2 and all("0" <= x <= "9" for x in v),
     "source": ("twitter",),
     "sns": ("tw",),
     "spref": ("fb", "ts", "tw", "tw_i", "twitter"),
