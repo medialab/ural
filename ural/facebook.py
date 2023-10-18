@@ -90,7 +90,7 @@ def extract_url_from_facebook_link(url):
     if m is None:
         return None
 
-    return unquote(m.group(1))
+    return unquote(m.group(2))
 
 
 def convert_facebook_url_to_mobile(url):

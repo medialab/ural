@@ -103,6 +103,11 @@ TESTS = [
         "https://www.dpbolvw.net/click-8187505-15219391?url=https://",
         "https://www.dpbolvw.net/click-8187505-15219391?url=https://",
     ),
+    # False positives
+    (
+        "https://www.google.com/search?q=https%3A%2F%2Fwww.challenges.fr%3A+macron+a%C3%A9ronautique&amp;rlz=1C1GCEU_frFR935FR935&amp;oq=https%3A%2F%2Fwww.challenges.fr%3A+macron+a%C3%A9ronautique&amp;aqs=chrome..69i57.5926j0j4&amp;sourceid=chrome&amp;ie=UTF-8",
+        "https://www.google.com/search?q=https%3A%2F%2Fwww.challenges.fr%3A+macron+a%C3%A9ronautique&amp;rlz=1C1GCEU_frFR935FR935&amp;oq=https%3A%2F%2Fwww.challenges.fr%3A+macron+a%C3%A9ronautique&amp;aqs=chrome..69i57.5926j0j4&amp;sourceid=chrome&amp;ie=UTF-8",
+    ),
 ]
 
 

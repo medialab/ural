@@ -50,7 +50,11 @@ def infer_redirection(url, recursive=True):
         obvious_redirect_match = re.search(OBVIOUS_REDIRECTS_RE, url)
 
         if obvious_redirect_match is not None:
-            potential_target = unquote(obvious_redirect_match.group(1))
+            if obvious_redirect_match.group(1) == "q":
+                if "/url?q=" not in url:
+                    return url
+
+            potential_target = unquote(obvious_redirect_match.group(2))
 
             # NOTE: the len check is here to fend off empty redirects
             if potential_target.startswith("https://") and len(potential_target) > 8:

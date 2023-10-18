@@ -58,7 +58,7 @@ def extract_url_from_google_link(url):
     if m is None:
         return None
 
-    return unquote(m.group(1))
+    return unquote(m.group(2))
 
 
 class GoogleDriveParsedItem(object):
