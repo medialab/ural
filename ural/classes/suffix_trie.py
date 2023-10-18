@@ -48,6 +48,9 @@ class SuffixTrie(object):
     def __walk(self, url):
         parsed = safe_urlsplit(url)
 
+        if not parsed or parsed.hostname is None:
+            return None
+
         if is_special_host(parsed.hostname):
             return None
 

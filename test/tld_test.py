@@ -17,6 +17,7 @@ GET_DOMAIN_NAME_TESTS = [
     ("http://facebook.com/whatever", "facebook.com"),
     ("facebook.com/whatever", "facebook.com"),
     ("notatld.blablablou", None),
+    ("", None),
 ]
 
 IS_VALID_TLD_TESTS = [
@@ -25,18 +26,21 @@ IS_VALID_TLD_TESTS = [
     (".megalol", False),
     (".xn--fiqs8s", True),
     ("中国", True),
+    ("", False),
 ]
 
 HAS_VALID_TLD_TESTS = [
     ("http://facebook.com/whatever", True),
     ("lemonde.showtime", True),
     ("https://test.idontexistlol", False),
+    ("", False),
 ]
 
 HAS_VALID_SUFFIX_TESTS = [
     ("http://www.google.co.uk", True),
     ("lemonde.showtime", True),
     ("notatld.blablablou", False),
+    ("", False),
 ]
 
 SPLIT_SUFFIX_TESTS = [
@@ -47,6 +51,7 @@ SPLIT_SUFFIX_TESTS = [
     ("http://192.169.1.1", None),
     ("http://localhost:8080", None),
     ("http://localhost", None),
+    ("", None),
     ("http://google.co.uk", ("google", "co.uk")),
     ("http://www.v2.google.co.uk", ("www.v2.google", "co.uk")),
     ("http://хром.гугл.рф", ("хром.гугл", "рф")),
