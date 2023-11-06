@@ -126,6 +126,7 @@ You can cite it thusly:
   * [parse_twitter_url](#parse_twitter_url)
 * [youtube](#youtube)
   * [is_youtube_url](#is_youtube_url)
+  * [is_youtube_channel_id](#is_youtube_channel_id)
   * [is_youtube_video_id](#is_youtube_video_id)
   * [parse_youtube_url](#parse_youtube_url)
   * [extract_video_id_from_youtube_url](#extract_video_id_from_youtube_url)
@@ -1797,9 +1798,23 @@ is_youtube_url('https://youtu.be/otRTOE9i51o)
 >>> True
 ```
 
+#### is_youtube_channel_id
+
+Returns whether the given string is a formally valid Youtube channel id. Note that it won't validate the fact that this id actually refers to an existing channel or not. You will need to call YouTube servers for that.
+
+```python
+from ural.youtube import is_youtube_channel_id
+
+is_youtube_channel_id('UCCCPCZNChQdGa9EkATeye4g')
+>>> True
+
+is_youtube_channel_id('@France24')
+>>> False
+```
+
 #### is_youtube_video_id
 
-Returns whether the given string is a formally valid Youtube id. Note that it won't validate the fact that this id actually refers to an existing video or not. You will need to call Youtube servers for that.
+Returns whether the given string is a formally valid YouTube video id. Note that it won't validate the fact that this id actually refers to an existing video or not. You will need to call YouTube servers for that.
 
 ```python
 from ural.youtube import is_youtube_video_id

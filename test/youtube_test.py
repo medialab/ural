@@ -4,6 +4,7 @@
 from ural.youtube import (
     is_youtube_url,
     is_youtube_video_id,
+    is_youtube_channel_id,
     parse_youtube_url,
     extract_video_id_from_youtube_url,
     normalize_youtube_url,
@@ -24,7 +25,17 @@ IS_TESTS = [
     ("yt.be", True),
 ]
 
-IS_VIDEO_TESTS = [("92HWiOdpY2s", True), ("92HWiOdpY", False)]
+IS_VIDEO_ID_TESTS = [("92HWiOdpY2s", True), ("92HWiOdpY", False)]
+
+IS_CHANNEL_ID_TESTS = [
+    ("UCv4Cecqpm3cOv7N5N9NkMsQ", True),
+    ("UCS94J1s6-qc8v7btCdS2pNg", True),
+    ("UCvlE5gTbOvjiolFlEm-c_Ow", True),
+    ("UCCCPCZNChQdGa9EkATeye4g", True),
+    ("test", False),
+    ("france24", False),
+    ("@France24", False),
+]
 
 PARSE_TESTS = [
     (
@@ -230,8 +241,12 @@ class TestYoutube(object):
             assert is_youtube_url(url) == result
 
     def test_is_youtube_video_id(self):
-        for v, result in IS_VIDEO_TESTS:
+        for v, result in IS_VIDEO_ID_TESTS:
             assert is_youtube_video_id(v) == result
+
+    def test_is_youtube_channel_id(self):
+        for v, result in IS_CHANNEL_ID_TESTS:
+            assert is_youtube_channel_id(v) == result
 
     def test_parse_youtube_url(self):
         for url, result, _ in PARSE_TESTS:

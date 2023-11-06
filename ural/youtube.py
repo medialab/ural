@@ -173,6 +173,7 @@ YOUTUBE_DOMAINS = [
     "yt.be",
 ]
 YOUTUBE_VIDEO_ID_RE = re.compile(r"^[a-zA-Z0-9_-]{11}$")
+YOUTUBE_CHANNEL_ID_RE = re.compile(r"^UC[a-zA-Z0-9_-]{22}$")
 QUERY_V_RE = re.compile(QUERY_VALUE_TEMPLATE % r"v", re.I)
 NEXT_V_RE = re.compile(r"next=%2Fwatch%3Fv%3D([^%&]+)", re.I)
 NESTED_NEXT_V_RE = re.compile(r"next%3D%252Fwatch%253Fv%253D([^%&]+)", re.I)
@@ -234,6 +235,10 @@ def is_youtube_url(url):
 
 def is_youtube_video_id(value):
     return bool(YOUTUBE_VIDEO_ID_RE.match(value))
+
+
+def is_youtube_channel_id(value):
+    return bool(YOUTUBE_CHANNEL_ID_RE.match(value))
 
 
 def parse_youtube_url(url, fix_common_mistakes=True):
