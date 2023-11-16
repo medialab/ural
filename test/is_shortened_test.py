@@ -23,6 +23,8 @@ TESTS = [
     ("http://l.test/t6-YH", False),
     ("http://ltest/j56", False),
     ("https://l.truc.fr?p=11869", False),
+    ("https://theins.ru/korrupciya/258406", False),
+    ("https://ec.europa.eu/commission/presscorner/detail/es/ip_23_243", False),
 ]
 
 
