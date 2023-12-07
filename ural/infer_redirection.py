@@ -51,7 +51,7 @@ def infer_redirection(url, recursive=True):
 
         if obvious_redirect_match is not None:
             if obvious_redirect_match.group(1) == "q":
-                if "/url?q=" not in url:
+                if "/url?q=" not in url and "/redirect" not in url:
                     return url
 
             potential_target = unquote(obvious_redirect_match.group(2))

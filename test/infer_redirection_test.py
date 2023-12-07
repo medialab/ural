@@ -66,6 +66,10 @@ TESTS = [
         "http://bc-marfeelcache-com.cdn.ampproject.org/c/s/bc.marfeelcache.com/amp/positivr.fr/grenoble-interdit-panneaux-publicitaires/",
         "https://positivr.fr/grenoble-interdit-panneaux-publicitaires/",
     ),
+    (
+        "https://www.youtube.com/redirect?event=channel_header&redir_token=QUFFLUhqay01Uzh4WlZlcnBIVWxRWlZqRk1DTEp0NkdtZ3xBQ3Jtc0trZ2lhS1JJLTQxTUFxcTgzYnlvNzRWajNBemE4R0xmZTcydGFjOW5JeUc3cUlKblpGTFFHdmFzWl9wVjl4aU02NFRRckdyWDBTU3dYcFJMSjFDSXN4eTJqbGpsM0poTUpQOTRjeHVBS0Vzamx3TlV2OA&q=https%3A%2F%2Fwww.lcp.fr%2F",
+        "https://www.lcp.fr/",
+    ),
     # Recursive case
     (
         "https://test.com?url=http%3A%2F%2Flemonde.fr%3Fnext%3Dhttp%253A%252F%252Ftarget.fr",
