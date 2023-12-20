@@ -56,14 +56,21 @@ def infer_redirection(url, recursive=True):
 
             potential_target = unquote(obvious_redirect_match.group(2))
 
-            # NOTE: the len check is here to fend off empty redirects
+            # Basic HTTPS
             if potential_target.startswith("https://") and len(potential_target) > 8:
                 target = potential_target
+
+            # Basic HTTP
             elif potential_target.startswith("http://") and len(potential_target) > 7:
                 target = potential_target
 
-            if potential_target.startswith("/"):
+            # Basic relative url
+            elif potential_target.startswith("/"):
                 target = urljoin(url, potential_target)
+
+            # Idiotic youtube redirections
+            elif "youtube.com/redirect?" in url:
+                target = "https://" + potential_target
 
     if target is None:
         return url

@@ -70,6 +70,10 @@ TESTS = [
         "https://www.youtube.com/redirect?event=channel_header&redir_token=QUFFLUhqay01Uzh4WlZlcnBIVWxRWlZqRk1DTEp0NkdtZ3xBQ3Jtc0trZ2lhS1JJLTQxTUFxcTgzYnlvNzRWajNBemE4R0xmZTcydGFjOW5JeUc3cUlKblpGTFFHdmFzWl9wVjl4aU02NFRRckdyWDBTU3dYcFJMSjFDSXN4eTJqbGpsM0poTUpQOTRjeHVBS0Vzamx3TlV2OA&q=https%3A%2F%2Fwww.lcp.fr%2F",
         "https://www.lcp.fr/",
     ),
+    (
+        "https://www.youtube.com/redirect?event=channel_description&redir_token=QUFFLUhqa0tPM0ZHVjhnWkhZTDVMcHlsUnJsT1FBS0FmQXxBQ3Jtc0tuNmpfaE5uY19wUURqR3VBcnU3Zms4aVNrU202dzdYdHdUd0w5MXY1YWR1UG0yNEIxN1FjZjFBN3dRX1ZhNS00QTUtMk5Xd0s4VnRJbFFLWEZfSU8yenZvRDNQZ2JoRkFFeVpEdFRuVGRONmpjWk13SQ&q=twitch.tv%2Fraplume",
+        "https://twitch.tv/raplume",
+    ),
     # Recursive case
     (
         "https://test.com?url=http%3A%2F%2Flemonde.fr%3Fnext%3Dhttp%253A%252F%252Ftarget.fr",
