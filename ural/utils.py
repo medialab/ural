@@ -26,6 +26,7 @@ try:
         urlsplit,
         urlparse,
         urlunsplit,
+        unquote_plus,
         SplitResult,
     )
 except ImportError:
@@ -77,27 +78,6 @@ def pathsplit(urlpath):
 def urlpathsplit(url):
     parsed = safe_urlsplit(url)
     return pathsplit(parsed.path)
-
-
-def get_query_arguments(url, key):
-    found = False
-    o = urlparse(url)
-    if not o.query:
-        return None
-    parameters = o.query.split("&")
-    for p in parameters:
-        if key in p:
-            found = True
-            if not "=" in p:
-                return True
-            else:
-                if p.index("=") == len(p) - 1:
-                    return ""
-                else:
-                    return p[p.index("=") + 1 :]
-
-    if not found:
-        return None
 
 
 SLASH_SQUEEZE_RE = re.compile(r"\/{2,}")
@@ -224,3 +204,18 @@ def safe_serialize_query_item(item):
 
 def safe_serialize_qsl(qsl):
     return "&".join(safe_serialize_query_item(item) for item in qsl)
+
+
+def get_query_argument(url, key):
+    o = urlsplit(url)
+    if not o.query:
+        return None
+
+    for q in safe_qsl_iter(o.query):
+        if key == q[0]:
+            if q[1] == None:
+                return True
+            return q[1]
+
+    return None
+

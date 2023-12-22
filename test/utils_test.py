@@ -11,7 +11,7 @@ from ural.utils import (
     decode_punycode_hostname,
     safe_urlsplit,
     add_query_argument,
-    get_query_arguments,
+    get_query_argument,
 )
 
 PATHSPLIT_TESTS = [
@@ -42,30 +42,30 @@ class TestUtils(object):
         )
         assert decode_punycode_hostname("xN--tlrama-bvab.fr") == "télérama.fr"
 
-    def test_get_query_argumenst(self):
+    def test_get_query_argument(self):
         assert (
-            get_query_arguments(
+            get_query_argument(
                 "https://www.mediapart.fr/search?search_word=loi_immigration&page=2",
                 "page",
             )
             == "2"
         )
         assert (
-            get_query_arguments(
+            get_query_argument(
                 "https://www.mediapart.fr/search?search_word=loi_immigration&page=",
                 "page",
             )
             == ""
         )
         assert (
-            get_query_arguments(
+            get_query_argument(
                 "https://www.mediapart.fr/search?search_word=loi_immigration&page",
                 "page",
             )
             == True
         )
         assert (
-            get_query_arguments(
+            get_query_argument(
                 "https://www.mediapart.fr/search?search_word=loi_immigration", "page"
             )
             == None
