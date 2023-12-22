@@ -24,6 +24,7 @@ try:
         unquote,
         urljoin,
         urlsplit,
+        urlparse,
         urlunsplit,
         SplitResult,
     )
@@ -48,7 +49,6 @@ MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 
 # NOTE: one of the kwargs below is not so aptly named quote...
 unshadowed_quote = quote
-
 
 
 def safe_urlsplit(url, scheme="http"):
@@ -79,30 +79,25 @@ def urlpathsplit(url):
     return pathsplit(parsed.path)
 
 
-def get_query_arguments(url,key):
-    splitted=pathsplit(url)
-    last=splitted[-1]
-    add=len(key)+1
-
-    if "?"+key in last :
-        if last.index( "?"+key)+add == len(last) :
-            return True
-        elif last[last.index( "?"+key)+add]== "=": 
-            if last.index( "?"+key)+add+1==len(last):
-                return ""
-            else :
-                coupe=last[last.index( "?"+key)+add : ]
-                if "&" in coupe :
-                    next_et= coupe.index("&")
-                    value=coupe[1:next_et]
-                    return value
+def get_query_arguments(url, key):
+    found = False
+    o = urlparse(url)
+    if not o.query:
+        return None
+    parameters = o.query.split("&")
+    for p in parameters:
+        if key in p:
+            found = True
+            if not "=" in p:
+                return True
+            else:
+                if p.index("=") == len(p) - 1:
+                    return ""
                 else:
-                    value=coupe[1:]
-                    return value
+                    return p[p.index("=") + 1 :]
 
-    
-    else :
-        return None 
+    if not found:
+        return None
 
 
 SLASH_SQUEEZE_RE = re.compile(r"\/{2,}")
