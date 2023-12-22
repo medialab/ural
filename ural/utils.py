@@ -50,6 +50,7 @@ MISTAKES_RE = re.compile(r"&amp(?:%3B|;)", re.I)
 unshadowed_quote = quote
 
 
+
 def safe_urlsplit(url, scheme="http"):
     if isinstance(url, SplitResult):
         return url
@@ -76,6 +77,32 @@ def pathsplit(urlpath):
 def urlpathsplit(url):
     parsed = safe_urlsplit(url)
     return pathsplit(parsed.path)
+
+
+def get_query_arguments(url,key):
+    splitted=pathsplit(url)
+    last=splitted[-1]
+    add=len(key)+1
+
+    if "?"+key in last :
+        if last.index( "?"+key)+add == len(last) :
+            return True
+        elif last[last.index( "?"+key)+add]== "=": 
+            if last.index( "?"+key)+add+1==len(last):
+                return ""
+            else :
+                coupe=last[last.index( "?"+key)+add : ]
+                if "&" in coupe :
+                    next_et= coupe.index("&")
+                    value=coupe[1:next_et]
+                    return value
+                else:
+                    value=coupe[1:]
+                    return value
+
+    
+    else :
+        return None 
 
 
 SLASH_SQUEEZE_RE = re.compile(r"\/{2,}")
