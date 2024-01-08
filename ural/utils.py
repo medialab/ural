@@ -23,8 +23,6 @@ try:
         quote,
         unquote,
         urljoin,
-        urlsplit,
-        urlparse,
         urlunsplit,
         unquote_plus,
         SplitResult,
@@ -207,13 +205,13 @@ def safe_serialize_qsl(qsl):
 
 
 def get_query_argument(url, key):
-    o = urlsplit(url)
+    o = safe_urlsplit(url)
     if not o.query:
         return None
 
     for q in safe_qsl_iter(o.query):
         if key == q[0]:
-            if q[1] == None:
+            if q[1] is None:
                 return True
             return q[1]
 
