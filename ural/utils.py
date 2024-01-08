@@ -23,6 +23,7 @@ try:
         quote,
         unquote,
         urljoin,
+        urlsplit,
         urlunsplit,
         unquote_plus,
         SplitResult,
