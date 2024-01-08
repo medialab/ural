@@ -25,7 +25,6 @@ try:
         urljoin,
         urlsplit,
         urlunsplit,
-        unquote_plus,
         SplitResult,
     )
 except ImportError:
