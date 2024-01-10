@@ -202,3 +202,18 @@ def safe_serialize_query_item(item):
 
 def safe_serialize_qsl(qsl):
     return "&".join(safe_serialize_query_item(item) for item in qsl)
+
+
+def get_query_argument(url, key):
+    o = safe_urlsplit(url)
+    if not o.query:
+        return None
+
+    for q in safe_qsl_iter(o.query):
+        if key == q[0]:
+            if q[1] is None:
+                return True
+            return q[1]
+
+    return None
+
