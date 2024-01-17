@@ -17,6 +17,7 @@ GET_DOMAIN_NAME_TESTS = [
     ("http://facebook.com/whatever", "facebook.com"),
     ("facebook.com/whatever", "facebook.com"),
     ("notatld.blablablou", None),
+    ("HTTP://GOOGLE.COM", "google.com"),
     ("", None),
 ]
 
