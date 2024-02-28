@@ -2,15 +2,16 @@
 # Ural Youtube Unit Tests
 # =============================================================================
 from ural.youtube import (
+    YoutubeChannel,
+    YoutubeShort,
+    YoutubeUser,
+    YoutubeVideo,
+    extract_video_id_from_youtube_url,
+    is_youtube_channel_id,
     is_youtube_url,
     is_youtube_video_id,
-    is_youtube_channel_id,
-    parse_youtube_url,
-    extract_video_id_from_youtube_url,
     normalize_youtube_url,
-    YoutubeVideo,
-    YoutubeUser,
-    YoutubeChannel,
+    parse_youtube_url,
 )
 
 IS_TESTS = [
@@ -234,6 +235,14 @@ PARSE_TESTS = [
     ),
 ]
 
+SHORTS = [
+    (
+        "https://www.youtube.com/shorts/Aw1nBBK8z24",
+        YoutubeShort(id="Aw1nBBK8z24"),
+        "https://www.youtube.com/shorts/Aw1nBBK8z24",
+    )
+]
+
 
 class TestYoutube(object):
     def test_is_youtube_url(self):
@@ -261,3 +270,7 @@ class TestYoutube(object):
     def test_normalize_youtube_url(self):
         for url, _, normalized in PARSE_TESTS:
             assert normalize_youtube_url(url) == normalized
+
+    def test_parse_short_url(self):
+        for url, result, _ in SHORTS:
+            assert parse_youtube_url(url) == result
