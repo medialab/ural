@@ -191,6 +191,8 @@ YOUTUBE_CHANNEL_ID_URL_TEMPLATE = "https://www.youtube.com/channel/%s"
 # but there is no way to infer this...
 YOUTUBE_CHANNEL_NAME_URL_TEMPLATE = "https://www.youtube.com/%s"
 
+YOUTUBE_SHORT_URL_TEMPLATE = "https://www.youtube.com/shorts/%s"
+
 YOUTUBE_CHANNEL_NAME_BLACKLIST = {
     "about",
     "account",
@@ -209,7 +211,7 @@ YOUTUBE_CHANNEL_NAME_BLACKLIST = {
 YoutubeVideo = namedtuple("YoutubeVideo", ["id", "playlist"])
 YoutubeUser = namedtuple("YoutubeUser", ["id", "name"])
 YoutubeChannel = namedtuple("YoutubeChannel", ["id", "name"])
-
+YoutubeShort = namedtuple("YoutubeShort", ["id"])
 
 # NOTE: we use a trie to perform efficient queries and so we don't
 # need to test every domain/subdomain linearly
@@ -369,6 +371,22 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 
         return YoutubeChannel(id=cid, name=None)
 
+    elif path.startswith("/shorts/"):
+        splitted_path = pathsplit(path)
+
+        if len(splitted_path) < 2:
+            return None
+
+        v = splitted_path[1]
+
+        if fix_common_mistakes:
+            v = v[:11]
+
+        if not is_youtube_video_id(v):
+            return
+
+        return YoutubeShort(id=v)
+
     else:
         path = path.rstrip("/")
         if path.count("/") == 1:
@@ -413,5 +431,9 @@ def normalize_youtube_url(url):
             return YOUTUBE_CHANNEL_ID_URL_TEMPLATE % parsed.id
 
         return YOUTUBE_CHANNEL_NAME_URL_TEMPLATE % parsed.name
+
+    if isinstance(parsed, YoutubeShort):
+        if parsed.id is not None:
+            return YOUTUBE_SHORT_URL_TEMPLATE % parsed.id
 
     raise TypeError("normalize_youtube_url: impossible path reached")

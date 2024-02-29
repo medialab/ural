@@ -2,15 +2,16 @@
 # Ural Youtube Unit Tests
 # =============================================================================
 from ural.youtube import (
+    YoutubeChannel,
+    YoutubeShort,
+    YoutubeUser,
+    YoutubeVideo,
+    extract_video_id_from_youtube_url,
+    is_youtube_channel_id,
     is_youtube_url,
     is_youtube_video_id,
-    is_youtube_channel_id,
-    parse_youtube_url,
-    extract_video_id_from_youtube_url,
     normalize_youtube_url,
-    YoutubeVideo,
-    YoutubeUser,
-    YoutubeChannel,
+    parse_youtube_url,
 )
 
 IS_TESTS = [
@@ -231,6 +232,21 @@ PARSE_TESTS = [
         "https://www.youtube.com/c/@28minutesARTE",
         YoutubeChannel(id=None, name="28minutesARTE"),
         "https://www.youtube.com/28minutesARTE",
+    ),
+    (
+        "https://www.youtube.com/shorts/xnh-JKqktAU",
+        YoutubeShort(id="xnh-JKqktAU"),
+        "https://www.youtube.com/shorts/xnh-JKqktAU",
+    ),
+    (
+        "https://www.youtube.com/shorts/U5Bn8mMxj4o/nonsense?whatever",
+        YoutubeShort(id="U5Bn8mMxj4o"),
+        "https://www.youtube.com/shorts/U5Bn8mMxj4o",
+    ),
+    (
+        "https://www.youtube.com/shorts/",
+        None,
+        "https://www.youtube.com/shorts/",
     ),
 ]
 
