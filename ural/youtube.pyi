@@ -12,6 +12,9 @@ class YoutubeChannel(NamedTuple):
     id: str
     name: str
 
+class YoutubeShort(NamedTuple):
+    id: str
+
 def is_youtube_url(url: AnyUrlTarget) -> bool: ...
 def is_youtube_video_id(value: str) -> bool: ...
 def is_youtube_channel_id(value: str) -> bool: ...

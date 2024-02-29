@@ -429,4 +429,8 @@ def normalize_youtube_url(url):
 
         return YOUTUBE_CHANNEL_NAME_URL_TEMPLATE % parsed.name
 
+    if isinstance(parsed, YoutubeShort):
+        if parsed.id is not None:
+            return YOUTUBE_SHORT_URL_TEMPLATE % parsed.id
+
     raise TypeError("normalize_youtube_url: impossible path reached")
