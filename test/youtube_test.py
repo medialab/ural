@@ -241,7 +241,7 @@ PARSE_TESTS = [
     (
         "https://www.youtube.com/shorts/U5Bn8mMxj4o/nonsense?whatever",
         YoutubeShort(id="U5Bn8mMxj4o"),
-        "https://www.youtube.com/shorts/U5Bn8mMxj4o/nonsense?whatever",
+        "https://www.youtube.com/shorts/U5Bn8mMxj4o",
     ),
     (
         "https://www.youtube.com/shorts/",
