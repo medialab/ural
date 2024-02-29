@@ -401,7 +401,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
 def extract_video_id_from_youtube_url(url):
     parsed = parse_youtube_url(url)
 
-    if parsed is None or not isinstance(parsed, YoutubeVideo):
+    if parsed is None or not isinstance(parsed, (YoutubeVideo, YoutubeShort)):
         return
 
     return parsed.id
@@ -433,7 +433,6 @@ def normalize_youtube_url(url):
         return YOUTUBE_CHANNEL_NAME_URL_TEMPLATE % parsed.name
 
     if isinstance(parsed, YoutubeShort):
-        if parsed.id is not None:
-            return YOUTUBE_SHORT_URL_TEMPLATE % parsed.id
+        return YOUTUBE_SHORT_URL_TEMPLATE % parsed.id
 
     raise TypeError("normalize_youtube_url: impossible path reached")

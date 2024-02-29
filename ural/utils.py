@@ -216,4 +216,3 @@ def get_query_argument(url, key):
             return q[1]
 
     return None
-

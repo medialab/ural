@@ -1867,7 +1867,7 @@ parse_youtube_url('https://www.youtube.com/taranisnews')
 
 #### extract_video_id_from_youtube_url
 
-Return a video id from the given Youtube url or `None` if we could not find one.
+Return a video id from the given Youtube url or `None` if we could not find one. Note that this will also work with Youtube shorts.
 
 ```python
 from ural.youtube import extract_video_id_from_youtube_url

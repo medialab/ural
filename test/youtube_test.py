@@ -270,7 +270,9 @@ class TestYoutube(object):
 
     def test_extract_video_id_from_youtube_url(self):
         for url, result, _ in PARSE_TESTS:
-            extract_result = result.id if isinstance(result, YoutubeVideo) else None
+            extract_result = (
+                result.id if isinstance(result, (YoutubeVideo, YoutubeShort)) else None
+            )
 
             assert extract_video_id_from_youtube_url(url) == extract_result
 
