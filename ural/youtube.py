@@ -277,7 +277,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
     _, _, path, query, fragment = parsed
 
     # youtu.be
-    if parsed.hostname.endswith("youtu.be"):
+    if parsed.hostname and parsed.hostname.endswith("youtu.be"):
 
         if path.count("/") > 0:
             v = pathsplit(path)[0]

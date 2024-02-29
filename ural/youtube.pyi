@@ -3,14 +3,15 @@ from ural.types import AnyUrlTarget
 
 class YoutubeVideo(NamedTuple):
     id: str
+    playlist: Optional[str]
 
 class YoutubeUser(NamedTuple):
-    id: str
+    id: Optional[str]
     name: str
 
 class YoutubeChannel(NamedTuple):
-    id: str
-    name: str
+    id: Optional[str]
+    name: Optional[str]
 
 class YoutubeShort(NamedTuple):
     id: str

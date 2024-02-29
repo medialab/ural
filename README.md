@@ -1837,11 +1837,15 @@ from ural.youtube import (
   # You can also import the named tuples if you need them
   YoutubeVideo,
   YoutubeUser,
-  YoutubeChannel
+  YoutubeChannel,
+  YoutubeShort,
 )
 
 parse_youtube_url('https://www.youtube.com/watch?v=otRTOE9i51o')
 >>> YoutubeVideo(id='otRTOE9i51o')
+
+parse_youtube_url('https://www.youtube.com/shorts/GINlKobb41w')
+>>> YoutubeShort(id='GINlKobb41w')
 
 parse_youtube_url('https://lemonde.fr')
 >>> None
