@@ -374,7 +374,7 @@ def parse_youtube_url(url, fix_common_mistakes=True):
     elif path.startswith("/shorts/"):
         splitted_path = pathsplit(path)
 
-        v = pathsplit(path)[-1]
+        v = pathsplit(path)[1]
 
         if fix_common_mistakes:
             v = v[:11]

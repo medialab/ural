@@ -233,14 +233,16 @@ PARSE_TESTS = [
         YoutubeChannel(id=None, name="28minutesARTE"),
         "https://www.youtube.com/28minutesARTE",
     ),
-]
-
-SHORTS = [
     (
-        "https://www.youtube.com/shorts/Aw1nBBK8z24",
-        YoutubeShort(id="Aw1nBBK8z24"),
-        "https://www.youtube.com/shorts/Aw1nBBK8z24",
-    )
+        "https://www.youtube.com/shorts/xnh-JKqktAU",
+        YoutubeShort(id="xnh-JKqktAU"),
+        "https://www.youtube.com/shorts/xnh-JKqktAU",
+    ),
+    (
+        "https://www.youtube.com/shorts/U5Bn8mMxj4o",
+        YoutubeShort(id="U5Bn8mMxj4o"),
+        "https://www.youtube.com/shorts/U5Bn8mMxj4o",
+    ),
 ]
 
 
@@ -270,7 +272,3 @@ class TestYoutube(object):
     def test_normalize_youtube_url(self):
         for url, _, normalized in PARSE_TESTS:
             assert normalize_youtube_url(url) == normalized
-
-    def test_parse_short_url(self):
-        for url, result, _ in SHORTS:
-            assert parse_youtube_url(url) == result
