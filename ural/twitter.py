@@ -10,8 +10,8 @@ from collections import namedtuple
 from ural.patterns import DOMAIN_TEMPLATE
 from ural.utils import SplitResult, safe_urlsplit, pathsplit
 
-TWITTER_DOMAINS_RE = re.compile(r"twitter\.com", re.I)
-TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r"(?:[^.]+\.)*twitter\.com", re.I)
+TWITTER_DOMAINS_RE = re.compile(r"(?:twitter|x)\.com", re.I)
+TWITTER_URL_RE = re.compile(DOMAIN_TEMPLATE % r"(?:[^.]+\.)*(?:twitter|x)\.com", re.I)
 TWITTER_FRAGMENT_ROUTING_RE = re.compile(r"^!/?")
 TWITTER_SCREEN_NAME_BLACKLIST = {
     "explore",

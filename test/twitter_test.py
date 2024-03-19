@@ -16,6 +16,7 @@ IS_TESTS = [
     ("twitter.com", True),
     ("http://www.lemonde.fr", False),
     ("http://www.twitter.com", True),
+    ("https://x.com/DoesNotExist/status/1598743914602613250?s=20", True),
 ]
 
 EXTRACT_SCREEN_NAME_TESTS = [
@@ -23,6 +24,7 @@ EXTRACT_SCREEN_NAME_TESTS = [
     ("https://www.lemonde.fr", None),
     ("https://twitter.com/Yomguithereal", "yomguithereal"),
     ("https://twitter.com/yomguithereal", "yomguithereal"),
+    ("https://x.com/Yomguithereal", "yomguithereal"),
     ("https://twitter.com/@Yomguithereal", "yomguithereal"),
     ("https://twitter.com/Yomguithereal/", "yomguithereal"),
     ("https://twitter.com/Yomguithereal?s=19", "yomguithereal"),
@@ -63,6 +65,10 @@ PARSE_TWEET_URL_TESTS = [
     ("https://twitter.com", None),
     (
         "https://twitter.com/Yomguithereal?s=19",
+        TwitterUser(screen_name="yomguithereal"),
+    ),
+    (
+        "https://x.com/Yomguithereal?s=19",
         TwitterUser(screen_name="yomguithereal"),
     ),
     ("https://twitter.com/notifications", None),
