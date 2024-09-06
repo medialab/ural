@@ -32,14 +32,14 @@ IS_VALID_TLD_TESTS = [
 
 HAS_VALID_TLD_TESTS = [
     ("http://facebook.com/whatever", True),
-    ("lemonde.showtime", True),
+    ("lemonde.showtime", False),
     ("https://test.idontexistlol", False),
     ("", False),
 ]
 
 HAS_VALID_SUFFIX_TESTS = [
     ("http://www.google.co.uk", True),
-    ("lemonde.showtime", True),
+    ("lemonde.showtime", False),
     ("notatld.blablablou", False),
     ("", False),
 ]
