@@ -277,7 +277,7 @@ SHORTENER_DOMAINS = [
     "crdrv.co",
     "crks.me",
     "crwd.fr",
-    "csera.it"
+    "csera.it",
     "cstu.io",
     "ctt.ec",
     "ctvr.us",
@@ -602,7 +602,7 @@ SHORTENER_DOMAINS = [
     "l9k.net",
     "la4.cl",
     "labur.eus",
-    "larep.it"
+    "larep.it",
     "lat.ms",
     "lavoz.gal",
     "lawl.es",
@@ -838,7 +838,7 @@ SHORTENER_DOMAINS = [
     "prn.to",
     "profile.to",
     "propub.li",
-    "pst.cr"
+    "pst.cr",
     "psta.rs",
     "ptab.it",
     "ptiturl.com",
