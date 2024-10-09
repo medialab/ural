@@ -16,6 +16,24 @@ def is_reddit_url(url):
     return bool(re.match(REDDIT_URL_RE, url))
 
 
+def is_subreddit_url(url):
+    if not is_reddit_url(url):
+        return False
+    
+    return (
+        '/r/' in url
+    )
+
+
+def is_reddit_user_url(url):
+    if not is_reddit_url(url):
+        return False
+    
+    return (
+        '/user/' in url
+    )
+
+
 def is_reddit_post_url(url):
     if not is_reddit_url(url):
         return False
