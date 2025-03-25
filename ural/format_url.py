@@ -45,12 +45,12 @@ def format_url(
 
     # Arguments
     if args is not None:
-        items = sorted(
-            (
-                format_query_argument(k, v, format_arg_value)
-                for k, v in args.items()
-                if v is not None and v is not False
-            )
+        iterator = sorted(args.items()) if isinstance(args, dict) else iter(args)
+
+        items = (
+            format_query_argument(k, v, format_arg_value)
+            for k, v in iterator
+            if v is not None and v is not False
         )
 
         if items:
@@ -110,9 +110,15 @@ class URLFormatter(object):
             args = self.args
         else:
             if self.args is not None:
-                new_args = self.args.copy()
-                new_args.update(args)
-                args = new_args
+                if isinstance(args, dict):
+                    if isinstance(self.args, dict):
+                        new_args = self.args.copy()
+                        new_args.update(args)
+                        args = new_args
+                    else:
+                        raise NotImplementedError
+                else:
+                    raise NotImplementedError
 
         return format_url(
             base_url=base_url,

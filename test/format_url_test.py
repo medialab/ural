@@ -86,6 +86,13 @@ class TestFormatUrl(object):
             == "http://lemonde.fr/articles/0/article.html"
         )
 
+        assert (
+            format_url(
+                "http://lemonde.fr", args=[("id", 3), ("name", "John"), ("id", 2)]
+            )
+            == "http://lemonde.fr?id=3&name=John&id=2"
+        )
+
     def test_formatter(self):
         formatter = URLFormatter("http://lemonde.fr")
 

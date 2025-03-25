@@ -26,7 +26,7 @@ TESTS = [
     ("https://theins.ru/korrupciya/258406", False),
     ("https://ec.europa.eu/commission/presscorner/detail/es/ip_23_243", False),
     ("http://huffp.st/Nf25jZ1", True),
-    ("https://pdora.co/2nku92J", True)
+    ("https://pdora.co/2nku92J", True),
 ]
 
 

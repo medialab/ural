@@ -1,14 +1,15 @@
-from typing import Optional, List, Union, Dict, Callable, Any
+from typing import Optional, List, Union, Dict, Callable, Tuple, Any
 
 from ural.types import QueryArgValue
 
 FormatArgValueCallable = Callable[[str, QueryArgValue], Any]
 Path = Union[str, List[Union[str, int]]]
+Args = Union[Dict[str, Any], List[Tuple[str, Any]]]
 
 def format_url(
     base_url: str,
     path: Optional[Path] = ...,
-    args: Optional[Dict[str, Any]] = ...,
+    args: Optional[Args] = ...,
     format_arg_value: Optional[FormatArgValueCallable] = ...,
     fragment: Optional[str] = ...,
     ext: Optional[str] = ...,
@@ -20,7 +21,7 @@ class URLFormatter(object):
         self,
         base_url: Optional[str] = ...,
         path: Optional[Path] = ...,
-        args: Optional[Dict[str, Any]] = ...,
+        args: Optional[Args] = ...,
         format_arg_value: Optional[FormatArgValueCallable] = ...,
         fragment: Optional[str] = ...,
         ext: Optional[str] = ...,
@@ -29,7 +30,7 @@ class URLFormatter(object):
         self,
         base_url: Optional[str] = ...,
         path: Optional[Path] = ...,
-        args: Optional[Dict[str, Any]] = ...,
+        args: Optional[Args] = ...,
         format_arg_value: Optional[FormatArgValueCallable] = ...,
         fragment: Optional[str] = ...,
         ext: Optional[str] = ...,
@@ -39,7 +40,7 @@ class URLFormatter(object):
         self,
         base_url: Optional[str] = ...,
         path: Optional[Path] = ...,
-        args: Optional[Dict[str, Any]] = ...,
+        args: Optional[Args] = ...,
         format_arg_value: Optional[FormatArgValueCallable] = ...,
         fragment: Optional[str] = ...,
         ext: Optional[str] = ...,

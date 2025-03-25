@@ -365,6 +365,10 @@ format_url(
 )
 >>> 'http://lemonde.fr/business/articles?boolean&hello=world&number=14&quoted=test%3Dok#test'
 
+# Query args can also be passed as a list of (key, value) pairs
+format_url("http://lemonde.fr", args=[("id", "one"), ("name", "lucy")])
+>>> "http://lemonde.fr?id=one&name=lucy
+
 # Custom argument value formatting
 def format_arg_value(key, value):
   if key == 'ids':
@@ -412,7 +416,7 @@ formatter.format_api_call('2764753')
 
 * **base_url** *str*: Base url.
 * **path** *?str|list*: the url's path.
-* **args** *?dict*: query arguments as a dictionary.
+* **args** *?dict|list*: query arguments as a dictionary or a list of (key, value) pairs.
 * **format_arg_value** *?callable*: function taking a query argument key and value and returning the formatted value.
 * **fragment** *?str*: the url's fragment.
 * **ext** *?str*: path extension such as `.html`.
