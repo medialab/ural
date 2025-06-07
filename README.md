@@ -153,10 +153,10 @@ You can cite it thusly:
 ```python
 from ural import canonicalize_url, normalize_url, fingerprint_url
 
-url = 'https://www.FACEBOOK.COM:80/index.html?utc_campaign=3&id=34'
+url = 'https://www.FACEBOOK.COM:80/index.html?utm_campaign=3&id=34'
 
 canonicalize_url(url)
->>> 'https://www.facebook.com/index.html?utc_campaign=3&id=34'
+>>> 'https://www.facebook.com/index.html?utm_campaign=3&id=34'
 # The same url, cleaned up a little
 
 normalize_url(url)
