@@ -27,6 +27,9 @@ TESTS = [
     ("https://ec.europa.eu/commission/presscorner/detail/es/ip_23_243", False),
     ("http://huffp.st/Nf25jZ1", True),
     ("https://pdora.co/2nku92J", True),
+    ("http://ondace.ro/d18vg2", True),
+    ("https://share.google/2cxtlcnlG7nkGn0tV", True),
+    ("https://fefd.link/OAk8r", True),
 ]
 
 
