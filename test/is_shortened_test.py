@@ -30,6 +30,8 @@ TESTS = [
     ("http://ondace.ro/d18vg2", True),
     ("https://share.google/2cxtlcnlG7nkGn0tV", True),
     ("https://fefd.link/OAk8r", True),
+    ("https://ara.tv/k23h6", True),
+    ("https://www.h24.news/S7G", True)
 ]
 
 
