@@ -31,7 +31,9 @@ TESTS = [
     ("https://share.google/2cxtlcnlG7nkGn0tV", True),
     ("https://fefd.link/OAk8r", True),
     ("https://ara.tv/k23h6", True),
-    ("https://www.h24.news/S7G", True)
+    ("https://www.h24.news/S7G", True),
+    ("https://l.smartnews.com/p-5M5V72PS/7Kl8bk", False), # For now
+    ("https://open.substack.com/pub/demcastusa/p/britain-shows-trump-the-door-no-crown", False),
 ]
 
 
