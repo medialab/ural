@@ -13,6 +13,7 @@ TESTS = [
     ("http://bit.ly/1sNZMwL", True),
     ("http://localhost:8000", False),
     ("https://192.168.0.1", False),
+    ("http://EasyURL.com/whatever", True),
     ("https://➽.ws/other", True),
     ("➽.ws/other", True),
     ("https://bit.ly", False),
