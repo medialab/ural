@@ -65,7 +65,7 @@ SPLIT_SUFFIX_TESTS = [
     ("faguoren.中国", ("faguoren", "中国")),
     ("blogs.lemonde.paris", ("blogs.lemonde", "paris")),
     ("axel.brighton.ac.uk", ("axel.brighton", "ac.uk")),
-    ("m.fr.blogspot.com.au", ("m.fr", "blogspot.com.au")),
+    ("m.fr.blogspot.com.au", ("m.fr.blogspot", "com.au")),
     ("help.www.福岡.jp", ("help.www", "福岡.jp")),
     ("syria.arabic.variant.سوريا", ("syria.arabic.variant", "سوريا")),
     ("http://www.help.kawasaki.jp", ("www", "help.kawasaki.jp")),
