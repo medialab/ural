@@ -34,6 +34,8 @@ TESTS = [
     ("https://www.h24.news/S7G", True),
     ("https://l.smartnews.com/p-5M5V72PS/7Kl8bk", False), # For now
     ("https://open.substack.com/pub/demcastusa/p/britain-shows-trump-the-door-no-crown", False),
+    ("http://yt.be/Zj2vP", True),
+    ("https://yak.li/c3f3f0", True),
 ]
 
 
