@@ -20,6 +20,7 @@ SHORTENER_DOMAINS = [
     "1-url.net",
     "1001.tl",
     "126.am",
+    "1l.ink",
     "1link.in",
     "1tk.us",
     "1un.fr",
@@ -213,6 +214,7 @@ SHORTENER_DOMAINS = [
     "c-o.in",
     "c.bnf.fr",
     "c11.kr",
+    "c1ic.link",
     "c3po.link",
     "cachor.ro",
     "cam4.fr",
@@ -252,11 +254,11 @@ SHORTENER_DOMAINS = [
     "cldp.ly",
     "cleanuri.com",
     "cli.gs",
-    "c1ic.link",
     "cliccami.info",
     "clickmeter.com",
     "clickmetertracking.com",
     "clickthru.ca",
+    "clicnws.net",
     "clikk.in",
     "clop.in",
     "cmpdnt.cc",
@@ -416,9 +418,11 @@ SHORTENER_DOMAINS = [
     "flq.us",
     "fly2.ws",
     "fnk.es",
+    "fnty.co",
     "foe.hn",
     "folu.me",
     "fon.gs",
+    "forwrd.it",
     "fr.rog.gg",
     "fr24.com",
     "frama.link",
@@ -476,6 +480,7 @@ SHORTENER_DOMAINS = [
     "goog.le",
     "goshrink.com",
     "got.cr",
+    "gotolink.io",
     "gotrim.me",
     "gowat.ch",
     "gplnk.com",
@@ -531,8 +536,8 @@ SHORTENER_DOMAINS = [
     "iaddict.co",
     "ibit.ly",
     "ibm.co",
-    "icanhaz.com",
     "ic6do.com",
+    "icanhaz.com",
     "icit.fr",
     "ick.li",
     "icks.ro",
@@ -549,6 +554,7 @@ SHORTENER_DOMAINS = [
     "indeedhi.re",
     "info.ms",
     "infob.ae",
+    "infolink.link",
     "infomi.gr",
     "ino.to",
     "inq.news",
@@ -557,6 +563,7 @@ SHORTENER_DOMAINS = [
     "interc.pt",
     "intern.az",
     "intg.ink",
+    "invl.io",
     "invst.ly",
     "io.webhelp.com",
     "irozhl.as",
@@ -767,6 +774,7 @@ SHORTENER_DOMAINS = [
     "nq.st",
     "nrt79.link",
     "nsfw.in",
+    "nsl.ink",
     "ntdo.be",
     "ntdo.fr",
     "nutshellurl.com",
@@ -890,6 +898,7 @@ SHORTENER_DOMAINS = [
     "qxp.sk",
     "qy.fi",
     "r.im",
+    "r.st",
     "r10.to",
     "rb.gy",
     "rb6.co",
@@ -1049,7 +1058,9 @@ SHORTENER_DOMAINS = [
     "spkl.io",
     "spn.sr",
     "spoti.fi",
+    "spotify.link",
     "spr.ly",
+    "sprou.tt",
     "sptfy.com",
     "sq6.ru",
     "sqex.link",
@@ -1071,6 +1082,7 @@ SHORTENER_DOMAINS = [
     "surl.me",
     "sux.cz",
     "svlint.org",
+    "swee.ps",
     "swki.me",
     "swll.to",
     "sy.pe",
@@ -1308,6 +1320,7 @@ SHORTENER_DOMAINS = [
     "whln.eu",
     "wideo.fr",
     "wipi.es",
+    "wix.to",
     "wn.nr",
     "workfor.us",
     "wow.link",
@@ -1356,6 +1369,7 @@ SHORTENER_DOMAINS = [
     "y2u.be",
     "yagoa.fr",
     "yagoa.me",
+    "yak.li",
     "yatuc.com",
     "yau.sh",
     "ye.pe",
@@ -1370,6 +1384,7 @@ SHORTENER_DOMAINS = [
     "youfap.me",
     "youtu.be",
     "ysear.ch",
+    "yt.be",
     "yuarel.com",
     "yweb.com",
     "yyv.co",
@@ -1416,34 +1431,3 @@ SHORTENER_DOMAINS = [
     "🍊.ws",
     "🏹.to",
     "😻🍕.ws",
-]
-
-
-# NOTE: we use a trie to perform efficient queries and so we don't
-# need to test every domain/subdomain linearly
-SHORTENER_DOMAINS_TRIE = HostnameTrieSet()
-
-for domain in SHORTENER_DOMAINS:
-    SHORTENER_DOMAINS_TRIE.add(domain)
-
-
-def is_l_shortened_domain(url):
-    parsed = safe_urlsplit(url)
-
-    return parsed.hostname.startswith("l.") and re.search(
-        DOMAIN_STARTS_L_RE, parsed.path
-    )
-
-
-def is_shortened_url(url):
-    parsed = safe_urlsplit(url)
-
-    # NOTE: shortener domain homepages are not shortened urls per se
-    if is_homepage(parsed):
-        return False
-
-    # Shortener domains starting with 'l.'
-    if is_l_shortened_domain(parsed):
-        return True
-
-    return SHORTENER_DOMAINS_TRIE.match(parsed)
