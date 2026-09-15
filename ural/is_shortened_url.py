@@ -1431,3 +1431,34 @@ SHORTENER_DOMAINS = [
     "🍊.ws",
     "🏹.to",
     "😻🍕.ws",
+]
+
+
+# NOTE: we use a trie to perform efficient queries and so we don't
+# need to test every domain/subdomain linearly
+SHORTENER_DOMAINS_TRIE = HostnameTrieSet()
+
+for domain in SHORTENER_DOMAINS:
+    SHORTENER_DOMAINS_TRIE.add(domain)
+
+
+def is_l_shortened_domain(url):
+    parsed = safe_urlsplit(url)
+
+    return parsed.hostname.startswith("l.") and re.search(
+        DOMAIN_STARTS_L_RE, parsed.path
+    )
+
+
+def is_shortened_url(url):
+    parsed = safe_urlsplit(url)
+
+    # NOTE: shortener domain homepages are not shortened urls per se
+    if is_homepage(parsed):
+        return False
+
+    # Shortener domains starting with 'l.'
+    if is_l_shortened_domain(parsed):
+        return True
+
+    return SHORTENER_DOMAINS_TRIE.match(parsed)
