@@ -18,7 +18,7 @@ URL = (
     # protocol identifier
     # "(?:(?:(?:https?|ftp):)?//)"
     # user:pass authentication
-    r"(?:\S+(?::\S*)?@)?"
+    r"(?:[^\s/?#@]+(?::[^\s/?#@]*)?@)?"
     r"(?:"
     # IP address exclusion
     # private & local networks

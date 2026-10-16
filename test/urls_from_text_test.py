@@ -58,6 +58,22 @@ TESTS = [
             "https://youtu.be/rLZ2ZzoD-W0?fbclid=IwAR3RdUNf4_yyYxIBbAspDj-86ckbpS9gjv3tn2rhYspmFJuSl_dlkD7AgyU",
         ],
     ),
+    (
+        "Here are some links: https://www.tiktok.com/@maria.bg2/video/7652635784733838614 and https://www.youtube.com/@some.channel2/videos and https://example.com/?ref=@name.surname2",
+        [
+            "https://www.tiktok.com/@maria.bg2/video/7652635784733838614",
+            "https://www.youtube.com/@some.channel2/videos",
+            "https://example.com/?ref=@name.surname2",
+        ],
+    ),
+    (
+        "Joined links: https://a.com/x,https://b.com/y, http://a.com/z",
+        ["https://a.com/x", "https://b.com/y", "http://a.com/z"],
+    ),
+    (
+        "Wikipedia url:https://en.wikipedia.org/wiki/Foo_(bar)",
+        ["https://en.wikipedia.org/wiki/Foo_(bar)"],
+    ),
 ]
 
 

@@ -9,7 +9,8 @@ import re
 
 from ural.patterns import URL_IN_TEXT_RE
 
-IRRELEVANT_PUNCTUATION = set("!?#\"$%&'()*+,-.:;<=>@[\\]^_`{|}~…’‘`‛«»„‟“”-‐‒–—―−‑⁃,،、")
+IRRELEVANT_PUNCTUATION = set("!?#\"$%&'*+,-.:;<=>@[\\]^_`{|}~…’‘`‛«»„‟“”-‐‒–—―−‑⁃,،、")
+PARTS_RE = re.compile(r",(?=https?://)")
 
 
 def urls_from_text(string):
@@ -27,10 +28,14 @@ def urls_from_text(string):
         url = match.group(0)
         s = match.start()
 
-        if s > 0 and string[s - 1] == "[":
-            if "](" in url:
+        if s > 0:
+            if string[s - 1] == "[" and "](" in url:
                 remainder, url = url.split("](", 1)
+                url = url.rsplit(")", 1)[0]
                 yield remainder.strip()
+
+            elif string[s - 1] == "(":
+                url = url.rsplit(")", 1)[0]
 
         last_punct = None
 
@@ -44,4 +49,4 @@ def urls_from_text(string):
         if i != stop:
             url = url[: i + 1]
 
-        yield url
+        yield from PARTS_RE.split(url)
