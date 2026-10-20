@@ -31,11 +31,14 @@ def urls_from_text(string):
         if s > 0:
             if string[s - 1] == "[" and "](" in url:
                 remainder, url = url.split("](", 1)
-                url = url.rsplit(")", 1)[0]
+                url = url.rsplit(")", 1)[0].strip()
                 yield remainder.strip()
 
+                if not url:
+                    continue
+
             elif string[s - 1] == "(":
-                url = url.rsplit(")", 1)[0]
+                url = url.rsplit(")", 1)[0].strip()
 
         last_punct = None
 

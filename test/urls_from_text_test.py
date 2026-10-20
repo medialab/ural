@@ -74,6 +74,10 @@ TESTS = [
         "Wikipedia url:https://en.wikipedia.org/wiki/Foo_(bar)",
         ["https://en.wikipedia.org/wiki/Foo_(bar)"],
     ),
+    (
+        "[https://a.com/x]() [test]() []() [https://b.com/x]( )",
+        ["https://a.com/x", "https://b.com/x"],
+    ),
 ]
 
 
