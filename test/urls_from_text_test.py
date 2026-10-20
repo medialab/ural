@@ -78,6 +78,15 @@ TESTS = [
         "[https://a.com/x]() [test]() []() [https://b.com/x]( )",
         ["https://a.com/x", "https://b.com/x"],
     ),
+    (
+        "(see https://a.com/x) (see https://b.com/x), see https://c.com/x) (see https://en.wikipedia.org/wiki/Foo_(bar))",
+        [
+            "https://a.com/x",
+            "https://b.com/x",
+            "https://c.com/x",
+            "https://en.wikipedia.org/wiki/Foo_(bar)",
+        ],
+    ),
 ]
 
 

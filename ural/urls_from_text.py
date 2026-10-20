@@ -52,4 +52,8 @@ def urls_from_text(string):
         if i != stop:
             url = url[: i + 1]
 
-        yield from PARTS_RE.split(url)
+        for actual_url in PARTS_RE.split(url):
+            if actual_url[-1] == ")" and actual_url.count("(") != actual_url.count(")"):
+                actual_url = actual_url[:-1]
+
+            yield actual_url
