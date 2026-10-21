@@ -3,6 +3,10 @@
 # =============================================================================
 # Ural URL Extraction Unit Tests
 # =============================================================================
+from __future__ import unicode_literals
+
+import pytest
+
 from ural import urls_from_text
 
 TEXT = """Facial-recognition technology is advancing faster than the people who worry about it have been able to think of ways to manage it." @NewYorker on the manifold challenges of harnessing a promising, but frightening, technology. http://mitsha.re/Qg1g30mVD78
@@ -101,3 +105,45 @@ class TestUrlsFromText(object):
         urls = set(urls_from_text(TEXT_WITH_INVALID_URLS))
 
         assert urls == {"https://www.bfmtvregain"}
+
+    @pytest.mark.parametrize(
+        "string, urls",
+        [
+            ("://example.org", []),
+            ("Before ://example.org after", []),
+            ("(://example.org/path)", []),
+            ("[://example.org/path]", []),
+            (
+                "Before ://invalid.example/path and https://valid.example/path after",
+                ["https://valid.example/path"],
+            ),
+            (
+                "[://invalid.example/path](https://valid.example/path)",
+                ["https://valid.example/path"],
+            ),
+            (
+                "[https://valid.example/path](://invalid.example/path)",
+                ["https://valid.example/path"],
+            ),
+            ("[://invalid.example/path](://second.example/path)", []),
+        ],
+    )
+    def test_missing_scheme(self, string, urls):
+        assert list(urls_from_text(string)) == urls
+
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "http://example.org/path",
+            "https://example.org/path",
+            "HTTP://example.org/path",
+            "//example.org/path",
+            "ftp://example.org/path",
+            "custom://example.org/path",
+            "http//example.org/path",
+            "https://例子.测试/路径",
+            "https://example.org/path?next=://other.example",
+        ],
+    )
+    def test_supported_protocols(self, url):
+        assert list(urls_from_text("See " + url + ", please.")) == [url]

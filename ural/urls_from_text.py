@@ -32,7 +32,10 @@ def urls_from_text(string):
             if string[s - 1] == "[" and "](" in url:
                 remainder, url = url.split("](", 1)
                 url = url.rsplit(")", 1)[0].strip()
-                yield remainder.strip()
+                remainder = remainder.strip()
+
+                if not remainder.startswith("://"):
+                    yield remainder
 
                 if not url:
                     continue
@@ -53,6 +56,10 @@ def urls_from_text(string):
             url = url[: i + 1]
 
         for actual_url in PARTS_RE.split(url):
+            # The shared protocol pattern also matches an empty scheme.
+            if actual_url.startswith("://"):
+                continue
+
             if actual_url[-1] == ")" and actual_url.count("(") != actual_url.count(")"):
                 actual_url = actual_url[:-1]
 
