@@ -65,7 +65,12 @@ def is_url(
         return False
 
     if tld_aware:
-        parsed = safe_urlsplit(string)
+        try:
+            parsed = safe_urlsplit(string)
+        except ValueError:
+            # urlsplit raises when the netloc cannot be parsed, for instance when
+            # it contains characters that NFKC normalizes into URL delimiters.
+            return False
         if not has_valid_tld(parsed):
             return is_special_host(parsed.hostname)
 
