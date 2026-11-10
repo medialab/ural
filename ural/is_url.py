@@ -65,7 +65,11 @@ def is_url(
         return False
 
     if tld_aware:
-        parsed = safe_urlsplit(string)
+        try:
+            parsed = safe_urlsplit(string)
+        except ValueError:
+            return False
+
         if not has_valid_tld(parsed):
             return is_special_host(parsed.hostname)
 

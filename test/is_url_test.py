@@ -85,6 +85,9 @@ TLD_AWARE_TESTS = [
         "http://91.212.7.144/hronika/tanjug-makron-zbog-politicke-krize-u-francuskoj-da-pomeri-posetu-srbiji.html",
         True,
     ),
+    ("http://site.セール/page.html", True),
+    ("http://site.comotellamasセール", False),
+    ("https://note.comへのリンクも貼ってくれてるんだね。どんな記事なのか、ちょっと覗いてみようかな？", False),
     ("", False),
     ("    ", False),
 ]
